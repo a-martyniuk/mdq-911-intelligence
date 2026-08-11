@@ -1,0 +1,32 @@
+======================================================
+RESUMEN EJECUTIVO DEL ANÁLISIS DE DATOS - MAR DEL PLATA
+======================================================
+Periodo Analizado: Enero 2026 - Agosto 2026
+Total Incidentes 911 Procesados: 8,598
+
+1. DISTRIBUCIÓN POR ARCHIVO/ORIGEN:
+Origen_Dataset
+ROBO_AUTO_MOTO        4207
+HALLAZGO_AUTOMOTOR    2586
+DISPAROS_PERSONAS      954
+ARMA_FUEGO             851
+
+2. CALIDAD DE GEORREFERENCIACIÓN:
+- Coordenadas geográficas válidas procesadas: 8,035 (93.5%)
+
+3. HALLAZGOS TEMPORALES CLAVE:
+- Franja horaria con mayor actividad delictiva general: Noche (18-24) (3,397 casos)
+- Día de la semana con mayor concentración de incidentes: Sábado (1,334 casos)
+
+4. VEHÍCULOS ROBADOS Y RECUPERADOS (NLP EN RELATO):
+- Patentes identificadas mediante regex NLP en robos: 4,207
+- Vehículos Robados con Hallazgo confirmado por patente: 57
+- Tiempo Mediano de Recuperación: 0.2 días (5.4 horas)
+- Tiempo Promedio de Recuperación: 2.3 días (54.2 horas)
+
+ARCHIVOS PROCESADOS GENERADOS:
+- CSV Consolidado: D:\Projects\Datos de Mar del Plata\data\processed\mdp_incidentes_consolidado.csv
+- Parquet Consolidado: D:\Projects\Datos de Mar del Plata\data\processed\mdp_incidentes_consolidado.parquet
+- Vehículos Recuperados: D:\Projects\Datos de Mar del Plata\data\processed\mdp_vehiculos_recuperados.csv
+- Gráficos y Mapas: D:\Projects\Datos de Mar del Plata\reports\figures\
+======================================================
