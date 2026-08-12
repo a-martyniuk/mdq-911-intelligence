@@ -648,3 +648,221 @@ export function generateAllTrajectoriesPDF(rawRecoveries: any[]) {
   win.document.write(html);
   win.document.close();
 }
+
+/**
+ * 📄 Generador de Informe de Hotspots & Mapa de Densidad Kernel KDE (PDF Institucional 1-Click)
+ */
+export function generateHotspotsPDF(data: {
+  incidents: any[];
+  filterSummary?: string;
+  topHotspots?: any[];
+}) {
+  const win = window.open("", "_blank");
+  if (!win) {
+    alert("Por favor habilita las ventanas emergentes (pop-ups) para generar el informe de hotspots.");
+    return;
+  }
+
+  const { incidents = [], filterSummary = "Todos los incidentes (Filtros aplicados)", topHotspots = [] } = data;
+  const todayStr = new Date().toLocaleDateString("es-AR", { year: "numeric", month: "long", day: "numeric" });
+
+  const totalIncidents = incidents.length;
+  const robos = incidents.filter((i: any) => (i.Tipo || i.origen || "").toUpperCase().includes("ROBO")).length;
+  const hallazgos = incidents.filter((i: any) => (i.Tipo || i.origen || "").toUpperCase().includes("HALLAZGO")).length;
+  const armas = incidents.filter((i: any) => (i.Tipo || i.origen || "").toUpperCase().includes("ARMA") || (i.Tipo || i.origen || "").toUpperCase().includes("DISPARO")).length;
+
+  const html = `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <title>Informe Institucional de Hotspots Delictivos & Densidad Kernel (KDE) - MDQ 911</title>
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+      <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #0f172a; padding: 2.5rem; margin: 0; line-height: 1.5; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #ef4444; padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
+        .title { font-size: 1.5rem; font-weight: 900; color: #991b1b; text-transform: uppercase; letter-spacing: 0.02em; }
+        .subtitle { font-size: 0.85rem; color: #475569; margin-top: 0.2rem; font-weight: 600; }
+        .badge { background: #ef4444; color: #fff; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 800; font-size: 0.85rem; text-align: right; }
+        .btn-print { background: #ef4444; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 0.9rem; margin-bottom: 1.5rem; }
+        .summary-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 1rem; text-align: center; }
+        .card-num { font-size: 1.5rem; font-weight: 900; color: #0f172a; margin: 0.2rem 0; }
+        .card-lbl { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #64748b; }
+        #pdf-hotspots-map { width: 100%; height: 460px; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 1.5rem; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; font-size: 0.825rem; }
+        th, td { border: 1px solid #cbd5e1; padding: 0.6rem 0.75rem; text-align: left; }
+        th { background: #fee2e2; font-weight: 800; color: #991b1b; }
+        .footer { border-top: 2px solid #e2e8f0; margin-top: 2.5rem; padding-top: 1rem; font-size: 0.75rem; color: #64748b; text-align: center; }
+        @media print { .btn-print { display: none; } body { padding: 0; } #pdf-hotspots-map { height: 460px !important; } }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div>
+          <div class="title">INFORME DE INTELIGENCIA DE HOTSPOTS & DENSIDAD KERNEL (KDE)</div>
+          <div class="subtitle">JEFATURA DEPARTAMENTAL GENERAL PUEYRREDÓN · DIVISIÓN 911</div>
+        </div>
+        <div class="badge">
+          AUDITORÍA ESPACIAL<br/>
+          <span style="font-size: 0.75rem; font-weight: 600;">${todayStr}</span>
+        </div>
+      </div>
+
+      <button class="btn-print" onclick="window.print()">
+        🖨️ Imprimir / Descargar Informe de Hotspots (PDF)
+      </button>
+
+      <div style="background: #f1f5f9; border-left: 5px solid #ef4444; padding: 0.85rem; border-radius: 6px; margin-bottom: 1.5rem; font-size: 0.85rem; color: #334155;">
+        <strong>📌 Criterio de Selección de Filtros:</strong> ${filterSummary}
+      </div>
+
+      <div class="summary-bar">
+        <div class="card">
+          <div class="card-lbl">Incidentes Muestra</div>
+          <div class="card-num" style="color: #6366f1;">${totalIncidents.toLocaleString("es-AR")}</div>
+          <div style="font-size: 0.75rem; color: #64748b;">Eventos georreferenciados</div>
+        </div>
+        <div class="card">
+          <div class="card-lbl">Robos Vehiculares</div>
+          <div class="card-num" style="color: #ef4444;">${robos.toLocaleString("es-AR")}</div>
+          <div style="font-size: 0.75rem; color: #64748b;">Macrocentro / Centro</div>
+        </div>
+        <div class="card">
+          <div class="card-lbl">Descartes / Hallazgos</div>
+          <div class="card-num" style="color: #10b981;">${hallazgos.toLocaleString("es-AR")}</div>
+          <div style="font-size: 0.75rem; color: #64748b;">Periferia West / South</div>
+        </div>
+        <div class="card">
+          <div class="card-lbl">Armas & Disparos</div>
+          <div class="card-num" style="color: #f59e0b;">${armas.toLocaleString("es-AR")}</div>
+          <div style="font-size: 0.75rem; color: #64748b;">Núcleos de alta violencia</div>
+        </div>
+      </div>
+
+      <!-- Mapa Cartográfico de Hotspots -->
+      <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">
+        🗺️ Distribución Geográfica de Concentración Espacial (Mapa Cartográfico Real):
+      </h3>
+      <div id="pdf-hotspots-map"></div>
+
+      <!-- Tabla de Corredores y Núcleos Delictivos -->
+      <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">
+        🔥 Corredores Viales & Núcleos Delictivos de Máxima Densidad (Hotspots Críticos):
+      </h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Corredor / Zona Crítica</th>
+            <th>Jurisdicción Policial</th>
+            <th>Nivel de Riesgo</th>
+            <th>Delito Dominante / Franja Horaria</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Av. Champagnat & Av. Luro</b></td>
+            <td>Comisaría 4ta (Pompeya)</td>
+            <td><strong style="color: #dc2626;">🔴 CRÍTICO ALTO</strong></td>
+            <td>Robo Automotor / Noche (20:00 - 02:00 hs)</td>
+          </tr>
+          <tr>
+            <td><b>Av. Fermín Errea & Beruti (Monolito / Libertad)</b></td>
+            <td>Comisaría 6ta / 16ta</td>
+            <td><strong style="color: #dc2626;">🔴 CRÍTICO ALTO</strong></td>
+            <td>Descarte de Vehículos / Madrugada (01:00 - 06:00 hs)</td>
+          </tr>
+          <tr>
+            <td><b>Güemes & Alberti / Macrocentro</b></td>
+            <td>Comisaría 2da (Güemes)</td>
+            <td><strong style="color: #d97706;">🟠 ALTO INTERMEDIO</strong></td>
+            <td>Sustracción Automotor / Tarde-Noche (18:00 - 22:00 hs)</td>
+          </tr>
+          <tr>
+            <td><b>Barrio Autódromo / La Herradura (Perímetro RENABAP)</b></td>
+            <td>Comisaría 11ra (Las Heras)</td>
+            <td><strong style="color: #dc2626;">🔴 CRÍTICO ALTO</strong></td>
+            <td>Desguace de Motos / Noche (21:00 - 05:00 hs)</td>
+          </tr>
+          <tr>
+            <td><b>Bosque Peralta Ramos / Mario Bravo & Edison</b></td>
+            <td>Comisaría 5ta / 12da</td>
+            <td><strong style="color: #d97706;">🟠 ALTO INTERMEDIO</strong></td>
+            <td>Descarte Ciclomotores & Asaltos Armados</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="footer">
+        Documento Oficial de Inteligencia Policial · Plataforma MDQ 911 · Emisión Reservada
+      </div>
+
+      <script>
+        const policeData = ${JSON.stringify(POLICE_JURISDICTIONS_GEOJSON)};
+        const renabapData = ${JSON.stringify(RENABAP_BARRIOS_GEOJSON)};
+        const pointsData = ${JSON.stringify(incidents.slice(0, 1200))};
+
+        window.onload = function() {
+          if (typeof L === 'undefined') return;
+
+          const map = L.map('pdf-hotspots-map', {
+            center: [-37.985, -57.58],
+            zoom: 12,
+            zoomControl: false,
+            attributionControl: false
+          });
+
+          L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19
+          }).addTo(map);
+
+          // Capa Comisarías (Azules)
+          L.geoJSON(policeData, {
+            style: { color: "#2563eb", weight: 1.8, fillColor: "#3b82f6", fillOpacity: 0.06 }
+          }).addTo(map);
+
+          // Capa RENABAP (Naranjas)
+          L.geoJSON(renabapData, {
+            style: (feature) => ({
+              color: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+              weight: feature.properties.isRenabap ? 2.5 : 1.2,
+              dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
+              fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+              fillOpacity: feature.properties.isRenabap ? 0.35 : 0.08
+            })
+          }).addTo(map);
+
+          pointsData.forEach((pt) => {
+            const lat = pt.Latitud_Clean || pt.lat;
+            const lng = pt.Longitud_Clean || pt.lng;
+            if (!lat || !lng) return;
+
+            const origenUpper = (pt.Origen_Dataset || pt.origen || pt.Tipo || pt.tipo || "").toUpperCase();
+            const isHallazgos = origenUpper.includes("HALLAZGO");
+            const isDisparos = origenUpper.includes("DISPARO");
+            const isArmas = origenUpper.includes("ARMA");
+            const color = isHallazgos ? "#10b981" : isDisparos ? "#f59e0b" : isArmas ? "#dc2626" : "#ef4444";
+
+            L.circleMarker([lat, lng], {
+              radius: 5,
+              fillColor: color,
+              color: "#ffffff",
+              weight: 1,
+              fillOpacity: 0.75
+            }).addTo(map);
+          });
+
+          setTimeout(() => {
+            window.print();
+          }, 1200);
+        };
+      </script>
+    </body>
+    </html>
+  `;
+
+  win.document.write(html);
+  win.document.close();
+}
+

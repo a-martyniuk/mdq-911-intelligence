@@ -187,7 +187,7 @@ export default function Dashboard() {
         {activeSection === "jurisdictions" && <SectionJurisdictions incidents={data?.incidents || data?.incidentsSample || []} recoveries={data?.recoveries || []} />}
         {activeSection === "graph" && <SectionGraph incidents={data?.incidents || data?.incidentsSample || []} />}
         {activeSection === "search" && <SectionSearch incidents={data?.incidents || data?.incidentsSample || []} />}
-        {activeSection === "hotspots" && <SectionHotspots />}
+        {activeSection === "hotspots" && <SectionHotspots incidents={data?.incidents || data?.incidentsSample || []} geoPoints={data?.geoPoints || []} />}
         {activeSection === "temporal" && <SectionTemporal incidents={data?.incidents || data?.incidentsSample || []} />}
         {activeSection === "vehicles" && <SectionVehicles recoveries={data?.recoveries || []} />}
         {activeSection === "nlp" && <SectionNLP />}
