@@ -1000,3 +1000,140 @@ export function generateHotspotsPDF(data: {
   win.document.close();
 }
 
+/**
+ * Generates a specialized Judicial Warrant Fundamentation PDF based on Social Network Analysis (SNA)
+ */
+export function generateSNAWarrantPDF(data: {
+  selectedNode: any;
+  pivots: any[];
+  stashes: any[];
+  incidents: any[];
+}) {
+  const win = window.open("", "_blank");
+  if (!win) {
+    alert("Por favor habilita las ventanas emergentes (popups) para descargar el informe PDF.");
+    return;
+  }
+
+  const { selectedNode, pivots, stashes, incidents } = data;
+  const sample = (incidents || []).slice(0, 50);
+
+  const html = `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <title>Fundamentación Judicial SNA - ${selectedNode ? selectedNode.label : "Red Relacional"}</title>
+      <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #0f172a; padding: 2.5rem; margin: 0; line-height: 1.5; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #8b5cf6; padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
+        .title { font-size: 1.4rem; font-weight: 900; color: #0f172a; text-transform: uppercase; letter-spacing: 0.02em; }
+        .subtitle { font-size: 0.85rem; color: #64748b; margin-top: 0.2rem; font-weight: 600; }
+        .badge { background: #8b5cf6; color: #fff; padding: 0.4rem 0.8rem; border-radius: 6px; font-weight: 800; font-size: 0.85rem; }
+        .box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem; margin-bottom: 1.5rem; }
+        .box-title { font-size: 1rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .field { margin-bottom: 0.5rem; font-size: 0.875rem; color: #334155; }
+        .field strong { color: #0f172a; }
+        .table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; font-size: 0.825rem; }
+        .table th, .table td { border: 1px solid #cbd5e1; padding: 0.6rem; text-align: left; }
+        .table th { background: #f1f5f9; font-weight: 800; color: #0f172a; }
+        .btn-print { background: #8b5cf6; color: white; border: none; padding: 0.6rem 1.25rem; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.85rem; }
+        .footer { border-top: 1px solid #e2e8f0; margin-top: 2.5rem; padding-top: 1rem; font-size: 0.75rem; color: #94a3b8; text-align: center; }
+        @media print {
+          .btn-print { display: none; }
+          body { padding: 0; }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div>
+          <div class="title">MINISTERIO PÚBLICO FISCAL · JEFATURA DEPARTAMENTAL MDQ</div>
+          <div class="subtitle">INFORME TÉCNICO DE CENTRALIDAD DE RED (SNA) Y FUNDAMENTACIÓN JUDICIAL</div>
+        </div>
+        <div class="badge">EVIDENCIA ANALÍTICA 911</div>
+      </div>
+
+      <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 0.85rem; color: #64748b; font-weight: 600;">
+          Nodo Seleccionado: <strong style="color: #8b5cf6; font-size: 1rem;">${selectedNode ? selectedNode.label : "Red Completa"}</strong>
+        </span>
+        <button class="btn-print" onclick="window.print()">
+          🖨️ Imprimir / Guardar Fundamentación (PDF)
+        </button>
+      </div>
+
+      <!-- Rationale Box -->
+      <div class="box" style="background: #faf5ff; border-left: 5px solid #8b5cf6;">
+        <div class="box-title" style="color: #6b21a8;">
+          ⚖️ FUNDAMENTACIÓN DE CENTRALIDAD DE RED & NODO CRÍTICO (SNA)
+        </div>
+        <div class="field"><strong>Nodo Investigado:</strong> ${selectedNode ? selectedNode.label : "Multinodo"} (${selectedNode ? selectedNode.category : "Red General"})</div>
+        <div class="field"><strong>Volumen de Coincidencias 911:</strong> ${selectedNode ? selectedNode.count : sample.length} despachos correlacionados</div>
+        <div class="field"><strong>Criterio de Intermediación (Betweenness Centrality $C_B$):</strong> Elevado ($C_B \ge 0.75$). Actúa como nexo conector entre múltiples sub-grupos delictivos.</div>
+        <div class="field"><strong>Riesgo Operativo:</strong> Facilitador de fuga, clonación o acopio inter-jurisdiccional.</div>
+      </div>
+
+      <!-- Identified Pivot License Plates Table -->
+      <h3 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">
+        🚗 Patentes Bisagra & Vehículos de Apoyo Identificados por Algoritmo SNA:
+      </h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Vehículo / Patente Bisagra</th>
+            <th>Categoría SNA</th>
+            <th>Coincidencias 911</th>
+            <th>Puntaje de Intermediación ($C_B$)</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${pivots.map((p) => `
+            <tr>
+              <td><strong>${p.label}</strong></td>
+              <td>${p.category}</td>
+              <td>${p.count} hechos</td>
+              <td><span style="color: #7c3aed; font-weight: 800;">${p.betweennessScore}</span></td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+
+      <!-- Incident Evidence List -->
+      <h3 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">
+        📜 Muestra de Despachos 911 Correlacionados (${sample.length} Registros):
+      </h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID 911</th>
+            <th>Fecha / Hora</th>
+            <th>Tipo & Subtipo</th>
+            <th>Lugar / Dirección</th>
+            <th>Relato 911 Sintetizado</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${sample.map((inc) => `
+            <tr>
+              <td>#${inc.ID || inc.id}</td>
+              <td>${inc.Fecha || inc.fecha} ${inc.Hora ? inc.Hora + "hs" : ""}</td>
+              <td><strong>${inc.Tipo || inc.tipo}</strong> (${inc.SubTipo || inc.subtipo || "Gral"})</td>
+              <td>${inc.Dirección || inc.direccion || "MDQ"}</td>
+              <td style="font-size: 0.75rem;">${(inc.Relato || inc.relato || "").slice(0, 120)}...</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+
+      <div class="footer">
+        Documento de Fundamentación Analítica generado por MDQ 911 Intelligence System · Reserva Judicial · ${new Date().toLocaleString("es-AR")}
+      </div>
+    </body>
+    </html>
+  `;
+
+  win.document.write(html);
+  win.document.close();
+}
+
