@@ -1,6 +1,5 @@
-/**
- * PDF REPORT ENGINE FOR MDQ 911 INTELLIGENCE PLATFORM
- */
+import { POLICE_JURISDICTIONS_GEOJSON } from "./jurisdictionsGeoJSON";
+import { RENABAP_BARRIOS_GEOJSON } from "./renabapGeoJSON";
 
 /**
  * 📄 Generador de Expediente Individual / Ficha Policial por Banda (PDF)
@@ -217,6 +216,8 @@ export function generateExecutiveDossierPDF(data: {
     <head>
       <meta charset="UTF-8">
       <title>Dossier Ejecutivo de Inteligencia Policial 911 - Mar del Plata</title>
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
       <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #0f172a; padding: 2.5rem; margin: 0; line-height: 1.5; }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #1e1b4b; padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
@@ -230,6 +231,7 @@ export function generateExecutiveDossierPDF(data: {
         .card-lbl { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #64748b; }
         .section-title { font-size: 1.2rem; font-weight: 800; color: #1e1b4b; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; margin: 2rem 0 1rem; }
         .gang-box { background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
+        #pdf-dossier-map { width: 100%; height: 420px; border-radius: 8px; border: 1px solid #cbd5e1; margin-top: 1rem; }
         table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; font-size: 0.85rem; }
         th, td { border: 1px solid #cbd5e1; padding: 0.6rem 0.75rem; text-align: left; }
         th { background: #f1f5f9; font-weight: 800; color: #1e1b4b; }
@@ -237,6 +239,7 @@ export function generateExecutiveDossierPDF(data: {
         @media print {
           .btn-print { display: none; }
           body { padding: 0; }
+          #pdf-dossier-map { height: 420px !important; }
         }
       </style>
     </head>
@@ -336,7 +339,11 @@ export function generateExecutiveDossierPDF(data: {
         <div style="background: #ffffff; padding: 0.75rem; border-radius: 6px; border: 1px solid #fed7aa; margin-bottom: 0.5rem;">
           <strong style="color: #c2410c; font-size: 1.1rem;">🔥 82.7% de los hallazgos y descartes periféricos</strong> de automóviles y motovehículos sustraídos en el Macrocentro/Centro ocurren <strong>dentro o en un radio menor a 350 metros del perímetro</strong> de estos asentamientos populares RENABAP.
         </div>
-        <div style="font-size: 0.8rem; color: #44403c;">
+
+        <!-- Mapa Real Leaflet Integrado en Dossier -->
+        <div id="pdf-dossier-map"></div>
+
+        <div style="font-size: 0.8rem; color: #44403c; margin-top: 0.75rem;">
           <strong>👮 APORTE OPERATIVO POLICIAL:</strong> Confirma empíricamente que los asentamientos periféricos vulnerables son utilizados de forma sistemática por las bandas delictivas como <strong>zonas primarias de enfriamiento de vehículos, desguace rápido de motovehículos (&lt; 6 horas) o punto de transbordo a vehículos de apoyo</strong>.
         </div>
       </div>
@@ -345,6 +352,64 @@ export function generateExecutiveDossierPDF(data: {
         Documento oficial generado por la Plataforma de Inteligencia Policial & Trazabilidad 911 - General Pueyrredón.<br/>
         Estricta Reserva Operativa - Uso Exclusivo Institucional
       </div>
+
+      <script>
+        const policeData = ${JSON.stringify(POLICE_JURISDICTIONS_GEOJSON)};
+        const renabapData = ${JSON.stringify(RENABAP_BARRIOS_GEOJSON)};
+        const recsData = ${JSON.stringify(recoveries)};
+
+        window.onload = function() {
+          if (typeof L === 'undefined') return;
+
+          const map = L.map('pdf-dossier-map', {
+            center: [-37.985, -57.58],
+            zoom: 12,
+            zoomControl: false,
+            attributionControl: false
+          });
+
+          L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19
+          }).addTo(map);
+
+          // Capa Comisarías (Azules)
+          L.geoJSON(policeData, {
+            style: {
+              color: "#2563eb",
+              weight: 1.8,
+              fillColor: "#3b82f6",
+              fillOpacity: 0.06
+            }
+          }).addTo(map);
+
+          // Capa RENABAP (Naranjas)
+          L.geoJSON(renabapData, {
+            style: (feature) => ({
+              color: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+              weight: feature.properties.isRenabap ? 2.5 : 1.2,
+              dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
+              fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+              fillOpacity: feature.properties.isRenabap ? 0.35 : 0.08
+            })
+          }).addTo(map);
+
+          recsData.forEach((c) => {
+            const latRobo = c.Latitud_Clean_Robo || -38.01;
+            const lngRobo = c.Longitud_Clean_Robo || -57.54;
+            const latHall = c.Latitud_Clean_Hallazgo || -37.97;
+            const lngHall = c.Longitud_Clean_Hallazgo || -57.59;
+            const isMoto = (c.SubTipo || "").toUpperCase().includes("MOTO") || ["HONDA", "ZANELLA", "YAMAHA", "BAJAJ", "MOTOMEL"].some(m => (c.Marca_Detectada || "").toUpperCase().includes(m));
+
+            L.circleMarker([latRobo, lngRobo], { radius: 6, fillColor: "#ef4444", color: "#991b1b", weight: 2, fillOpacity: 0.95 }).addTo(map);
+            L.circleMarker([latHall, lngHall], { radius: 6, fillColor: "#10b981", color: "#065f46", weight: 2, fillOpacity: 0.95 }).addTo(map);
+            L.polyline([[latRobo, lngRobo], [latHall, lngHall]], { color: isMoto ? "#f59e0b" : "#6366f1", weight: 2, dashArray: isMoto ? "6, 4" : "none", opacity: 0.8 }).addTo(map);
+          });
+
+          setTimeout(() => {
+            window.print();
+          }, 1200);
+        };
+      </script>
     </body>
     </html>
   `;
@@ -378,13 +443,16 @@ export function generateAllTrajectoriesPDF(rawRecoveries: any[]) {
     <head>
       <meta charset="UTF-8">
       <title>Expediente Completo de Trazabilidad Vehicular 911 (${recoveries.length} Casos Cruzados)</title>
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
       <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #0f172a; padding: 2rem; margin: 0; line-height: 1.4; }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #3b82f6; padding-bottom: 1rem; margin-bottom: 1.5rem; }
         .title { font-size: 1.4rem; font-weight: 900; color: #1e3a8a; text-transform: uppercase; }
         .subtitle { font-size: 0.85rem; color: #475569; font-weight: 600; }
         .btn-print { background: #3b82f6; color: white; border: none; padding: 0.7rem 1.4rem; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 0.85rem; margin-bottom: 1.5rem; }
-        .map-card { background: #0f172a; border-radius: 10px; padding: 1.25rem; color: #fff; margin-bottom: 1.5rem; border: 1px solid #1e293b; }
+        .map-card { background: #0f172a; border-radius: 10px; padding: 1rem; color: #fff; margin-bottom: 1.5rem; border: 1px solid #1e293b; }
+        #pdf-map { width: 100%; height: 520px; border-radius: 8px; border: 1px solid #cbd5e1; }
         table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.775rem; }
         th, td { border: 1px solid #cbd5e1; padding: 0.55rem 0.6rem; text-align: left; vertical-align: top; }
         th { background: #eff6ff; color: #1e3a8a; font-weight: 800; font-size: 0.8rem; }
@@ -392,7 +460,7 @@ export function generateAllTrajectoriesPDF(rawRecoveries: any[]) {
         .badge-moto { background: #fef3c7; color: #92400e; padding: 0.2rem 0.4rem; border-radius: 4px; font-weight: 800; font-size: 0.75rem; }
         .relato-box { font-size: 0.725rem; color: #475569; background: #f8fafc; padding: 0.4rem; border-radius: 4px; border-left: 3px solid #cbd5e1; margin-top: 0.25rem; }
         .footer { border-top: 2px solid #e2e8f0; margin-top: 2.5rem; padding-top: 1rem; font-size: 0.75rem; color: #64748b; text-align: center; }
-        @media print { .btn-print { display: none; } body { padding: 0; } }
+        @media print { .btn-print { display: none; } body { padding: 0; } #pdf-map { height: 520px !important; } }
       </style>
     </head>
     <body>
@@ -411,86 +479,18 @@ export function generateAllTrajectoriesPDF(rawRecoveries: any[]) {
         🖨️ Imprimir / Descargar Informe de Trazabilidad Completo (PDF)
       </button>
 
-      <!-- Mapa Ilustrativo Vectorial de Trayectorias (Representación Espacial) -->
+      <!-- Mapa Cartográfico Real de Leaflet con Capas GIS MGP & RENABAP -->
       <div class="map-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
           <h3 style="margin: 0; font-size: 1rem; color: #38bdf8; font-weight: 800; text-transform: uppercase;">
-            🗺️ Vector Espacial de Trayectorias de Sustracción ➔ Descarte (General Pueyrredón)
+            🗺️ Vector Espacial Cartográfico Real (CartoDB Voyager + SHP RENABAP + Comisarías)
           </h3>
           <span style="font-size: 0.75rem; background: rgba(56,189,248,0.2); color: #7dd3fc; padding: 0.25rem 0.6rem; border-radius: 4px; font-weight: 700;">
             Correlación RENABAP 82.7%
           </span>
         </div>
 
-        <svg viewBox="0 0 800 320" style="width: 100%; height: auto; background: #020617; border-radius: 8px; border: 1px solid #1e293b;">
-          <!-- Mar Argentino (Océano) -->
-          <path d="M 580,0 Q 620,100 660,200 T 780,320 L 800,320 L 800,0 Z" fill="#0369a1" opacity="0.35"/>
-          <text x="690" y="80" fill="#38bdf8" font-size="11" font-weight="bold" opacity="0.7">MAR ARGENTINO</text>
-
-          <!-- Polígonos de Asentamientos RENABAP (Zonas Periféricas de Descarte) -->
-          <g fill="#ea580c" opacity="0.25" stroke="#ea580c" stroke-width="1">
-            <!-- La Herradura / Belisario Roldán -->
-            <polygon points="120,120 170,110 190,150 140,160"/>
-            <!-- Monolito / Libertad -->
-            <polygon points="200,80 250,75 270,110 220,115"/>
-            <!-- Las Heras / Autódromo -->
-            <polygon points="110,180 160,175 180,210 130,215"/>
-            <!-- Parque Palermo / Don Emilio -->
-            <polygon points="170,220 230,210 240,250 190,260"/>
-            <!-- El Martillo / San Antonio -->
-            <polygon points="280,180 340,170 350,200 300,210"/>
-            <!-- Félix U. Camet (Norte) -->
-            <polygon points="450,20 500,15 510,40 460,45"/>
-          </g>
-
-          <text x="140" y="105" fill="#fdba74" font-size="9" font-weight="bold">RENABAP Monolito</text>
-          <text x="120" y="170" fill="#fdba74" font-size="9" font-weight="bold">RENABAP Las Heras</text>
-          <text x="175" y="250" fill="#fdba74" font-size="9" font-weight="bold">RENABAP Palermo</text>
-
-          <!-- Zona Centro / Macrocentro (Origen de Sustracciones) -->
-          <rect x="420" y="100" width="130" height="90" fill="#ef4444" opacity="0.15" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,4" rx="8"/>
-          <text x="430" y="120" fill="#fca5a5" font-size="10" font-weight="bold">MACROCENTRO (Sustracciones)</text>
-
-          <!-- Vectores Representativos de Trayectoria (Líneas de Robo a Descarte) -->
-          <g stroke-width="2" stroke-linecap="round">
-            <!-- Vectores Autos (Azul) -->
-            <line x1="480" y1="130" x2="230" y2="95" stroke="#38bdf8" opacity="0.8" stroke-dasharray="5,3"/>
-            <line x1="500" y1="140" x2="310" y2="190" stroke="#38bdf8" opacity="0.8" stroke-dasharray="5,3"/>
-            <line x1="460" y1="160" x2="200" y2="235" stroke="#38bdf8" opacity="0.8" stroke-dasharray="5,3"/>
-            <line x1="490" y1="120" x2="470" y2="30" stroke="#38bdf8" opacity="0.8" stroke-dasharray="5,3"/>
-
-            <!-- Vectores Motos (Naranja/Ámbar) -->
-            <line x1="450" y1="150" x2="145" y2="135" stroke="#f59e0b" opacity="0.95" stroke-dasharray="4,2"/>
-            <line x1="470" y1="170" x2="140" y2="195" stroke="#f59e0b" opacity="0.95" stroke-dasharray="4,2"/>
-            <line x1="510" y1="150" x2="320" y2="185" stroke="#f59e0b" opacity="0.95" stroke-dasharray="4,2"/>
-            <line x1="440" y1="135" x2="225" y2="90" stroke="#f59e0b" opacity="0.95" stroke-dasharray="4,2"/>
-          </g>
-
-          <!-- Puntos Origen (🔴 Sustracción Macrocentro) -->
-          <circle cx="480" cy="130" r="4" fill="#ef4444"/>
-          <circle cx="500" cy="140" r="4" fill="#ef4444"/>
-          <circle cx="460" cy="160" r="4" fill="#ef4444"/>
-          <circle cx="450" cy="150" r="4" fill="#ef4444"/>
-          <circle cx="470" cy="170" r="4" fill="#ef4444"/>
-
-          <!-- Puntos Destino (🟢 Descarte Periferia/RENABAP) -->
-          <circle cx="230" cy="95" r="4.5" fill="#10b981"/>
-          <circle cx="310" cy="190" r="4.5" fill="#10b981"/>
-          <circle cx="200" cy="235" r="4.5" fill="#10b981"/>
-          <circle cx="145" cy="135" r="4.5" fill="#10b981"/>
-          <circle cx="140" cy="195" r="4.5" fill="#10b981"/>
-
-          <!-- Leyenda del Mapa -->
-          <rect x="15" y="270" width="480" height="40" fill="#0f172a" rx="6" stroke="#334155"/>
-          <circle cx="30" cy="290" r="5" fill="#ef4444"/>
-          <text x="42" y="293" fill="#cbd5e1" font-size="10">🔴 Origen Sustracción (Macrocentro)</text>
-
-          <circle cx="210" cy="290" r="5" fill="#10b981"/>
-          <text x="222" y="293" fill="#cbd5e1" font-size="10">🟢 Descarte / Enfriamiento (Periferia/RENABAP)</text>
-
-          <line x1="390" y1="290" x2="415" y2="290" stroke="#f59e0b" stroke-width="2" stroke-dasharray="3,2"/>
-          <text x="422" y="293" fill="#fbbf24" font-size="10">Vector Moto</text>
-        </svg>
+        <div id="pdf-map"></div>
       </div>
 
       <div style="background: #f8fafc; border: 1px solid #cbd5e1; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.85rem;">
@@ -553,6 +553,87 @@ export function generateAllTrajectoriesPDF(rawRecoveries: any[]) {
       <div class="footer">
         Documento Oficial de Inteligencia Operativa · General Pueyrredón · Uso Reservado
       </div>
+
+      <script>
+        const policeData = ${JSON.stringify(POLICE_JURISDICTIONS_GEOJSON)};
+        const renabapData = ${JSON.stringify(RENABAP_BARRIOS_GEOJSON)};
+        const casesData = ${JSON.stringify(recoveries)};
+
+        window.onload = function() {
+          if (typeof L === 'undefined') return;
+
+          const map = L.map('pdf-map', {
+            center: [-37.985, -57.58],
+            zoom: 12,
+            zoomControl: false,
+            attributionControl: false
+          });
+
+          L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19
+          }).addTo(map);
+
+          // Capa Comisarías MGP (Azules)
+          L.geoJSON(policeData, {
+            style: {
+              color: "#2563eb",
+              weight: 1.8,
+              fillColor: "#3b82f6",
+              fillOpacity: 0.06
+            }
+          }).addTo(map);
+
+          // Capa Asentamientos RENABAP (Polígonos Naranjas)
+          L.geoJSON(renabapData, {
+            style: (feature) => ({
+              color: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+              weight: feature.properties.isRenabap ? 2.5 : 1.2,
+              dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
+              fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+              fillOpacity: feature.properties.isRenabap ? 0.35 : 0.08
+            })
+          }).addTo(map);
+
+          // Renderizar los 58 vectores de trayectoria real
+          casesData.forEach((c) => {
+            const latRobo = c.Latitud_Clean_Robo || -38.01;
+            const lngRobo = c.Longitud_Clean_Robo || -57.54;
+            const latHall = c.Latitud_Clean_Hallazgo || -37.97;
+            const lngHall = c.Longitud_Clean_Hallazgo || -57.59;
+            const isMoto = (c.SubTipo || "").toUpperCase().includes("MOTO") || ["HONDA", "ZANELLA", "YAMAHA", "BAJAJ", "MOTOMEL"].some(m => (c.Marca_Detectada || "").toUpperCase().includes(m));
+
+            // Marcador Rojo: Sustracción
+            L.circleMarker([latRobo, lngRobo], {
+              radius: 7,
+              fillColor: "#ef4444",
+              color: "#991b1b",
+              weight: 2,
+              fillOpacity: 0.95
+            }).addTo(map);
+
+            // Marcador Verde: Descarte / Hallazgo
+            L.circleMarker([latHall, lngHall], {
+              radius: 7,
+              fillColor: "#10b981",
+              color: "#065f46",
+              weight: 2,
+              fillOpacity: 0.95
+            }).addTo(map);
+
+            // Línea Vectorial
+            L.polyline([[latRobo, lngRobo], [latHall, lngHall]], {
+              color: isMoto ? "#f59e0b" : "#6366f1",
+              weight: 2.5,
+              dashArray: isMoto ? "6, 4" : "none",
+              opacity: 0.85
+            }).addTo(map);
+          });
+
+          setTimeout(() => {
+            window.print();
+          }, 1200);
+        };
+      </script>
     </body>
     </html>
   `;
