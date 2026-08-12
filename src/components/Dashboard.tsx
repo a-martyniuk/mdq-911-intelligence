@@ -124,7 +124,8 @@ export default function Dashboard() {
             onClick={() => {
               import("@/lib/pdfReport").then((mod) => {
                 mod.generateExecutiveDossierPDF({
-                  incidents: data?.incidents || [],
+                  totalIncidents: stats.totalIncidents,
+                  incidentsSample: data?.incidentsSample || data?.geoPoints || [],
                   recoveries: data?.recoveries || [],
                   gangs: [
                     { nombre: "Banda de la Moto Negra 110cc", hechosCount: 24, patron: "Conductor con visera y acompañante armado en moto 110cc sin patente", franja: "Noche (20 a 02 hs)", zona: "Comisaría 2da (Macrocentro)", explicacion: "Coincidencia de 24 despachos en 30 días." },
