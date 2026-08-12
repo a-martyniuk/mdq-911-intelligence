@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useEffect, useState, useMemo } from "react";
-import { Play, Pause, RotateCcw, Clock, Navigation, Filter, Layers, ShieldAlert } from "lucide-react";
+import { Play, Pause, RotateCcw, Clock, Navigation, Filter, Layers, ShieldAlert, Home } from "lucide-react";
 import { POLICE_JURISDICTIONS_GEOJSON } from "@/lib/jurisdictionsGeoJSON";
+import { RENABAP_BARRIOS_GEOJSON } from "@/lib/renabapGeoJSON";
 import "leaflet/dist/leaflet.css";
 
 interface GeoPoint {
@@ -32,10 +33,12 @@ function MapComponent({
   points,
   showVectors,
   showJurisdictions,
+  showRenabap,
 }: {
   points: GeoPoint[];
   showVectors: boolean;
   showJurisdictions: boolean;
+  showRenabap: boolean;
 }) {
   const [L, setL] = useState<any>(null);
 
@@ -66,7 +69,7 @@ function MapComponent({
           weight: 2,
           opacity: 0.85,
           fillColor: feature.properties.color || "#6366f1",
-          fillOpacity: 0.18,
+          fillOpacity: 0.14,
         }),
         onEachFeature: (feature: any, layer: any) => {
           layer.bindPopup(`
@@ -75,6 +78,36 @@ function MapComponent({
               <span style="font-size: 0.8rem; color: #444;"><b>Barrios:</b> ${feature.properties.description}</span><br/>
               <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #ccc; font-size: 0.775rem;">
                 👮 <i>Cuadrante Policial Oficial MGP (Subrubro 122)</i>
+              </div>
+            </div>
+          `);
+        },
+      }).addTo(map);
+    }
+
+    // Render RENABAP & Barrios Populares layer
+    if (showRenabap) {
+      L.geoJSON(RENABAP_BARRIOS_GEOJSON, {
+        style: (feature: any) => ({
+          color: feature.properties.isRenabap ? "#f97316" : "#38bdf8",
+          weight: feature.properties.isRenabap ? 2.5 : 1.2,
+          dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
+          opacity: 0.9,
+          fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+          fillOpacity: feature.properties.isRenabap ? 0.35 : 0.08,
+        }),
+        onEachFeature: (feature: any, layer: any) => {
+          const isR = feature.properties.isRenabap;
+          layer.bindPopup(`
+            <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem;">
+              <strong style="color: ${isR ? '#ea580c' : '#0284c7'}; font-size: 0.95rem;">
+                ${isR ? '🏡 RENABAP: ' : '📍 '}${feature.properties.name}
+              </strong><br/>
+              <span style="font-size: 0.8rem; color: #444;">
+                ${isR ? '<b>Categoría:</b> Registro Nacional de Barrios Populares (SISU / RENABAP)' : '<b>Categoría:</b> Barrio Oficial MGP'}
+              </span><br/>
+              <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #ccc; font-size: 0.775rem; color: #666;">
+                GeoJSON Oficial MGP Subrubro 15
               </div>
             </div>
           `);
@@ -186,6 +219,7 @@ export default function SectionMap({ geoPoints = [] }: SectionMapProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showVectors, setShowVectors] = useState(false);
   const [showJurisdictions, setShowJurisdictions] = useState(true);
+  const [showRenabap, setShowRenabap] = useState(true);
 
   // Time slider animation playback
   useEffect(() => {
@@ -257,6 +291,18 @@ export default function SectionMap({ geoPoints = [] }: SectionMapProps) {
             </div>
 
             <div style={{ display: "flex", alignItems: "center", gap: "1.25rem", flexWrap: "wrap" }}>
+              {/* RENABAP & Barrios Populares Layer Toggle */}
+              <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.85rem", fontWeight: 700, color: "#ea580c", cursor: "pointer" }}>
+                <input
+                  type="checkbox"
+                  checked={showRenabap}
+                  onChange={(e) => setShowRenabap(e.target.checked)}
+                  style={{ width: "16px", height: "16px", accentColor: "#ea580c" }}
+                />
+                <Home size={15} />
+                🏡 Capa Barrios Populares & RENABAP
+              </label>
+
               {/* Police Jurisdictions Layer Toggle */}
               <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.85rem", fontWeight: 700, color: "var(--accent-indigo)", cursor: "pointer" }}>
                 <input
@@ -266,7 +312,7 @@ export default function SectionMap({ geoPoints = [] }: SectionMapProps) {
                   style={{ width: "16px", height: "16px", accentColor: "var(--accent-indigo)" }}
                 />
                 <Layers size={15} />
-                👮 Capa Jurisdicciones Policiales MGP (Subrubro 122)
+                👮 Capa Jurisdicciones MGP
               </label>
 
               {/* Flow Vectors Toggle */}
@@ -278,7 +324,7 @@ export default function SectionMap({ geoPoints = [] }: SectionMapProps) {
                   style={{ width: "16px", height: "16px", accentColor: "var(--accent-amber)" }}
                 />
                 <Navigation size={14} style={{ color: "var(--accent-amber)" }} />
-                Mostrar Vectores de Huida / Abandono
+                Mostrar Vectores de Huida
               </label>
             </div>
           </div>
@@ -322,7 +368,7 @@ export default function SectionMap({ geoPoints = [] }: SectionMapProps) {
           )}
         </div>
 
-        <MapComponent points={filteredPoints} showVectors={showVectors} showJurisdictions={showJurisdictions} />
+        <MapComponent points={filteredPoints} showVectors={showVectors} showJurisdictions={showJurisdictions} showRenabap={showRenabap} />
       </div>
     </div>
   );

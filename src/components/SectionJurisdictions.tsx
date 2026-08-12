@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { Building2, MapPin, ArrowRight, ShieldCheck, Download, Info, Layers, Eye, ShieldAlert } from "lucide-react";
+import { Building2, MapPin, ArrowRight, ShieldCheck, Download, Info, Layers, Eye, ShieldAlert, Home } from "lucide-react";
 import { exportToCSV } from "@/lib/excelExport";
 import { POLICE_JURISDICTIONS_GEOJSON } from "@/lib/jurisdictionsGeoJSON";
+import { RENABAP_BARRIOS_GEOJSON } from "@/lib/renabapGeoJSON";
 import "leaflet/dist/leaflet.css";
 
 interface SectionJurisdictionsProps {
@@ -14,6 +15,7 @@ interface SectionJurisdictionsProps {
 export default function SectionJurisdictions({ incidents = [], recoveries = [] }: SectionJurisdictionsProps) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<any>(null);
+  const [showRenabap, setShowRenabap] = useState(true);
 
   // Compute EXACT numeric counts for Sustracciones (Robos) and Hallazgos (Descartes) per Comisaría
   const jurisdictionStats = useMemo(() => {
@@ -184,6 +186,33 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
           `);
         },
       }).addTo(map);
+
+      // Render RENABAP & Barrios Populares layer
+      if (showRenabap) {
+        L.geoJSON(RENABAP_BARRIOS_GEOJSON, {
+          style: (feature: any) => ({
+            color: feature.properties.isRenabap ? "#f97316" : "#38bdf8",
+            weight: feature.properties.isRenabap ? 2.5 : 1.2,
+            dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
+            opacity: 0.9,
+            fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+            fillOpacity: feature.properties.isRenabap ? 0.35 : 0.08,
+          }),
+          onEachFeature: (feature: any, layer: any) => {
+            const isR = feature.properties.isRenabap;
+            layer.bindPopup(`
+              <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem;">
+                <strong style="color: ${isR ? '#ea580c' : '#0284c7'}; font-size: 0.95rem;">
+                  ${isR ? '🏡 RENABAP: ' : '📍 '}${feature.properties.name}
+                </strong><br/>
+                <span style="font-size: 0.8rem; color: #444;">
+                  ${isR ? '<b>Categoría:</b> Registro Nacional de Barrios Populares (SISU / RENABAP)' : '<b>Categoría:</b> Barrio Oficial MGP'}
+                </span>
+              </div>
+            `);
+          },
+        }).addTo(map);
+      }
     });
 
     return () => {
@@ -192,7 +221,7 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
         mapInstanceRef.current = null;
       }
     };
-  }, [jurisdictionStats]);
+  }, [jurisdictionStats, showRenabap]);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
@@ -264,14 +293,21 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(420px, 1fr))", gap: "1.5rem" }}>
         {/* Left Column: Interactive Map with Jurisdiction Organic Polygons */}
         <div className="card" style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.5rem" }}>
             <h3 style={{ fontSize: "1rem", fontWeight: 700, margin: 0, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
               <Layers size={18} color="var(--accent-indigo)" />
               Mapa de Cuadrantes Oficiales (Comisarías 1ra a 16ta)
             </h3>
-            <span style={{ fontSize: "0.75rem", color: "var(--accent-indigo)", fontWeight: 700 }}>
-              Polígonos Orgánicos Mar del Plata
-            </span>
+
+            <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.775rem", fontWeight: 700, color: "#ea580c", cursor: "pointer" }}>
+              <input
+                type="checkbox"
+                checked={showRenabap}
+                onChange={(e) => setShowRenabap(e.target.checked)}
+                style={{ width: "15px", height: "15px", accentColor: "#ea580c" }}
+              />
+              <Home size={14} /> Capa RENABAP
+            </label>
           </div>
 
           <div ref={mapContainerRef} style={{ width: "100%", height: "480px", borderRadius: "8px", border: "1px solid var(--border)" }} />

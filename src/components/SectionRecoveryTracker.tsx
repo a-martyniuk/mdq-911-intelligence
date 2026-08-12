@@ -2,11 +2,12 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
-import { Car, Bike, Clock, MapPin, Search, ArrowRight, ShieldCheck, AlertTriangle, Eye, ChevronRight, Download, FileText, Layers } from "lucide-react";
+import { Car, Bike, Clock, MapPin, Search, ArrowRight, ShieldCheck, AlertTriangle, Eye, ChevronRight, Download, FileText, Layers, Home } from "lucide-react";
 import { highlightRelato } from "@/lib/nlpExtractor";
 import { exportToCSV } from "@/lib/excelExport";
 import { generateCaseFilePrint } from "@/lib/pdfReport";
 import { POLICE_JURISDICTIONS_GEOJSON } from "@/lib/jurisdictionsGeoJSON";
+import { RENABAP_BARRIOS_GEOJSON } from "@/lib/renabapGeoJSON";
 import "leaflet/dist/leaflet.css";
 
 interface RecoveryCase {
@@ -53,10 +54,12 @@ function TrajectoryMap({
   selectedCase,
   cases,
   showJurisdictions = true,
+  showRenabap = true,
 }: {
   selectedCase: RecoveryCase | null;
   cases: RecoveryCase[];
   showJurisdictions?: boolean;
+  showRenabap?: boolean;
 }) {
   const [L, setL] = useState<any>(null);
 
@@ -91,7 +94,7 @@ function TrajectoryMap({
           weight: 2,
           opacity: 0.85,
           fillColor: feature.properties.color || "#6366f1",
-          fillOpacity: 0.16,
+          fillOpacity: 0.14,
         }),
         onEachFeature: (feature: any, layer: any) => {
           layer.bindPopup(`
@@ -100,6 +103,36 @@ function TrajectoryMap({
               <span style="font-size: 0.8rem; color: #444;"><b>Barrios:</b> ${feature.properties.description}</span><br/>
               <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #ccc; font-size: 0.775rem;">
                 👮 <i>Cuadrante Policial Oficial MGP (Subrubro 122)</i>
+              </div>
+            </div>
+          `);
+        },
+      }).addTo(map);
+    }
+
+    // Render RENABAP & Barrios Populares layer
+    if (showRenabap) {
+      L.geoJSON(RENABAP_BARRIOS_GEOJSON, {
+        style: (feature: any) => ({
+          color: feature.properties.isRenabap ? "#f97316" : "#38bdf8",
+          weight: feature.properties.isRenabap ? 2.5 : 1.2,
+          dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
+          opacity: 0.9,
+          fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+          fillOpacity: feature.properties.isRenabap ? 0.35 : 0.08,
+        }),
+        onEachFeature: (feature: any, layer: any) => {
+          const isR = feature.properties.isRenabap;
+          layer.bindPopup(`
+            <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem;">
+              <strong style="color: ${isR ? '#ea580c' : '#0284c7'}; font-size: 0.95rem;">
+                ${isR ? '🏡 RENABAP: ' : '📍 '}${feature.properties.name}
+              </strong><br/>
+              <span style="font-size: 0.8rem; color: #444;">
+                ${isR ? '<b>Categoría:</b> Registro Nacional de Barrios Populares (SISU / RENABAP)' : '<b>Categoría:</b> Barrio Oficial MGP'}
+              </span><br/>
+              <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #ccc; font-size: 0.775rem; color: #666;">
+                GeoJSON Oficial MGP Subrubro 15
               </div>
             </div>
           `);
@@ -179,7 +212,7 @@ function TrajectoryMap({
     return () => {
       map.remove();
     };
-  }, [L, selectedCase, cases, showJurisdictions]);
+  }, [L, selectedCase, cases, showJurisdictions, showRenabap]);
 
   return <div id="trajectory-map" style={{ width: "100%", height: "480px", borderRadius: "var(--radius-md)" }} />;
 }
@@ -189,6 +222,7 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCase, setSelectedCase] = useState<RecoveryCase | null>(null);
   const [showJurisdictions, setShowJurisdictions] = useState(true);
+  const [showRenabap, setShowRenabap] = useState(true);
 
   // Unique deduplicated recoveries by stolen vehicle (ID_Robo)
   const uniqueRecoveries = useMemo(() => {
@@ -466,18 +500,30 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
               <MapPin size={16} style={{ color: "var(--accent-indigo)" }} /> Vector Espacial de Trayectoria ({vehicleType === "motos" ? "Moto" : vehicleType === "autos" ? "Auto" : "Vehículo"})
             </h3>
 
-            <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.775rem", fontWeight: 700, color: "var(--accent-indigo)", cursor: "pointer" }}>
-              <input
-                type="checkbox"
-                checked={showJurisdictions}
-                onChange={(e) => setShowJurisdictions(e.target.checked)}
-                style={{ width: "15px", height: "15px", accentColor: "var(--accent-indigo)" }}
-              />
-              <Layers size={14} /> Capa Jurisdicciones MGP
-            </label>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.85rem", flexWrap: "wrap" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.775rem", fontWeight: 700, color: "#ea580c", cursor: "pointer" }}>
+                <input
+                  type="checkbox"
+                  checked={showRenabap}
+                  onChange={(e) => setShowRenabap(e.target.checked)}
+                  style={{ width: "15px", height: "15px", accentColor: "#ea580c" }}
+                />
+                <Home size={14} /> Capa RENABAP
+              </label>
+
+              <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.775rem", fontWeight: 700, color: "var(--accent-indigo)", cursor: "pointer" }}>
+                <input
+                  type="checkbox"
+                  checked={showJurisdictions}
+                  onChange={(e) => setShowJurisdictions(e.target.checked)}
+                  style={{ width: "15px", height: "15px", accentColor: "var(--accent-indigo)" }}
+                />
+                <Layers size={14} /> Capa Jurisdicciones MGP
+              </label>
+            </div>
           </div>
 
-          <TrajectoryMap selectedCase={selectedCase} cases={filteredCases} showJurisdictions={showJurisdictions} />
+          <TrajectoryMap selectedCase={selectedCase} cases={filteredCases} showJurisdictions={showJurisdictions} showRenabap={showRenabap} />
         </div>
       </div>
 
