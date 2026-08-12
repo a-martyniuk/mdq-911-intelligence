@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
-import { Car, Bike, Clock, MapPin, Search, ArrowRight, ShieldCheck, AlertTriangle, Eye, ChevronRight, Download, FileText } from "lucide-react";
+import { Car, Bike, Clock, MapPin, Search, ArrowRight, ShieldCheck, AlertTriangle, Eye, ChevronRight, Download, FileText, Layers } from "lucide-react";
 import { highlightRelato } from "@/lib/nlpExtractor";
 import { exportToCSV } from "@/lib/excelExport";
 import { generateCaseFilePrint } from "@/lib/pdfReport";
+import { POLICE_JURISDICTIONS_GEOJSON } from "@/lib/jurisdictionsGeoJSON";
 import "leaflet/dist/leaflet.css";
 
 interface RecoveryCase {
@@ -48,7 +49,15 @@ function checkIsAuto(c: RecoveryCase): boolean {
 }
 
 // Client-only Leaflet Trajectory Map component
-function TrajectoryMap({ selectedCase, cases }: { selectedCase: RecoveryCase | null; cases: RecoveryCase[] }) {
+function TrajectoryMap({
+  selectedCase,
+  cases,
+  showJurisdictions = true,
+}: {
+  selectedCase: RecoveryCase | null;
+  cases: RecoveryCase[];
+  showJurisdictions?: boolean;
+}) {
   const [L, setL] = useState<any>(null);
 
   useEffect(() => {
@@ -73,6 +82,30 @@ function TrajectoryMap({ selectedCase, cases }: { selectedCase: RecoveryCase | n
       attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap',
       maxZoom: 19,
     }).addTo(map);
+
+    // Render Official MGP Police Jurisdiction Polygons layer
+    if (showJurisdictions) {
+      L.geoJSON(POLICE_JURISDICTIONS_GEOJSON, {
+        style: (feature: any) => ({
+          color: feature.properties.color || "#6366f1",
+          weight: 2,
+          opacity: 0.85,
+          fillColor: feature.properties.color || "#6366f1",
+          fillOpacity: 0.16,
+        }),
+        onEachFeature: (feature: any, layer: any) => {
+          layer.bindPopup(`
+            <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem;">
+              <strong style="color: ${feature.properties.color}; font-size: 0.95rem;">${feature.properties.name}</strong><br/>
+              <span style="font-size: 0.8rem; color: #444;"><b>Barrios:</b> ${feature.properties.description}</span><br/>
+              <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #ccc; font-size: 0.775rem;">
+                👮 <i>Cuadrante Policial Oficial MGP (Subrubro 122)</i>
+              </div>
+            </div>
+          `);
+        },
+      }).addTo(map);
+    }
 
     const casesToDraw = selectedCase ? [selectedCase] : cases.slice(0, 35);
 
@@ -146,15 +179,16 @@ function TrajectoryMap({ selectedCase, cases }: { selectedCase: RecoveryCase | n
     return () => {
       map.remove();
     };
-  }, [L, selectedCase, cases]);
+  }, [L, selectedCase, cases, showJurisdictions]);
 
   return <div id="trajectory-map" style={{ width: "100%", height: "480px", borderRadius: "var(--radius-md)" }} />;
 }
 
 export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecoveryTrackerProps) {
-  const [vehicleType, setVehicleType] = useState<"todos" | "autos" | "motos">("autos");
+  const [vehicleType, setVehicleType] = useState<"todos" | "autos" | "motos">("todos");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCase, setSelectedCase] = useState<RecoveryCase | null>(null);
+  const [showJurisdictions, setShowJurisdictions] = useState(true);
 
   // Unique deduplicated recoveries by stolen vehicle (ID_Robo)
   const uniqueRecoveries = useMemo(() => {
@@ -427,18 +461,23 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
 
         {/* Right Column: Trajectory Leaflet Map */}
         <div className="card" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.5rem" }}>
             <h3 style={{ fontSize: "1rem", fontWeight: 700, margin: 0, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
               <MapPin size={16} style={{ color: "var(--accent-indigo)" }} /> Vector Espacial de Trayectoria ({vehicleType === "motos" ? "Moto" : vehicleType === "autos" ? "Auto" : "Vehículo"})
             </h3>
-            {selectedCase && (
-              <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--accent-amber)" }}>
-                Patente: {selectedCase.Patente_Principal}
-              </span>
-            )}
+
+            <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.775rem", fontWeight: 700, color: "var(--accent-indigo)", cursor: "pointer" }}>
+              <input
+                type="checkbox"
+                checked={showJurisdictions}
+                onChange={(e) => setShowJurisdictions(e.target.checked)}
+                style={{ width: "15px", height: "15px", accentColor: "var(--accent-indigo)" }}
+              />
+              <Layers size={14} /> Capa Jurisdicciones MGP
+            </label>
           </div>
 
-          <TrajectoryMap selectedCase={selectedCase} cases={filteredCases} />
+          <TrajectoryMap selectedCase={selectedCase} cases={filteredCases} showJurisdictions={showJurisdictions} />
         </div>
       </div>
 
