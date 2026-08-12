@@ -1,29 +1,13 @@
-/**
- * OFFICIAL MUNICIPAL POLICE JURISDICTION POLYGONS - GENERAL PUEYRREDÓN (MAR DEL PLATA)
- * Extracted directly from official MGP Mapa Digital GIS database (subrubro=122 / PO layer).
- */
-
-export interface JurisdictionFeature {
-  type: "Feature";
-  properties: {
-    name: string;
-    code: string;
-    color: string;
-    description: string;
-  };
-  geometry: any;
-}
-
-export const POLICE_JURISDICTIONS_GEOJSON: { type: "FeatureCollection"; features: JurisdictionFeature[] } = {
+{
   "type": "FeatureCollection",
   "features": [
     {
       "type": "Feature",
       "properties": {
-        "name": "Comisaría 11ra",
-        "code": "CRIA_11",
-        "color": "#f97316",
-        "description": "Las Heras, Autódromo, Belgrano, Hipódromo, Av. Vértiz"
+        "name": "íCíoímíiísíaíríííaí í1í1í",
+        "code": "CRIA_íCíoímíiísíaíríííaí í1í1í",
+        "color": "#6366f1",
+        "gid": "8122"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -310,10 +294,10 @@ export const POLICE_JURISDICTIONS_GEOJSON: { type: "FeatureCollection"; features
     {
       "type": "Feature",
       "properties": {
-        "name": "Comisaría 13ra",
-        "code": "CRIA_13",
-        "color": "#a855f7",
-        "description": "Playa Serena, San Eduardo del Mar, Los Acantilados Sur, Ruta 11"
+        "name": "íCíoímíiísíaíríííaí í1í3í",
+        "code": "CRIA_íCíoímíiísíaíríííaí í1í3í",
+        "color": "#6366f1",
+        "gid": "8109"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -1236,10 +1220,10 @@ export const POLICE_JURISDICTIONS_GEOJSON: { type: "FeatureCollection"; features
     {
       "type": "Feature",
       "properties": {
-        "name": "Comisaría 14ta",
-        "code": "CRIA_14",
-        "color": "#eab308",
-        "description": "Sierra de los Padres, La Peregrina, Ruta 226"
+        "name": "íCíoímíiísíaíríííaí í1í4í",
+        "code": "CRIA_íCíoímíiísíaíríííaí í1í4í",
+        "color": "#6366f1",
+        "gid": "8110"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -1978,10 +1962,10 @@ export const POLICE_JURISDICTIONS_GEOJSON: { type: "FeatureCollection"; features
     {
       "type": "Feature",
       "properties": {
-        "name": "Comisaría 5ta",
-        "code": "CRIA_5",
-        "color": "#ec4899",
-        "description": "El Faro, Alfar, Playas del Sur, Acantilados, Av. Newbery"
+        "name": "íCíoímíiísíaíríííaí í5í",
+        "code": "CRIA_íCíoímíiísíaíríííaí í5í",
+        "color": "#6366f1",
+        "gid": "8111"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -2880,10 +2864,10 @@ export const POLICE_JURISDICTIONS_GEOJSON: { type: "FeatureCollection"; features
     {
       "type": "Feature",
       "properties": {
-        "name": "Comisaría 16ta",
-        "code": "CRIA_16",
-        "color": "#dc2626",
-        "description": "Barrio Regional, Don Emilio, Hospital HIGA, Juan B. Justo West"
+        "name": "íCíoímíiísíaíríííaí í1í6í",
+        "code": "CRIA_íCíoímíiísíaíríííaí í1í6í",
+        "color": "#6366f1",
+        "gid": "8112"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -3462,10 +3446,10 @@ export const POLICE_JURISDICTIONS_GEOJSON: { type: "FeatureCollection"; features
     {
       "type": "Feature",
       "properties": {
-        "name": "Comisaría 3ra",
-        "code": "CRIA_3",
-        "color": "#10b981",
-        "description": "Puerto, Playa Grande, Juramento, Termas Huinco, Colinas de Peralta Ramos"
+        "name": "íCíoímíiísíaíríííaí í3í",
+        "code": "CRIA_íCíoímíiísíaíríííaí í3í",
+        "color": "#6366f1",
+        "gid": "8113"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -4060,10 +4044,10 @@ export const POLICE_JURISDICTIONS_GEOJSON: { type: "FeatureCollection"; features
     {
       "type": "Feature",
       "properties": {
-        "name": "Comisaría 6ta",
-        "code": "CRIA_6",
-        "color": "#8b5cf6",
-        "description": "Barrio Monolito, Libertad, San Antonio, Av. Alió"
+        "name": "íCíoímíiísíaíríííaí í6í",
+        "code": "CRIA_íCíoímíiísíaíríííaí í6í",
+        "color": "#6366f1",
+        "gid": "8114"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -5038,10 +5022,10 @@ export const POLICE_JURISDICTIONS_GEOJSON: { type: "FeatureCollection"; features
     {
       "type": "Feature",
       "properties": {
-        "name": "Comisaría 9ta",
-        "code": "CRIA_9",
-        "color": "#14b8a6",
-        "description": "Playa Chica, Varese, Cabo Corrientes, San Carlos"
+        "name": "íCíoímíiísíaíríííaí í9í",
+        "code": "CRIA_íCíoímíiísíaíríííaí í9í",
+        "color": "#6366f1",
+        "gid": "8115"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -5656,10 +5640,10 @@ export const POLICE_JURISDICTIONS_GEOJSON: { type: "FeatureCollection"; features
     {
       "type": "Feature",
       "properties": {
-        "name": "Comisaría 1ra",
-        "code": "CRIA_1",
-        "color": "#ef4444",
-        "description": "Centro, La Perla, Casino, Plaza Mitre, Peatonal San Martín"
+        "name": "íCíoímíiísíaíríííaí í1í",
+        "code": "CRIA_íCíoímíiísíaíríííaí í1í",
+        "color": "#6366f1",
+        "gid": "8116"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -6506,10 +6490,10 @@ export const POLICE_JURISDICTIONS_GEOJSON: { type: "FeatureCollection"; features
     {
       "type": "Feature",
       "properties": {
-        "name": "Comisaría 2da",
-        "code": "CRIA_2",
+        "name": "íCíoímíiísíaíríííaí í2í",
+        "code": "CRIA_íCíoímíiísíaíríííaí í2í",
         "color": "#6366f1",
-        "description": "Macrocentro, Chauvín, Güemes, Divino Rostro, San José, Av. Paso"
+        "gid": "8117"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -7016,10 +7000,10 @@ export const POLICE_JURISDICTIONS_GEOJSON: { type: "FeatureCollection"; features
     {
       "type": "Feature",
       "properties": {
-        "name": "Comisaría 4ta",
-        "code": "CRIA_4",
-        "color": "#f59e0b",
-        "description": "Pompeya, San José Norte, Nueva Pompeya, Av. Champagnat"
+        "name": "íCíoímíiísíaíríííaí í4í",
+        "code": "CRIA_íCíoímíiísíaíríííaí í4í",
+        "color": "#6366f1",
+        "gid": "8118"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -7890,10 +7874,10 @@ export const POLICE_JURISDICTIONS_GEOJSON: { type: "FeatureCollection"; features
     {
       "type": "Feature",
       "properties": {
-        "name": "Comisaría 12da",
-        "code": "CRIA_12",
-        "color": "#84cc16",
-        "description": "Bosque Peralta Ramos, Jardín de Peralta Ramos, Santa Rosa"
+        "name": "íCíoímíiísíaíríííaí í1í2í",
+        "code": "CRIA_íCíoímíiísíaíríííaí í1í2í",
+        "color": "#6366f1",
+        "gid": "8119"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -8528,10 +8512,10 @@ export const POLICE_JURISDICTIONS_GEOJSON: { type: "FeatureCollection"; features
     {
       "type": "Feature",
       "properties": {
-        "name": "Comisaría 7ta",
-        "code": "CRIA_7",
-        "color": "#06b6d4",
-        "description": "Constitución, Estrada, Los Pines, Zacagnini, Av. Tejedor"
+        "name": "íCíoímíiísíaíríííaí í7í",
+        "code": "CRIA_íCíoímíiísíaíríííaí í7í",
+        "color": "#6366f1",
+        "gid": "8120"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -9810,10 +9794,10 @@ export const POLICE_JURISDICTIONS_GEOJSON: { type: "FeatureCollection"; features
     {
       "type": "Feature",
       "properties": {
-        "name": "Comisaría 8va",
-        "code": "CRIA_8",
-        "color": "#3b82f6",
-        "description": "Batán, Estación Chapadmalal, Parque Industrial, Ruta 88"
+        "name": "íCíoímíiísíaíríííaí í8í",
+        "code": "CRIA_íCíoímíiísíaíríííaí í8í",
+        "color": "#6366f1",
+        "gid": "8121"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -10760,10 +10744,10 @@ export const POLICE_JURISDICTIONS_GEOJSON: { type: "FeatureCollection"; features
     {
       "type": "Feature",
       "properties": {
-        "name": "Comisaría 15ta",
-        "code": "CRIA_15",
-        "color": "#0284c7",
-        "description": "Félix U. Camet, Camet, Las Dalias, Parque Camet Norte"
+        "name": "íCíoímíiísíaíríííaí í1í5í",
+        "code": "CRIA_íCíoímíiísíaíríííaí í1í5í",
+        "color": "#6366f1",
+        "gid": "8123"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -12012,33 +11996,4 @@ export const POLICE_JURISDICTIONS_GEOJSON: { type: "FeatureCollection"; features
       }
     }
   ]
-};
-
-// Helper function to attach official MGP jurisdiction polygon layers to any Leaflet map
-export function attachJurisdictionPolygons(map: any, L: any) {
-  if (!map || !L) return;
-
-  const geoJsonLayer = L.geoJSON(POLICE_JURISDICTIONS_GEOJSON, {
-    style: (feature: any) => ({
-      color: feature.properties.color || "#6366f1",
-      weight: 2.5,
-      opacity: 0.95,
-      fillColor: feature.properties.color || "#6366f1",
-      fillOpacity: 0.28,
-    }),
-    onEachFeature: (feature: any, layer: any) => {
-      layer.bindPopup(`
-        <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.3rem;">
-          <strong style="color: ${feature.properties.color}; font-size: 1rem;">${feature.properties.name}</strong><br/>
-          <span style="font-size: 0.8rem; color: #444;"><b>Barrios / Cobertura:</b> ${feature.properties.description}</span><br/>
-          <div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid #ccc; font-size: 0.775rem;">
-            👮 <i>Capa Oficial MGP Mapa Digital (Subrubro 122 - PO)</i>
-          </div>
-        </div>
-      `);
-    },
-  });
-
-  geoJsonLayer.addTo(map);
-  return geoJsonLayer;
 }
