@@ -38,13 +38,15 @@ export default function Dashboard() {
       .then((res) => res.json())
       .then((sess) => {
         if (!sess.authenticated) {
-          router.push("/login");
+          window.location.href = getApiUrl("/login");
         } else {
           setUser(sess.user || "admin");
         }
       })
-      .catch(() => router.push("/login"));
-  }, [router]);
+      .catch(() => {
+        window.location.href = getApiUrl("/login");
+      });
+  }, []);
 
   // Fetch dataset metrics & geo points according to selected filters
   useEffect(() => {
@@ -59,7 +61,7 @@ export default function Dashboard() {
     fetch(getApiUrl(`/api/data/incidents?${query.toString()}`))
       .then((res) => {
         if (res.status === 401) {
-          router.push("/login");
+          window.location.href = getApiUrl("/login");
           return null;
         }
         return res.json();
@@ -69,12 +71,11 @@ export default function Dashboard() {
       })
       .catch((err) => console.error("Error loading data:", err))
       .finally(() => setLoading(false));
-  }, [filters, router]);
+  }, [filters]);
 
   const handleLogout = async () => {
     await fetch(getApiUrl("/api/auth/logout"), { method: "POST" });
-    router.push("/login");
-    router.refresh();
+    window.location.href = getApiUrl("/login");
   };
 
   const availableTipos = ["ROBO AUTOMOTOR", "DISPAROS", "VIOLENCIA", "DROGAS ILÍCITAS", "HALLAZGO", "SOSPECHOSOS"];
