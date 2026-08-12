@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import MetricCard from "./MetricCard";
 import { Car, Bike, Clock, FileText, ChevronDown, ChevronUp, Eye, Wrench } from "lucide-react";
@@ -26,15 +26,34 @@ function checkIsAuto(c: any): boolean {
   return !checkIsMoto(c);
 }
 
-export default function SectionVehicles({ recoveries }: SectionVehiclesProps) {
+export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProps) {
   const [selectedCategory, setSelectedCategory] = useState<"todos" | "autos" | "motos">("todos");
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(0); // Default expand first case
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
-  const filteredRecoveries = recoveries.filter((r) => {
-    if (selectedCategory === "autos") return checkIsAuto(r);
-    if (selectedCategory === "motos") return checkIsMoto(r);
-    return true;
-  });
+  // Deduplicate recoveries by stolen vehicle ID_Robo
+  const uniqueRecoveries = useMemo(() => {
+    const map = new Map<number, any>();
+    recoveries.forEach((c) => {
+      const existing = map.get(c.ID_Robo);
+      if (!existing || c.Horas_Hasta_Hallazgo < existing.Horas_Hasta_Hallazgo) {
+        map.set(c.ID_Robo, c);
+      }
+    });
+    return Array.from(map.values());
+  }, [recoveries]);
+
+  // Reset expanded index when category changes
+  useEffect(() => {
+    setExpandedIndex(null);
+  }, [selectedCategory]);
+
+  const filteredRecoveries = useMemo(() => {
+    return uniqueRecoveries.filter((r) => {
+      if (selectedCategory === "autos") return checkIsAuto(r);
+      if (selectedCategory === "motos") return checkIsMoto(r);
+      return true;
+    });
+  }, [uniqueRecoveries, selectedCategory]);
 
   const hoursList = filteredRecoveries.map((r) => r.Horas_Hasta_Hallazgo);
   const medianHours = selectedCategory === "motos" ? 7.0 : selectedCategory === "autos" ? 4.9 : 5.4;
@@ -57,21 +76,21 @@ export default function SectionVehicles({ recoveries }: SectionVehiclesProps) {
             style={selectedCategory === "todos" ? { background: "var(--accent-indigo)", color: "#fff", borderColor: "var(--accent-indigo)" } : undefined}
             onClick={() => setSelectedCategory("todos")}
           >
-            Vista Consolidada (Todos)
+            Vista Consolidada (Todos: {uniqueRecoveries.length})
           </button>
           <button
             className={`btn-logout ${selectedCategory === "autos" ? "active" : ""}`}
             style={selectedCategory === "autos" ? { background: "var(--accent-indigo)", color: "#fff", borderColor: "var(--accent-indigo)" } : undefined}
             onClick={() => setSelectedCategory("autos")}
           >
-            <Car size={16} /> Autos / Vehículos (2.047 Robos / 1.678 Hallazgos)
+            <Car size={16} /> Autos ({uniqueRecoveries.filter(checkIsAuto).length})
           </button>
           <button
             className={`btn-logout ${selectedCategory === "motos" ? "active" : ""}`}
             style={selectedCategory === "motos" ? { background: "var(--accent-indigo)", color: "#fff", borderColor: "var(--accent-indigo)" } : undefined}
             onClick={() => setSelectedCategory("motos")}
           >
-            <Bike size={16} /> Motos / Ciclomotores (2.073 Robos / 510 Hallazgos)
+            <Bike size={16} /> Motos ({uniqueRecoveries.filter(checkIsMoto).length})
           </button>
         </div>
 
@@ -159,13 +178,13 @@ export default function SectionVehicles({ recoveries }: SectionVehiclesProps) {
         {/* Table of Representative Matched Cases & Interactive Narrative Inspector */}
         <div className="card-title" style={{ fontSize: "1rem", marginBottom: "0.4rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
           <FileText size={18} color="var(--accent-indigo)" />
-          <span>Visor de Relatos 911 en Paralelo (Robo vs Hallazgo)</span>
+          <span>Visor de Relatos 911 en Paralelo ({filteredRecoveries.length} Casos Desduplicados)</span>
         </div>
         <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginBottom: "1rem" }}>
           Haz clic en cualquier caso para desplegar los relatos policiales originales de la denuncia de robo y la planilla de hallazgo automotor.
         </p>
 
-        <div className="data-table-container">
+        <div className="data-table-container" style={{ maxHeight: "500px", overflowY: "auto" }}>
           <table className="data-table">
             <thead>
               <tr>
@@ -179,10 +198,11 @@ export default function SectionVehicles({ recoveries }: SectionVehiclesProps) {
               </tr>
             </thead>
             <tbody>
-              {filteredRecoveries.slice(0, 10).map((r, idx) => {
+              {filteredRecoveries.map((r, idx) => {
                 const isExpanded = expandedIndex === idx;
+                const hoursNum = typeof r.Horas_Hasta_Hallazgo === "number" ? r.Horas_Hasta_Hallazgo : parseFloat(r.Horas_Hasta_Hallazgo as any) || 0;
                 return (
-                  <React.Fragment key={idx}>
+                  <React.Fragment key={`${r.ID_Robo}_${r.ID_Hallazgo}_${idx}`}>
                     <tr
                       onClick={() => setExpandedIndex(isExpanded ? null : idx)}
                       style={{ cursor: "pointer", background: isExpanded ? "rgba(245,158,11,0.08)" : undefined }}
@@ -192,12 +212,12 @@ export default function SectionVehicles({ recoveries }: SectionVehiclesProps) {
                           {r.Patente_Principal}
                         </span>
                       </td>
-                      <td><strong>{r.Marca_Detectada || "ZANELLA / HONDA"}</strong></td>
-                      <td>{r.SubTipo}</td>
+                      <td><strong>{r.Marca_Detectada || "NO ESPECIFICADA"}</strong></td>
+                      <td>{checkIsMoto(r) ? "🏍️ MOTO" : "🚗 AUTO"}</td>
                       <td>{r.Fecha_Robo}</td>
                       <td>{r.Fecha_Hallazgo}</td>
                       <td>
-                        <strong style={{ color: "var(--accent-green)" }}>{r.Horas_Hasta_Hallazgo.toFixed(1)} hs</strong> ({r.Dias_Hasta_Hallazgo.toFixed(1)} d)
+                        <strong style={{ color: "var(--accent-green)" }}>{hoursNum.toFixed(1)} hs</strong> ({(hoursNum / 24).toFixed(1)} d)
                       </td>
                       <td>
                         <button
