@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Flame, Info, Layers } from "lucide-react";
+import { Flame, Car, ShieldAlert, Info } from "lucide-react";
+import { getApiUrl } from "@/lib/apiUrl";
 
 export default function SectionHotspots() {
   const [activeTab, setActiveTab] = useState<"general" | "robos" | "armas">("general");
@@ -10,54 +11,54 @@ export default function SectionHotspots() {
     <div>
       <div className="card" style={{ marginBottom: "1.5rem" }}>
         <div className="card-title">
-          <span>🔥 Hotspots Delictivos (Mapas de Densidad Espacial)</span>
+          <span>🔥 Hotspots Delictivos y Mapa de Densidad Kernel (KDE)</span>
         </div>
         <p className="card-subtitle">
-          Análisis de Kernel Density Estimation (KDE) ajustado para identificar concentraciones delictivas urbanas sin saturación.
+          Identificación de núcleos urbanos de alta concentración de incidentes con radio de suavizado optimizado (r=5px) sobre mapa base de calles.
         </p>
 
-        <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.25rem", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.25rem" }}>
           <button
             className={`btn-logout ${activeTab === "general" ? "active" : ""}`}
             style={activeTab === "general" ? { background: "var(--accent-indigo)", color: "#fff", borderColor: "var(--accent-indigo)" } : undefined}
             onClick={() => setActiveTab("general")}
           >
-            <Flame size={16} /> Hotspots General
+            <Flame size={16} /> Densidad General (8.598 Casos)
           </button>
           <button
             className={`btn-logout ${activeTab === "robos" ? "active" : ""}`}
             style={activeTab === "robos" ? { background: "var(--accent-indigo)", color: "#fff", borderColor: "var(--accent-indigo)" } : undefined}
             onClick={() => setActiveTab("robos")}
           >
-            <Layers size={16} /> Robos de Autos/Motos
+            <Car size={16} /> Hotspots de Robos Vehiculares
           </button>
           <button
             className={`btn-logout ${activeTab === "armas" ? "active" : ""}`}
             style={activeTab === "armas" ? { background: "var(--accent-indigo)", color: "#fff", borderColor: "var(--accent-indigo)" } : undefined}
             onClick={() => setActiveTab("armas")}
           >
-            <Flame size={16} /> Disparos y Armas de Fuego
+            <ShieldAlert size={16} /> Hotspots Armas & Disparos
           </button>
         </div>
 
         <div style={{ background: "var(--bg-base)", borderRadius: "var(--radius-md)", border: "1px solid var(--border)", overflow: "hidden" }}>
           {activeTab === "general" && (
             <iframe
-              src="/api/raw_html/05_mapa_hotspots_densidad.html"
+              src={getApiUrl("/api/raw_html/05_mapa_hotspots_densidad.html")}
               style={{ width: "100%", height: "650px", border: "none" }}
               title="Hotspots General"
             />
           )}
           {activeTab === "robos" && (
             <iframe
-              src="/api/raw_html/05_mapa_hotspots_robos.html"
+              src={getApiUrl("/api/raw_html/05_mapa_hotspots_robos.html")}
               style={{ width: "100%", height: "650px", border: "none" }}
               title="Hotspots Robos"
             />
           )}
           {activeTab === "armas" && (
             <iframe
-              src="/api/raw_html/05_mapa_hotspots_armas_disparos.html"
+              src={getApiUrl("/api/raw_html/05_mapa_hotspots_armas_disparos.html")}
               style={{ width: "100%", height: "650px", border: "none" }}
               title="Hotspots Armas"
             />

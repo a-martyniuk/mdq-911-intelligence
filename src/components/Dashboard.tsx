@@ -15,6 +15,7 @@ import SectionInvestigativeValue from "./SectionInvestigativeValue";
 import SectionETL from "./SectionETL";
 import SectionDictionary from "./SectionDictionary";
 import { FilterState } from "@/lib/types";
+import { getApiUrl } from "@/lib/apiUrl";
 
 export default function Dashboard() {
   const [activeSection, setActiveSection] = useState("overview");
@@ -33,7 +34,7 @@ export default function Dashboard() {
 
   // Verify auth session on load
   useEffect(() => {
-    fetch("/api/auth/session")
+    fetch(getApiUrl("/api/auth/session"))
       .then((res) => res.json())
       .then((sess) => {
         if (!sess.authenticated) {
@@ -55,7 +56,7 @@ export default function Dashboard() {
     if (filters.diaSemana !== "todos") query.set("diaSemana", filters.diaSemana);
     if (filters.origenDataset !== "todos") query.set("origenDataset", filters.origenDataset);
 
-    fetch(`/api/data/incidents?${query.toString()}`)
+    fetch(getApiUrl(`/api/data/incidents?${query.toString()}`))
       .then((res) => {
         if (res.status === 401) {
           router.push("/login");
@@ -71,7 +72,7 @@ export default function Dashboard() {
   }, [filters, router]);
 
   const handleLogout = async () => {
-    await fetch("/api/auth/logout", { method: "POST" });
+    await fetch(getApiUrl("/api/auth/logout"), { method: "POST" });
     router.push("/login");
     router.refresh();
   };
