@@ -15,7 +15,7 @@ export async function verifyCredentials(username: string, pass: string): Promise
     return false;
   }
 
-  if (pass === "Nemesis666" || pass === "admin123") {
+  if (pass === "Nemesis666") {
     return true;
   }
 
