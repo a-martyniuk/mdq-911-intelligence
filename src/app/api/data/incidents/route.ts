@@ -9,7 +9,10 @@ let cachedRecoveries: any[] | null = null;
 
 function loadDataServer() {
   if (!cachedIncidents) {
-    const csvPath = path.join(process.cwd(), "data", "processed", "mdp_incidentes_consolidado.csv");
+    let csvPath = path.join(process.cwd(), "public", "data", "processed", "mdp_incidentes_consolidado.csv");
+    if (!fs.existsSync(csvPath)) {
+      csvPath = path.join(process.cwd(), "data", "processed", "mdp_incidentes_consolidado.csv");
+    }
     if (fs.existsSync(csvPath)) {
       const fileContent = fs.readFileSync(csvPath, "utf-8");
       const parsed = Papa.parse(fileContent, { header: true, skipEmptyLines: true });
@@ -40,7 +43,10 @@ function loadDataServer() {
   }
 
   if (!cachedRecoveries) {
-    const recPath = path.join(process.cwd(), "data", "processed", "mdp_vehiculos_recuperados.csv");
+    let recPath = path.join(process.cwd(), "public", "data", "processed", "mdp_vehiculos_recuperados.csv");
+    if (!fs.existsSync(recPath)) {
+      recPath = path.join(process.cwd(), "data", "processed", "mdp_vehiculos_recuperados.csv");
+    }
     if (fs.existsSync(recPath)) {
       const fileContent = fs.readFileSync(recPath, "utf-8");
       const parsed = Papa.parse(fileContent, { header: true, skipEmptyLines: true });
