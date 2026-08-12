@@ -14,7 +14,11 @@ export async function GET(
 
   const { filename } = await params;
   const safeFilename = path.basename(filename);
-  const filePath = path.join(process.cwd(), "reports", "figures", safeFilename);
+
+  let filePath = path.join(process.cwd(), "public", "html", safeFilename);
+  if (!fs.existsSync(filePath)) {
+    filePath = path.join(process.cwd(), "reports", "figures", safeFilename);
+  }
 
   if (!fs.existsSync(filePath)) {
     return NextResponse.json({ error: "Archivo no encontrado" }, { status: 404 });
@@ -22,6 +26,10 @@ export async function GET(
 
   const content = fs.readFileSync(filePath, "utf-8");
   return new NextResponse(content, {
-    headers: { "Content-Type": "text/html; charset=utf-8" },
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Security-Policy": "frame-ancestors *",
+    },
   });
 }
