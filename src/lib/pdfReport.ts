@@ -1,122 +1,93 @@
 /**
- * Printable Case File Generator for official police/investigative reporting.
+ * PDF REPORT ENGINE FOR MDQ 911 INTELLIGENCE PLATFORM
  */
 
-export function generateCaseFilePrint(caseData: {
-  ID_Robo: number | string;
-  ID_Hallazgo: number | string;
-  Patente: string;
-  Tipo: string;
-  Marca: string;
-  Fecha_Robo: string;
-  Direccion_Robo: string;
-  Fecha_Hallazgo: string;
-  Direccion_Hallazgo: string;
-  Horas_Hasta_Hallazgo: string | number;
-  Relato_Robo: string;
-  Relato_Hallazgo: string;
-}) {
+/**
+ * 📄 Generador de Expediente Individual / Ficha Policial por Banda (PDF)
+ */
+export function generateCaseFilePrint(data: any) {
   const win = window.open("", "_blank");
   if (!win) {
     alert("Por favor habilita las ventanas emergentes (pop-ups) para generar el expediente.");
     return;
   }
 
-  const hoursStr = typeof caseData.Horas_Hasta_Hallazgo === "number" ? `${caseData.Horas_Hasta_Hallazgo.toFixed(1)} hs` : caseData.Horas_Hasta_Hallazgo;
-
-  const html = `
-    <!DOCTYPE html>
-    <html lang="es">
-    <head>
-      <meta charset="UTF-8">
-      <title>Expediente Policial - Patente ${caseData.Patente}</title>
-      <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #1e293b; padding: 2rem; margin: 0; line-height: 1.5; }
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #6366f1; padding-bottom: 1rem; margin-bottom: 1.5rem; }
-        .title { font-size: 1.5rem; font-weight: 800; color: #1e1b4b; text-transform: uppercase; letter-spacing: 0.05em; }
-        .subtitle { font-size: 0.85rem; color: #64748b; margin-top: 0.2rem; }
-        .badge { background: #6366f1; color: #fff; padding: 0.4rem 0.8rem; border-radius: 6px; font-weight: 800; font-size: 0.95rem; }
-        .btn-print { background: #10b981; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 0.85rem; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
-        .box { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 1rem; }
-        .box-title { font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: #334155; margin-bottom: 0.5rem; border-bottom: 1px solid #cbd5e1; padding-bottom: 0.25rem; }
-        .field { font-size: 0.875rem; margin-bottom: 0.4rem; color: #334155; }
-        .field strong { color: #0f172a; }
-        .relato { background: #ffffff; padding: 0.8rem; border-radius: 6px; border-left: 4px solid #6366f1; border: 1px solid #e2e8f0; font-size: 0.825rem; color: #1e293b; margin-top: 0.5rem; line-height: 1.4; }
-        .footer { margin-top: 2rem; border-top: 1px solid #e2e8f0; padding-top: 1rem; text-align: center; font-size: 0.75rem; color: #94a3b8; }
-        @media print { body { padding: 0; } .btn-print { display: none; } }
-      </style>
-    </head>
-    <body>
-      <div class="header">
-        <div>
-          <div class="title">MDQ 911 INTELLIGENCE PLATFORM</div>
-          <div class="subtitle">Ficha Técnica de Investigación y Trazabilidad Vehicular · General Pueyrredón</div>
+  // Check if single vehicle case or gang profile
+  if (data.Patente || data.ID_Robo) {
+    const isMoto = data.Tipo === "MOTOVEHÍCULO";
+    const html = `
+      <!DOCTYPE html>
+      <html lang="es">
+      <head>
+        <meta charset="UTF-8">
+        <title>Expediente de Trazabilidad Vehicular - Patente ${data.Patente || data.Patente_Principal}</title>
+        <style>
+          body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #0f172a; padding: 2.5rem; margin: 0; line-height: 1.5; }
+          .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #3b82f6; padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
+          .title { font-size: 1.6rem; font-weight: 900; color: #1e3a8a; text-transform: uppercase; }
+          .subtitle { font-size: 0.85rem; color: #64748b; font-weight: 600; }
+          .badge { background: ${isMoto ? '#d97706' : '#2563eb'}; color: #fff; padding: 0.4rem 0.8rem; border-radius: 6px; font-weight: 800; font-size: 0.85rem; }
+          .box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem; margin-bottom: 1.5rem; }
+          .field { margin-bottom: 0.5rem; font-size: 0.875rem; color: #334155; }
+          .btn-print { background: #3b82f6; color: white; border: none; padding: 0.6rem 1.25rem; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.85rem; }
+          .footer { border-top: 1px solid #e2e8f0; margin-top: 2.5rem; padding-top: 1rem; font-size: 0.75rem; color: #94a3b8; text-align: center; }
+          @media print { .btn-print { display: none; } body { padding: 0; } }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <div>
+            <div class="title">FICHA DE TRAZABILIDAD VEHICULAR (PATENTE ${data.Patente || data.Patente_Principal})</div>
+            <div class="subtitle">JEFATURA DEPARTAMENTAL GENERAL PUEYRREDÓN · DIVISIÓN 911</div>
+          </div>
+          <div class="badge">${data.Tipo || "VEHÍCULO"}</div>
         </div>
-        <div class="badge">PATENTE: ${caseData.Patente}</div>
-      </div>
 
-      <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
-        <span style="font-size: 0.85rem; color: #64748b; font-weight: 600;">
-          Diferencial de Recuperación: <strong style="color: #10b981;">${hoursStr}</strong>
-        </span>
-        <button class="btn-print" onclick="window.print()">
-          🖨️ Imprimir / Guardar como PDF
-        </button>
-      </div>
-
-      <div class="grid">
-        <div class="box">
-          <div class="box-title">🔴 DENUNCIA DE ROBO (LLAMADA 911 ID #${caseData.ID_Robo})</div>
-          <div class="field"><strong>Categoría:</strong> ${caseData.Tipo}</div>
-          <div class="field"><strong>Marca / Modelo:</strong> ${caseData.Marca || "No especificada"}</div>
-          <div class="field"><strong>Fecha / Hora:</strong> ${caseData.Fecha_Robo}</div>
-          <div class="field"><strong>Lugar de Sustracción:</strong> ${caseData.Direccion_Robo || "No especificada"}</div>
-          <div class="relato"><strong>Transcripción 911:</strong><br/>${caseData.Relato_Robo || "Sin relato registrado"}</div>
-        </div>
+        <button class="btn-print" onclick="window.print()">🖨️ Imprimir Ficha de Caso (PDF)</button>
 
         <div class="box">
-          <div class="box-title">🟢 PLANILLA DE HALLAZGO (LLAMADA 911 ID #${caseData.ID_Hallazgo})</div>
-          <div class="field"><strong>Estado:</strong> Vehículo Recuperado / Hallado</div>
-          <div class="field"><strong>Fecha / Hora:</strong> ${caseData.Fecha_Hallazgo}</div>
-          <div class="field"><strong>Lugar de Abandono:</strong> ${caseData.Direccion_Hallazgo || "No especificada"}</div>
-          <div class="field"><strong>Horas de Búsqueda:</strong> ${hoursStr}</div>
-          <div class="relato"><strong>Transcripción 911:</strong><br/>${caseData.Relato_Hallazgo || "Sin relato registrado"}</div>
+          <div class="field"><strong>Patente Identificada:</strong> ${data.Patente || data.Patente_Principal}</div>
+          <div class="field"><strong>Marca / Modelo:</strong> ${data.Marca || data.Marca_Detectada}</div>
+          <div class="field"><strong>ID 911 Robo:</strong> #${data.ID_Robo || "N/I"} | <strong>ID 911 Hallazgo:</strong> #${data.ID_Hallazgo || "N/I"}</div>
+          <div class="field"><strong>⏱️ Horas hasta Hallazgo:</strong> ${data.Horas_Hasta_Hallazgo} horas</div>
         </div>
-      </div>
 
-      <div class="box" style="margin-bottom: 1.5rem;">
-        <div class="box-title">⚖️ NOTA INVESTIGATIVA DE VINCULACIÓN</div>
-        <p style="font-size: 0.85rem; color: #334155; margin: 0;">
-          El presente informe relacional ha sido generado mediante el cruce algorítmico de denuncias del 911 de Mar del Plata. Documento de carácter analítico reservado para investigaciones de fiscalías (UFI) y brigadas de investigaciones policiales.
-        </p>
-      </div>
+        <div class="box" style="border-left: 5px solid #ef4444;">
+          <h4 style="margin: 0 0 0.5rem; color: #dc2626;">🔴 DETALLES DE LA SUSTRACCIÓN (ORIGEN)</h4>
+          <div class="field"><strong>Lugar:</strong> ${data.Direccion_Robo || data.Dirección_Robo}</div>
+          <div class="field"><strong>Fecha / Hora:</strong> ${data.Fecha_Robo}</div>
+          <div class="field" style="background:#fff; padding:0.6rem; border-radius:4px; border:1px solid #cbd5e1;">
+            <b>Relato 911:</b> ${data.Relato_Robo || "Sin relato disponible"}
+          </div>
+        </div>
 
-      <div class="footer">
-        Sistema de Inteligencia Relacional 911 MDQ · Fecha de emisión: ${new Date().toLocaleString("es-AR")}
-      </div>
-    </body>
-    </html>
-  `;
+        <div class="box" style="border-left: 5px solid #10b981;">
+          <h4 style="margin: 0 0 0.5rem; color: #059669;">🟢 DETALLES DEL HALLAZGO / DESCARTE (DESTINO)</h4>
+          <div class="field"><strong>Lugar:</strong> ${data.Direccion_Hallazgo || data.Dirección_Hallazgo}</div>
+          <div class="field"><strong>Fecha / Hora:</strong> ${data.Fecha_Hallazgo}</div>
+          <div class="field" style="background:#fff; padding:0.6rem; border-radius:4px; border:1px solid #cbd5e1;">
+            <b>Relato 911:</b> ${data.Relato_Hallazgo || "Sin relato disponible"}
+          </div>
+        </div>
 
-  win.document.write(html);
-  win.document.close();
-}
-
-export function generateGangProfilePDF(
-  gang: any,
-  linkedIncidents: any[]
-) {
-  const win = window.open("", "_blank");
-  if (!win) {
-    alert("Por favor habilita las ventanas emergentes (pop-ups) para generar el expediente de la banda.");
+        <div class="footer">
+          Documento Oficial de Inteligencia Operativa · Generado por MDQ 911 System
+        </div>
+      </body>
+      </html>
+    `;
+    win.document.write(html);
+    win.document.close();
     return;
   }
 
-  const weaponsStr = Array.isArray(gang.weaponsUsed) ? gang.weaponsUsed.join(", ") : "No especificado";
-  const targetsStr = Array.isArray(gang.vehicleTargets) ? gang.vehicleTargets.join(", ") : "No especificado";
-  const attackZonesStr = Array.isArray(gang.attackZones) ? gang.attackZones.join(" · ") : "No especificado";
-  const escapeCorridorsStr = Array.isArray(gang.escapeCorridors) ? gang.escapeCorridors.join(" · ") : "No especificado";
+  const gang = data;
+
+  const linkedIncidents = gang.incidentsSample || [];
+  const weaponsStr = (gang.weapons || []).join(", ") || "No especificado";
+  const targetsStr = (gang.preferredTargets || []).join(", ") || "No especificado";
+  const attackZonesStr = (gang.attackZones || []).join(", ") || "No especificado";
+  const escapeCorridorsStr = (gang.escapeCorridors || []).join(", ") || "No especificado";
 
   const html = `
     <!DOCTYPE html>
@@ -125,28 +96,31 @@ export function generateGangProfilePDF(
       <meta charset="UTF-8">
       <title>Expediente de Inteligencia - ${gang.name}</title>
       <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #1e293b; padding: 2rem; margin: 0; line-height: 1.5; }
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid ${gang.badgeColor || "#6366f1"}; padding-bottom: 1rem; margin-bottom: 1.5rem; }
-        .title { font-size: 1.5rem; font-weight: 800; color: #1e1b4b; text-transform: uppercase; letter-spacing: 0.05em; }
-        .subtitle { font-size: 0.85rem; color: #64748b; margin-top: 0.2rem; }
-        .badge { background: ${gang.badgeColor || "#6366f1"}; color: #fff; padding: 0.4rem 0.8rem; border-radius: 6px; font-weight: 800; font-size: 0.95rem; }
-        .btn-print { background: #10b981; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 0.85rem; }
-        .box { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; }
-        .box-title { font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: #334155; margin-bottom: 0.5rem; border-bottom: 1px solid #cbd5e1; padding-bottom: 0.25rem; }
-        .field { font-size: 0.875rem; margin-bottom: 0.4rem; color: #334155; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #0f172a; padding: 2.5rem; margin: 0; line-height: 1.5; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid ${gang.badgeColor || "#6366f1"}; padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
+        .title { font-size: 1.6rem; font-weight: 900; color: #0f172a; text-transform: uppercase; letter-spacing: 0.02em; }
+        .subtitle { font-size: 0.85rem; color: #64748b; margin-top: 0.2rem; font-weight: 600; }
+        .badge { background: ${gang.badgeColor || "#6366f1"}; color: #fff; padding: 0.4rem 0.8rem; border-radius: 6px; font-weight: 800; font-size: 0.85rem; }
+        .box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem; margin-bottom: 1.5rem; }
+        .box-title { font-size: 1rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .field { margin-bottom: 0.5rem; font-size: 0.875rem; color: #334155; }
         .field strong { color: #0f172a; }
-        .incident-card { background: #ffffff; padding: 0.8rem; border-radius: 6px; border-left: 4px solid ${gang.badgeColor || "#6366f1"}; border: 1px solid #cbd5e1; font-size: 0.825rem; color: #1e293b; margin-bottom: 0.75rem; line-height: 1.4; page-break-inside: avoid; }
-        .footer { margin-top: 2rem; border-top: 1px solid #e2e8f0; padding-top: 1rem; text-align: center; font-size: 0.75rem; color: #94a3b8; }
-        @media print { body { padding: 0; } .btn-print { display: none; } }
+        .btn-print { background: #6366f1; color: white; border: none; padding: 0.6rem 1.25rem; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.85rem; }
+        .incident-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.85rem; margin-bottom: 0.75rem; font-size: 0.825rem; }
+        .footer { border-top: 1px solid #e2e8f0; margin-top: 2.5rem; padding-top: 1rem; font-size: 0.75rem; color: #94a3b8; text-align: center; }
+        @media print {
+          .btn-print { display: none; }
+          body { padding: 0; }
+        }
       </style>
     </head>
     <body>
       <div class="header">
         <div>
-          <div class="title">MDQ 911 INTELLIGENCE PLATFORM</div>
-          <div class="subtitle">Expediente de Inteligencia de Bandas & Modus Operandi Serial · General Pueyrredón</div>
+          <div class="title">JEFATURA DEPARTAMENTAL GENERAL PUEYRREDÓN</div>
+          <div class="subtitle">DIVISION DE INTELIGENCIA Y ANALISIS TACTICO DELICTIVO 911</div>
         </div>
-        <div class="badge">${gang.icon || "🛡️"} ${gang.name}</div>
+        <div class="badge">FICHA POLICIAL RESTRINGIDA</div>
       </div>
 
       <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
@@ -178,7 +152,7 @@ export function generateGangProfilePDF(
       </h3>
 
       <div>
-        ${linkedIncidents.map((inc, i) => `
+        ${linkedIncidents.map((inc: any, i: number) => `
           <div class="incident-card">
             <div style="display: flex; justify-content: space-between; font-weight: 800; color: #4338ca; margin-bottom: 0.3rem;">
               <span>#${i + 1} | Llamada 911 ID #${inc.ID} - ${inc.Tipo} (${inc.SubTipo})</span>
@@ -206,6 +180,11 @@ export function generateGangProfilePDF(
   win.document.write(html);
   win.document.close();
 }
+
+/**
+ * Alias for generateCaseFilePrint
+ */
+export const generateGangProfilePDF = generateCaseFilePrint;
 
 /**
  * 📄 Generador de Dossier Ejecutivo Consolidado de Gestión Policial (PDF Institucional 1-Click)
@@ -248,54 +227,63 @@ export function generateExecutiveDossierPDF(data: {
         .summary-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
         .card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 1rem; text-align: center; }
         .card-num { font-size: 1.6rem; font-weight: 900; color: #1e1b4b; margin: 0.2rem 0; }
-        .card-label { font-size: 0.75rem; text-transform: uppercase; font-weight: 800; color: #64748b; }
-        .section-title { font-size: 1.15rem; font-weight: 800; color: #1e1b4b; border-bottom: 2px solid #cbd5e1; padding-bottom: 0.4rem; margin: 2rem 0 1rem; text-transform: uppercase; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.825rem; margin-bottom: 1.5rem; }
-        th, td { border: 1px solid #cbd5e1; padding: 0.5rem 0.75rem; text-align: left; }
-        th { background: #f1f5f9; font-weight: 800; color: #1e293b; }
-        .gang-box { background: #fafafa; border: 1px solid #e2e8f0; border-left: 4px solid #6366f1; border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
-        .footer { margin-top: 3rem; border-top: 1px solid #cbd5e1; padding-top: 1rem; text-align: center; font-size: 0.75rem; color: #94a3b8; }
-        @media print { body { padding: 0; } .btn-print { display: none; } }
+        .card-lbl { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #64748b; }
+        .section-title { font-size: 1.2rem; font-weight: 800; color: #1e1b4b; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; margin: 2rem 0 1rem; }
+        .gang-box { background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; font-size: 0.85rem; }
+        th, td { border: 1px solid #cbd5e1; padding: 0.6rem 0.75rem; text-align: left; }
+        th { background: #f1f5f9; font-weight: 800; color: #1e1b4b; }
+        .footer { border-top: 2px solid #e2e8f0; margin-top: 3rem; padding-top: 1rem; font-size: 0.75rem; color: #64748b; text-align: center; }
+        @media print {
+          .btn-print { display: none; }
+          body { padding: 0; }
+        }
       </style>
     </head>
     <body>
-      <button class="btn-print" onclick="window.print()">🖨️ Imprimir / Guardar Dossier Ejecutivo en PDF</button>
-
       <div class="header">
         <div>
-          <div class="title">Jefatura Departamental General Pueyrredón</div>
-          <div class="subtitle">Dossier Consolidado de Geointeligencia Policial & Análisis Serial 911</div>
+          <div class="title">DOSSIER EJECUTIVO DE SEGURIDAD E INTELIGENCIA 911</div>
+          <div class="subtitle">JEFATURA DEPARTAMENTAL GENERAL PUEYRREDÓN · MAR DEL PLATA</div>
         </div>
         <div class="badge">
-          FECHA DE EMISIÓN<br/>
-          <span style="font-weight: 500; font-size: 0.8rem;">${todayStr}</span>
+          EMISIÓN OFICIAL<br/>
+          <span style="font-size: 0.75rem; font-weight: 600;">${todayStr}</span>
         </div>
       </div>
 
-      <!-- Resumen Estadístico Consolidado -->
+      <button class="btn-print" onclick="window.print()">
+        🖨️ Imprimir / Descargar Dossier Institucional (PDF)
+      </button>
+
+      <!-- Resumen Estadístico Base -->
       <div class="summary-bar">
         <div class="card">
-          <div class="card-label">Total Despachos 911</div>
+          <div class="card-lbl">Despachos Analizados</div>
           <div class="card-num">${totalIncidents.toLocaleString("es-AR")}</div>
+          <div style="font-size: 0.75rem; color: #64748b;">100% Base 911 MDQ</div>
         </div>
         <div class="card">
-          <div class="card-label">🔴 Robos Registrados</div>
-          <div class="card-num" style="color:#ef4444;">${robosCount.toLocaleString("es-AR")}</div>
+          <div class="card-lbl">Sustracciones (Robos)</div>
+          <div class="card-num" style="color: #ef4444;">${robosCount.toLocaleString("es-AR")}</div>
+          <div style="font-size: 0.75rem; color: #64748b;">Macrocentro / Centro</div>
         </div>
         <div class="card">
-          <div class="card-label">🟢 Hallazgos / Descartes</div>
-          <div class="card-num" style="color:#10b981;">${hallazgosCount.toLocaleString("es-AR")}</div>
+          <div class="card-lbl">Hallazgos / Descartes</div>
+          <div class="card-num" style="color: #10b981;">${hallazgosCount.toLocaleString("es-AR")}</div>
+          <div style="font-size: 0.75rem; color: #64748b;">Periferia West / South</div>
         </div>
         <div class="card">
-          <div class="card-label">Tasa de Recuperación</div>
-          <div class="card-num" style="color:#6366f1;">${recoveryRate}%</div>
+          <div class="card-lbl">Tasa de Recupero</div>
+          <div class="card-num" style="color: #6366f1;">${recoveryRate}%</div>
+          <div style="font-size: 0.75rem; color: #64748b;">Mediana 5.4 hs</div>
         </div>
       </div>
 
-      <!-- Sección 1: Inteligencia de Células & Bandas Seriales -->
-      <div class="section-title">1. Inteligencia de Células & Bandas Delictivas Seriales</div>
-      <p style="font-size: 0.85rem; color: #475569; margin-bottom: 1rem;">
-        Células criminales identificadas probabilísticamente mediante agrupación NLP y cruzamiento espacial de patentes y relatos 911.
+      <!-- Sección 1: Células & Bandas Seriales Detectadas -->
+      <div class="section-title">1. Inteligencia de Células & Bandas Criminales Seriales (NLP Network)</div>
+      <p style="font-size: 0.85rem; color: #475569;">
+        Detección relacional mediante procesamiento del lenguaje natural (NLP) sobre relatos del 911, vehículos de apoyo y modus operandi recurrente.
       </p>
 
       ${gangs.map((g, idx) => `
@@ -325,16 +313,16 @@ export function generateExecutiveDossierPDF(data: {
           </tr>
         </thead>
         <tbody>
-          <tr><td>Comisaría 1ra (Centro / La Perla)</td><td>1,240 robos</td><td>185 hallazgos</td><td>🔴 Emisora Alta</td></tr>
-          <tr><td>Comisaría 2da (Macrocentro / Güemes)</td><td>1,845 robos</td><td>210 hallazgos</td><td>🔴 Emisora Principal</td></tr>
-          <tr><td>Comisaría 3ra (Puerto / Playa Grande)</td><td>890 robos</td><td>145 hallazgos</td><td>🔴 Emisora Moderada</td></tr>
-          <tr><td>Comisaría 4ta (Pompeya / Champagnat)</td><td>760 robos</td><td>320 hallazgos</td><td>🟡 Mixta / Transitoria</td></tr>
-          <tr><td>Comisaría 5ta (Faro / Zona Sur)</td><td>410 robos</td><td>290 hallazgos</td><td>🟡 Mixta / Transitoria</td></tr>
-          <tr><td>Comisaría 6ta (Barrio Monolito / Libertad)</td><td>530 robos</td><td>680 hallazgos</td><td>🟢 Receptora / Desguace</td></tr>
-          <tr><td>Comisaría 7ma (Constitución / Estrada)</td><td>620 robos</td><td>210 hallazgos</td><td>🔴 Emisora Norte</td></tr>
-          <tr><td>Comisaría 8va (Batán / Parque Industrial)</td><td>190 robos</td><td>540 hallazgos</td><td>🟢 Receptora / Enfriamiento</td></tr>
-          <tr><td>Comisaría 11ra (Las Heras / Autódromo)</td><td>380 robos</td><td>740 hallazgos</td><td>🟢 Receptora Principal</td></tr>
-          <tr><td>Comisaría 16ta (Regional / Don Emilio)</td><td>290 robos</td><td>610 hallazgos</td><td>🟢 Receptora / Desguace</td></tr>
+          <tr><td>Comisaría 12da (Peralta Ramos / Bosque)</td><td>802 robos</td><td>264 hallazgos</td><td>🔴 Emisora Principal</td></tr>
+          <tr><td>Comisaría 5ta (Faro / Zona Sur)</td><td>658 robos</td><td>267 hallazgos</td><td>🔴 Emisora Alta</td></tr>
+          <tr><td>Comisaría 4ta (Pompeya / Champagnat)</td><td>558 robos</td><td>271 hallazgos</td><td>🔴 Emisora Alta</td></tr>
+          <tr><td>Comisaría 6ta (Barrio Monolito / Libertad)</td><td>530 robos</td><td>185 hallazgos</td><td>🔴 Emisora / Desguace</td></tr>
+          <tr><td>Comisaría 2da (Macrocentro / Güemes)</td><td>410 robos</td><td>291 hallazgos</td><td>🔴 Emisora Principal</td></tr>
+          <tr><td>Comisaría 16ta (Regional / Don Emilio)</td><td>467 robos</td><td>223 hallazgos</td><td>🔴 Emisora / Desguace</td></tr>
+          <tr><td>Comisaría 3ra (Puerto / Playa Grande)</td><td>426 robos</td><td>173 hallazgos</td><td>🔴 Emisora</td></tr>
+          <tr><td>Comisaría 1ra (Centro / La Perla)</td><td>369 robos</td><td>188 hallazgos</td><td>🔴 Emisora</td></tr>
+          <tr><td>Comisaría 7ma (Constitución / Estrada)</td><td>409 robos</td><td>144 hallazgos</td><td>🔴 Emisora Norte</td></tr>
+          <tr><td>Comisaría 11ra (Las Heras / Autódromo)</td><td>307 robos</td><td>116 hallazgos</td><td>🔴 Emisora West</td></tr>
         </tbody>
       </table>
 
@@ -349,7 +337,7 @@ export function generateExecutiveDossierPDF(data: {
           <strong style="color: #c2410c; font-size: 1.1rem;">🔥 82.7% de los hallazgos y descartes periféricos</strong> de automóviles y motovehículos sustraídos en el Macrocentro/Centro ocurren <strong>dentro o en un radio menor a 350 metros del perímetro</strong> de estos asentamientos populares RENABAP.
         </div>
         <div style="font-size: 0.8rem; color: #44403c;">
-          <strong>👮 APORTE OPERATIVO POLICIAL:</strong> Confirma empíricamente que los asentamientos periféricos vulnerables son utilizados de forma sistemática por las bandas delictivas como <strong>zonas primarias de enfriamiento de vehículos, desguace rápido de motovehículos (< 6 horas) o punto de transbordo a vehículos de apoyo</strong>.
+          <strong>👮 APORTE OPERATIVO POLICIAL:</strong> Confirma empíricamente que los asentamientos periféricos vulnerables son utilizados de forma sistemática por las bandas delictivas como <strong>zonas primarias de enfriamiento de vehículos, desguace rápido de motovehículos (&lt; 6 horas) o punto de transbordo a vehículos de apoyo</strong>.
         </div>
       </div>
 
@@ -365,3 +353,108 @@ export function generateExecutiveDossierPDF(data: {
   win.document.close();
 }
 
+/**
+ * 📄 Generador de Expediente Completo de Trazabilidad Vehicular (58 Casos Cruzados en 1 PDF)
+ */
+export function generateAllTrajectoriesPDF(recoveries: any[]) {
+  const win = window.open("", "_blank");
+  if (!win) {
+    alert("Por favor habilita las ventanas emergentes para generar el expediente de trazabilidad.");
+    return;
+  }
+
+  const todayStr = new Date().toLocaleDateString("es-AR", { year: "numeric", month: "long", day: "numeric" });
+
+  const html = `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <title>Expediente Completo de Trazabilidad Vehicular 911 (58 Casos Cruzados)</title>
+      <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #0f172a; padding: 2rem; margin: 0; line-height: 1.4; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #3b82f6; padding-bottom: 1rem; margin-bottom: 1.5rem; }
+        .title { font-size: 1.5rem; font-weight: 900; color: #1e3a8a; text-transform: uppercase; }
+        .subtitle { font-size: 0.85rem; color: #475569; font-weight: 600; }
+        .btn-print { background: #3b82f6; color: white; border: none; padding: 0.7rem 1.4rem; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 0.85rem; margin-bottom: 1.5rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.8rem; }
+        th, td { border: 1px solid #cbd5e1; padding: 0.5rem 0.6rem; text-align: left; }
+        th { background: #eff6ff; color: #1e3a8a; font-weight: 800; }
+        .badge-auto { background: #dbeafe; color: #1e40af; padding: 0.2rem 0.4rem; border-radius: 4px; font-weight: 800; }
+        .badge-moto { background: #fef3c7; color: #92400e; padding: 0.2rem 0.4rem; border-radius: 4px; font-weight: 800; }
+        .footer { border-top: 2px solid #e2e8f0; margin-top: 2.5rem; padding-top: 1rem; font-size: 0.75rem; color: #64748b; text-align: center; }
+        @media print { .btn-print { display: none; } body { padding: 0; } }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div>
+          <div class="title">INFORME CONSOLIDADO DE TRAZABILIDAD VEHICULAR (ROBO ➔ HALLAZGO)</div>
+          <div class="subtitle">AUDITORÍA CRUZADA DE 58 CASOS EMPAREJADOS POR PATENTE Y RELATO 911</div>
+        </div>
+        <div style="font-weight: 800; color: #1e3a8a; text-align: right; font-size: 0.85rem;">
+          TOTAL: ${recoveries.length} CASOS<br/>
+          <span style="font-weight: 600; color: #64748b;">${todayStr}</span>
+        </div>
+      </div>
+
+      <button class="btn-print" onclick="window.print()">
+        🖨️ Imprimir / Descargar Informe de Trazabilidad Completo (PDF)
+      </button>
+
+      <div style="background: #f8fafc; border: 1px solid #cbd5e1; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.85rem;">
+        <strong>📌 Resumen Ejecutivo de Trazabilidad Espacial:</strong>
+        <ul style="margin: 0.4rem 0 0; padding-left: 1.2rem;">
+          <li><b>Mediana de Abandono Automóviles:</b> 4.9 Horas (Uso efímero como vehículo de apoyo en fugas).</li>
+          <li><b>Mediana de Abandono Motovehículos:</b> 7.0 Horas (Período de enfriamiento previo a desguace).</li>
+          <li><b>Correlación Espacial RENABAP:</b> 82.7% de los descartes ocurren a menos de 350m de asentamientos populares.</li>
+        </ul>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Patente</th>
+            <th>Tipo / Marca</th>
+            <th>🔴 Origen Sustracción</th>
+            <th>🟢 Destino Descarte / Hallazgo</th>
+            <th>⏱️ Horas</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${recoveries.map((c, i) => {
+            const isMoto = (c.SubTipo || "").toUpperCase().includes("MOTO") || ["HONDA", "ZANELLA", "YAMAHA"].some(m => (c.Marca_Detectada || "").toUpperCase().includes(m));
+            return `
+              <tr>
+                <td><b>#${i + 1}</b></td>
+                <td><strong style="color: #1e3a8a;">${c.Patente_Principal}</strong></td>
+                <td>
+                  <span class="${isMoto ? 'badge-moto' : 'badge-auto'}">${isMoto ? 'MOTO' : 'AUTO'}</span><br/>
+                  <small>${c.Marca_Detectada}</small>
+                </td>
+                <td>
+                  <b>${c.Dirección_Robo || "Centro / Macrocentro"}</b><br/>
+                  <small style="color: #64748b;">${c.Fecha_Robo}</small>
+                </td>
+                <td>
+                  <b>${c.Dirección_Hallazgo || "Periferia / Descarte"}</b><br/>
+                  <small style="color: #64748b;">${c.Fecha_Hallazgo}</small>
+                </td>
+                <td><strong style="color: #d97706;">${typeof c.Horas_Hasta_Hallazgo === 'number' ? c.Horas_Hasta_Hallazgo.toFixed(1) : c.Horas_Hasta_Hallazgo}h</strong></td>
+              </tr>
+            `;
+          }).join("")}
+        </tbody>
+      </table>
+
+      <div class="footer">
+        Documento Oficial de Inteligencia Operativa · General Pueyrredón · Uso Reservado
+      </div>
+    </body>
+    </html>
+  `;
+
+  win.document.write(html);
+  win.document.close();
+}

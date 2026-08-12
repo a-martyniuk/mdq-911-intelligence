@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { Car, Bike, Clock, MapPin, Search, ArrowRight, ShieldCheck, AlertTriangle, Eye, ChevronRight, Download, FileText, Layers, Home } from "lucide-react";
 import { highlightRelato } from "@/lib/nlpExtractor";
 import { exportToCSV } from "@/lib/excelExport";
-import { generateCaseFilePrint } from "@/lib/pdfReport";
+import { generateCaseFilePrint, generateAllTrajectoriesPDF } from "@/lib/pdfReport";
 import { POLICE_JURISDICTIONS_GEOJSON } from "@/lib/jurisdictionsGeoJSON";
 import { RENABAP_BARRIOS_GEOJSON } from "@/lib/renabapGeoJSON";
 import "leaflet/dist/leaflet.css";
@@ -55,11 +55,13 @@ function TrajectoryMap({
   cases,
   showJurisdictions = true,
   showRenabap = true,
+  showAllTrajectories = false,
 }: {
   selectedCase: RecoveryCase | null;
   cases: RecoveryCase[];
-  showJurisdictions?: boolean;
-  showRenabap?: boolean;
+  showJurisdictions: boolean;
+  showRenabap: boolean;
+  showAllTrajectories: boolean;
 }) {
   const [L, setL] = useState<any>(null);
 
@@ -72,13 +74,9 @@ function TrajectoryMap({
   useEffect(() => {
     if (!L) return;
 
-    const centerLat = selectedCase?.Latitud_Clean_Robo || -38.00;
-    const centerLng = selectedCase?.Longitud_Clean_Robo || -57.56;
-    const zoomLevel = selectedCase ? 13 : 12;
-
     const map = L.map("trajectory-map", {
-      center: [centerLat, centerLng],
-      zoom: zoomLevel,
+      center: [-38.00, -57.56],
+      zoom: 12,
     });
 
     L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
@@ -94,14 +92,18 @@ function TrajectoryMap({
           weight: 2,
           opacity: 0.85,
           fillColor: feature.properties.color || "#6366f1",
-          fillOpacity: 0.14,
+          fillOpacity: 0.12,
         }),
         onEachFeature: (feature: any, layer: any) => {
           layer.bindPopup(`
             <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem;">
-              <strong style="color: ${feature.properties.color}; font-size: 0.95rem;">${feature.properties.name}</strong><br/>
-              <span style="font-size: 0.8rem; color: #444;"><b>Barrios:</b> ${feature.properties.description}</span><br/>
-              <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #ccc; font-size: 0.775rem;">
+              <strong style="color: ${feature.properties.color || '#6366f1'}; font-size: 0.95rem;">
+                👮 ${feature.properties.name}
+              </strong><br/>
+              <span style="font-size: 0.8rem; color: #444;">
+                <b>Zonas Incluidas:</b> ${feature.properties.description || feature.properties.barrios}
+              </span><br/>
+              <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #ccc; font-size: 0.775rem; color: #666;">
                 👮 <i>Cuadrante Policial Oficial MGP (Subrubro 122)</i>
               </div>
             </div>
@@ -144,7 +146,8 @@ function TrajectoryMap({
       }).addTo(map);
     }
 
-    const casesToDraw = selectedCase ? [selectedCase] : cases.slice(0, 35);
+    // Determine which cases to draw: ALL 58 cases or single selected case
+    const casesToDraw = showAllTrajectories ? cases : (selectedCase ? [selectedCase] : cases.slice(0, 35));
 
     casesToDraw.forEach((c) => {
       const latRobo = c.Latitud_Clean_Robo || -38.01;
@@ -227,6 +230,7 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
   const [selectedCase, setSelectedCase] = useState<RecoveryCase | null>(null);
   const [showJurisdictions, setShowJurisdictions] = useState(true);
   const [showRenabap, setShowRenabap] = useState(true);
+  const [showAllTrajectories, setShowAllTrajectories] = useState(true);
 
   // Unique deduplicated recoveries by stolen vehicle (ID_Robo)
   const uniqueRecoveries = useMemo(() => {
@@ -305,61 +309,84 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
             </div>
           </div>
 
-          {/* Vehicle Type Switcher Tabs (Diferenciador Prominente) */}
-          <div style={{ display: "flex", gap: "0.4rem", background: "var(--bg-base)", padding: "0.35rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
             <button
-              onClick={() => setVehicleType("autos")}
+              onClick={() => generateAllTrajectoriesPDF(uniqueRecoveries)}
               style={{
-                padding: "0.5rem 0.95rem",
-                borderRadius: "6px",
-                border: "none",
-                background: vehicleType === "autos" ? "var(--accent-indigo)" : "transparent",
-                color: vehicleType === "autos" ? "#fff" : "var(--text-secondary)",
-                fontWeight: 700,
+                height: "38px",
+                padding: "0 1.2rem",
                 fontSize: "0.825rem",
+                fontWeight: 800,
+                background: "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)",
+                color: "#fff",
+                border: "none",
+                borderRadius: "6px",
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
                 gap: "0.4rem",
-                boxShadow: vehicleType === "autos" ? "0 2px 8px rgba(99,102,241,0.4)" : "none",
+                boxShadow: "0 4px 12px rgba(59,130,246,0.3)"
               }}
             >
-              <Car size={16} /> Automóviles ({countAutos})
+              <FileText size={16} /> 📄 Expediente de Trazabilidad (PDF)
             </button>
-            <button
-              onClick={() => setVehicleType("motos")}
-              style={{
-                padding: "0.5rem 0.95rem",
-                borderRadius: "6px",
-                border: "none",
-                background: vehicleType === "motos" ? "var(--accent-amber)" : "transparent",
-                color: vehicleType === "motos" ? "#fff" : "var(--text-secondary)",
-                fontWeight: 700,
-                fontSize: "0.825rem",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem",
-                boxShadow: vehicleType === "motos" ? "0 2px 8px rgba(245,158,11,0.4)" : "none",
-              }}
-            >
-              <Bike size={16} /> Motovehículos ({countMotos})
-            </button>
-            <button
-              onClick={() => setVehicleType("todos")}
-              style={{
-                padding: "0.5rem 0.85rem",
-                borderRadius: "6px",
-                border: "none",
-                background: vehicleType === "todos" ? "rgba(255,255,255,0.15)" : "transparent",
-                color: vehicleType === "todos" ? "#fff" : "var(--text-secondary)",
-                fontWeight: 700,
-                fontSize: "0.8rem",
-                cursor: "pointer",
-              }}
-            >
-              Todos ({uniqueRecoveries.length})
-            </button>
+
+            {/* Vehicle Type Switcher Tabs */}
+            <div style={{ display: "flex", gap: "0.4rem", background: "var(--bg-base)", padding: "0.35rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
+              <button
+                onClick={() => setVehicleType("autos")}
+                style={{
+                  padding: "0.5rem 0.95rem",
+                  borderRadius: "6px",
+                  border: "none",
+                  background: vehicleType === "autos" ? "var(--accent-indigo)" : "transparent",
+                  color: vehicleType === "autos" ? "#fff" : "var(--text-secondary)",
+                  fontWeight: 700,
+                  fontSize: "0.825rem",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.4rem",
+                  boxShadow: vehicleType === "autos" ? "0 2px 8px rgba(99,102,241,0.4)" : "none",
+                }}
+              >
+                <Car size={16} /> Automóviles ({countAutos})
+              </button>
+              <button
+                onClick={() => setVehicleType("motos")}
+                style={{
+                  padding: "0.5rem 0.95rem",
+                  borderRadius: "6px",
+                  border: "none",
+                  background: vehicleType === "motos" ? "var(--accent-amber)" : "transparent",
+                  color: vehicleType === "motos" ? "#fff" : "var(--text-secondary)",
+                  fontWeight: 700,
+                  fontSize: "0.825rem",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.4rem",
+                  boxShadow: vehicleType === "motos" ? "0 2px 8px rgba(245,158,11,0.4)" : "none",
+                }}
+              >
+                <Bike size={16} /> Motovehículos ({countMotos})
+              </button>
+              <button
+                onClick={() => setVehicleType("todos")}
+                style={{
+                  padding: "0.5rem 0.85rem",
+                  borderRadius: "6px",
+                  border: "none",
+                  background: vehicleType === "todos" ? "rgba(255,255,255,0.15)" : "transparent",
+                  color: vehicleType === "todos" ? "#fff" : "var(--text-secondary)",
+                  fontWeight: 700,
+                  fontSize: "0.8rem",
+                  cursor: "pointer",
+                }}
+              >
+                Todos ({uniqueRecoveries.length})
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -511,6 +538,16 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
               <Layers size={13} color="var(--accent-indigo)" /> Control de Capas Vectoriales del Mapa:
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.8rem", fontWeight: 800, color: "var(--accent-indigo)", cursor: "pointer", background: "rgba(99,102,241,0.15)", padding: "0.3rem 0.6rem", borderRadius: "6px", border: "1px solid var(--accent-indigo)" }}>
+                <input
+                  type="checkbox"
+                  checked={showAllTrajectories}
+                  onChange={(e) => setShowAllTrajectories(e.target.checked)}
+                  style={{ width: "15px", height: "15px", accentColor: "var(--accent-indigo)" }}
+                />
+                🌐 Ver Todos los Vectores (58 Casos Cruzados)
+              </label>
+
               <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.8rem", fontWeight: 700, color: "#ea580c", cursor: "pointer" }}>
                 <input
                   type="checkbox"
@@ -533,7 +570,7 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
             </div>
           </div>
 
-          <TrajectoryMap selectedCase={selectedCase} cases={filteredCases} showJurisdictions={showJurisdictions} showRenabap={showRenabap} />
+          <TrajectoryMap selectedCase={selectedCase} cases={filteredCases} showJurisdictions={showJurisdictions} showRenabap={showRenabap} showAllTrajectories={showAllTrajectories} />
         </div>
       </div>
 

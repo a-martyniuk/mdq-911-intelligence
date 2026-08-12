@@ -253,7 +253,12 @@ export default function SectionGangIntelligence({ incidents = [] }: SectionGangI
             </span>
 
             <button
-              onClick={() => generateGangProfilePDF(selectedGang, linkedIncidents)}
+              onClick={() => generateGangProfilePDF({
+                ...selectedGang,
+                weapons: selectedGang.weaponsUsed || [],
+                preferredTargets: selectedGang.vehicleTargets || [],
+                incidentsSample: linkedIncidents
+              })}
               className="btn-logout"
               style={{ height: "34px", padding: "0 0.85rem", fontSize: "0.8rem", fontWeight: 800, background: "rgba(99,102,241,0.18)", color: "var(--accent-indigo)", border: "1px solid rgba(99,102,241,0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.35rem" }}
             >
