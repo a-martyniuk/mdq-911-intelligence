@@ -11,13 +11,28 @@ interface SectionVehiclesProps {
   recoveries: any[];
 }
 
+function checkIsMoto(c: any): boolean {
+  const sub = (c.SubTipo || "").toUpperCase();
+  const mar = (c.Marca_Detectada || "").toUpperCase();
+
+  if (sub.includes("MOTO") || sub.includes("CICLOMOTOR")) return true;
+  if (["HONDA", "ZANELLA", "YAMAHA", "MOTOMEL", "GILERA", "CORVEN", "KTM", "BAJAJ", "SIAM"].some((m) => mar.includes(m))) {
+    return true;
+  }
+  return false;
+}
+
+function checkIsAuto(c: any): boolean {
+  return !checkIsMoto(c);
+}
+
 export default function SectionVehicles({ recoveries }: SectionVehiclesProps) {
   const [selectedCategory, setSelectedCategory] = useState<"todos" | "autos" | "motos">("todos");
   const [expandedIndex, setExpandedIndex] = useState<number | null>(0); // Default expand first case
 
   const filteredRecoveries = recoveries.filter((r) => {
-    if (selectedCategory === "autos") return r.SubTipo === "VEHÍCULOS";
-    if (selectedCategory === "motos") return r.SubTipo === "MOTOS";
+    if (selectedCategory === "autos") return checkIsAuto(r);
+    if (selectedCategory === "motos") return checkIsMoto(r);
     return true;
   });
 

@@ -102,7 +102,7 @@ export default function Dashboard() {
     georeferencedPct: data?.georeferencedPct || 93.5,
     nightCount: data?.nightCount || 3397,
     nightPct: data?.nightPct || 39.5,
-    recoveriesCount: data?.recoveries?.length || 58,
+    recoveriesCount: data?.recoveries ? new Set(data.recoveries.map((r: any) => r.ID_Robo)).size : 58,
     medianRecoveryHours: 5.4,
   };
 

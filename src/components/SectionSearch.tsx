@@ -33,16 +33,18 @@ export default function SectionSearch({ incidents = [] }: SectionSearchProps) {
       });
     }
 
-    // Full text search
+    // Full text search with accent-insensitive normalization
     if (searchTerm.trim()) {
-      const q = searchTerm.toLowerCase().trim();
+      const normalizeStr = (s: string) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const q = normalizeStr(searchTerm.trim());
+
       results = results.filter((inc) => {
-        const relato = (inc.Relato || inc.relato || "").toLowerCase();
-        const tipo = (inc.Tipo || "").toLowerCase();
-        const subtipo = (inc.SubTipo || "").toLowerCase();
-        const direccion = (inc.Dirección || "").toLowerCase();
-        const patente = (inc.Patente_Principal || "").toLowerCase();
-        const marca = (inc.Marca_Detectada || "").toLowerCase();
+        const relato = normalizeStr(inc.Relato || inc.relato || "");
+        const tipo = normalizeStr(inc.Tipo || "");
+        const subtipo = normalizeStr(inc.SubTipo || "");
+        const direccion = normalizeStr(inc.Dirección || "");
+        const patente = normalizeStr(inc.Patente_Principal || "");
+        const marca = normalizeStr(inc.Marca_Detectada || "");
 
         return (
           relato.includes(q) ||
