@@ -16,6 +16,7 @@ import SectionGraph from "./SectionGraph";
 import SectionSearch from "./SectionSearch";
 import SectionRecoveryTracker from "./SectionRecoveryTracker";
 import SectionGangIntelligence from "./SectionGangIntelligence";
+import SectionJurisdictions from "./SectionJurisdictions";
 import SectionETL from "./SectionETL";
 import SectionDictionary from "./SectionDictionary";
 import { FilterState } from "@/lib/types";
@@ -149,6 +150,7 @@ export default function Dashboard() {
         {activeSection === "map" && <SectionMap geoPoints={data?.geoPoints || []} />}
         {activeSection === "recovery-tracker" && <SectionRecoveryTracker recoveries={data?.recoveries || []} />}
         {activeSection === "gang-intelligence" && <SectionGangIntelligence incidents={data?.incidentsSample || []} />}
+        {activeSection === "jurisdictions" && <SectionJurisdictions incidents={data?.incidentsSample || []} recoveries={data?.recoveries || []} />}
         {activeSection === "graph" && <SectionGraph incidents={data?.incidentsSample || []} />}
         {activeSection === "search" && <SectionSearch incidents={data?.incidentsSample || []} />}
         {activeSection === "hotspots" && <SectionHotspots />}

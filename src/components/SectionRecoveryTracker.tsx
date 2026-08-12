@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
-import { Car, Bike, Clock, MapPin, Search, ArrowRight, ShieldCheck, AlertTriangle, Eye, ChevronRight, Download } from "lucide-react";
+import { Car, Bike, Clock, MapPin, Search, ArrowRight, ShieldCheck, AlertTriangle, Eye, ChevronRight, Download, FileText } from "lucide-react";
 import { highlightRelato } from "@/lib/nlpExtractor";
 import { exportToCSV } from "@/lib/excelExport";
+import { generateCaseFilePrint } from "@/lib/pdfReport";
 import "leaflet/dist/leaflet.css";
 
 interface RecoveryCase {
@@ -453,6 +454,29 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
                 Patente: {selectedCase.Patente_Principal} ({selectedCase.Marca_Detectada})
               </h3>
             </div>
+
+            <button
+              onClick={() => {
+                generateCaseFilePrint({
+                  ID_Robo: selectedCase.ID_Robo,
+                  ID_Hallazgo: selectedCase.ID_Hallazgo,
+                  Patente: selectedCase.Patente_Principal,
+                  Tipo: checkIsMoto(selectedCase) ? "MOTOVEHÍCULO" : "AUTOMÓVIL",
+                  Marca: selectedCase.Marca_Detectada || "NO ESPECIFICADA",
+                  Fecha_Robo: selectedCase.Fecha_Robo || "",
+                  Direccion_Robo: selectedCase.Dirección_Robo || "",
+                  Fecha_Hallazgo: selectedCase.Fecha_Hallazgo || "",
+                  Direccion_Hallazgo: selectedCase.Dirección_Hallazgo || "",
+                  Horas_Hasta_Hallazgo: selectedCase.Horas_Hasta_Hallazgo,
+                  Relato_Robo: selectedCase.Relato_Robo || "",
+                  Relato_Hallazgo: selectedCase.Relato_Hallazgo || "",
+                });
+              }}
+              className="btn-logout"
+              style={{ height: "34px", padding: "0 0.85rem", fontSize: "0.8rem", fontWeight: 800, background: "rgba(99,102,241,0.18)", color: "var(--accent-indigo)", border: "1px solid rgba(99,102,241,0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.35rem" }}
+            >
+              <FileText size={15} /> 📄 Exportar Ficha Policial (PDF)
+            </button>
 
             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "var(--bg-base)", padding: "0.4rem 0.8rem", borderRadius: "6px", border: "1px solid var(--border)" }}>
               <Clock size={16} style={{ color: "var(--accent-amber)" }} />

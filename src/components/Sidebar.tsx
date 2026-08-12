@@ -13,7 +13,8 @@ import {
   Search,
   Filter,
   RotateCcw,
-  ShieldAlert
+  ShieldAlert,
+  Building2
 } from "lucide-react";
 import { FilterState } from "@/lib/types";
 
@@ -39,6 +40,7 @@ export default function Sidebar({
     { id: "map", label: "Mapeo & Geointeligencia", icon: <MapPin size={18} /> },
     { id: "recovery-tracker", label: "Trazabilidad Robo ➔ Hallazgo", icon: <Car size={18} /> },
     { id: "gang-intelligence", label: "Inteligencia de Bandas & M.O.", icon: <ShieldAlert size={18} /> },
+    { id: "jurisdictions", label: "Matriz Inter-Jurisdiccional (Comisarías 1ra-16ta)", icon: <Building2 size={18} /> },
     { id: "graph", label: "Grafo Relacional & Redes", icon: <Workflow size={18} /> },
     { id: "search", label: "Buscador Universal de Patentes", icon: <Search size={18} /> },
     { id: "hotspots", label: "Concentración Delictiva", icon: <Flame size={18} /> },

@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Search, Filter, ShieldAlert, Car, MapPin, Clock, Tag, Download } from "lucide-react";
+import { Search, Filter, ShieldAlert, Car, MapPin, Clock, Tag, Download, Zap } from "lucide-react";
 import { extractEntities, highlightRelato } from "@/lib/nlpExtractor";
 import { exportToCSV } from "@/lib/excelExport";
+import { findSimilarIncidents, SimilarIncidentResult } from "@/lib/nlpSimilarity";
 
 interface SectionSearchProps {
   incidents: any[];
@@ -13,6 +14,7 @@ interface SectionSearchProps {
 export default function SectionSearch({ incidents = [] }: SectionSearchProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [entityFilter, setEntityFilter] = useState<"todos" | "armas" | "patentes" | "marcas" | "modus">("todos");
+  const [selectedTwinIncident, setSelectedTwinIncident] = useState<any | null>(null);
 
   // Search and entity filter pipeline
   const filteredIncidents = useMemo(() => {
@@ -217,21 +219,86 @@ export default function SectionSearch({ incidents = [] }: SectionSearchProps) {
                 {highlightRelato(relatoText)}
               </div>
 
-              {/* Card Footer Meta */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: "0.75rem", color: "var(--text-muted)", paddingTop: "0.4rem", borderTop: "1px solid var(--border)" }}>
+              {/* Card Footer Meta & Action */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.4rem", fontSize: "0.75rem", color: "var(--text-muted)", paddingTop: "0.4rem", borderTop: "1px solid var(--border)" }}>
                 <span style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
                   <Clock size={12} /> {inc.Fecha} ({inc.Franja_Horaria})
                 </span>
-                {inc.Latitud_Clean && inc.Longitud_Clean && (
-                  <span style={{ display: "flex", alignItems: "center", gap: "0.2rem", color: "var(--accent-indigo)" }}>
-                    <MapPin size={12} /> Georeferenciado
-                  </span>
-                )}
+
+                <button
+                  onClick={() => setSelectedTwinIncident(inc)}
+                  className="btn-logout"
+                  style={{ height: "26px", padding: "0 0.5rem", fontSize: "0.725rem", fontWeight: 700, background: "rgba(245, 158, 11, 0.15)", color: "#f59e0b", border: "1px solid rgba(245, 158, 11, 0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.25rem" }}
+                >
+                  <Zap size={12} /> Casos Gemelos NLP
+                </button>
               </div>
             </div>
           );
         })}
       </div>
+
+      {/* Twin Cases Modal / Drawer */}
+      {selectedTwinIncident && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", padding: "1.5rem" }}>
+          <div className="card" style={{ maxWidth: "750px", width: "100%", maxHeight: "85vh", overflowY: "auto", border: "1px solid var(--accent-indigo)", background: "var(--bg-card)" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid var(--border)", paddingBottom: "0.75rem", marginBottom: "1rem" }}>
+              <div>
+                <span style={{ fontSize: "0.75rem", fontWeight: 800, color: "#f59e0b", textTransform: "uppercase" }}>
+                  Buscador de Casos Gemelos · Algoritmo NLP
+                </span>
+                <h3 style={{ fontSize: "1.1rem", fontWeight: 800, margin: "0.2rem 0 0", color: "var(--text-primary)" }}>
+                  Incidente Base ID #{selectedTwinIncident.ID} - {selectedTwinIncident.Tipo}
+                </h3>
+              </div>
+              <button onClick={() => setSelectedTwinIncident(null)} style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "1.2rem", cursor: "pointer" }}>
+                ✕
+              </button>
+            </div>
+
+            <div style={{ fontSize: "0.8rem", background: "var(--bg-base)", padding: "0.75rem", borderRadius: "6px", border: "1px solid var(--border)", marginBottom: "1.25rem", lineHeight: 1.4 }}>
+              <strong>Relato Base:</strong> {highlightRelato(selectedTwinIncident.Relato || selectedTwinIncident.relato || "")}
+            </div>
+
+            <h4 style={{ fontSize: "0.9rem", fontWeight: 700, color: "var(--text-primary)", marginBottom: "0.75rem" }}>
+              Incidentes Gemelos por Coincidencia de Firma (0-100% Similitud):
+            </h4>
+
+            {(() => {
+              const twins = findSimilarIncidents(selectedTwinIncident, incidents, 6);
+              if (twins.length === 0) {
+                return (
+                  <div style={{ textAlign: "center", padding: "2rem", color: "var(--text-muted)" }}>
+                    No se hallaron hechos adicionales con alta coincidencia de firma para este incidente.
+                  </div>
+                );
+              }
+              return (
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                  {twins.map((t, idx) => (
+                    <div key={idx} style={{ background: "var(--bg-base)", padding: "0.75rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.4rem" }}>
+                        <span style={{ fontWeight: 800, color: "var(--accent-indigo)", fontSize: "0.85rem" }}>
+                          ID #{t.incident.ID} - {t.incident.Tipo} ({t.incident.Fecha})
+                        </span>
+                        <span style={{ fontSize: "0.75rem", fontWeight: 800, padding: "0.2rem 0.6rem", borderRadius: "4px", background: "rgba(16, 185, 129, 0.2)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.4)" }}>
+                          🎯 {t.similarityScore}% Similitud
+                        </span>
+                      </div>
+                      <div style={{ fontSize: "0.75rem", color: "#f59e0b", marginBottom: "0.4rem" }}>
+                        🔑 Coincidencia de Términos: {t.matchedKeywords.join(", ")}
+                      </div>
+                      <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", lineHeight: 1.4 }}>
+                        {highlightRelato(t.incident.Relato || t.incident.relato || "")}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
+          </div>
+        </div>
+      )}
 
       {filteredIncidents.length === 0 && (
         <div className="card" style={{ textAlign: "center", padding: "3rem 1rem", color: "var(--text-muted)" }}>
