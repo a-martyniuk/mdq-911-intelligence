@@ -55,7 +55,28 @@ function MapComponent({
       maxZoom: 19,
     }).addTo(map);
 
-    const samplePoints = points.slice(0, 800);
+    // Stratified sampling so ALL origins (Robo, Hallazgo, Disparos, Armas) are represented on map
+    const samplePoints = (() => {
+      if (!points || points.length === 0) return [];
+      if (points.length <= 1500) return points;
+
+      const groups: Record<string, GeoPoint[]> = {};
+      points.forEach((pt) => {
+        const key = pt.origen || "OTROS";
+        if (!groups[key]) groups[key] = [];
+        groups[key].push(pt);
+      });
+
+      const sampled: GeoPoint[] = [];
+      const keys = Object.keys(groups);
+      const perGroup = Math.floor(1500 / (keys.length || 1));
+
+      keys.forEach((k) => {
+        sampled.push(...groups[k].slice(0, perGroup));
+      });
+
+      return sampled;
+    })();
 
     const getOriginColor = (origen: string) => {
       switch (origen) {
