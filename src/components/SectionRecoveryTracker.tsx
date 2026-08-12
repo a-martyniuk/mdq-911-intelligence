@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
-import { Car, Bike, Clock, MapPin, Search, ArrowRight, ShieldCheck, AlertTriangle, Eye, ChevronRight } from "lucide-react";
+import { Car, Bike, Clock, MapPin, Search, ArrowRight, ShieldCheck, AlertTriangle, Eye, ChevronRight, Download } from "lucide-react";
 import { highlightRelato } from "@/lib/nlpExtractor";
+import { exportToCSV } from "@/lib/excelExport";
 import "leaflet/dist/leaflet.css";
 
 interface RecoveryCase {
@@ -329,22 +330,49 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(420px, 1fr))", gap: "1.5rem" }}>
         {/* Left Column: Interactive Cases Selector List */}
         <div className="card" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem" }}>
             <h3 style={{ fontSize: "1rem", fontWeight: 700, margin: 0, color: "var(--text-primary)" }}>
               Casos Cruzados ({filteredCases.length})
             </h3>
 
-            {/* Search Input */}
-            <div style={{ position: "relative", width: "200px" }}>
-              <Search size={14} style={{ position: "absolute", left: "0.6rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
-              <input
-                type="text"
-                placeholder="Buscar patente o calle..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="form-input"
-                style={{ paddingLeft: "2rem", height: "34px", fontSize: "0.8rem", width: "100%" }}
-              />
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              {/* Search Input */}
+              <div style={{ position: "relative", width: "180px" }}>
+                <Search size={14} style={{ position: "absolute", left: "0.6rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
+                <input
+                  type="text"
+                  placeholder="Buscar patente..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="form-input"
+                  style={{ paddingLeft: "2rem", height: "34px", fontSize: "0.8rem", width: "100%" }}
+                />
+              </div>
+
+              {/* Excel Export Button */}
+              <button
+                onClick={() => {
+                  const exportData = filteredCases.map((c) => ({
+                    Patente: c.Patente_Principal,
+                    Tipo_Vehiculo: checkIsMoto(c) ? "MOTO" : "AUTO",
+                    Marca: c.Marca_Detectada,
+                    Fecha_Robo: c.Fecha_Robo,
+                    Direccion_Robo: c.Dirección_Robo,
+                    Fecha_Hallazgo: c.Fecha_Hallazgo,
+                    Direccion_Hallazgo: c.Dirección_Hallazgo,
+                    Horas_Hasta_Hallazgo: typeof c.Horas_Hasta_Hallazgo === "number" ? c.Horas_Hasta_Hallazgo.toFixed(1) : c.Horas_Hasta_Hallazgo,
+                    ID_911_Robo: c.ID_Robo,
+                    ID_911_Hallazgo: c.ID_Hallazgo,
+                    Relato_Robo: c.Relato_Robo || "",
+                    Relato_Hallazgo: c.Relato_Hallazgo || "",
+                  }));
+                  exportToCSV(`informe_trazabilidad_vehicular_${vehicleType}`, exportData);
+                }}
+                className="btn-logout"
+                style={{ height: "34px", padding: "0 0.75rem", fontSize: "0.775rem", fontWeight: 700, background: "rgba(16, 185, 129, 0.15)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
+              >
+                <Download size={14} /> Excel
+              </button>
             </div>
           </div>
 

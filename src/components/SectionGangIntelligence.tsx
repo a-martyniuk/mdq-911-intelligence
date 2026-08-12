@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
-import { ShieldAlert, Users, Flame, Clock, MapPin, Search, ChevronRight, Zap, Target, AlertTriangle } from "lucide-react";
+import { ShieldAlert, Users, Flame, Clock, MapPin, Search, ChevronRight, Zap, Target, AlertTriangle, Download } from "lucide-react";
 import { highlightRelato } from "@/lib/nlpExtractor";
+import { exportToCSV } from "@/lib/excelExport";
 import "leaflet/dist/leaflet.css";
 
 interface SectionGangIntelligenceProps {
@@ -300,13 +301,32 @@ export default function SectionGangIntelligence({ incidents = [] }: SectionGangI
 
         {/* Right Column: Serial Incident Timeline List */}
         <div className="card" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.5rem" }}>
             <h3 style={{ fontSize: "1rem", fontWeight: 700, margin: 0, color: "var(--text-primary)" }}>
-              Hechos Vinculados ({linkedIncidents.length} Muestra Coincidente)
+              Hechos Vinculados ({linkedIncidents.length} Coincidencias)
             </h3>
-            <span style={{ fontSize: "0.75rem", color: "var(--accent-indigo)", fontWeight: 700 }}>
-              Módulos NLP Resaltados
-            </span>
+            
+            <button
+              onClick={() => {
+                const exportData = linkedIncidents.map((inc) => ({
+                  Firma_Criminal: selectedGang.name,
+                  ID_911: inc.ID,
+                  Tipo: inc.Tipo,
+                  SubTipo: inc.SubTipo,
+                  Fecha: inc.Fecha,
+                  Franja_Horaria: inc.Franja_Horaria,
+                  Direccion: inc.Dirección || "",
+                  Marca_Detectada: inc.Marca_Detectada || "",
+                  Patente: inc.Patente_Principal || "",
+                  Relato_911: inc.Relato || inc.relato || "",
+                }));
+                exportToCSV(`informe_bandas_${selectedGang.id}`, exportData);
+              }}
+              className="btn-logout"
+              style={{ height: "32px", padding: "0 0.75rem", fontSize: "0.775rem", fontWeight: 700, background: "rgba(16, 185, 129, 0.15)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
+            >
+              <Download size={14} /> Exportar a Excel
+            </button>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", maxHeight: "550px", overflowY: "auto", paddingRight: "0.3rem" }}>

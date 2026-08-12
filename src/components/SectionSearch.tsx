@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Search, Filter, ShieldAlert, Car, MapPin, Clock, Tag } from "lucide-react";
+import { Search, Filter, ShieldAlert, Car, MapPin, Clock, Tag, Download } from "lucide-react";
 import { extractEntities, highlightRelato } from "@/lib/nlpExtractor";
+import { exportToCSV } from "@/lib/excelExport";
 
 interface SectionSearchProps {
   incidents: any[];
@@ -120,19 +121,45 @@ export default function SectionSearch({ incidents = [] }: SectionSearchProps) {
         </div>
       </div>
 
-      {/* Metrics Bar */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: "0.85rem", color: "var(--text-muted)" }}>
+      {/* Metrics & Export Bar */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.5rem", fontSize: "0.85rem", color: "var(--text-muted)" }}>
         <span>
           Mostrando <strong style={{ color: "var(--text-primary)" }}>{filteredIncidents.length}</strong> incidentes coincidentes de {incidents.length} totales
         </span>
-        {searchTerm && (
+
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          {searchTerm && (
+            <button
+              onClick={() => setSearchTerm("")}
+              style={{ background: "none", border: "none", color: "var(--accent-indigo)", cursor: "pointer", fontSize: "0.8rem", textDecoration: "underline" }}
+            >
+              Limpiar búsqueda
+            </button>
+          )}
+
           <button
-            onClick={() => setSearchTerm("")}
-            style={{ background: "none", border: "none", color: "var(--accent-indigo)", cursor: "pointer", fontSize: "0.8rem", textDecoration: "underline" }}
+            onClick={() => {
+              const exportData = filteredIncidents.map((inc) => ({
+                ID_911: inc.ID,
+                Tipo: inc.Tipo,
+                SubTipo: inc.SubTipo,
+                Fecha: inc.Fecha,
+                Hora: inc.Hora,
+                Franja_Horaria: inc.Franja_Horaria,
+                Dia_Semana: inc.Dia_Semana,
+                Direccion: inc.Dirección || "",
+                Patente_Detectada: inc.Patente_Principal || "",
+                Marca_Detectada: inc.Marca_Detectada || "",
+                Relato_911: inc.Relato || inc.relato || "",
+              }));
+              exportToCSV("informe_busqueda_universal_911", exportData);
+            }}
+            className="btn-logout"
+            style={{ height: "32px", padding: "0 0.75rem", fontSize: "0.775rem", fontWeight: 700, background: "rgba(16, 185, 129, 0.15)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
           >
-            Limpiar búsqueda
+            <Download size={14} /> Exportar Resultados a Excel
           </button>
-        )}
+        </div>
       </div>
 
       {/* Incidents List */}
