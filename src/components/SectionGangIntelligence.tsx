@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
-import { ShieldAlert, Users, Flame, Clock, MapPin, Search, ChevronRight, Zap, Target, AlertTriangle, Download } from "lucide-react";
+import { ShieldAlert, Users, Flame, Clock, MapPin, Search, ChevronRight, Zap, Target, AlertTriangle, Download, FileText } from "lucide-react";
 import { highlightRelato } from "@/lib/nlpExtractor";
 import { exportToCSV } from "@/lib/excelExport";
+import { generateGangProfilePDF } from "@/lib/pdfReport";
 import "leaflet/dist/leaflet.css";
 
 interface SectionGangIntelligenceProps {
@@ -243,13 +244,21 @@ export default function SectionGangIntelligence({ incidents = [] }: SectionGangI
             </h3>
           </div>
 
-          <div style={{ display: "flex", gap: "0.6rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
             <span style={{ fontSize: "0.8rem", fontWeight: 700, padding: "0.3rem 0.75rem", borderRadius: "6px", background: "var(--bg-base)", color: "var(--text-primary)", border: "1px solid var(--border)" }}>
               🕒 {selectedGang.peakHours}
             </span>
             <span style={{ fontSize: "0.8rem", fontWeight: 700, padding: "0.3rem 0.75rem", borderRadius: "6px", background: `${selectedGang.badgeColor}20`, color: selectedGang.badgeColor, border: `1px solid ${selectedGang.badgeColor}40` }}>
               Nivel de Peligrosidad: {selectedGang.violenceLevel}
             </span>
+
+            <button
+              onClick={() => generateGangProfilePDF(selectedGang, linkedIncidents)}
+              className="btn-logout"
+              style={{ height: "34px", padding: "0 0.85rem", fontSize: "0.8rem", fontWeight: 800, background: "rgba(99,102,241,0.18)", color: "var(--accent-indigo)", border: "1px solid rgba(99,102,241,0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.35rem" }}
+            >
+              <FileText size={15} /> 📄 Exportar Expediente de Banda (PDF)
+            </button>
           </div>
         </div>
 

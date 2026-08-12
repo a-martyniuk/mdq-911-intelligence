@@ -1,6 +1,7 @@
 /**
  * Printable Case File Generator for official police/investigative reporting.
  */
+
 export function generateCaseFilePrint(caseData: {
   ID_Robo: number | string;
   ID_Hallazgo: number | string;
@@ -93,6 +94,110 @@ export function generateCaseFilePrint(caseData: {
 
       <div class="footer">
         Sistema de Inteligencia Relacional 911 MDQ · Fecha de emisión: ${new Date().toLocaleString("es-AR")}
+      </div>
+    </body>
+    </html>
+  `;
+
+  win.document.write(html);
+  win.document.close();
+}
+
+export function generateGangProfilePDF(
+  gang: any,
+  linkedIncidents: any[]
+) {
+  const win = window.open("", "_blank");
+  if (!win) {
+    alert("Por favor habilita las ventanas emergentes (pop-ups) para generar el expediente de la banda.");
+    return;
+  }
+
+  const weaponsStr = Array.isArray(gang.weaponsUsed) ? gang.weaponsUsed.join(", ") : "No especificado";
+  const targetsStr = Array.isArray(gang.vehicleTargets) ? gang.vehicleTargets.join(", ") : "No especificado";
+  const attackZonesStr = Array.isArray(gang.attackZones) ? gang.attackZones.join(" · ") : "No especificado";
+  const escapeCorridorsStr = Array.isArray(gang.escapeCorridors) ? gang.escapeCorridors.join(" · ") : "No especificado";
+
+  const html = `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <title>Expediente de Inteligencia - ${gang.name}</title>
+      <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #1e293b; padding: 2rem; margin: 0; line-height: 1.5; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid ${gang.badgeColor || "#6366f1"}; padding-bottom: 1rem; margin-bottom: 1.5rem; }
+        .title { font-size: 1.5rem; font-weight: 800; color: #1e1b4b; text-transform: uppercase; letter-spacing: 0.05em; }
+        .subtitle { font-size: 0.85rem; color: #64748b; margin-top: 0.2rem; }
+        .badge { background: ${gang.badgeColor || "#6366f1"}; color: #fff; padding: 0.4rem 0.8rem; border-radius: 6px; font-weight: 800; font-size: 0.95rem; }
+        .btn-print { background: #10b981; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 0.85rem; }
+        .box { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; }
+        .box-title { font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: #334155; margin-bottom: 0.5rem; border-bottom: 1px solid #cbd5e1; padding-bottom: 0.25rem; }
+        .field { font-size: 0.875rem; margin-bottom: 0.4rem; color: #334155; }
+        .field strong { color: #0f172a; }
+        .incident-card { background: #ffffff; padding: 0.8rem; border-radius: 6px; border-left: 4px solid ${gang.badgeColor || "#6366f1"}; border: 1px solid #cbd5e1; font-size: 0.825rem; color: #1e293b; margin-bottom: 0.75rem; line-height: 1.4; page-break-inside: avoid; }
+        .footer { margin-top: 2rem; border-top: 1px solid #e2e8f0; padding-top: 1rem; text-align: center; font-size: 0.75rem; color: #94a3b8; }
+        @media print { body { padding: 0; } .btn-print { display: none; } }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div>
+          <div class="title">MDQ 911 INTELLIGENCE PLATFORM</div>
+          <div class="subtitle">Expediente de Inteligencia de Bandas & Modus Operandi Serial · General Pueyrredón</div>
+        </div>
+        <div class="badge">${gang.icon || "🛡️"} ${gang.name}</div>
+      </div>
+
+      <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 0.85rem; color: #64748b; font-weight: 600;">
+          Total de Hechos Coincidentes Vinculados: <strong style="color: ${gang.badgeColor || "#6366f1"}; font-size: 1rem;">${linkedIncidents.length} Hechos</strong>
+        </span>
+        <button class="btn-print" onclick="window.print()">
+          🖨️ Imprimir / Guardar Expediente de Banda (PDF)
+        </button>
+      </div>
+
+      <!-- Gang Profile Rationale Box -->
+      <div class="box" style="background: #f1f5f9; border-left: 5px solid ${gang.badgeColor || "#6366f1"};">
+        <div class="box-title" style="color: ${gang.badgeColor || "#6366f1"}; font-size: 0.9rem;">
+          📋 CARACTERÍSTICAS VINCULANTES Y FIRMA DELICTIVA DETECTADA
+        </div>
+        <div class="field"><strong>Firma Criminal / Célula:</strong> ${gang.name}</div>
+        <div class="field"><strong>Patrón de Operación:</strong> ${gang.shortDesc}</div>
+        <div class="field"><strong>Nivel de Peligrosidad:</strong> ${gang.violenceLevel} | <strong>Franja Horaria Pico:</strong> ${gang.peakHours}</div>
+        <div class="field"><strong>Armamento Habitual:</strong> ${weaponsStr}</div>
+        <div class="field"><strong>Objetivos Preferidos:</strong> ${targetsStr}</div>
+        <div class="field"><strong>Zonas de Ataque:</strong> ${attackZonesStr}</div>
+        <div class="field"><strong>Pasillos de Fuga / Escape:</strong> ${escapeCorridorsStr}</div>
+      </div>
+
+      <!-- Complete List of Linked Incidents -->
+      <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin-bottom: 1rem;">
+        Cronología Completa de Hechos Vinculados (${linkedIncidents.length} Incidentes Registrados en el 911):
+      </h3>
+
+      <div>
+        ${linkedIncidents.map((inc, i) => `
+          <div class="incident-card">
+            <div style="display: flex; justify-content: space-between; font-weight: 800; color: #4338ca; margin-bottom: 0.3rem;">
+              <span>#${i + 1} | Llamada 911 ID #${inc.ID} - ${inc.Tipo} (${inc.SubTipo})</span>
+              <span style="color: #64748b;">${inc.Fecha} (${inc.Franja_Horaria})</span>
+            </div>
+            <div style="margin-bottom: 0.3rem;">
+              📍 <strong>Lugar:</strong> ${inc.Dirección || "No especificada"}
+              ${inc.Patente_Principal ? ` | 🏷️ <strong>Patente:</strong> ${inc.Patente_Principal}` : ""}
+              ${inc.Marca_Detectada ? ` | 🚘 <strong>Marca:</strong> ${inc.Marca_Detectada}` : ""}
+            </div>
+            <div style="background: #f8fafc; padding: 0.6rem; border-radius: 4px; border: 1px solid #e2e8f0;">
+              <strong>Relato 911:</strong> ${inc.Relato || inc.relato || "Sin relato registrado"}
+            </div>
+          </div>
+        `).join("")}
+      </div>
+
+      <div class="footer">
+        Expediente de Inteligencia Generado por MDQ 911 System · Documento reservado · ${new Date().toLocaleString("es-AR")}
       </div>
     </body>
     </html>
