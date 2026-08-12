@@ -309,10 +309,10 @@ export default function SectionGangIntelligence({ incidents = [] }: SectionGangI
             </span>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", maxHeight: "420px", overflowY: "auto" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", maxHeight: "550px", overflowY: "auto", paddingRight: "0.3rem" }}>
             {linkedIncidents.length > 0 ? (
-              linkedIncidents.slice(0, 15).map((inc, idx) => (
-                <div key={inc.ID || idx} style={{ background: "var(--bg-base)", padding: "0.75rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
+              linkedIncidents.map((inc, idx) => (
+                <div key={`${inc.ID}_${idx}`} style={{ background: "var(--bg-base)", padding: "0.75rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.3rem", fontSize: "0.8rem" }}>
                     <span style={{ fontWeight: 800, color: "var(--accent-indigo)" }}>
                       ID #{inc.ID} - {inc.Tipo} ({inc.SubTipo})
