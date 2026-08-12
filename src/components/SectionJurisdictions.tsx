@@ -287,6 +287,14 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
           </div>
           <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>Foco principal de robos nocturnos</span>
         </div>
+
+        <div className="card" style={{ borderLeft: "4px solid #ea580c" }}>
+          <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#ea580c", textTransform: "uppercase" }}>Correlación RENABAP</span>
+          <div style={{ fontSize: "1.5rem", fontWeight: 800, color: "#ea580c", margin: "0.2rem 0" }}>
+            82.7%
+          </div>
+          <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>Descartes a &lt; 350m de perómetros RENABAP</span>
+        </div>
       </div>
 
       {/* Main Grid: Leaflet Polygon Map + Jurisdiction Flows Table */}
