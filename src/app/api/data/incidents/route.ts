@@ -95,19 +95,43 @@ export async function GET(req: NextRequest) {
   let filtered = incidents;
 
   if (tipo && tipo !== "todos") {
-    filtered = filtered.filter((r) => r.Tipo === tipo);
+    const q = tipo.toUpperCase();
+    filtered = filtered.filter((r) => (r.Tipo || "").toUpperCase().includes(q) || (r.Origen_Dataset || "").toUpperCase().includes(q));
   }
   if (subtipo && subtipo !== "todos") {
-    filtered = filtered.filter((r) => r.SubTipo === subtipo);
+    const q = subtipo.toUpperCase();
+    filtered = filtered.filter((r) => (r.SubTipo || "").toUpperCase().includes(q));
   }
   if (franjaHoraria && franjaHoraria !== "todos") {
-    filtered = filtered.filter((r) => r.Franja_Horaria === franjaHoraria);
+    const q = franjaHoraria.toUpperCase();
+    filtered = filtered.filter((r) => (r.Franja_Horaria || "").toUpperCase().includes(q));
   }
   if (diaSemana && diaSemana !== "todos") {
-    filtered = filtered.filter((r) => r.Dia_Semana === diaSemana);
+    const q = diaSemana.toUpperCase();
+    filtered = filtered.filter((r) => (r.Dia_Semana || "").toUpperCase().includes(q));
   }
   if (origenDataset && origenDataset !== "todos") {
-    filtered = filtered.filter((r) => r.Origen_Dataset === origenDataset);
+    const q = origenDataset.toUpperCase();
+    filtered = filtered.filter((r) => (r.Origen_Dataset || "").toUpperCase().includes(q));
+  }
+
+  // Filter recoveries based on subtipo (Autos vs Motos) if specified
+  let filteredRecoveries = recoveries;
+  if (subtipo && subtipo !== "todos") {
+    const subUpper = subtipo.toUpperCase();
+    if (subUpper.includes("MOTO")) {
+      filteredRecoveries = filteredRecoveries.filter((r) => {
+        const sub = (r.SubTipo || "").toUpperCase();
+        const mar = (r.Marca_Detectada || "").toUpperCase();
+        return sub.includes("MOTO") || ["HONDA", "ZANELLA", "YAMAHA", "MOTOMEL", "GILERA", "CORVEN", "KTM", "BAJAJ"].some((m) => mar.includes(m));
+      });
+    } else if (subUpper.includes("VEHÍCUL") || subUpper.includes("AUTO")) {
+      filteredRecoveries = filteredRecoveries.filter((r) => {
+        const sub = (r.SubTipo || "").toUpperCase();
+        const mar = (r.Marca_Detectada || "").toUpperCase();
+        return !sub.includes("MOTO") && !["HONDA", "ZANELLA", "YAMAHA", "MOTOMEL", "GILERA", "CORVEN", "KTM", "BAJAJ"].some((m) => mar.includes(m));
+      });
+    }
   }
 
   // Pre-aggregate statistics for dashboard efficiency
@@ -142,6 +166,6 @@ export async function GET(req: NextRequest) {
       patente: r.Patente_Principal,
       relato: r.Relato
     })),
-    recoveries,
+    recoveries: filteredRecoveries,
   });
 }
