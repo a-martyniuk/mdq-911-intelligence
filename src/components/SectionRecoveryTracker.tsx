@@ -154,13 +154,25 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCase, setSelectedCase] = useState<RecoveryCase | null>(null);
 
-  // Discriminated Counts
-  const countAutos = useMemo(() => recoveries.filter(checkIsAuto).length, [recoveries]);
-  const countMotos = useMemo(() => recoveries.filter(checkIsMoto).length, [recoveries]);
+  // Unique deduplicated recoveries by stolen vehicle (ID_Robo)
+  const uniqueRecoveries = useMemo(() => {
+    const map = new Map<number, RecoveryCase>();
+    recoveries.forEach((c) => {
+      const existing = map.get(c.ID_Robo);
+      if (!existing || c.Horas_Hasta_Hallazgo < existing.Horas_Hasta_Hallazgo) {
+        map.set(c.ID_Robo, c);
+      }
+    });
+    return Array.from(map.values());
+  }, [recoveries]);
 
-  // Filter recoveries by vehicle type and search query
+  // Discriminated Counts (Unique Stolen Vehicles)
+  const countAutos = useMemo(() => uniqueRecoveries.filter(checkIsAuto).length, [uniqueRecoveries]);
+  const countMotos = useMemo(() => uniqueRecoveries.filter(checkIsMoto).length, [uniqueRecoveries]);
+
+  // Filter recoveries by vehicle type and search query (Deduplicated)
   const filteredCases = useMemo(() => {
-    return recoveries.filter((c) => {
+    const rawFiltered = uniqueRecoveries.filter((c) => {
       if (vehicleType === "autos" && !checkIsAuto(c)) return false;
       if (vehicleType === "motos" && !checkIsMoto(c)) return false;
 
@@ -185,7 +197,9 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
 
       return true;
     });
-  }, [recoveries, vehicleType, searchTerm]);
+
+    return rawFiltered;
+  }, [uniqueRecoveries, vehicleType, searchTerm]);
 
   // Automatically select first case when vehicle type or search filter changes
   useEffect(() => {
@@ -236,7 +250,7 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
                 boxShadow: vehicleType === "autos" ? "0 2px 8px rgba(99,102,241,0.4)" : "none",
               }}
             >
-              <Car size={16} /> Automóviles ({countAutos || 45})
+              <Car size={16} /> Automóviles ({countAutos})
             </button>
             <button
               onClick={() => setVehicleType("motos")}
@@ -255,7 +269,7 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
                 boxShadow: vehicleType === "motos" ? "0 2px 8px rgba(245,158,11,0.4)" : "none",
               }}
             >
-              <Bike size={16} /> Motovehículos ({countMotos || 13})
+              <Bike size={16} /> Motovehículos ({countMotos})
             </button>
             <button
               onClick={() => setVehicleType("todos")}
@@ -270,7 +284,7 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
                 cursor: "pointer",
               }}
             >
-              Todos ({recoveries.length || 58})
+              Todos ({uniqueRecoveries.length})
             </button>
           </div>
         </div>
@@ -283,10 +297,10 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
             {vehicleType === "motos" ? "Motovehículos Trazados" : vehicleType === "autos" ? "Automóviles Trazados" : "Vehículos Trazados"}
           </span>
           <div style={{ fontSize: "1.75rem", fontWeight: 800, color: "var(--text-primary)", margin: "0.3rem 0" }}>
-            {filteredCases.length} {vehicleType === "motos" ? "Motos" : vehicleType === "autos" ? "Autos" : "Casos"}
+            {filteredCases.length} {vehicleType === "motos" ? "Motos" : vehicleType === "autos" ? "Autos" : "Casos Únicos"}
           </div>
           <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>
-            {vehicleType === "autos" ? "64.9% Tasa de Hallazgo (Fuga/Apoyo)" : vehicleType === "motos" ? "19.7% Tasa de Hallazgo (Baja por Desguace)" : "Trazabilidad cruzada 911"}
+            {vehicleType === "autos" ? "64.9% Tasa de Hallazgo (Fuga/Apoyo)" : vehicleType === "motos" ? "19.7% Tasa de Hallazgo (Baja por Desguace)" : "Trazabilidad cruzada 911 desduplicada"}
           </span>
         </div>
 
@@ -337,9 +351,10 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
           {/* Cases Scrollable List */}
           <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", maxHeight: "420px", overflowY: "auto" }}>
             {filteredCases.map((c, idx) => {
-              const isSelected = selectedCase?.ID_Robo === c.ID_Robo && selectedCase?.ID_Hallazgo === c.ID_Hallazgo;
-              const hours = c.Horas_Hasta_Hallazgo;
-              const isFast = hours < 6;
+              const isSelected = selectedCase?.ID_Robo === c.ID_Robo;
+              const hoursNum = typeof c.Horas_Hasta_Hallazgo === "number" ? c.Horas_Hasta_Hallazgo : parseFloat(c.Horas_Hasta_Hallazgo as any) || 0;
+              const formattedHours = hoursNum < 1 ? `${Math.round(hoursNum * 60)}m` : `${hoursNum.toFixed(1)}h`;
+              const isFast = hoursNum < 6;
               const isMotoCase = checkIsMoto(c);
 
               return (
@@ -367,7 +382,7 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
                     </div>
 
                     <span style={{ fontSize: "0.75rem", fontWeight: 700, padding: "0.15rem 0.5rem", borderRadius: "4px", background: isFast ? "rgba(16,185,129,0.2)" : "rgba(245,158,11,0.2)", color: isFast ? "#6ee7b7" : "#fde047" }}>
-                      ⏱️ {hours}h hasta hallazgo
+                      ⏱️ {formattedHours} hasta hallazgo
                     </span>
                   </div>
 
