@@ -84,7 +84,30 @@ export function generateCaseFilePrint(data: any) {
   const gang = data;
 
   const linkedIncidents = gang.incidentsSample || gang.linkedIncidents || [];
-  const weaponsStr = (gang.weapons || gang.weaponsUsed || []).join(", ") || "No especificado";
+  
+  // Dynamically extract actual weapons from linked 911 incident narratives
+  const detectedWeaponsSet = new Set<string>();
+  linkedIncidents.forEach((inc: any) => {
+    const text = `${inc.Relato || inc.relato || ""} ${inc.Origen_Dataset || inc.origen || ""} ${inc.Tipo || inc.tipo || ""}`.toLowerCase();
+    
+    if (text.includes("9mm") || text.includes("9 mm")) detectedWeaponsSet.add("Pistola 9mm");
+    if (text.includes("38") || text.includes(".38")) detectedWeaponsSet.add("Revólver .38");
+    if (text.includes("22") || text.includes(".22")) detectedWeaponsSet.add("Calibre .22");
+    if (text.includes("escopeta") || text.includes("recortada")) detectedWeaponsSet.add("Escopeta / Tumbera");
+    if (text.includes("cuchillo") || text.includes("blanca") || text.includes("punzón") || text.includes("facón")) detectedWeaponsSet.add("Arma Blanca / Arma Cortante");
+    if (text.includes("encañon") || text.includes("arma de fuego") || text.includes("disparo") || text.includes("arma_fuego")) {
+      detectedWeaponsSet.add("Arma de Fuego (Portación / Intimidación)");
+    }
+    if (text.includes("mano armada") || text.includes("armado")) {
+      detectedWeaponsSet.add("Robo a Mano Armada");
+    }
+  });
+
+  const dynamicWeaponsList = detectedWeaponsSet.size > 0 
+    ? Array.from(detectedWeaponsSet) 
+    : (gang.weapons || gang.weaponsUsed || []);
+
+  const weaponsStr = dynamicWeaponsList.join(", ") || "Sin armas reportadas";
   const targetsStr = (gang.preferredTargets || gang.vehicleTargets || []).join(", ") || "No especificado";
   const attackZonesStr = (gang.attackZones || []).join(", ") || "No especificado";
   const escapeCorridorsStr = (gang.escapeCorridors || []).join(", ") || "No especificado";

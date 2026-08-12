@@ -175,7 +175,6 @@ function GangMap({ gang }: { gang: GangProfile }) {
 export default function SectionGangIntelligence({ incidents = [] }: SectionGangIntelligenceProps) {
   const [selectedGang, setSelectedGang] = useState<GangProfile>(GANG_PROFILES[0]);
 
-  // Filter linked incidents matching selected gang keywords
   const linkedIncidents = useMemo(() => {
     if (!incidents || incidents.length === 0) return [];
 
@@ -190,6 +189,31 @@ export default function SectionGangIntelligence({ incidents = [] }: SectionGangI
       );
     });
   }, [incidents, selectedGang]);
+
+  // Dynamically extract weapons actually mentioned in linked incidents
+  const detectedWeapons = useMemo(() => {
+    if (!linkedIncidents || linkedIncidents.length === 0) return selectedGang.weaponsUsed;
+
+    const set = new Set<string>();
+    linkedIncidents.forEach((inc: any) => {
+      const text = `${inc.Relato || inc.relato || ""} ${inc.Origen_Dataset || inc.origen || ""} ${inc.Tipo || inc.tipo || ""}`.toLowerCase();
+      
+      if (text.includes("9mm") || text.includes("9 mm")) set.add("Pistola 9mm");
+      if (text.includes("38") || text.includes(".38")) set.add("Revólver .38");
+      if (text.includes("22") || text.includes(".22")) set.add("Calibre .22");
+      if (text.includes("escopeta") || text.includes("recortada")) set.add("Escopeta / Tumbera");
+      if (text.includes("cuchillo") || text.includes("blanca") || text.includes("punzón") || text.includes("facón")) set.add("Arma Blanca / Cortante");
+      if (text.includes("encañon") || text.includes("arma de fuego") || text.includes("disparo") || text.includes("arma_fuego")) {
+        set.add("Arma de Fuego (Portación / Intimidación)");
+      }
+      if (text.includes("mano armada") || text.includes("armado")) {
+        set.add("Robo a Mano Armada");
+      }
+    });
+
+    if (set.size > 0) return Array.from(set);
+    return selectedGang.weaponsUsed;
+  }, [linkedIncidents, selectedGang]);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
@@ -270,7 +294,7 @@ export default function SectionGangIntelligence({ incidents = [] }: SectionGangI
             <button
               onClick={() => generateGangProfilePDF({
                 ...selectedGang,
-                weapons: selectedGang.weaponsUsed || [],
+                weapons: detectedWeapons,
                 preferredTargets: selectedGang.vehicleTargets || [],
                 incidentsSample: linkedIncidents
               })}
@@ -285,9 +309,9 @@ export default function SectionGangIntelligence({ incidents = [] }: SectionGangI
         {/* Profile Metrics Grid */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1rem" }}>
           <div style={{ background: "var(--bg-base)", padding: "0.75rem", borderRadius: "6px", border: "1px solid var(--border)" }}>
-            <strong style={{ fontSize: "0.8rem", color: "var(--text-muted)", display: "block", marginBottom: "0.3rem" }}>🔫 Armamento Habitual:</strong>
+            <strong style={{ fontSize: "0.8rem", color: "var(--text-muted)", display: "block", marginBottom: "0.3rem" }}>🔫 Armamento Habitual / Detectado:</strong>
             <div style={{ fontSize: "0.85rem", color: "var(--text-primary)", fontWeight: 600 }}>
-              {selectedGang.weaponsUsed.join(", ")}
+              {detectedWeapons.join(", ")}
             </div>
           </div>
 
