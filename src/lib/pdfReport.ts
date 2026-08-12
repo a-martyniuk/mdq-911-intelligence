@@ -195,9 +195,12 @@ export function generateExecutiveDossierPDF(data: any) {
     return;
   }
 
-  const { recoveries = [], gangs = [] } = data;
+  const { gangs = [] } = data;
 
   const incidentsList = data.incidents || data.incidentsSample || data.geoPoints || [];
+  const recoveriesList = (data.recoveries && data.recoveries.length > 0)
+    ? data.recoveries
+    : (incidentsList.length > 0 ? incidentsList.filter((i: any) => i.patente || i.Patente_Principal) : []);
 
   const totalIncidents = data.totalIncidents || (incidentsList.length > 0 ? incidentsList.length : 8598);
 
@@ -359,7 +362,7 @@ export function generateExecutiveDossierPDF(data: any) {
       <script>
         const policeData = ${JSON.stringify(POLICE_JURISDICTIONS_GEOJSON)};
         const renabapData = ${JSON.stringify(RENABAP_BARRIOS_GEOJSON)};
-        const recsData = ${JSON.stringify(recoveries)};
+        const recsData = ${JSON.stringify(recoveriesList)};
 
         window.onload = function() {
           if (typeof L === 'undefined') return;
