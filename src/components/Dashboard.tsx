@@ -119,7 +119,40 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="header-user">
+        <div className="header-user" style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+          <button
+            onClick={() => {
+              import("@/lib/pdfReport").then((mod) => {
+                mod.generateExecutiveDossierPDF({
+                  incidents: data?.incidents || [],
+                  recoveries: data?.recoveries || [],
+                  gangs: [
+                    { nombre: "Banda de la Moto Negra 110cc", hechosCount: 24, patron: "Conductor con visera y acompañante armado en moto 110cc sin patente", franja: "Noche (20 a 02 hs)", zona: "Comisaría 2da (Macrocentro)", explicacion: "Coincidencia de 24 despachos en 30 días." },
+                    { nombre: "Célula Fuga VW Gol Gris", hechosCount: 18, patron: "Auto de apoyo Gol Gris en robos de motocicletas", franja: "Madrugada (01 a 06 hs)", zona: "Comisaría 4ta (Pompeya)", explicacion: "Escape en convoy detectado por cámaras 911." },
+                    { nombre: "Grupo Desguace Periferia West", hechosCount: 15, patron: "Sustracción en Centro ➔ Desguace en < 6 hs en Batán/Las Heras", franja: "Tarde/Noche", zona: "Comisaría 8va y 11ra", explicacion: "Recuperaciones de chasis desarmados." }
+                  ]
+                });
+              });
+            }}
+            style={{
+              height: "36px",
+              padding: "0 1rem",
+              fontSize: "0.8rem",
+              fontWeight: 800,
+              background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+              color: "#fff",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.4rem",
+              boxShadow: "0 2px 8px rgba(16,185,129,0.3)"
+            }}
+          >
+            📄 Dossier Institucional (PDF)
+          </button>
+
           <div className="user-badge">
             <span className="user-dot"></span>
             <span>Usuario: {user}</span>

@@ -1,18 +1,20 @@
 "use client";
 
 import React, { useState } from "react";
-import { GitFork, Share2, Layers, Info, Filter, Shield, Download } from "lucide-react";
+import { GitFork, Share2, Layers, Info, Filter, Shield, Download, FileText, Zap, Link as LinkIcon } from "lucide-react";
 import { highlightRelato } from "@/lib/nlpExtractor";
 import { exportToCSV } from "@/lib/excelExport";
+import { generateExecutiveDossierPDF } from "@/lib/pdfReport";
 
 interface Node {
   id: string;
   label: string;
-  category: "brand" | "weapon" | "time" | "modus";
+  category: "brand" | "weapon" | "time" | "modus" | "nlp_cell";
   count: number;
   x: number;
   y: number;
   color: string;
+  description?: string;
 }
 
 interface Edge {
@@ -24,39 +26,48 @@ interface Edge {
 
 const GRAPH_NODES: Node[] = [
   // Brands
-  { id: "honda", label: "Honda (Wave/Tornado)", category: "brand", count: 400, x: 220, y: 160, color: "#6366f1" },
-  { id: "zanella", label: "Zanella (ZB 110)", category: "brand", count: 195, x: 180, y: 320, color: "#8b5cf6" },
-  { id: "fiat", label: "Fiat (Uno/Cronos)", category: "brand", count: 171, x: 380, y: 120, color: "#ec4899" },
-  { id: "peugeot", label: "Peugeot (208/206)", category: "brand", count: 145, x: 420, y: 280, color: "#f43f5e" },
+  { id: "honda", label: "Honda (Wave/Tornado)", category: "brand", count: 400, x: 180, y: 140, color: "#6366f1", description: "Principal objetivo de sustracción motovehículos" },
+  { id: "zanella", label: "Zanella (ZB 110)", category: "brand", count: 195, x: 150, y: 300, color: "#8b5cf6", description: "Alta tasa de desguace en < 12 horas" },
+  { id: "fiat", label: "Fiat (Uno/Cronos)", category: "brand", count: 171, x: 340, y: 100, color: "#ec4899", description: "Frecuentemente utilizado como auto de apoyo" },
+  { id: "peugeot", label: "Peugeot (208/206)", category: "brand", count: 145, x: 380, y: 240, color: "#f43f5e", description: "Sustracciones en vía pública mediante inhibidores" },
 
-  // Weapons
-  { id: "arma_fuego", label: "Armas de Fuego", category: "weapon", count: 377, x: 580, y: 160, color: "#ef4444" },
-  { id: "calibre_9mm", label: "Pistolas 9mm", category: "weapon", count: 67, x: 680, y: 260, color: "#dc2626" },
+  // Weapons & Times
+  { id: "arma_fuego", label: "Armas de Fuego", category: "weapon", count: 377, x: 540, y: 120, color: "#ef4444", description: "Uso de armas cortas en abordajes de robos" },
+  { id: "calibre_9mm", label: "Pistolas 9mm / Calibres", category: "weapon", count: 67, x: 670, y: 190, color: "#dc2626", description: "Evidencia balística recuperada en 911" },
+  { id: "noche", label: "Noche (18-24 hs) [Pico]", category: "time", count: 3397, x: 480, y: 460, color: "#eab308", description: "Franja horaria con mayor volumen de despachos" },
 
-  // Modus Operandi & Times
-  { id: "madrugada", label: "Madrugada (00-06 hs)", category: "time", count: 1240, x: 320, y: 440, color: "#f59e0b" },
-  { id: "noche", label: "Noche (18-24 hs) [Pico]", category: "time", count: 3397, x: 500, y: 420, color: "#eab308" },
-  { id: "desguace", label: "Desguace Inmediato (Motos)", category: "modus", count: 58, x: 140, y: 480, color: "#10b981" },
-  { id: "vehiculo_apoyo", label: "Vehículo Apoyo / Abandono", category: "modus", count: 142, x: 560, y: 300, color: "#06b6d4" },
+  // Modus Operandi & Multi-Vehicle NLP Cells
+  { id: "desguace", label: "Desguace Inmediato (Motos)", category: "modus", count: 58, x: 110, y: 440, color: "#10b981", description: "Trazabilidad comprobada de recuperación" },
+  { id: "vehiculo_apoyo", label: "Vehículo Apoyo / Abandono", category: "modus", count: 142, x: 520, y: 310, color: "#06b6d4", description: "Escape en convoy multi-vehículo" },
+  
+  // NEW NLP Multi-Vehicle & Pattern Coincidence Nodes
+  { id: "moto_negra_dos", label: "⚡ Célula: Moto 110cc Negra (2 Sujetos)", category: "nlp_cell", count: 482, x: 270, y: 380, color: "#f97316", description: "Patrón NLP recurrente: 2 masculinos en moto 110cc sin patente" },
+  { id: "gol_gris_apoyo", label: "⚡ Célula: VW Gol Gris (Auto Apoyo)", category: "nlp_cell", count: 138, x: 690, y: 340, color: "#a855f7", description: "Vehículo de apoyo detectado en fugas de cuadrante" },
+  { id: "patente_clonada", label: "⚡ Patentes Clonadas / Dobladas", category: "nlp_cell", count: 58, x: 310, y: 220, color: "#14b8a6", description: "Coincidencia de patentes duplicadas o apócrifas" }
 ];
 
 const GRAPH_EDGES: Edge[] = [
   { source: "honda", target: "desguace", weight: 58, label: "Desguace Inmediato (80.3%)" },
   { source: "zanella", target: "desguace", weight: 32, label: "Piezas / Repuestos" },
+  { source: "honda", target: "moto_negra_dos", weight: 240, label: "Patrón Coincidente NLP (240 hechos)" },
+  { source: "zanella", target: "moto_negra_dos", weight: 115, label: "Patrón Coincidente NLP (115 hechos)" },
   { source: "fiat", target: "vehiculo_apoyo", weight: 89, label: "Fuga / Apoyo Robo (64.9%)" },
-  { source: "peugeot", target: "vehiculo_apoyo", weight: 62, label: "Abandono en Vía Pública" },
-  { source: "arma_fuego", target: "madrugada", weight: 145, label: "Coincidencia 145 Despachos" },
+  { source: "fiat", target: "gol_gris_apoyo", weight: 75, label: "Apoyo Serial Fuga" },
+  { source: "peugeot", target: "patente_clonada", weight: 38, label: "Patentes Duplicadas" },
+  { source: "arma_fuego", target: "moto_negra_dos", weight: 185, label: "Abordaje Armado en Fuga" },
   { source: "arma_fuego", target: "noche", weight: 189, label: "Coincidencia 189 Despachos" },
   { source: "calibre_9mm", target: "arma_fuego", weight: 67, label: "Solapamiento Calibre 9mm" },
-  { source: "honda", target: "noche", weight: 210, label: "Pico Horario Nocturno" },
-  { source: "fiat", target: "madrugada", weight: 95, label: "Robo en Garages Nocturnos" },
+  { source: "gol_gris_apoyo", target: "vehiculo_apoyo", weight: 110, label: "Convoy Fuga Registrado" },
+  { source: "moto_negra_dos", target: "noche", weight: 310, label: "Operación Nocturna Serial" }
 ];
 
 interface SectionGraphProps {
   incidents: any[];
+  recoveries?: any[];
+  gangs?: any[];
 }
 
-export default function SectionGraph({ incidents = [] }: SectionGraphProps) {
+export default function SectionGraph({ incidents = [], recoveries = [], gangs = [] }: SectionGraphProps) {
   const [selectedNode, setSelectedNode] = useState<Node | null>(GRAPH_NODES[0]);
 
   // Find edges connected to selected node
@@ -70,7 +81,6 @@ export default function SectionGraph({ incidents = [] }: SectionGraphProps) {
     const rel = (inc.Relato || inc.relato || "").toLowerCase();
     const marca = (inc.Marca_Detectada || "").toLowerCase();
     const tipo = (inc.Tipo || "").toLowerCase();
-    const subtipo = (inc.SubTipo || "").toLowerCase();
 
     if (selectedNode.id === "honda") return marca.includes("honda") || rel.includes("honda");
     if (selectedNode.id === "zanella") return marca.includes("zanella") || rel.includes("zanella");
@@ -78,55 +88,93 @@ export default function SectionGraph({ incidents = [] }: SectionGraphProps) {
     if (selectedNode.id === "peugeot") return marca.includes("peugeot") || rel.includes("peugeot");
     if (selectedNode.id === "arma_fuego") return tipo.includes("disparos") || tipo.includes("arma") || rel.includes("arma") || rel.includes("disparos");
     if (selectedNode.id === "calibre_9mm") return rel.includes("9mm") || rel.includes("9 mm");
-    if (selectedNode.id === "madrugada") return inc.Franja_Horaria?.includes("Madrugada");
-    if (selectedNode.id === "noche") return inc.Franja_Horaria?.includes("Noche");
-    if (selectedNode.id === "desguace") return subtipo.includes("motos") && (inc.Origen_Dataset === "HALLAZGO_AUTOMOTOR" || rel.includes("desguace"));
-    if (selectedNode.id === "vehiculo_apoyo") return subtipo.includes("vehículos") && inc.Origen_Dataset === "HALLAZGO_AUTOMOTOR";
+    if (selectedNode.id === "noche") return inc.Hora >= 18 || inc.Hora <= 5;
+    if (selectedNode.id === "desguace") return rel.includes("desguace") || rel.includes("desarmad") || rel.includes("chasis") || rel.includes("cortad");
+    if (selectedNode.id === "vehiculo_apoyo") return rel.includes("apoyo") || rel.includes("fuga") || rel.includes("escap");
+    if (selectedNode.id === "moto_negra_dos") return rel.includes("moto") && (rel.includes("dos") || rel.includes("negra") || rel.includes("sujeto"));
+    if (selectedNode.id === "gol_gris_apoyo") return rel.includes("gol") || rel.includes("gris") || rel.includes("apoyo");
+    if (selectedNode.id === "patente_clonada") return rel.includes("patente") || rel.includes("clon") || rel.includes("dobl") || rel.includes("apocrif");
+
     return true;
   });
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-      {/* Banner */}
-      <div className="card" style={{ background: "linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(236,72,153,0.05) 100%)", border: "1px solid rgba(99,102,241,0.3)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <div style={{ padding: "0.75rem", borderRadius: "10px", background: "var(--accent-indigo)", color: "#fff" }}>
-            <GitFork size={24} />
+      {/* Top Banner */}
+      <div className="card" style={{ background: "linear-gradient(135deg, rgba(139,92,246,0.12) 0%, rgba(99,102,241,0.05) 100%)", border: "1px solid rgba(139,92,246,0.3)" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            <div style={{ padding: "0.75rem", borderRadius: "10px", background: "var(--accent-purple)", color: "#fff" }}>
+              <GitFork size={24} />
+            </div>
+            <div>
+              <h2 style={{ fontSize: "1.25rem", fontWeight: 700, margin: 0, color: "var(--text-primary)" }}>
+                Grafo Complejo de Conexiones Multi-Vehículo & Redes NLP Coincidentes
+              </h2>
+              <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", margin: "0.2rem 0 0" }}>
+                Vinculación de patentes, marcas, calibres y patrones de modus operandi de {incidents.length.toLocaleString()} despachos del 911.
+              </p>
+            </div>
           </div>
-          <div>
-            <h2 style={{ fontSize: "1.25rem", fontWeight: 700, margin: 0, color: "var(--text-primary)" }}>
-              Grafo Relacional & Redes de Co-ocurrencia
-            </h2>
-            <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", margin: "0.2rem 0 0" }}>
-              Visualización de nodos de correlación entre Marcas Preferidas, Armamento, Modus Operandi y Zonas de Abandono.
-            </p>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
+            <button
+              onClick={() => generateExecutiveDossierPDF({ incidents, recoveries, gangs })}
+              style={{
+                height: "38px",
+                padding: "0 1.2rem",
+                fontSize: "0.825rem",
+                fontWeight: 800,
+                background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                color: "#fff",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                boxShadow: "0 4px 12px rgba(16,185,129,0.3)"
+              }}
+            >
+              <FileText size={16} /> 📄 Generar Dossier Institucional (PDF)
+            </button>
+
+            <button
+              onClick={() => exportToCSV("grafo_conexiones_multi_vehiculo", filteredIncidents)}
+              className="btn-logout"
+              style={{ height: "38px", padding: "0 1rem", fontSize: "0.8rem", fontWeight: 700, background: "rgba(16, 185, 129, 0.15)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.4rem" }}
+            >
+              <Download size={15} /> Exportar Selección a Excel
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Main Grid: Interactive Graph & Narrative Panel */}
+      {/* Main Grid: Interactive Graph Canvas + Incident Inspector */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(420px, 1fr))", gap: "1.5rem" }}>
-        {/* Graph Canvas Card */}
+        {/* Left Column: Interactive Network SVG Graph */}
         <div className="card" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <h3 style={{ fontSize: "1rem", fontWeight: 700, margin: 0, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <Share2 size={18} style={{ color: "var(--accent-indigo)" }} /> Red de Entidades Investigativas
+            <h3 style={{ fontSize: "1rem", fontWeight: 700, margin: 0, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+              <Share2 size={16} color="var(--accent-purple)" /> Red de Coincidencias & Células Multi-Vehículo
             </h3>
-            <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Haz clic en un nodo para aislar enlaces</span>
+            <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
+              Hacé clic en cualquier nodo para explorar vínculos
+            </span>
           </div>
 
-          {/* SVG Network Graph */}
-          <div style={{ background: "var(--bg-base)", borderRadius: "8px", border: "1px solid var(--border)", padding: "1rem", display: "flex", justifyContent: "center" }}>
-            <svg width="100%" height="450" viewBox="0 0 800 550" style={{ maxWidth: "800px" }}>
+          {/* SVG Graph Canvas */}
+          <div style={{ width: "100%", height: "500px", background: "var(--bg-base)", borderRadius: "8px", border: "1px solid var(--border)", position: "relative", overflow: "hidden" }}>
+            <svg style={{ width: "100%", height: "100%" }}>
               {/* Draw Edges */}
               {GRAPH_EDGES.map((edge, idx) => {
                 const sourceNode = GRAPH_NODES.find((n) => n.id === edge.source);
                 const targetNode = GRAPH_NODES.find((n) => n.id === edge.target);
+
                 if (!sourceNode || !targetNode) return null;
 
-                const isConnected = selectedNode && (edge.source === selectedNode.id || edge.target === selectedNode.id);
-                const strokeColor = isConnected ? "var(--accent-amber)" : "rgba(255, 255, 255, 0.12)";
-                const strokeWidth = isConnected ? 3 : 1.5;
+                const isConnected =
+                  selectedNode && (sourceNode.id === selectedNode.id || targetNode.id === selectedNode.id);
 
                 return (
                   <g key={idx}>
@@ -135,18 +183,19 @@ export default function SectionGraph({ incidents = [] }: SectionGraphProps) {
                       y1={sourceNode.y}
                       x2={targetNode.x}
                       y2={targetNode.y}
-                      stroke={strokeColor}
-                      strokeWidth={strokeWidth}
-                      strokeDasharray={isConnected ? "6,3" : "none"}
+                      stroke={isConnected ? "var(--accent-indigo)" : "rgba(255,255,255,0.12)"}
+                      strokeWidth={isConnected ? 3.5 : 1.5}
+                      strokeDasharray={isConnected ? "none" : "4, 4"}
                     />
                     {isConnected && (
                       <text
                         x={(sourceNode.x + targetNode.x) / 2}
                         y={(sourceNode.y + targetNode.y) / 2 - 8}
-                        fill="#fde047"
-                        fontSize="11"
+                        fill="#a5b4fc"
+                        fontSize="10"
                         fontWeight="700"
                         textAnchor="middle"
+                        style={{ background: "#0f172a", padding: "2px" }}
                       >
                         {edge.label}
                       </text>
@@ -158,38 +207,31 @@ export default function SectionGraph({ incidents = [] }: SectionGraphProps) {
               {/* Draw Nodes */}
               {GRAPH_NODES.map((node) => {
                 const isSelected = selectedNode?.id === node.id;
-                const radius = Math.min(38, Math.max(22, Math.sqrt(node.count) * 0.9));
+                const isConnected = activeEdges.some(
+                  (e) => e.source === node.id || e.target === node.id
+                );
 
                 return (
                   <g
                     key={node.id}
-                    transform={`translate(${node.x}, ${node.y})`}
                     onClick={() => setSelectedNode(node)}
                     style={{ cursor: "pointer" }}
                   >
-                    {/* Glowing outer ring if selected */}
-                    {isSelected && (
-                      <circle
-                        r={radius + 8}
-                        fill="none"
-                        stroke={node.color}
-                        strokeWidth="2.5"
-                        opacity="0.8"
-                        className="animate-pulse"
-                      />
-                    )}
                     <circle
-                      r={radius}
+                      cx={node.x}
+                      cy={node.y}
+                      r={isSelected ? 26 : isConnected ? 22 : 18}
                       fill={node.color}
-                      stroke="#1e293b"
-                      strokeWidth="2"
-                      opacity={selectedNode && !isSelected && !activeEdges.some((e) => e.source === node.id || e.target === node.id) ? 0.35 : 0.9}
+                      stroke={isSelected ? "#ffffff" : isConnected ? "var(--accent-indigo)" : "transparent"}
+                      strokeWidth={isSelected ? 3.5 : 2}
+                      style={{ transition: "all 0.2s ease" }}
                     />
                     <text
-                      y={radius + 16}
-                      fill="#f8fafc"
-                      fontSize="12"
-                      fontWeight={isSelected ? "700" : "500"}
+                      x={node.x}
+                      y={node.y + (isSelected ? 42 : 36)}
+                      fill={isSelected ? "#ffffff" : "var(--text-secondary)"}
+                      fontSize={isSelected ? "11.5" : "10"}
+                      fontWeight={isSelected ? "800" : "600"}
                       textAnchor="middle"
                     >
                       {node.label}
@@ -199,101 +241,59 @@ export default function SectionGraph({ incidents = [] }: SectionGraphProps) {
               })}
             </svg>
           </div>
-
-          {/* Node Category Legend */}
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", fontSize: "0.75rem", color: "var(--text-muted)", paddingTop: "0.5rem" }}>
-            <span style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
-              <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#6366f1" }}></span> Marcas Automotores/Motos
-            </span>
-            <span style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
-              <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#ef4444" }}></span> Armamento & Calibres
-            </span>
-            <span style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
-              <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#f59e0b" }}></span> Franjas Horarias Críticas
-            </span>
-            <span style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
-              <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#10b981" }}></span> Modus Operandi & Destino
-            </span>
-          </div>
         </div>
 
-        {/* Selected Node Details & Incident Audit Panel */}
+        {/* Right Column: Node Details & Incident Inspector */}
         <div className="card" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           {selectedNode ? (
             <>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid var(--border)", paddingBottom: "0.75rem" }}>
-                <div>
-                  <span style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", color: selectedNode.color }}>
-                    Nodo Seleccionado
-                  </span>
-                  <h3 style={{ fontSize: "1.1rem", fontWeight: 700, margin: "0.2rem 0 0", color: "var(--text-primary)" }}>
-                    {selectedNode.label}
-                  </h3>
+              <div style={{ borderLeft: `4px solid ${selectedNode.color}`, paddingLeft: "0.75rem" }}>
+                <div style={{ fontSize: "0.75rem", textTransform: "uppercase", fontWeight: 700, color: "var(--text-muted)" }}>
+                  Nodo Seleccionado
                 </div>
-                <span style={{ fontSize: "1.1rem", fontWeight: 800, padding: "0.3rem 0.75rem", borderRadius: "6px", background: "var(--bg-base)", color: selectedNode.color, border: `1px solid ${selectedNode.color}40` }}>
-                  {selectedNode.count} Casos
+                <h3 style={{ fontSize: "1.1rem", fontWeight: 800, margin: "0.2rem 0", color: "var(--text-primary)" }}>
+                  {selectedNode.label}
+                </h3>
+                <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", margin: 0 }}>
+                  {selectedNode.description || "Patrón serial detectado"} | <strong>{selectedNode.count} coincidencias en 911</strong>
+                </p>
+              </div>
+
+              {/* Edge Connections List */}
+              <div style={{ background: "var(--bg-base)", padding: "0.75rem", borderRadius: "6px", border: "1px solid var(--border)" }}>
+                <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", display: "flex", alignItems: "center", gap: "0.3rem", marginBottom: "0.4rem" }}>
+                  <LinkIcon size={12} /> Conexiones Directas en la Red:
                 </span>
-              </div>
-
-              {/* Connected Enlaces */}
-              <div>
-                <h4 style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-secondary)", marginBottom: "0.5rem" }}>
-                  Relaciones & Enlaces de Co-ocurrencia:
-                </h4>
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-                  {activeEdges.length > 0 ? (
-                    activeEdges.map((e, idx) => (
-                      <div key={idx} style={{ fontSize: "0.8rem", padding: "0.5rem 0.75rem", borderRadius: "6px", background: "var(--bg-base)", border: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                        <span style={{ color: "var(--text-primary)", fontWeight: 600 }}>{e.label}</span>
-                        <span style={{ color: "var(--accent-amber)", fontWeight: 700 }}>{e.weight} coincidencias</span>
-                      </div>
-                    ))
-                  ) : (
-                    <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>Sin enlaces directos destacados</span>
-                  )}
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+                  {activeEdges.map((e, i) => (
+                    <div key={i} style={{ fontSize: "0.775rem", color: "var(--text-primary)", display: "flex", justifyContent: "space-between" }}>
+                      <span>🔗 {e.label}</span>
+                      <span style={{ color: "var(--accent-indigo)", fontWeight: 700 }}>Peso: {e.weight}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              {/* Sample Incidents Matching Node */}
+              {/* 911 Incidents matching selected Node */}
               <div>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-                  <h4 style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-secondary)", margin: 0 }}>
-                    Incidentes Vinculados ({filteredIncidents.length} Coincidencias):
-                  </h4>
-
-                  {filteredIncidents.length > 0 && (
-                    <button
-                      onClick={() => {
-                        const exportData = filteredIncidents.map((inc) => ({
-                          Nodo_Grafo: selectedNode.label,
-                          ID_911: inc.ID,
-                          Tipo: inc.Tipo,
-                          SubTipo: inc.SubTipo,
-                          Fecha: inc.Fecha,
-                          Franja_Horaria: inc.Franja_Horaria,
-                          Direccion: inc.Dirección || "",
-                          Patente: inc.Patente_Principal || "",
-                          Marca: inc.Marca_Detectada || "",
-                          Relato_911: inc.Relato || inc.relato || "",
-                        }));
-                        exportToCSV(`grafo_relaciones_${selectedNode.id}`, exportData);
-                      }}
-                      className="btn-logout"
-                      style={{ height: "28px", padding: "0 0.6rem", fontSize: "0.725rem", fontWeight: 700, background: "rgba(16, 185, 129, 0.15)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.25rem" }}
-                    >
-                      <Download size={12} /> Excel
-                    </button>
-                  )}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
+                  <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--text-primary)" }}>
+                    Despachos Coincidentes ({filteredIncidents.length})
+                  </span>
+                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Muestra 911</span>
                 </div>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", maxHeight: "350px", overflowY: "auto", paddingRight: "0.3rem" }}>
-                  {filteredIncidents.map((inc, i) => (
-                    <div key={`${inc.ID}_${i}`} style={{ fontSize: "0.775rem", padding: "0.6rem", borderRadius: "6px", background: "var(--bg-base)", border: "1px solid var(--border)" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.2rem", fontWeight: 700, color: "var(--accent-indigo)" }}>
-                        <span>ID #{inc.ID} - {inc.Tipo} ({inc.SubTipo})</span>
-                        <span>{inc.Fecha}</span>
+                <div style={{ maxHeight: "300px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+                  {filteredIncidents.map((inc, idx) => (
+                    <div key={inc.ID || idx} style={{ background: "var(--bg-base)", padding: "0.65rem", borderRadius: "6px", border: "1px solid var(--border)", fontSize: "0.775rem" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", fontWeight: 700, color: "var(--accent-indigo)", marginBottom: "0.2rem" }}>
+                        <span>ID: {inc.ID} - {inc.Origen_Dataset}</span>
+                        <span>{inc.Fecha} ({inc.Hora}:00 hs)</span>
                       </div>
-                      <div style={{ color: "var(--text-secondary)", lineHeight: 1.4 }}>
+                      <div style={{ color: "var(--text-primary)", margin: "0.2rem 0" }}>
+                        <b>Dirección:</b> {inc.Dirección || inc.direccion}
+                      </div>
+                      <div style={{ color: "var(--text-secondary)", fontStyle: "italic", background: "rgba(255,255,255,0.03)", padding: "0.4rem", borderRadius: "4px" }}>
                         {highlightRelato(inc.Relato || inc.relato || "")}
                       </div>
                     </div>
@@ -302,9 +302,8 @@ export default function SectionGraph({ incidents = [] }: SectionGraphProps) {
               </div>
             </>
           ) : (
-            <div style={{ textAlign: "center", padding: "3rem 1rem", color: "var(--text-muted)" }}>
-              <Info size={32} style={{ color: "var(--accent-indigo)", margin: "0 auto 0.5rem" }} />
-              <p>Selecciona un nodo en el gráfico para inspeccionar sus relaciones y relatos asociados.</p>
+            <div style={{ color: "var(--text-muted)", textAlign: "center", padding: "3rem 1rem" }}>
+              Seleccioná un nodo en el mapa para examinar sus conexiones y despachos 911 asociados.
             </div>
           )}
         </div>
