@@ -124,7 +124,8 @@ export async function GET(req: NextRequest) {
     nightCount,
     nightPct,
     incidentsCount: filtered.length,
-    incidentsSample: filtered.slice(0, 1000), // Max 1000 sample for map rendering performance
+    incidents: filtered,
+    incidentsSample: filtered,
     geoPoints: filtered.filter((r) => r.Latitud_Clean && r.Longitud_Clean).map((r) => ({
       id: r.ID,
       lat: r.Latitud_Clean,

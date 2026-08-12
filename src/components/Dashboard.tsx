@@ -183,12 +183,12 @@ export default function Dashboard() {
         {activeSection === "overview" && <SectionOverview stats={stats} />}
         {activeSection === "map" && <SectionMap geoPoints={data?.geoPoints || []} recoveries={data?.recoveries || []} />}
         {activeSection === "recovery-tracker" && <SectionRecoveryTracker recoveries={data?.recoveries || []} />}
-        {activeSection === "gang-intelligence" && <SectionGangIntelligence incidents={data?.incidentsSample || []} />}
-        {activeSection === "jurisdictions" && <SectionJurisdictions incidents={data?.incidentsSample || []} recoveries={data?.recoveries || []} />}
-        {activeSection === "graph" && <SectionGraph incidents={data?.incidentsSample || []} />}
-        {activeSection === "search" && <SectionSearch incidents={data?.incidentsSample || []} />}
+        {activeSection === "gang-intelligence" && <SectionGangIntelligence incidents={data?.incidents || data?.incidentsSample || []} />}
+        {activeSection === "jurisdictions" && <SectionJurisdictions incidents={data?.incidents || data?.incidentsSample || []} recoveries={data?.recoveries || []} />}
+        {activeSection === "graph" && <SectionGraph incidents={data?.incidents || data?.incidentsSample || []} />}
+        {activeSection === "search" && <SectionSearch incidents={data?.incidents || data?.incidentsSample || []} />}
         {activeSection === "hotspots" && <SectionHotspots />}
-        {activeSection === "temporal" && <SectionTemporal incidents={data?.incidentsSample || []} />}
+        {activeSection === "temporal" && <SectionTemporal incidents={data?.incidents || data?.incidentsSample || []} />}
         {activeSection === "vehicles" && <SectionVehicles recoveries={data?.recoveries || []} />}
         {activeSection === "nlp" && <SectionNLP />}
         {activeSection === "investigative" && <SectionInvestigativeValue />}
