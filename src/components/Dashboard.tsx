@@ -15,7 +15,7 @@ import SectionInvestigativeValue from "./SectionInvestigativeValue";
 import SectionETL from "./SectionETL";
 import SectionDictionary from "./SectionDictionary";
 import { FilterState } from "@/lib/types";
-import { getApiUrl } from "@/lib/apiUrl";
+import { getApiUrl, getAppPath } from "@/lib/apiUrl";
 
 export default function Dashboard() {
   const [activeSection, setActiveSection] = useState("overview");
@@ -38,13 +38,13 @@ export default function Dashboard() {
       .then((res) => res.json())
       .then((sess) => {
         if (!sess.authenticated) {
-          window.location.href = getApiUrl("/login");
+          window.location.href = getAppPath("/login");
         } else {
           setUser(sess.user || "admin");
         }
       })
       .catch(() => {
-        window.location.href = getApiUrl("/login");
+        window.location.href = getAppPath("/login");
       });
   }, []);
 
@@ -61,7 +61,7 @@ export default function Dashboard() {
     fetch(getApiUrl(`/api/data/incidents?${query.toString()}`))
       .then((res) => {
         if (res.status === 401) {
-          window.location.href = getApiUrl("/login");
+          window.location.href = getAppPath("/login");
           return null;
         }
         return res.json();
@@ -75,7 +75,7 @@ export default function Dashboard() {
 
   const handleLogout = async () => {
     await fetch(getApiUrl("/api/auth/logout"), { method: "POST" });
-    window.location.href = getApiUrl("/login");
+    window.location.href = getAppPath("/login");
   };
 
   const availableTipos = ["ROBO AUTOMOTOR", "DISPAROS", "VIOLENCIA", "DROGAS ILÍCITAS", "HALLAZGO", "SOSPECHOSOS"];

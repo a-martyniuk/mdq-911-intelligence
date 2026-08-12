@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ShieldCheck, Lock, User, AlertCircle } from "lucide-react";
-import { getApiUrl } from "@/lib/apiUrl";
+import { getApiUrl, getAppPath } from "@/lib/apiUrl";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -27,7 +27,7 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (res.ok && data.success) {
-        window.location.href = getApiUrl("/");
+        window.location.href = getAppPath("/");
       } else {
         setError(data.error || "Credenciales incorrectas");
       }
