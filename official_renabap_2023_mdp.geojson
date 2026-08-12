@@ -1,0 +1,6281 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 4272,
+          "NOMBRE_BAR": "San Carlos",
+          "FAMILIAS": 9,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1980",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Conexión formal a la red cloacal",
+          "AGUA": "Conexión formal a la red de agua con factura",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.540733324575 -38.032563820572, -57.54055960583 -38.032331137033, -57.540583277715 -38.032317866431, -57.540388653758 -38.032034912616, -57.540736690341 -38.031872972469, -57.541125339978 -38.03237047062, -57.540733324575 -38.032563820572))",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063576107",
+          "RADIO": "",
+          "SUPERFICIE": 0.002,
+          "LATITUD_CE": -38.032218,
+          "LONGITUD_C": -57.54075
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.540733324575,
+              -38.032563820572
+            ],
+            [
+              -57.541125339978,
+              -38.03237047062
+            ],
+            [
+              -57.540736690341,
+              -38.031872972469
+            ],
+            [
+              -57.540388653758,
+              -38.032034912616
+            ],
+            [
+              -57.540583277715,
+              -38.032317866431
+            ],
+            [
+              -57.54055960583,
+              -38.032331137033
+            ],
+            [
+              -57.540733324575,
+              -38.032563820572
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 822,
+          "NOMBRE_BAR": "Parque Hermoso",
+          "FAMILIAS": 409,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1990",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Bomba de agua de pozo domiciliaria",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.642291120586 -38.03840775758, -57.642969117336 -38.038981674004, -57.644491910217 -38.037822755331, -57.648107730332 -38.04084625023, -57.645835350541 -38.042540186712, -57.645229860236 -38.042014921899, -57.643877132006 -38.043066479334, -5",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063577304",
+          "RADIO": "",
+          "SUPERFICIE": 0.394,
+          "LATITUD_CE": -38.041149,
+          "LONGITUD_C": -57.642494
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.642291120586,
+              -38.03840775758
+            ],
+            [
+              -57.642046091117,
+              -38.038204913415
+            ],
+            [
+              -57.641299074479,
+              -38.038731763927
+            ],
+            [
+              -57.641539984638,
+              -38.038945404689
+            ],
+            [
+              -57.642263035577,
+              -38.039546496645
+            ],
+            [
+              -57.64157272798,
+              -38.040022465627
+            ],
+            [
+              -57.63971550719,
+              -38.0384919411
+            ],
+            [
+              -57.638216866661,
+              -38.039613165346
+            ],
+            [
+              -57.639086570475,
+              -38.04032247093
+            ],
+            [
+              -57.638445479171,
+              -38.040802975312
+            ],
+            [
+              -57.637579897412,
+              -38.040109374257
+            ],
+            [
+              -57.636773402482,
+              -38.040773014704
+            ],
+            [
+              -57.641507491555,
+              -38.044700608847
+            ],
+            [
+              -57.642305849204,
+              -38.044094833508
+            ],
+            [
+              -57.643013792624,
+              -38.044671676294
+            ],
+            [
+              -57.644447762309,
+              -38.043570430975
+            ],
+            [
+              -57.643877132006,
+              -38.043066479334
+            ],
+            [
+              -57.645229860236,
+              -38.042014921899
+            ],
+            [
+              -57.645835350541,
+              -38.042540186712
+            ],
+            [
+              -57.648107730332,
+              -38.04084625023
+            ],
+            [
+              -57.644491910217,
+              -38.037822755331
+            ],
+            [
+              -57.642969117336,
+              -38.038981674004
+            ],
+            [
+              -57.642291120586,
+              -38.03840775758
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 4537,
+          "NOMBRE_BAR": "Santa Rita",
+          "FAMILIAS": 61,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1990",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Conexión irregular a la red de agua",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.590710827744 -38.016040564948, -57.589206607897 -38.014790077118, -57.589719187164 -38.014430816813, -57.589502933328 -38.014254690075, -57.589893372685 -38.01397616958, -57.591076333487 -38.014943348697, -57.591949823743 -38.014302223035, -",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063575309",
+          "RADIO": "",
+          "SUPERFICIE": 0.04,
+          "LATITUD_CE": -38.014681,
+          "LONGITUD_C": -57.591227
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.590710827744,
+              -38.016040564948
+            ],
+            [
+              -57.593278232032,
+              -38.014066262924
+            ],
+            [
+              -57.592425389917,
+              -38.013239437836
+            ],
+            [
+              -57.591540814805,
+              -38.013939644481
+            ],
+            [
+              -57.591949823743,
+              -38.014302223035
+            ],
+            [
+              -57.591076333487,
+              -38.014943348697
+            ],
+            [
+              -57.589893372685,
+              -38.01397616958
+            ],
+            [
+              -57.589502933328,
+              -38.014254690075
+            ],
+            [
+              -57.589719187164,
+              -38.014430816813
+            ],
+            [
+              -57.589206607897,
+              -38.014790077118
+            ],
+            [
+              -57.590710827744,
+              -38.016040564948
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 5650,
+          "NOMBRE_BAR": "Sin Nombre",
+          "FAMILIAS": 9,
+          "ANIO_CREAC": 2017,
+          "DECADA_CRE": "Década 2010",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Conexión irregular a la red cloacal",
+          "AGUA": "Conexión irregular a la red de agua",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.591695308769 -38.012703808447, -57.591337351152 -38.012961038849, -57.590540448638 -38.01225462159, -57.590849238356 -38.01202087202, -57.591695308769 -38.012703808447))",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063575309",
+          "RADIO": "",
+          "SUPERFICIE": 0.004,
+          "LATITUD_CE": -38.012492,
+          "LONGITUD_C": -57.591114
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.591695308769,
+              -38.012703808447
+            ],
+            [
+              -57.590849238356,
+              -38.01202087202
+            ],
+            [
+              -57.590540448638,
+              -38.01225462159
+            ],
+            [
+              -57.591337351152,
+              -38.012961038849
+            ],
+            [
+              -57.591695308769,
+              -38.012703808447
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 795,
+          "NOMBRE_BAR": "Libertad",
+          "FAMILIAS": 77,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1980",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe a cámara séptica y pozo ciego",
+          "AGUA": "Conexión irregular a la red de agua",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.597360724956 -37.956754826287, -57.596130256099 -37.955223353767, -57.598038465752 -37.954304768687, -57.598650922914 -37.95501147085, -57.599313474365 -37.955806336719, -57.597360724956 -37.956754826287))",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063570902",
+          "RADIO": "",
+          "SUPERFICIE": 0.04,
+          "LATITUD_CE": -37.955525,
+          "LONGITUD_C": -57.597715
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.597360724956,
+              -37.956754826287
+            ],
+            [
+              -57.599313474365,
+              -37.955806336719
+            ],
+            [
+              -57.598650922914,
+              -37.95501147085
+            ],
+            [
+              -57.598038465752,
+              -37.954304768687
+            ],
+            [
+              -57.596130256099,
+              -37.955223353767
+            ],
+            [
+              -57.597360724956,
+              -37.956754826287
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 4274,
+          "NOMBRE_BAR": "Conventillo",
+          "FAMILIAS": 33,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1970",
+          "CLASIFICAC": "Villa",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Desagüe a cámara séptica y pozo ciego",
+          "AGUA": "Conexión formal a la red de agua con factura",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.577883304686 -37.987479944211, -57.578060942175 -37.987686544334, -57.578136245023 -37.987744469602, -57.578266275747 -37.987752192962, -57.578391635229 -37.987897006144, -57.578265611455 -37.987960723936, -57.578165207657 -37.987839080873,",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063571407",
+          "RADIO": "",
+          "SUPERFICIE": 0.002,
+          "LATITUD_CE": -37.987794,
+          "LONGITUD_C": -57.577805
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.577883304686,
+              -37.987479944211
+            ],
+            [
+              -57.577340738009,
+              -37.987752192971
+            ],
+            [
+              -57.577582093293,
+              -37.988088159525
+            ],
+            [
+              -57.577585954977,
+              -37.988103606263
+            ],
+            [
+              -57.577968261746,
+              -37.987906660352
+            ],
+            [
+              -57.577995293538,
+              -37.987933692144
+            ],
+            [
+              -57.578165207657,
+              -37.987839080873
+            ],
+            [
+              -57.578265611455,
+              -37.987960723936
+            ],
+            [
+              -57.578391635229,
+              -37.987897006144
+            ],
+            [
+              -57.578266275747,
+              -37.987752192962
+            ],
+            [
+              -57.578136245023,
+              -37.987744469602
+            ],
+            [
+              -57.578060942175,
+              -37.987686544334
+            ],
+            [
+              -57.577883304686,
+              -37.987479944211
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 2918,
+          "NOMBRE_BAR": "Villa de Termas Huinco",
+          "FAMILIAS": 33,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1960",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Conexión formal a la red cloacal",
+          "AGUA": "Conexión irregular a la red de agua",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.561488246 -38.048340899, -57.560740232671 -38.047735373895, -57.560750447291 -38.047687163205, -57.561087181579 -38.047410055544, -57.561443431344 -38.047163497596, -57.561534067114 -38.047101391967, -57.562310426 -38.04771269, -57.56233627",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063576607",
+          "RADIO": "",
+          "SUPERFICIE": 0.009,
+          "LATITUD_CE": -38.047719,
+          "LONGITUD_C": -57.561517
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.561488246,
+              -38.048340899
+            ],
+            [
+              -57.56233627,
+              -38.047732662
+            ],
+            [
+              -57.562310426,
+              -38.04771269
+            ],
+            [
+              -57.561534067114,
+              -38.047101391967
+            ],
+            [
+              -57.561443431344,
+              -38.047163497596
+            ],
+            [
+              -57.561087181579,
+              -38.047410055544
+            ],
+            [
+              -57.560750447291,
+              -38.047687163205
+            ],
+            [
+              -57.560740232671,
+              -38.047735373895
+            ],
+            [
+              -57.561488246,
+              -38.048340899
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 4384,
+          "NOMBRE_BAR": "Autódromo",
+          "FAMILIAS": 2112,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1980",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión regular a la red con medidor domiciliario con consumo limitado",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Conexión regular a la red de agua pero sin factura",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.639589358895 -37.991344870787, -57.639680244013 -37.991424037032, -57.639431633502 -37.99161054083, -57.639345018524 -37.991527555177, -57.63932855814 -37.991539862006, -57.636224 -37.993863, -57.633591794825 -37.99583698406, -57.62757743856",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063579204",
+          "RADIO": "",
+          "SUPERFICIE": 0.823,
+          "LATITUD_CE": -37.990498,
+          "LONGITUD_C": -57.632309
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.639589358895,
+              -37.991344870787
+            ],
+            [
+              -57.639779011339,
+              -37.991203074567
+            ],
+            [
+              -57.640378290366,
+              -37.991709074783
+            ],
+            [
+              -57.640922134592,
+              -37.991305476384
+            ],
+            [
+              -57.640718700165,
+              -37.991099845524
+            ],
+            [
+              -57.640800436924,
+              -37.99103801261
+            ],
+            [
+              -57.640402902263,
+              -37.990678295073
+            ],
+            [
+              -57.640346176922,
+              -37.990726518523
+            ],
+            [
+              -57.63943499552,
+              -37.990049899596
+            ],
+            [
+              -57.639068814642,
+              -37.990373227558
+            ],
+            [
+              -57.634556354712,
+              -37.986709915611
+            ],
+            [
+              -57.634666743007,
+              -37.986615754301
+            ],
+            [
+              -57.633170109948,
+              -37.985467417767
+            ],
+            [
+              -57.632921921983,
+              -37.985660243205
+            ],
+            [
+              -57.632182924776,
+              -37.985051069046
+            ],
+            [
+              -57.62920752598,
+              -37.987146696923
+            ],
+            [
+              -57.629003937547,
+              -37.986950305743
+            ],
+            [
+              -57.625978584664,
+              -37.989273194223
+            ],
+            [
+              -57.626798856331,
+              -37.989922102089
+            ],
+            [
+              -57.625705432979,
+              -37.99080922157
+            ],
+            [
+              -57.62601501899,
+              -37.991045898049
+            ],
+            [
+              -57.624199043029,
+              -37.992464025528
+            ],
+            [
+              -57.623368948267,
+              -37.991755350802
+            ],
+            [
+              -57.622765931273,
+              -37.992252745303
+            ],
+            [
+              -57.622565566573,
+              -37.992054156974
+            ],
+            [
+              -57.621938172128,
+              -37.992573351436
+            ],
+            [
+              -57.622146704598,
+              -37.992746691728
+            ],
+            [
+              -57.621696552651,
+              -37.993103933004
+            ],
+            [
+              -57.62302073107,
+              -37.994186518004
+            ],
+            [
+              -57.623304959445,
+              -37.99397329961
+            ],
+            [
+              -57.623824494942,
+              -37.993583561871
+            ],
+            [
+              -57.624112509284,
+              -37.993367503375
+            ],
+            [
+              -57.624850545374,
+              -37.992832096425
+            ],
+            [
+              -57.624967942861,
+              -37.992789051258
+            ],
+            [
+              -57.62504511966,
+              -37.992774124518
+            ],
+            [
+              -57.625140613496,
+              -37.992606853703
+            ],
+            [
+              -57.627577438563,
+              -37.990900882122
+            ],
+            [
+              -57.633591794825,
+              -37.99583698406
+            ],
+            [
+              -57.636224,
+              -37.993863
+            ],
+            [
+              -57.63932855814,
+              -37.991539862006
+            ],
+            [
+              -57.639345018524,
+              -37.991527555177
+            ],
+            [
+              -57.639431633502,
+              -37.99161054083
+            ],
+            [
+              -57.639680244013,
+              -37.991424037032
+            ],
+            [
+              -57.639589358895,
+              -37.991344870787
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 5644,
+          "NOMBRE_BAR": "Virgen de Luján",
+          "FAMILIAS": 330,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1990",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Conexión regular a la red de agua pero sin factura",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.617085293382 -37.946835535616, -57.619275009135 -37.948663646933, -57.611102079237 -37.952853905748, -57.609381109976 -37.950742872441, -57.617085293382 -37.946835535616))",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063571005",
+          "RADIO": "",
+          "SUPERFICIE": 0.229,
+          "LATITUD_CE": -37.949789,
+          "LONGITUD_C": -57.614211
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.617085293382,
+              -37.946835535616
+            ],
+            [
+              -57.609381109976,
+              -37.950742872441
+            ],
+            [
+              -57.611102079237,
+              -37.952853905748
+            ],
+            [
+              -57.619275009135,
+              -37.948663646933
+            ],
+            [
+              -57.617085293382,
+              -37.946835535616
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 444,
+          "NOMBRE_BAR": "El Martillo",
+          "FAMILIAS": 129,
+          "ANIO_CREAC": 2011,
+          "DECADA_CRE": "Década 2010",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión regular a la red con medidor domiciliario con consumo limitado",
+          "CLOACAS": "Conexión formal a la red cloacal",
+          "AGUA": "Conexión formal a la red de agua con factura",
+          "COCINA": "Gas en garrafa",
+          "WKT": "MULTIPOLYGON(((-57.601411035007 -38.032023422511, -57.601823250237 -38.03237451925, -57.600656199325 -38.033315387129, -57.600229708243 -38.032945999456, -57.601411035007 -38.032023422511)), ((-57.601643113309 -38.031303866987, -57.601258571474 -38.03094",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063577106",
+          "RADIO": "",
+          "SUPERFICIE": 0.049,
+          "LATITUD_CE": -38.031611,
+          "LONGITUD_C": -57.600093
+        }
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -57.601411035007,
+                -38.032023422511
+              ],
+              [
+                -57.600229708243,
+                -38.032945999456
+              ],
+              [
+                -57.600656199325,
+                -38.033315387129
+              ],
+              [
+                -57.601823250237,
+                -38.03237451925
+              ],
+              [
+                -57.601411035007,
+                -38.032023422511
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -57.601643113309,
+                -38.031303866987
+              ],
+              [
+                -57.60238833605,
+                -38.030728483758
+              ],
+              [
+                -57.601405681562,
+                -38.030067035942
+              ],
+              [
+                -57.600222263817,
+                -38.031047723019
+              ],
+              [
+                -57.599966199805,
+                -38.030902173292
+              ],
+              [
+                -57.599752062023,
+                -38.03083317334
+              ],
+              [
+                -57.599484389796,
+                -38.030792725092
+              ],
+              [
+                -57.599197683099,
+                -38.030771311314
+              ],
+              [
+                -57.598895510895,
+                -38.030771311314
+              ],
+              [
+                -57.598719442052,
+                -38.030807000944
+              ],
+              [
+                -57.59826975271,
+                -38.031148431741
+              ],
+              [
+                -57.599009979388,
+                -38.031859823233
+              ],
+              [
+                -57.59795672582,
+                -38.032712984694
+              ],
+              [
+                -57.598436425465,
+                -38.033105999485
+              ],
+              [
+                -57.601258571474,
+                -38.030946699316
+              ],
+              [
+                -57.601643113309,
+                -38.031303866987
+              ]
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 5642,
+          "NOMBRE_BAR": "Bosque Grande",
+          "FAMILIAS": 9,
+          "ANIO_CREAC": 2011,
+          "DECADA_CRE": "Década 2010",
+          "CLASIFICAC": "Villa",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Conexión irregular a la red de agua",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.605595149299 -38.013834987976, -57.605380217034 -38.014028171142, -57.605108 -38.013781, -57.605327763327 -38.013607262124, -57.605595149299 -38.013834987976))",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063579504",
+          "RADIO": "",
+          "SUPERFICIE": 0.0,
+          "LATITUD_CE": -38.013814,
+          "LONGITUD_C": -57.605353
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.605595149299,
+              -38.013834987976
+            ],
+            [
+              -57.605327763327,
+              -38.013607262124
+            ],
+            [
+              -57.605108,
+              -38.013781
+            ],
+            [
+              -57.605380217034,
+              -38.014028171142
+            ],
+            [
+              -57.605595149299,
+              -38.013834987976
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 5641,
+          "NOMBRE_BAR": "Pueyrredón",
+          "FAMILIAS": 28,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1980",
+          "CLASIFICAC": "Villa",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Conexión irregular a la red cloacal",
+          "AGUA": "Conexión irregular a la red de agua",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.604178471173 -38.028555157454, -57.603841853458 -38.02826828757, -57.605554787317 -38.026972733775, -57.605871205598 -38.027235899177, -57.604178471173 -38.028555157454))",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063577111",
+          "RADIO": "",
+          "SUPERFICIE": 0.008,
+          "LATITUD_CE": -38.027766,
+          "LONGITUD_C": -57.604851
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.604178471173,
+              -38.028555157454
+            ],
+            [
+              -57.605871205598,
+              -38.027235899177
+            ],
+            [
+              -57.605554787317,
+              -38.026972733775
+            ],
+            [
+              -57.603841853458,
+              -38.02826828757
+            ],
+            [
+              -57.604178471173,
+              -38.028555157454
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 889,
+          "NOMBRE_BAR": "Malvinas Argentinas",
+          "FAMILIAS": 110,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1990",
+          "CLASIFICAC": "Villa",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Conexión formal a la red cloacal",
+          "AGUA": "Conexión formal a la red de agua con factura",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.589471371765 -37.960809900369, -57.588819179 -37.960047473751, -57.588185785202 -37.959295514678, -57.588474611 -37.959130383, -57.590149500346 -37.958253235544, -57.590803327503 -37.959048082801, -57.591386602567 -37.959823882765, -57.59042",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063570903",
+          "RADIO": "",
+          "SUPERFICIE": 0.042,
+          "LATITUD_CE": -37.959538,
+          "LONGITUD_C": -57.589803
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.589471371765,
+              -37.960809900369
+            ],
+            [
+              -57.59038179892,
+              -37.960330253501
+            ],
+            [
+              -57.590426481557,
+              -37.960361686973
+            ],
+            [
+              -57.591386602567,
+              -37.959823882765
+            ],
+            [
+              -57.590803327503,
+              -37.959048082801
+            ],
+            [
+              -57.590149500346,
+              -37.958253235544
+            ],
+            [
+              -57.588474611,
+              -37.959130383
+            ],
+            [
+              -57.588185785202,
+              -37.959295514678
+            ],
+            [
+              -57.588819179,
+              -37.960047473751
+            ],
+            [
+              -57.589471371765,
+              -37.960809900369
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 2912,
+          "NOMBRE_BAR": "Pasillo El Regional",
+          "FAMILIAS": 29,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1970",
+          "CLASIFICAC": "Villa",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Conexión formal a la red cloacal",
+          "AGUA": "Conexión formal a la red de agua con factura",
+          "COCINA": "Conexión formal a la red de gas con factura",
+          "WKT": "POLYGON((-57.60206456014 -37.988343372996, -57.601464473128 -37.987655000262, -57.601778735655 -37.987477321064, -57.60228116518 -37.988229023127, -57.60206456014 -37.988343372996))",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063575106",
+          "RADIO": "",
+          "SUPERFICIE": 0.002,
+          "LATITUD_CE": -37.987903,
+          "LONGITUD_C": -57.60188
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.60206456014,
+              -37.988343372996
+            ],
+            [
+              -57.60228116518,
+              -37.988229023127
+            ],
+            [
+              -57.601778735655,
+              -37.987477321064
+            ],
+            [
+              -57.601464473128,
+              -37.987655000262
+            ],
+            [
+              -57.60206456014,
+              -37.988343372996
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 819,
+          "NOMBRE_BAR": "Parque Palermo",
+          "FAMILIAS": 550,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1980",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Bomba de agua de pozo domiciliaria",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.619482155385 -38.017142872531, -57.627617233917 -38.015662485852, -57.627961470317 -38.016164737543, -57.629006101324 -38.017065651348, -57.627420679735 -38.018282392185, -57.629097265221 -38.019641835824, -57.627363006147 -38.020931000578,",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063579211",
+          "RADIO": "",
+          "SUPERFICIE": 0.489,
+          "LATITUD_CE": -38.020309,
+          "LONGITUD_C": -57.626817
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.619482155385,
+              -38.017142872531
+            ],
+            [
+              -57.620639634188,
+              -38.018122131903
+            ],
+            [
+              -57.623925998181,
+              -38.020861218243
+            ],
+            [
+              -57.628836643728,
+              -38.024980822636
+            ],
+            [
+              -57.630565540221,
+              -38.023669492542
+            ],
+            [
+              -57.6350246,
+              -38.0272532
+            ],
+            [
+              -57.6359365,
+              -38.0265433
+            ],
+            [
+              -57.636176946207,
+              -38.026736174534
+            ],
+            [
+              -57.636939,
+              -38.026127
+            ],
+            [
+              -57.636410039778,
+              -38.025680818362
+            ],
+            [
+              -57.635621796722,
+              -38.026303792951
+            ],
+            [
+              -57.631515074771,
+              -38.022892990643
+            ],
+            [
+              -57.6305936,
+              -38.0235937
+            ],
+            [
+              -57.627363006147,
+              -38.020931000578
+            ],
+            [
+              -57.629097265221,
+              -38.019641835824
+            ],
+            [
+              -57.627420679735,
+              -38.018282392185
+            ],
+            [
+              -57.629006101324,
+              -38.017065651348
+            ],
+            [
+              -57.627961470317,
+              -38.016164737543
+            ],
+            [
+              -57.627617233917,
+              -38.015662485852
+            ],
+            [
+              -57.619482155385,
+              -38.017142872531
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 4747,
+          "NOMBRE_BAR": "San Patricio",
+          "FAMILIAS": 198,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1980",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe a cámara séptica y pozo ciego",
+          "AGUA": "Bomba de agua de pozo domiciliaria",
+          "COCINA": "Leña o carbón",
+          "WKT": "MULTIPOLYGON(((-57.597762229662 -38.09807951577, -57.596403166327 -38.096982818591, -57.595948882924 -38.097271883954, -57.595449000677 -38.096907880795, -57.595915043614 -38.096609786985, -57.596419467897 -38.096949325515, -57.597308576566 -38.096332850",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063579001",
+          "RADIO": "",
+          "SUPERFICIE": 0.358,
+          "LATITUD_CE": -38.102092,
+          "LONGITUD_C": -57.594897
+        }
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -57.597762229662,
+                -38.09807951577
+              ],
+              [
+                -57.598811439255,
+                -38.097467408436
+              ],
+              [
+                -57.597308576566,
+                -38.096332850682
+              ],
+              [
+                -57.596419467897,
+                -38.096949325515
+              ],
+              [
+                -57.595915043614,
+                -38.096609786985
+              ],
+              [
+                -57.595449000677,
+                -38.096907880795
+              ],
+              [
+                -57.595948882924,
+                -38.097271883954
+              ],
+              [
+                -57.596403166327,
+                -38.096982818591
+              ],
+              [
+                -57.597762229662,
+                -38.09807951577
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -57.596951192425,
+                -38.101680967746
+              ],
+              [
+                -57.597493797893,
+                -38.101261468498
+              ],
+              [
+                -57.596446744825,
+                -38.100707186269
+              ],
+              [
+                -57.597009343468,
+                -38.100290774551
+              ],
+              [
+                -57.597380248125,
+                -38.100423399037
+              ],
+              [
+                -57.59779127782,
+                -38.099769217832
+              ],
+              [
+                -57.597207506767,
+                -38.099646553478
+              ],
+              [
+                -57.597339908051,
+                -38.099344779094
+              ],
+              [
+                -57.597007204252,
+                -38.099330372448
+              ],
+              [
+                -57.596896762928,
+                -38.099607390081
+              ],
+              [
+                -57.595082659145,
+                -38.09941346616
+              ],
+              [
+                -57.595672713821,
+                -38.098946430026
+              ],
+              [
+                -57.594050495071,
+                -38.097912506416
+              ],
+              [
+                -57.593150044178,
+                -38.098622547567
+              ],
+              [
+                -57.594370047283,
+                -38.099635379864
+              ],
+              [
+                -57.590303907075,
+                -38.102564640003
+              ],
+              [
+                -57.594697526681,
+                -38.106376643824
+              ],
+              [
+                -57.598862173088,
+                -38.103251930751
+              ],
+              [
+                -57.596951192425,
+                -38.101680967746
+              ]
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 2911,
+          "NOMBRE_BAR": "Ameghino",
+          "FAMILIAS": 55,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 2000",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Conexión irregular a la red cloacal",
+          "AGUA": "Conexión irregular a la red de agua",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.623775919313 -37.952360652611, -57.623696204631 -37.952377376762, -57.62366056695 -37.952415564537, -57.623554012932 -37.952611469583, -57.622690176 -37.953016497, -57.622014909114 -37.952169903735, -57.622777991854 -37.951831549864, -57.622",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063571008",
+          "RADIO": "",
+          "SUPERFICIE": 0.014,
+          "LATITUD_CE": -37.952263,
+          "LONGITUD_C": -57.62296
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.623775919313,
+              -37.952360652611
+            ],
+            [
+              -57.623892534291,
+              -37.952176479786
+            ],
+            [
+              -57.623016811,
+              -37.951522846281
+            ],
+            [
+              -57.622584641136,
+              -37.951590679641
+            ],
+            [
+              -57.622777991854,
+              -37.951831549864
+            ],
+            [
+              -57.622014909114,
+              -37.952169903735
+            ],
+            [
+              -57.622690176,
+              -37.953016497
+            ],
+            [
+              -57.623554012932,
+              -37.952611469583
+            ],
+            [
+              -57.62366056695,
+              -37.952415564537
+            ],
+            [
+              -57.623696204631,
+              -37.952377376762
+            ],
+            [
+              -57.623775919313,
+              -37.952360652611
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 1017,
+          "NOMBRE_BAR": "Parque Peña",
+          "FAMILIAS": 44,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1910",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe a cámara séptica y pozo ciego",
+          "AGUA": "Bomba de agua de pozo domiciliaria",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.544078517322 -37.926773469169, -57.54430539797 -37.926962115619, -57.542882807254 -37.92801766597, -57.542599340016 -37.927753888611, -57.542905544531 -37.927503463811, -57.542342049108 -37.927022143794, -57.543262361762 -37.926324519563, -5",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063578011",
+          "RADIO": "",
+          "SUPERFICIE": 0.015,
+          "LATITUD_CE": -37.927113,
+          "LONGITUD_C": -57.543249
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.544078517322,
+              -37.926773469169
+            ],
+            [
+              -57.544006884762,
+              -37.926727028186
+            ],
+            [
+              -57.543888172492,
+              -37.926828617524
+            ],
+            [
+              -57.543262361762,
+              -37.926324519563
+            ],
+            [
+              -57.542342049108,
+              -37.927022143794
+            ],
+            [
+              -57.542905544531,
+              -37.927503463811
+            ],
+            [
+              -57.542599340016,
+              -37.927753888611
+            ],
+            [
+              -57.542882807254,
+              -37.92801766597
+            ],
+            [
+              -57.54430539797,
+              -37.926962115619
+            ],
+            [
+              -57.544078517322,
+              -37.926773469169
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 4273,
+          "NOMBRE_BAR": "La Loma",
+          "FAMILIAS": 85,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1970",
+          "CLASIFICAC": "Villa",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Conexión formal a la red de agua con factura",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.554432856562 -38.024497794891, -57.554966577515 -38.025175489615, -57.553996572406 -38.025672853554, -57.554303425596 -38.0260800521, -57.553680993532 -38.02641162806, -57.553457034331 -38.026104774869, -57.553138029443 -38.026257991777, -57",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063575907",
+          "RADIO": "",
+          "SUPERFICIE": 0.019,
+          "LATITUD_CE": -38.025427,
+          "LONGITUD_C": -57.553853
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.554432856562,
+              -38.024497794891
+            ],
+            [
+              -57.554262705741,
+              -38.024590868844
+            ],
+            [
+              -57.554213260203,
+              -38.024534151904
+            ],
+            [
+              -57.553948581148,
+              -38.024679579956
+            ],
+            [
+              -57.553878775683,
+              -38.024589414564
+            ],
+            [
+              -57.553379859384,
+              -38.024855645979
+            ],
+            [
+              -57.553726767857,
+              -38.025335041098
+            ],
+            [
+              -57.553359345182,
+              -38.025537075737
+            ],
+            [
+              -57.553072219605,
+              -38.025174922027
+            ],
+            [
+              -57.552840145604,
+              -38.025297315148
+            ],
+            [
+              -57.553114245101,
+              -38.025665756829
+            ],
+            [
+              -57.552801153815,
+              -38.02582991585
+            ],
+            [
+              -57.553138029443,
+              -38.026257991777
+            ],
+            [
+              -57.553457034331,
+              -38.026104774869
+            ],
+            [
+              -57.553680993532,
+              -38.02641162806
+            ],
+            [
+              -57.554303425596,
+              -38.0260800521
+            ],
+            [
+              -57.553996572406,
+              -38.025672853554
+            ],
+            [
+              -57.554966577515,
+              -38.025175489615
+            ],
+            [
+              -57.554432856562,
+              -38.024497794891
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 425,
+          "NOMBRE_BAR": "Parque El Retazo",
+          "FAMILIAS": 17,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1980",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe a cámara séptica y pozo ciego",
+          "AGUA": "Bomba de agua de pozo comunitaria",
+          "COCINA": "Leña o carbón",
+          "WKT": "POLYGON((-57.572055463759 -37.912961757723, -57.570985860187 -37.914534500368, -57.569829 -37.91407, -57.569121 -37.914821, -57.566798 -37.913668, -57.568808 -37.911119, -57.572055463759 -37.912961757723))",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063577901",
+          "RADIO": "",
+          "SUPERFICIE": 0.102,
+          "LATITUD_CE": -37.913115,
+          "LONGITUD_C": -57.569402
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.572055463759,
+              -37.912961757723
+            ],
+            [
+              -57.568808,
+              -37.911119
+            ],
+            [
+              -57.566798,
+              -37.913668
+            ],
+            [
+              -57.569121,
+              -37.914821
+            ],
+            [
+              -57.569829,
+              -37.91407
+            ],
+            [
+              -57.570985860187,
+              -37.914534500368
+            ],
+            [
+              -57.572055463759,
+              -37.912961757723
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 875,
+          "NOMBRE_BAR": "Parque Peña",
+          "FAMILIAS": 11,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 2000",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Bomba de agua de pozo domiciliaria",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.544861951464 -37.920348139488, -57.544588035976 -37.920511281325, -57.544469028512 -37.92043890565, -57.544375935349 -37.920529671813, -57.543492704512 -37.919782537976, -57.543167455439 -37.920035421163, -57.542746060049 -37.919704869772, -",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063578010",
+          "RADIO": "",
+          "SUPERFICIE": 0.01,
+          "LATITUD_CE": -37.919839,
+          "LONGITUD_C": -57.54379
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.544861951464,
+              -37.920348139488
+            ],
+            [
+              -57.543512180155,
+              -37.919152238471
+            ],
+            [
+              -57.542746060049,
+              -37.919704869772
+            ],
+            [
+              -57.543167455439,
+              -37.920035421163
+            ],
+            [
+              -57.543492704512,
+              -37.919782537976
+            ],
+            [
+              -57.544375935349,
+              -37.920529671813
+            ],
+            [
+              -57.544469028512,
+              -37.92043890565
+            ],
+            [
+              -57.544588035976,
+              -37.920511281325
+            ],
+            [
+              -57.544861951464,
+              -37.920348139488
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 1003,
+          "NOMBRE_BAR": "Parque Peña",
+          "FAMILIAS": 11,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1970",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe a cámara séptica y pozo ciego",
+          "AGUA": "Bomba de agua de pozo domiciliaria",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.543528020598 -37.921201280962, -57.54317332528 -37.921496551626, -57.542681612645 -37.921123796897, -57.542728818776 -37.921026322205, -57.543034590776 -37.920825093458, -57.543528020598 -37.921201280962))",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063578010",
+          "RADIO": "",
+          "SUPERFICIE": 0.002,
+          "LATITUD_CE": -37.921155,
+          "LONGITUD_C": -57.543094
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.543528020598,
+              -37.921201280962
+            ],
+            [
+              -57.543034590776,
+              -37.920825093458
+            ],
+            [
+              -57.542728818776,
+              -37.921026322205
+            ],
+            [
+              -57.542681612645,
+              -37.921123796897
+            ],
+            [
+              -57.54317332528,
+              -37.921496551626
+            ],
+            [
+              -57.543528020598,
+              -37.921201280962
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 1016,
+          "NOMBRE_BAR": "Parque Peña",
+          "FAMILIAS": 33,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1910",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe a cámara séptica y pozo ciego",
+          "AGUA": "Bomba de agua de pozo domiciliaria",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.541786738053 -37.921798315094, -57.542643956459 -37.922495747369, -57.54254854176 -37.922548861373, -57.54185706588 -37.923096738135, -57.540097540628 -37.924391240855, -57.539254522084 -37.923670077091, -57.540881313412 -37.922419630061, -5",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063578010",
+          "RADIO": "",
+          "SUPERFICIE": 0.033,
+          "LATITUD_CE": -37.923088,
+          "LONGITUD_C": -57.540938
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.541786738053,
+              -37.921798315094
+            ],
+            [
+              -57.540997553354,
+              -37.922363752624
+            ],
+            [
+              -57.540881313412,
+              -37.922419630061
+            ],
+            [
+              -57.539254522084,
+              -37.923670077091
+            ],
+            [
+              -57.540097540628,
+              -37.924391240855
+            ],
+            [
+              -57.54185706588,
+              -37.923096738135
+            ],
+            [
+              -57.54254854176,
+              -37.922548861373
+            ],
+            [
+              -57.542643956459,
+              -37.922495747369
+            ],
+            [
+              -57.541786738053,
+              -37.921798315094
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 2915,
+          "NOMBRE_BAR": "Villa Vertiz - Anexo Cariño",
+          "FAMILIAS": 165,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1970",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Conexión formal a la red de agua con factura",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.578360762363 -38.030488425176, -57.577969347446 -38.030214244249, -57.577717477129 -38.029970034783, -57.578473101696 -38.029395935865, -57.578462149543 -38.029347039866, -57.578578115791 -38.029265559101, -57.57861993812 -38.029292822968, -",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063577001",
+          "RADIO": "",
+          "SUPERFICIE": 0.017,
+          "LATITUD_CE": -38.029617,
+          "LONGITUD_C": -57.578892
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.578360762363,
+              -38.030488425176
+            ],
+            [
+              -57.580089720003,
+              -38.029300462801
+            ],
+            [
+              -57.579408544668,
+              -38.02873717029
+            ],
+            [
+              -57.57861993812,
+              -38.029292822968
+            ],
+            [
+              -57.578578115791,
+              -38.029265559101
+            ],
+            [
+              -57.578462149543,
+              -38.029347039866
+            ],
+            [
+              -57.578473101696,
+              -38.029395935865
+            ],
+            [
+              -57.577717477129,
+              -38.029970034783
+            ],
+            [
+              -57.577969347446,
+              -38.030214244249
+            ],
+            [
+              -57.578360762363,
+              -38.030488425176
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 2916,
+          "NOMBRE_BAR": "Villa Cariño",
+          "FAMILIAS": 66,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1980",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Desagüe a cámara séptica y pozo ciego",
+          "AGUA": "Bomba de agua de pozo comunitaria",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.579218971 -38.028548033, -57.580133453 -38.027882535, -57.581737595 -38.029214665, -57.580831885 -38.029903549, -57.579218971 -38.028548033))",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063577001",
+          "RADIO": "",
+          "SUPERFICIE": 0.022,
+          "LATITUD_CE": -38.028889,
+          "LONGITUD_C": -57.580481
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.579218971,
+              -38.028548033
+            ],
+            [
+              -57.580831885,
+              -38.029903549
+            ],
+            [
+              -57.581737595,
+              -38.029214665
+            ],
+            [
+              -57.580133453,
+              -38.027882535
+            ],
+            [
+              -57.579218971,
+              -38.028548033
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 4309,
+          "NOMBRE_BAR": "Cabo Corrientes",
+          "FAMILIAS": 110,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1990",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe a cámara séptica y pozo ciego",
+          "AGUA": "Bomba de agua de pozo domiciliaria",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.619825053554 -38.06381419782, -57.629786478467 -38.072043184528, -57.616406338305 -38.081747293293, -57.606752872285 -38.073664204468, -57.619825053554 -38.06381419782))",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063577309",
+          "RADIO": "",
+          "SUPERFICIE": 1.983,
+          "LATITUD_CE": -38.072801,
+          "LONGITUD_C": -57.618224
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.619825053554,
+              -38.06381419782
+            ],
+            [
+              -57.606752872285,
+              -38.073664204468
+            ],
+            [
+              -57.616406338305,
+              -38.081747293293
+            ],
+            [
+              -57.629786478467,
+              -38.072043184528
+            ],
+            [
+              -57.619825053554,
+              -38.06381419782
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 5653,
+          "NOMBRE_BAR": "Libertad",
+          "FAMILIAS": 34,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1980",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Conexión irregular a la red de agua",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.609668918578 -37.952839071336, -57.609203959621 -37.953077184404, -57.608908470497 -37.952682162101, -57.607357235609 -37.953477151433, -57.607009564073 -37.953039859462, -57.609013446897 -37.952053081308, -57.609668918578 -37.952839071336))",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063571007",
+          "RADIO": "",
+          "SUPERFICIE": 0.013,
+          "LATITUD_CE": -37.952763,
+          "LONGITUD_C": -57.608364
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.609668918578,
+              -37.952839071336
+            ],
+            [
+              -57.609013446897,
+              -37.952053081308
+            ],
+            [
+              -57.607009564073,
+              -37.953039859462
+            ],
+            [
+              -57.607357235609,
+              -37.953477151433
+            ],
+            [
+              -57.608908470497,
+              -37.952682162101
+            ],
+            [
+              -57.609203959621,
+              -37.953077184404
+            ],
+            [
+              -57.609668918578,
+              -37.952839071336
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 4249,
+          "NOMBRE_BAR": "Caribe",
+          "FAMILIAS": 138,
+          "ANIO_CREAC": 2015,
+          "DECADA_CRE": "Década 2010",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Conexión irregular a la red de agua",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.622189897096 -37.980486149872, -57.621335747769 -37.979486700254, -57.619594656021 -37.977314908291, -57.620696389591 -37.976755218158, -57.621623562517 -37.976267500397, -57.622283186283 -37.97708745592, -57.622805842694 -37.977719511302, -",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063571106",
+          "RADIO": "",
+          "SUPERFICIE": 0.228,
+          "LATITUD_CE": -37.976839,
+          "LONGITUD_C": -57.624353
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.622189897096,
+              -37.980486149872
+            ],
+            [
+              -57.623961714303,
+              -37.979115357992
+            ],
+            [
+              -57.624807731565,
+              -37.97849554476
+            ],
+            [
+              -57.628117349407,
+              -37.975991538508
+            ],
+            [
+              -57.627407878107,
+              -37.975344236489
+            ],
+            [
+              -57.628744611256,
+              -37.974495387186
+            ],
+            [
+              -57.627699187875,
+              -37.973208992048
+            ],
+            [
+              -57.625574931186,
+              -37.974273687744
+            ],
+            [
+              -57.62363309577,
+              -37.975269761318
+            ],
+            [
+              -57.624810557889,
+              -37.976802653865
+            ],
+            [
+              -57.623841821117,
+              -37.977290053342
+            ],
+            [
+              -57.62389669612,
+              -37.977402744724
+            ],
+            [
+              -57.62387213203,
+              -37.977470706382
+            ],
+            [
+              -57.623047343413,
+              -37.977901791344
+            ],
+            [
+              -57.62297492264,
+              -37.977898545497
+            ],
+            [
+              -57.622908634922,
+              -37.977864403047
+            ],
+            [
+              -57.622805842694,
+              -37.977719511302
+            ],
+            [
+              -57.622283186283,
+              -37.97708745592
+            ],
+            [
+              -57.621623562517,
+              -37.976267500397
+            ],
+            [
+              -57.620696389591,
+              -37.976755218158
+            ],
+            [
+              -57.619594656021,
+              -37.977314908291
+            ],
+            [
+              -57.621335747769,
+              -37.979486700254
+            ],
+            [
+              -57.622189897096,
+              -37.980486149872
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 5648,
+          "NOMBRE_BAR": "Las Canteras",
+          "FAMILIAS": 209,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1990",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe a cámara séptica y pozo ciego",
+          "AGUA": "Bomba de agua de pozo domiciliaria",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.60628175931 -38.044645654373, -57.609023308318 -38.046879900558, -57.606496021198 -38.048750461973, -57.601738426096 -38.044813368519, -57.603561778435 -38.043406701796, -57.605604294803 -38.045234753945, -57.60628175931 -38.044645654373))",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063577401",
+          "RADIO": "",
+          "SUPERFICIE": 0.161,
+          "LATITUD_CE": -38.046088,
+          "LONGITUD_C": -57.605426
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.60628175931,
+              -38.044645654373
+            ],
+            [
+              -57.605604294803,
+              -38.045234753945
+            ],
+            [
+              -57.603561778435,
+              -38.043406701796
+            ],
+            [
+              -57.601738426096,
+              -38.044813368519
+            ],
+            [
+              -57.606496021198,
+              -38.048750461973
+            ],
+            [
+              -57.609023308318,
+              -38.046879900558
+            ],
+            [
+              -57.60628175931,
+              -38.044645654373
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 839,
+          "NOMBRE_BAR": "Parque Peña",
+          "FAMILIAS": 33,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1960",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe a cámara séptica y pozo ciego",
+          "AGUA": "Bomba de agua de pozo domiciliaria",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.54505123271 -37.929984795834, -57.544232638193 -37.930573369531, -57.54202822576 -37.928738536897, -57.541242322099 -37.929326398075, -57.544582910846 -37.931986836107, -57.544122404714 -37.932333576039, -57.540814729481 -37.929637496467, -5",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063578704",
+          "RADIO": "",
+          "SUPERFICIE": 0.05,
+          "LATITUD_CE": -37.930005,
+          "LONGITUD_C": -57.543164
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.54505123271,
+              -37.929984795834
+            ],
+            [
+              -57.54283523711,
+              -37.928107624386
+            ],
+            [
+              -57.540814729481,
+              -37.929637496467
+            ],
+            [
+              -57.544122404714,
+              -37.932333576039
+            ],
+            [
+              -57.544582910846,
+              -37.931986836107
+            ],
+            [
+              -57.541242322099,
+              -37.929326398075
+            ],
+            [
+              -57.54202822576,
+              -37.928738536897
+            ],
+            [
+              -57.544232638193,
+              -37.930573369531
+            ],
+            [
+              -57.54505123271,
+              -37.929984795834
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 4275,
+          "NOMBRE_BAR": "Villa Primavera",
+          "FAMILIAS": 55,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1960",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Desagüe a cámara séptica y pozo ciego",
+          "AGUA": "Conexión formal a la red de agua con factura",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.572255176095 -37.967762889209, -57.571350507233 -37.968210828782, -57.570471232584 -37.967139773191, -57.57138225 -37.966694329583, -57.572255176095 -37.967762889209))",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063570601",
+          "RADIO": "",
+          "SUPERFICIE": 0.013,
+          "LATITUD_CE": -37.967452,
+          "LONGITUD_C": -57.571364
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.572255176095,
+              -37.967762889209
+            ],
+            [
+              -57.57138225,
+              -37.966694329583
+            ],
+            [
+              -57.570471232584,
+              -37.967139773191
+            ],
+            [
+              -57.571350507233,
+              -37.968210828782
+            ],
+            [
+              -57.572255176095,
+              -37.967762889209
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 306,
+          "NOMBRE_BAR": "Villa Evita",
+          "FAMILIAS": 330,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1990",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Conexión formal a la red de agua con factura",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.598926890276 -38.021227713198, -57.598011410895 -38.021885197786, -57.597575438079 -38.021509251673, -57.597523139853 -38.021535646687, -57.597392413805 -38.021591439902, -57.597258402549 -38.021616969224, -57.597208793475 -38.021590734511,",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063577101",
+          "RADIO": "",
+          "SUPERFICIE": 0.137,
+          "LATITUD_CE": -38.020956,
+          "LONGITUD_C": -57.593575
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.598926890276,
+              -38.021227713198
+            ],
+            [
+              -57.600537779862,
+              -38.020885250138
+            ],
+            [
+              -57.60023891038,
+              -38.020532446939
+            ],
+            [
+              -57.596479598198,
+              -38.020736239172
+            ],
+            [
+              -57.596334874027,
+              -38.020869329
+            ],
+            [
+              -57.593376944949,
+              -38.020475944
+            ],
+            [
+              -57.590875958508,
+              -38.019659195896
+            ],
+            [
+              -57.589932010569,
+              -38.01926132237
+            ],
+            [
+              -57.588435259702,
+              -38.020254301586
+            ],
+            [
+              -57.588914407774,
+              -38.020617685858
+            ],
+            [
+              -57.589259800499,
+              -38.020355665681
+            ],
+            [
+              -57.589566815556,
+              -38.020685709678
+            ],
+            [
+              -57.589632989293,
+              -38.02072979647
+            ],
+            [
+              -57.589002965056,
+              -38.021229762276
+            ],
+            [
+              -57.589814507008,
+              -38.021855294782
+            ],
+            [
+              -57.591368234453,
+              -38.021922555746
+            ],
+            [
+              -57.592943995039,
+              -38.020817161022
+            ],
+            [
+              -57.593073289661,
+              -38.020811194603
+            ],
+            [
+              -57.593860589994,
+              -38.021033865121
+            ],
+            [
+              -57.594165254223,
+              -38.021095427312
+            ],
+            [
+              -57.594281408701,
+              -38.021376727048
+            ],
+            [
+              -57.595861219944,
+              -38.022684544104
+            ],
+            [
+              -57.597208793475,
+              -38.021590734511
+            ],
+            [
+              -57.597258402549,
+              -38.021616969224
+            ],
+            [
+              -57.597392413805,
+              -38.021591439902
+            ],
+            [
+              -57.597523139853,
+              -38.021535646687
+            ],
+            [
+              -57.597575438079,
+              -38.021509251673
+            ],
+            [
+              -57.598011410895,
+              -38.021885197786
+            ],
+            [
+              -57.598926890276,
+              -38.021227713198
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 5643,
+          "NOMBRE_BAR": "Juramento",
+          "FAMILIAS": 22,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1990",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Conexión irregular a la red de agua",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.573498241085 -38.057688772275, -57.573080075533 -38.058020545987, -57.571712325704 -38.05684445537, -57.572106586686 -38.056550812992, -57.573498241085 -38.057688772275))",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063576715",
+          "RADIO": "",
+          "SUPERFICIE": 0.008,
+          "LATITUD_CE": -38.057285,
+          "LONGITUD_C": -57.572609
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.573498241085,
+              -38.057688772275
+            ],
+            [
+              -57.572106586686,
+              -38.056550812992
+            ],
+            [
+              -57.571712325704,
+              -38.05684445537
+            ],
+            [
+              -57.573080075533,
+              -38.058020545987
+            ],
+            [
+              -57.573498241085,
+              -38.057688772275
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 4426,
+          "NOMBRE_BAR": "La Herradura",
+          "FAMILIAS": 1210,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 2000",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Desagüe a cámara séptica y pozo ciego",
+          "AGUA": "Bomba de agua de pozo domiciliaria",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.64959289158 -37.950971498281, -57.650429161535 -37.951641722356, -57.646226927446 -37.954760521462, -57.640569057752 -37.958831773493, -57.639764894947 -37.958188732171, -57.639616139465 -37.958119285699, -57.636454275369 -37.954175684863, -",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063577907",
+          "RADIO": "",
+          "SUPERFICIE": 0.782,
+          "LATITUD_CE": -37.952893,
+          "LONGITUD_C": -57.643055
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.64959289158,
+              -37.950971498281
+            ],
+            [
+              -57.644933859708,
+              -37.947097459973
+            ],
+            [
+              -57.641532447284,
+              -37.949604550145
+            ],
+            [
+              -57.638233572946,
+              -37.952128616822
+            ],
+            [
+              -57.63774872398,
+              -37.952540127289
+            ],
+            [
+              -57.636719268752,
+              -37.953581805599
+            ],
+            [
+              -57.636528452842,
+              -37.953735273199
+            ],
+            [
+              -57.636396036108,
+              -37.953905038243
+            ],
+            [
+              -57.636387887386,
+              -37.954038134038
+            ],
+            [
+              -57.636454275369,
+              -37.954175684863
+            ],
+            [
+              -57.639616139465,
+              -37.958119285699
+            ],
+            [
+              -57.639764894947,
+              -37.958188732171
+            ],
+            [
+              -57.640569057752,
+              -37.958831773493
+            ],
+            [
+              -57.646226927446,
+              -37.954760521462
+            ],
+            [
+              -57.650429161535,
+              -37.951641722356
+            ],
+            [
+              -57.64959289158,
+              -37.950971498281
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 5649,
+          "NOMBRE_BAR": "San Jorge",
+          "FAMILIAS": 418,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1990",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Conexión irregular a la red de agua",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.635547238058 -37.960324407946, -57.634537777068 -37.960798561433, -57.6313480484 -37.956815641986, -57.631622355571 -37.956605967529, -57.632260921515 -37.95627266336, -57.636424516618 -37.954139232114, -57.636454275369 -37.954175684863, -57",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063577906",
+          "RADIO": "",
+          "SUPERFICIE": 0.286,
+          "LATITUD_CE": -37.957485,
+          "LONGITUD_C": -57.635502
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.635547238058,
+              -37.960324407946
+            ],
+            [
+              -57.639699525798,
+              -37.958221332768
+            ],
+            [
+              -57.639616139465,
+              -37.958119285699
+            ],
+            [
+              -57.636454275369,
+              -37.954175684863
+            ],
+            [
+              -57.636424516618,
+              -37.954139232114
+            ],
+            [
+              -57.632260921515,
+              -37.95627266336
+            ],
+            [
+              -57.631622355571,
+              -37.956605967529
+            ],
+            [
+              -57.6313480484,
+              -37.956815641986
+            ],
+            [
+              -57.634537777068,
+              -37.960798561433
+            ],
+            [
+              -57.635547238058,
+              -37.960324407946
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 217,
+          "NOMBRE_BAR": "Hipódromo",
+          "FAMILIAS": 11,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1990",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Conexión formal a la red de agua con factura",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.654931373429 -37.960674018115, -57.655467371456 -37.96113459361, -57.655425026348 -37.961279138761, -57.654995483934 -37.961610235761, -57.654888218305 -37.961630527108, -57.654317612756 -37.961138393826, -57.654931373429 -37.960674018115))",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063577909",
+          "RADIO": "",
+          "SUPERFICIE": 0.005,
+          "LATITUD_CE": -37.961166,
+          "LONGITUD_C": -57.654922
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.654931373429,
+              -37.960674018115
+            ],
+            [
+              -57.654317612756,
+              -37.961138393826
+            ],
+            [
+              -57.654888218305,
+              -37.961630527108
+            ],
+            [
+              -57.654995483934,
+              -37.961610235761
+            ],
+            [
+              -57.655425026348,
+              -37.961279138761
+            ],
+            [
+              -57.655467371456,
+              -37.96113459361
+            ],
+            [
+              -57.654931373429,
+              -37.960674018115
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 1019,
+          "NOMBRE_BAR": "Beltrán",
+          "FAMILIAS": 44,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1990",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe a cámara séptica y pozo ciego",
+          "AGUA": "Bomba de agua de pozo domiciliaria",
+          "COCINA": "Gas en garrafa",
+          "WKT": "MULTIPOLYGON(((-57.563273981804 -37.936918795412, -57.562444536648 -37.937522789106, -57.561399239076 -37.936630213896, -57.56222529894 -37.936040936655, -57.563273981804 -37.936918795412)), ((-57.562196145601 -37.932024128476, -57.563873644807 -37.93190",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063578701",
+          "RADIO": "",
+          "SUPERFICIE": 0.062,
+          "LATITUD_CE": -37.933942,
+          "LONGITUD_C": -57.562255
+        }
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -57.563273981804,
+                -37.936918795412
+              ],
+              [
+                -57.56222529894,
+                -37.936040936655
+              ],
+              [
+                -57.561399239076,
+                -37.936630213896
+              ],
+              [
+                -57.562444536648,
+                -37.937522789106
+              ],
+              [
+                -57.563273981804,
+                -37.936918795412
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -57.562196145601,
+                -37.932024128476
+              ],
+              [
+                -57.56044163065,
+                -37.933349039972
+              ],
+              [
+                -57.56201263152,
+                -37.934666731242
+              ],
+              [
+                -57.563728853295,
+                -37.933287038039
+              ],
+              [
+                -57.563066182851,
+                -37.93272328704
+              ],
+              [
+                -57.563902525712,
+                -37.932027738589
+              ],
+              [
+                -57.563873644807,
+                -37.931904994745
+              ],
+              [
+                -57.562196145601,
+                -37.932024128476
+              ]
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 460,
+          "NOMBRE_BAR": "Las Avenidas",
+          "FAMILIAS": 23,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1970",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Conexión formal a la red cloacal",
+          "AGUA": "Conexión irregular a la red de agua",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.561450357006 -38.036038392274, -57.561829470419 -38.03570779453, -57.562399151856 -38.036146721185, -57.562013856267 -38.036459750917, -57.561992608771 -38.036476295661, -57.561450357006 -38.036038392274))",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063576010",
+          "RADIO": "",
+          "SUPERFICIE": 0.003,
+          "LATITUD_CE": -38.036093,
+          "LONGITUD_C": -57.56192
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.561450357006,
+              -38.036038392274
+            ],
+            [
+              -57.561992608771,
+              -38.036476295661
+            ],
+            [
+              -57.562013856267,
+              -38.036459750917
+            ],
+            [
+              -57.562399151856,
+              -38.036146721185
+            ],
+            [
+              -57.561829470419,
+              -38.03570779453
+            ],
+            [
+              -57.561450357006,
+              -38.036038392274
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 365,
+          "NOMBRE_BAR": "Regional",
+          "FAMILIAS": 165,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1970",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Conexión formal a la red cloacal",
+          "AGUA": "Conexión formal a la red de agua con factura",
+          "COCINA": "Conexión formal a la red de gas con factura",
+          "WKT": "POLYGON((-57.605304978982 -37.990148446429, -57.605584690881 -37.990511736427, -57.606606544 -37.990034749, -57.606874163054 -37.990397389786, -57.606243556688 -37.990720549813, -57.606601927537 -37.99116507321, -57.606726444969 -37.991094967459, -57.607",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063575108",
+          "RADIO": "",
+          "SUPERFICIE": 0.027,
+          "LATITUD_CE": -37.991107,
+          "LONGITUD_C": -57.606144
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.605304978982,
+              -37.990148446429
+            ],
+            [
+              -57.604756631848,
+              -37.990438905142
+            ],
+            [
+              -57.605292169928,
+              -37.991110477095
+            ],
+            [
+              -57.605379414722,
+              -37.991240609713
+            ],
+            [
+              -57.606305473176,
+              -37.992330353801
+            ],
+            [
+              -57.607166359489,
+              -37.991743692614
+            ],
+            [
+              -57.606886069188,
+              -37.991466317916
+            ],
+            [
+              -57.607059837,
+              -37.991379175
+            ],
+            [
+              -57.607516258369,
+              -37.991120093617
+            ],
+            [
+              -57.607280048735,
+              -37.99081288071
+            ],
+            [
+              -57.606726444969,
+              -37.991094967459
+            ],
+            [
+              -57.606601927537,
+              -37.99116507321
+            ],
+            [
+              -57.606243556688,
+              -37.990720549813
+            ],
+            [
+              -57.606874163054,
+              -37.990397389786
+            ],
+            [
+              -57.606606544,
+              -37.990034749
+            ],
+            [
+              -57.605584690881,
+              -37.990511736427
+            ],
+            [
+              -57.605304978982,
+              -37.990148446429
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 852,
+          "NOMBRE_BAR": "Las Heras",
+          "FAMILIAS": 968,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1990",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Conexión irregular a la red de agua",
+          "COCINA": "Gas en garrafa",
+          "WKT": "MULTIPOLYGON(((-57.622203383258 -38.024943036557, -57.62100018892 -38.025901526407, -57.621321476379 -38.026149762386, -57.620836887042 -38.026471189739, -57.621915723621 -38.027349738819, -57.621252160889 -38.027900498897, -57.620173814189 -38.027128554",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063577202",
+          "RADIO": "",
+          "SUPERFICIE": 0.288,
+          "LATITUD_CE": -38.022535,
+          "LONGITUD_C": -57.620117
+        }
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -57.622203383258,
+                -38.024943036557
+              ],
+              [
+                -57.620508404542,
+                -38.023456812611
+              ],
+              [
+                -57.623925998181,
+                -38.020861218243
+              ],
+              [
+                -57.620639634188,
+                -38.018122131903
+              ],
+              [
+                -57.617185914246,
+                -38.020808469613
+              ],
+              [
+                -57.6196464,
+                -38.0228733
+              ],
+              [
+                -57.6188579,
+                -38.0234438
+              ],
+              [
+                -57.6195606,
+                -38.0240735
+              ],
+              [
+                -57.618724320481,
+                -38.024748487635
+              ],
+              [
+                -57.619269597562,
+                -38.025185331053
+              ],
+              [
+                -57.61852823296,
+                -38.025723731658
+              ],
+              [
+                -57.620173814189,
+                -38.027128554725
+              ],
+              [
+                -57.621252160889,
+                -38.027900498897
+              ],
+              [
+                -57.621915723621,
+                -38.027349738819
+              ],
+              [
+                -57.620836887042,
+                -38.026471189739
+              ],
+              [
+                -57.621321476379,
+                -38.026149762386
+              ],
+              [
+                -57.62100018892,
+                -38.025901526407
+              ],
+              [
+                -57.622203383258,
+                -38.024943036557
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -57.617057832262,
+                -38.024775193887
+              ],
+              [
+                -57.616243500929,
+                -38.024091758481
+              ],
+              [
+                -57.6145311759,
+                -38.025396690194
+              ],
+              [
+                -57.615396664585,
+                -38.026070582147
+              ],
+              [
+                -57.617057832262,
+                -38.024775193887
+              ]
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 4245,
+          "NOMBRE_BAR": "Matadero",
+          "FAMILIAS": 165,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1980",
+          "CLASIFICAC": "Villa",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Conexión irregular a la red de agua",
+          "COCINA": "Gas en garrafa",
+          "WKT": "MULTIPOLYGON(((-57.592118082109 -37.995603884934, -57.591999489445 -37.995475676648, -57.59190346017 -37.995519997852, -57.591920335809 -37.995549530221, -57.591008756225 -37.99598868535, -57.590855679207 -37.995769304624, -57.59078411893 -37.99568435565",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063575015",
+          "RADIO": "",
+          "SUPERFICIE": 0.02,
+          "LATITUD_CE": -37.994964,
+          "LONGITUD_C": -57.591144
+        }
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -57.592118082109,
+                -37.995603884934
+              ],
+              [
+                -57.592342384194,
+                -37.995490864503
+              ],
+              [
+                -57.592266570866,
+                -37.995384725844
+              ],
+              [
+                -57.592562045559,
+                -37.995222214763
+              ],
+              [
+                -57.592299811769,
+                -37.994889805733
+              ],
+              [
+                -57.592652132068,
+                -37.994704208433
+              ],
+              [
+                -57.592436172608,
+                -37.994444641776
+              ],
+              [
+                -57.591851752098,
+                -37.994735143199
+              ],
+              [
+                -57.591072437595,
+                -37.995130340601
+              ],
+              [
+                -57.591056971342,
+                -37.995102178169
+              ],
+              [
+                -57.590894460261,
+                -37.994902732751
+              ],
+              [
+                -57.590603257042,
+                -37.995053597069
+              ],
+              [
+                -57.590669391647,
+                -37.995158041353
+              ],
+              [
+                -57.590770961073,
+                -37.995294236719
+              ],
+              [
+                -57.590585366031,
+                -37.995390265995
+              ],
+              [
+                -57.590559675225,
+                -37.995357289736
+              ],
+              [
+                -57.590482642407,
+                -37.995395806145
+              ],
+              [
+                -57.590466021956,
+                -37.995388419278
+              ],
+              [
+                -57.590426731496,
+                -37.995343793077
+              ],
+              [
+                -57.590407850376,
+                -37.995355640054
+              ],
+              [
+                -57.590393046629,
+                -37.995337764991
+              ],
+              [
+                -57.590384073897,
+                -37.995342251357
+              ],
+              [
+                -57.590292829681,
+                -37.995237219126
+              ],
+              [
+                -57.590124216779,
+                -37.995329956222
+              ],
+              [
+                -57.590216342441,
+                -37.995442810158
+              ],
+              [
+                -57.590390075726,
+                -37.995342251357
+              ],
+              [
+                -57.59040690825,
+                -37.995360954161
+              ],
+              [
+                -57.590425855865,
+                -37.995349638224
+              ],
+              [
+                -57.590466021956,
+                -37.99539303607
+              ],
+              [
+                -57.590483565766,
+                -37.9953990379
+              ],
+              [
+                -57.590557896118,
+                -37.995362103563
+              ],
+              [
+                -57.590622069528,
+                -37.995453054367
+              ],
+              [
+                -57.590686242938,
+                -37.995554162113
+              ],
+              [
+                -57.59078411893,
+                -37.99568435565
+              ],
+              [
+                -57.590855679207,
+                -37.995769304624
+              ],
+              [
+                -57.591008756225,
+                -37.99598868535
+              ],
+              [
+                -57.591920335809,
+                -37.995549530221
+              ],
+              [
+                -57.59190346017,
+                -37.995519997852
+              ],
+              [
+                -57.591999489445,
+                -37.995475676648
+              ],
+              [
+                -57.592118082109,
+                -37.995603884934
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -57.589451020218,
+                -37.994115451323
+              ],
+              [
+                -57.589469487386,
+                -37.994138653662
+              ],
+              [
+                -57.589851459457,
+                -37.994585267161
+              ],
+              [
+                -57.590292447137,
+                -37.994330104479
+              ],
+              [
+                -57.589706531173,
+                -37.99358380521
+              ],
+              [
+                -57.589521950017,
+                -37.99367003875
+              ],
+              [
+                -57.589260014258,
+                -37.993831391177
+              ],
+              [
+                -57.589451020218,
+                -37.994115451323
+              ]
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 4296,
+          "NOMBRE_BAR": "Santa Rosa del Mar",
+          "FAMILIAS": 330,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1970",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Bomba de agua de pozo domiciliaria",
+          "COCINA": "Gas en garrafa",
+          "WKT": "MULTIPOLYGON(((-57.592951995625 -38.086957598237, -57.594361248261 -38.086033734508, -57.593707325273 -38.085491280428, -57.592460120845 -38.086459826075, -57.592150358903 -38.086211001369, -57.592119119106 -38.086229565772, -57.591160028105 -38.08544265",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063579103",
+          "RADIO": "",
+          "SUPERFICIE": 0.845,
+          "LATITUD_CE": -38.08195,
+          "LONGITUD_C": -57.601506
+        }
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -57.592951995625,
+                -38.086957598237
+              ],
+              [
+                -57.593644744915,
+                -38.087554767599
+              ],
+              [
+                -57.59478096367,
+                -38.08860920386
+              ],
+              [
+                -57.594858350181,
+                -38.088552948591
+              ],
+              [
+                -57.596092462395,
+                -38.089660755557
+              ],
+              [
+                -57.598714941976,
+                -38.087518601905
+              ],
+              [
+                -57.598177363756,
+                -38.087064505006
+              ],
+              [
+                -57.598552505556,
+                -38.086800825358
+              ],
+              [
+                -57.599498473913,
+                -38.086111840279
+              ],
+              [
+                -57.598850879217,
+                -38.085583223123
+              ],
+              [
+                -57.600532972303,
+                -38.084363078882
+              ],
+              [
+                -57.59802799122,
+                -38.082299688662
+              ],
+              [
+                -57.598647363054,
+                -38.081815050001
+              ],
+              [
+                -57.598298325239,
+                -38.081540488315
+              ],
+              [
+                -57.59768579165,
+                -38.082018995029
+              ],
+              [
+                -57.596709985897,
+                -38.081206371173
+              ],
+              [
+                -57.59498567947,
+                -38.082518643894
+              ],
+              [
+                -57.592032707356,
+                -38.084794571336
+              ],
+              [
+                -57.591160028105,
+                -38.085442656591
+              ],
+              [
+                -57.592119119106,
+                -38.086229565772
+              ],
+              [
+                -57.592150358903,
+                -38.086211001369
+              ],
+              [
+                -57.592460120845,
+                -38.086459826075
+              ],
+              [
+                -57.593707325273,
+                -38.085491280428
+              ],
+              [
+                -57.594361248261,
+                -38.086033734508
+              ],
+              [
+                -57.592951995625,
+                -38.086957598237
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -57.605945442893,
+                -38.076238317776
+              ],
+              [
+                -57.600180924698,
+                -38.080571289484
+              ],
+              [
+                -57.600736011328,
+                -38.081043448932
+              ],
+              [
+                -57.600071440075,
+                -38.081565365702
+              ],
+              [
+                -57.600691523573,
+                -38.082084523728
+              ],
+              [
+                -57.601349109281,
+                -38.081564067771
+              ],
+              [
+                -57.603995842864,
+                -38.083715557143
+              ],
+              [
+                -57.606637100635,
+                -38.081734575262
+              ],
+              [
+                -57.607500227344,
+                -38.081085584613
+              ],
+              [
+                -57.609052065609,
+                -38.079879147412
+              ],
+              [
+                -57.609167082434,
+                -38.079777427562
+              ],
+              [
+                -57.611062190706,
+                -38.078341883547
+              ],
+              [
+                -57.611743911088,
+                -38.07786240586
+              ],
+              [
+                -57.608272416153,
+                -38.074982511725
+              ],
+              [
+                -57.607594554452,
+                -38.075124973897
+              ],
+              [
+                -57.607188665571,
+                -38.075274042598
+              ],
+              [
+                -57.607111144215,
+                -38.075216481379
+              ],
+              [
+                -57.605295575184,
+                -38.075714943849
+              ],
+              [
+                -57.605945442893,
+                -38.076238317776
+              ]
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 5645,
+          "NOMBRE_BAR": "Playa Serena",
+          "FAMILIAS": 150,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1970",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Bomba de agua de pozo comunitaria",
+          "COCINA": "Gas en garrafa",
+          "WKT": "MULTIPOLYGON(((-57.595855841049 -38.09650305048, -57.595714017776 -38.096611649614, -57.595330250927 -38.096273679586, -57.594872580437 -38.09663446389, -57.594398687247 -38.096217702586, -57.594225126495 -38.096349524482, -57.593907597837 -38.0960612076",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063579106",
+          "RADIO": "",
+          "SUPERFICIE": 0.176,
+          "LATITUD_CE": -38.097241,
+          "LONGITUD_C": -57.593073
+        }
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -57.595855841049,
+                -38.09650305048
+              ],
+              [
+                -57.596368620544,
+                -38.096107215286
+              ],
+              [
+                -57.595199211511,
+                -38.095111660081
+              ],
+              [
+                -57.59687037535,
+                -38.093834914814
+              ],
+              [
+                -57.595702968245,
+                -38.09283810997
+              ],
+              [
+                -57.591999584734,
+                -38.095504142846
+              ],
+              [
+                -57.593209535905,
+                -38.096580255951
+              ],
+              [
+                -57.593907597837,
+                -38.096061207607
+              ],
+              [
+                -57.594225126495,
+                -38.096349524482
+              ],
+              [
+                -57.594398687247,
+                -38.096217702586
+              ],
+              [
+                -57.594872580437,
+                -38.09663446389
+              ],
+              [
+                -57.595330250927,
+                -38.096273679586
+              ],
+              [
+                -57.595714017776,
+                -38.096611649614
+              ],
+              [
+                -57.595855841049,
+                -38.09650305048
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -57.594370047283,
+                -38.099635379864
+              ],
+              [
+                -57.593150044178,
+                -38.098622547567
+              ],
+              [
+                -57.594050495071,
+                -38.097912506416
+              ],
+              [
+                -57.592658893113,
+                -38.098029217564
+              ],
+              [
+                -57.592533764959,
+                -38.098043496719
+              ],
+              [
+                -57.590479515931,
+                -38.099592015594
+              ],
+              [
+                -57.588662364926,
+                -38.098063295647
+              ],
+              [
+                -57.588282496587,
+                -38.098333157203
+              ],
+              [
+                -57.588684511901,
+                -38.098666542936
+              ],
+              [
+                -57.58833873904,
+                -38.098932935163
+              ],
+              [
+                -57.591011425883,
+                -38.101165759178
+              ],
+              [
+                -57.592390743658,
+                -38.100151965066
+              ],
+              [
+                -57.592963038857,
+                -38.100648976695
+              ],
+              [
+                -57.594370047283,
+                -38.099635379864
+              ]
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 6513,
+          "NOMBRE_BAR": "La Utopía",
+          "FAMILIAS": 62,
+          "ANIO_CREAC": 2018,
+          "DECADA_CRE": "Década 2010",
+          "CLASIFICAC": "Conjunto habitacional degradado",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Desagüe a cámara séptica y pozo ciego",
+          "AGUA": "Bomba de agua de pozo comunitaria",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.600479136112 -38.094980433036, -57.599337433657 -38.095884200862, -57.598082481464 -38.094831335805, -57.599279868828 -38.093961535551, -57.600479136112 -38.094980433036))",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063579106",
+          "RADIO": "",
+          "SUPERFICIE": 0.022,
+          "LATITUD_CE": -38.094917,
+          "LONGITUD_C": -57.59929
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.600479136112,
+              -38.094980433036
+            ],
+            [
+              -57.599279868828,
+              -38.093961535551
+            ],
+            [
+              -57.598082481464,
+              -38.094831335805
+            ],
+            [
+              -57.599337433657,
+              -38.095884200862
+            ],
+            [
+              -57.600479136112,
+              -38.094980433036
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 5647,
+          "NOMBRE_BAR": "Lomas de San Patricio",
+          "FAMILIAS": 121,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1990",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe a cámara séptica y pozo ciego",
+          "AGUA": "Bomba de agua de pozo domiciliaria",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.606221713765 -38.093714170022, -57.604170885346 -38.092154390381, -57.605436958251 -38.091206045045, -57.606341752786 -38.090528313397, -57.60943984479 -38.08820770367, -57.610738719588 -38.089289799186, -57.608709008009 -38.090820299599, -5",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063579107",
+          "RADIO": "",
+          "SUPERFICIE": 0.154,
+          "LATITUD_CE": -38.091223,
+          "LONGITUD_C": -57.607612
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.606221713765,
+              -38.093714170022
+            ],
+            [
+              -57.607475401512,
+              -38.092765336848
+            ],
+            [
+              -57.608122147395,
+              -38.093325676954
+            ],
+            [
+              -57.609933981313,
+              -38.091921963201
+            ],
+            [
+              -57.608709008009,
+              -38.090820299599
+            ],
+            [
+              -57.610738719588,
+              -38.089289799186
+            ],
+            [
+              -57.60943984479,
+              -38.08820770367
+            ],
+            [
+              -57.606341752786,
+              -38.090528313397
+            ],
+            [
+              -57.605436958251,
+              -38.091206045045
+            ],
+            [
+              -57.604170885346,
+              -38.092154390381
+            ],
+            [
+              -57.606221713765,
+              -38.093714170022
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 4540,
+          "NOMBRE_BAR": "Arroyo de Alfar",
+          "FAMILIAS": 29,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1990",
+          "CLASIFICAC": "Villa",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Bomba de agua de pozo comunitaria",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.57287188034 -38.097824751425, -57.572815530002 -38.097928782818, -57.568025751305 -38.096736756445, -57.568099440208 -38.096641394336, -57.57287188034 -38.097824751425))",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063579805",
+          "RADIO": "",
+          "SUPERFICIE": 0.005,
+          "LATITUD_CE": -38.097287,
+          "LONGITUD_C": -57.570468
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.57287188034,
+              -38.097824751425
+            ],
+            [
+              -57.568099440208,
+              -38.096641394336
+            ],
+            [
+              -57.568025751305,
+              -38.096736756445
+            ],
+            [
+              -57.572815530002,
+              -38.097928782818
+            ],
+            [
+              -57.57287188034,
+              -38.097824751425
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 4427,
+          "NOMBRE_BAR": "José Hernández",
+          "FAMILIAS": 77,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1990",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Desagüe a cámara séptica y pozo ciego",
+          "AGUA": "Conexión irregular a la red de agua",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.618307983262 -37.992620759678, -57.616547835522 -37.991067682962, -57.618214166906 -37.989788088307, -57.617561642805 -37.989266556155, -57.618849293179 -37.988158839379, -57.619534807468 -37.988790326603, -57.619816441538 -37.988537576934,",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063579202",
+          "RADIO": "",
+          "SUPERFICIE": 0.129,
+          "LATITUD_CE": -37.989927,
+          "LONGITUD_C": -57.619595
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.618307983262,
+              -37.992620759678
+            ],
+            [
+              -57.620885758079,
+              -37.990665425565
+            ],
+            [
+              -57.620281909256,
+              -37.99019173003
+            ],
+            [
+              -57.623814695584,
+              -37.987583521093
+            ],
+            [
+              -57.623067007513,
+              -37.987034105374
+            ],
+            [
+              -57.620452446136,
+              -37.98899423935
+            ],
+            [
+              -57.619816441538,
+              -37.988537576934
+            ],
+            [
+              -57.619534807468,
+              -37.988790326603
+            ],
+            [
+              -57.618849293179,
+              -37.988158839379
+            ],
+            [
+              -57.617561642805,
+              -37.989266556155
+            ],
+            [
+              -57.618214166906,
+              -37.989788088307
+            ],
+            [
+              -57.616547835522,
+              -37.991067682962
+            ],
+            [
+              -57.618307983262,
+              -37.992620759678
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 4236,
+          "NOMBRE_BAR": "Bosque Grande",
+          "FAMILIAS": 74,
+          "ANIO_CREAC": 2014,
+          "DECADA_CRE": "Década 2010",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Conexión irregular a la red de agua",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.604621142838 -38.019089529565, -57.603825706426 -38.019449792341, -57.603576507367 -38.019496288895, -57.602911063923 -38.01963067715, -57.601812501109 -38.018791148582, -57.602320830304 -38.018464441693, -57.601608807171 -38.017908529772, -",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063579503",
+          "RADIO": "",
+          "SUPERFICIE": 0.101,
+          "LATITUD_CE": -38.017896,
+          "LONGITUD_C": -57.603443
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.604621142838,
+              -38.019089529565
+            ],
+            [
+              -57.604906632114,
+              -38.018923296824
+            ],
+            [
+              -57.605335981991,
+              -38.019218024191
+            ],
+            [
+              -57.605619292133,
+              -38.018983239
+            ],
+            [
+              -57.606190625512,
+              -38.018496363599
+            ],
+            [
+              -57.603015999171,
+              -38.015818548893
+            ],
+            [
+              -57.601166929399,
+              -38.017203082269
+            ],
+            [
+              -57.600859963651,
+              -38.017369384381
+            ],
+            [
+              -57.601608807171,
+              -38.017908529772
+            ],
+            [
+              -57.602320830304,
+              -38.018464441693
+            ],
+            [
+              -57.601812501109,
+              -38.018791148582
+            ],
+            [
+              -57.602911063923,
+              -38.01963067715
+            ],
+            [
+              -57.603576507367,
+              -38.019496288895
+            ],
+            [
+              -57.603825706426,
+              -38.019449792341
+            ],
+            [
+              -57.604621142838,
+              -38.019089529565
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 2910,
+          "NOMBRE_BAR": "Las Dalias",
+          "FAMILIAS": 92,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1980",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Conexión formal a la red cloacal",
+          "AGUA": "Conexión formal a la red de agua con factura",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.556158863256 -37.942284688588, -57.554115084143 -37.940575980255, -57.555493990423 -37.939540676105, -57.55643309719 -37.940356153234, -57.557755024236 -37.939355020593, -57.558834362219 -37.940269354448, -57.556158863256 -37.942284688588))",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063578712",
+          "RADIO": "",
+          "SUPERFICIE": 0.065,
+          "LATITUD_CE": -37.94071,
+          "LONGITUD_C": -57.556435
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.556158863256,
+              -37.942284688588
+            ],
+            [
+              -57.558834362219,
+              -37.940269354448
+            ],
+            [
+              -57.557755024236,
+              -37.939355020593
+            ],
+            [
+              -57.55643309719,
+              -37.940356153234
+            ],
+            [
+              -57.555493990423,
+              -37.939540676105
+            ],
+            [
+              -57.554115084143,
+              -37.940575980255
+            ],
+            [
+              -57.556158863256,
+              -37.942284688588
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 849,
+          "NOMBRE_BAR": "Newbery",
+          "FAMILIAS": 87,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1990",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Conexión formal a la red de agua con factura",
+          "COCINA": "Conexión formal a la red de gas con factura",
+          "WKT": "POLYGON((-57.611079202634 -37.977167375087, -57.610428636517 -37.976353509265, -57.609452764 -37.976840046, -57.608851039072 -37.976078464681, -57.610799582151 -37.975120201419, -57.611390424131 -37.975842068734, -57.611418871634 -37.975919444052, -57.61",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063571202",
+          "RADIO": "",
+          "SUPERFICIE": 0.03,
+          "LATITUD_CE": -37.976167,
+          "LONGITUD_C": -57.61051
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.611079202634,
+              -37.977167375087
+            ],
+            [
+              -57.612037481819,
+              -37.976698327154
+            ],
+            [
+              -57.611418871634,
+              -37.975919444052
+            ],
+            [
+              -57.611390424131,
+              -37.975842068734
+            ],
+            [
+              -57.610799582151,
+              -37.975120201419
+            ],
+            [
+              -57.608851039072,
+              -37.976078464681
+            ],
+            [
+              -57.609452764,
+              -37.976840046
+            ],
+            [
+              -57.610428636517,
+              -37.976353509265
+            ],
+            [
+              -57.611079202634,
+              -37.977167375087
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 890,
+          "NOMBRE_BAR": "Newbery",
+          "FAMILIAS": 33,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1990",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Conexión formal a la red de agua con factura",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.612427499332 -37.975388992971, -57.613033243721 -37.976138039075, -57.613022757837 -37.976185668808, -57.612030034678 -37.976679680534, -57.611432674173 -37.975886488, -57.612427499332 -37.975388992971))",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063571202",
+          "RADIO": "",
+          "SUPERFICIE": 0.01,
+          "LATITUD_CE": -37.976033,
+          "LONGITUD_C": -57.612238
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.612427499332,
+              -37.975388992971
+            ],
+            [
+              -57.611432674173,
+              -37.975886488
+            ],
+            [
+              -57.612030034678,
+              -37.976679680534
+            ],
+            [
+              -57.613022757837,
+              -37.976185668808
+            ],
+            [
+              -57.613033243721,
+              -37.976138039075
+            ],
+            [
+              -57.612427499332,
+              -37.975388992971
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 5646,
+          "NOMBRE_BAR": "Belisario Roldan",
+          "FAMILIAS": 33,
+          "ANIO_CREAC": 2018,
+          "DECADA_CRE": "Década 2010",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Conexión irregular a la red de agua",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.610732 -37.989043, -57.609841588503 -37.987842825976, -57.61081190605 -37.987307372564, -57.611896815398 -37.986869588266, -57.612445370251 -37.98756232307, -57.612492024305 -37.987637778582, -57.612481675344 -37.987692347966, -57.6124347534",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063579608",
+          "RADIO": "",
+          "SUPERFICIE": 0.028,
+          "LATITUD_CE": -37.987881,
+          "LONGITUD_C": -57.611181
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.610732,
+              -37.989043
+            ],
+            [
+              -57.611676642018,
+              -37.988325422436
+            ],
+            [
+              -57.612434753482,
+              -37.987745926706
+            ],
+            [
+              -57.612481675344,
+              -37.987692347966
+            ],
+            [
+              -57.612492024305,
+              -37.987637778582
+            ],
+            [
+              -57.612445370251,
+              -37.98756232307
+            ],
+            [
+              -57.611896815398,
+              -37.986869588266
+            ],
+            [
+              -57.61081190605,
+              -37.987307372564
+            ],
+            [
+              -57.609841588503,
+              -37.987842825976
+            ],
+            [
+              -57.610732,
+              -37.989043
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 2891,
+          "NOMBRE_BAR": "Nuevo Golf",
+          "FAMILIAS": 1650,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1990",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Conexión regular a la red de agua pero sin factura",
+          "COCINA": "Gas en garrafa",
+          "WKT": "MULTIPOLYGON(((-57.575499447656 -38.060015476069, -57.577119669002 -38.059850943037, -57.577282363117 -38.060860446723, -57.575435768381 -38.06106680371, -57.575309483993 -38.060040173162, -57.575499447656 -38.060015476069)), ((-57.573812965803 -38.05925",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063577405",
+          "RADIO": "",
+          "SUPERFICIE": 0.807,
+          "LATITUD_CE": -38.057967,
+          "LONGITUD_C": -57.586295
+        }
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -57.575499447656,
+                -38.060015476069
+              ],
+              [
+                -57.575309483993,
+                -38.060040173162
+              ],
+              [
+                -57.575435768381,
+                -38.06106680371
+              ],
+              [
+                -57.577282363117,
+                -38.060860446723
+              ],
+              [
+                -57.577119669002,
+                -38.059850943037
+              ],
+              [
+                -57.575499447656,
+                -38.060015476069
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -57.573812965803,
+                -38.059255646
+              ],
+              [
+                -57.574081768004,
+                -38.059470981712
+              ],
+              [
+                -57.573185362325,
+                -38.060177414075
+              ],
+              [
+                -57.573135255768,
+                -38.060129653514
+              ],
+              [
+                -57.572746608966,
+                -38.060404341015
+              ],
+              [
+                -57.573411249729,
+                -38.060962987244
+              ],
+              [
+                -57.574035513612,
+                -38.060539310622
+              ],
+              [
+                -57.574412728275,
+                -38.060599975417
+              ],
+              [
+                -57.574534736261,
+                -38.060310402435
+              ],
+              [
+                -57.574194404587,
+                -38.060221144261
+              ],
+              [
+                -57.5740143418,
+                -38.060027968736
+              ],
+              [
+                -57.574811271539,
+                -38.059421660509
+              ],
+              [
+                -57.574276225949,
+                -38.05892215544
+              ],
+              [
+                -57.573812965803,
+                -38.059255646
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -57.592628737507,
+                -38.0631451026
+              ],
+              [
+                -57.594495597953,
+                -38.062972804855
+              ],
+              [
+                -57.59665751407,
+                -38.06465341559
+              ],
+              [
+                -57.597231730261,
+                -38.064132848794
+              ],
+              [
+                -57.596780740026,
+                -38.063681858559
+              ],
+              [
+                -57.597317233986,
+                -38.063249310303
+              ],
+              [
+                -57.597193169758,
+                -38.063051478155
+              ],
+              [
+                -57.593858524487,
+                -38.060239914496
+              ],
+              [
+                -57.594633734087,
+                -38.059710397995
+              ],
+              [
+                -57.594437644634,
+                -38.059540649928
+              ],
+              [
+                -57.594306161635,
+                -38.059601151374
+              ],
+              [
+                -57.593449447843,
+                -38.059292667347
+              ],
+              [
+                -57.593006840325,
+                -38.059627976072
+              ],
+              [
+                -57.584422948453,
+                -38.052475776004
+              ],
+              [
+                -57.583302940553,
+                -38.051511817369
+              ],
+              [
+                -57.582682380843,
+                -38.052016725206
+              ],
+              [
+                -57.581546365202,
+                -38.052810024772
+              ],
+              [
+                -57.582103241406,
+                -38.053230817404
+              ],
+              [
+                -57.581127371892,
+                -38.053933861943
+              ],
+              [
+                -57.581574384713,
+                -38.054327509918
+              ],
+              [
+                -57.580701404849,
+                -38.054999956229
+              ],
+              [
+                -57.580391119495,
+                -38.054740251226
+              ],
+              [
+                -57.580057198321,
+                -38.054962963638
+              ],
+              [
+                -57.58108985613,
+                -38.055817593565
+              ],
+              [
+                -57.579963107327,
+                -38.0559650293
+              ],
+              [
+                -57.579482407634,
+                -38.055564367759
+              ],
+              [
+                -57.578715798858,
+                -38.056122642864
+              ],
+              [
+                -57.579128815039,
+                -38.056468420965
+              ],
+              [
+                -57.578453238184,
+                -38.05696818663
+              ],
+              [
+                -57.577734909027,
+                -38.057487929416
+              ],
+              [
+                -57.576588411626,
+                -38.056529998302
+              ],
+              [
+                -57.57581349845,
+                -38.057145191978
+              ],
+              [
+                -57.576931494454,
+                -38.058067269755
+              ],
+              [
+                -57.577383968476,
+                -38.058292109181
+              ],
+              [
+                -57.584236459066,
+                -38.058035391227
+              ],
+              [
+                -57.586216115633,
+                -38.059603814788
+              ],
+              [
+                -57.586876001156,
+                -38.061440017981
+              ],
+              [
+                -57.588846094165,
+                -38.061028784974
+              ],
+              [
+                -57.590121508746,
+                -38.060752936845
+              ],
+              [
+                -57.591599019761,
+                -38.061901661543
+              ],
+              [
+                -57.592422485776,
+                -38.062658069905
+              ],
+              [
+                -57.592628737507,
+                -38.0631451026
+              ]
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 2914,
+          "NOMBRE_BAR": "Parque Independencia",
+          "FAMILIAS": 693,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1990",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Desagüe a cámara séptica y pozo ciego",
+          "AGUA": "Conexión formal a la red de agua con factura",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.574070284 -38.070998063, -57.573402962496 -38.069684298746, -57.573509025 -38.065852871, -57.575029381 -38.065855422, -57.575807433047 -38.065579706119, -57.576257209655 -38.065257239729, -57.575256928172 -38.064298656653, -57.574952526868 -",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063577408",
+          "RADIO": "",
+          "SUPERFICIE": 0.367,
+          "LATITUD_CE": -38.068351,
+          "LONGITUD_C": -57.576441
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.574070284,
+              -38.070998063
+            ],
+            [
+              -57.575863063498,
+              -38.072783613006
+            ],
+            [
+              -57.581094325504,
+              -38.068774191749
+            ],
+            [
+              -57.577747467625,
+              -38.065994249551
+            ],
+            [
+              -57.576799396115,
+              -38.065208354481
+            ],
+            [
+              -57.575648941722,
+              -38.064199425175
+            ],
+            [
+              -57.576324999671,
+              -38.063033618804
+            ],
+            [
+              -57.574038724361,
+              -38.061151183529
+            ],
+            [
+              -57.573854964783,
+              -38.061337491499
+            ],
+            [
+              -57.574952526868,
+              -38.062309259659
+            ],
+            [
+              -57.575256928172,
+              -38.064298656653
+            ],
+            [
+              -57.576257209655,
+              -38.065257239729
+            ],
+            [
+              -57.575807433047,
+              -38.065579706119
+            ],
+            [
+              -57.575029381,
+              -38.065855422
+            ],
+            [
+              -57.573509025,
+              -38.065852871
+            ],
+            [
+              -57.573402962496,
+              -38.069684298746
+            ],
+            [
+              -57.574070284,
+              -38.070998063
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 4746,
+          "NOMBRE_BAR": "Villa Lourdes",
+          "FAMILIAS": 275,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1940",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión formal a la red con medidor domiciliario con factura",
+          "CLOACAS": "Desagüe a cámara séptica y pozo ciego",
+          "AGUA": "Conexión irregular a la red de agua",
+          "COCINA": "Gas en garrafa",
+          "WKT": "MULTIPOLYGON(((-57.550358759981 -38.043145534375, -57.550183680605 -38.042984851981, -57.550177766153 -38.042896513077, -57.55082281391 -38.04276184265, -57.55086339317 -38.042763079196, -57.550910033942 -38.042791751096, -57.551355413471 -38.04271151713",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063576609",
+          "RADIO": "",
+          "SUPERFICIE": 0.035,
+          "LATITUD_CE": -38.042274,
+          "LONGITUD_C": -57.55575
+        }
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -57.550358759981,
+                -38.043145534375
+              ],
+              [
+                -57.551542242909,
+                -38.042916211749
+              ],
+              [
+                -57.55185490163,
+                -38.04304922936
+              ],
+              [
+                -57.552313173416,
+                -38.042706868431
+              ],
+              [
+                -57.552996946678,
+                -38.042598018853
+              ],
+              [
+                -57.553054340092,
+                -38.0426514541
+              ],
+              [
+                -57.553911153079,
+                -38.04254551084
+              ],
+              [
+                -57.554134919544,
+                -38.042364487029
+              ],
+              [
+                -57.554314443922,
+                -38.042358286957
+              ],
+              [
+                -57.554419412761,
+                -38.042443650359
+              ],
+              [
+                -57.555770137077,
+                -38.042229909369
+              ],
+              [
+                -57.557059015041,
+                -38.04199934617
+              ],
+              [
+                -57.557898709812,
+                -38.041824332183
+              ],
+              [
+                -57.557967414251,
+                -38.041888517509
+              ],
+              [
+                -57.558398359628,
+                -38.041777688847
+              ],
+              [
+                -57.559713460446,
+                -38.041535251149
+              ],
+              [
+                -57.559729293112,
+                -38.041485774068
+              ],
+              [
+                -57.560174092071,
+                -38.041409579363
+              ],
+              [
+                -57.56020377832,
+                -38.041461035527
+              ],
+              [
+                -57.56050261989,
+                -38.041391767614
+              ],
+              [
+                -57.56118005741,
+                -38.041306090314
+              ],
+              [
+                -57.561374326697,
+                -38.041418891774
+              ],
+              [
+                -57.56164410336,
+                -38.041206584228
+              ],
+              [
+                -57.562129066735,
+                -38.041095204842
+              ],
+              [
+                -57.562455587229,
+                -38.040972415819
+              ],
+              [
+                -57.562546663952,
+                -38.041037059362
+              ],
+              [
+                -57.563327815694,
+                -38.040536228856
+              ],
+              [
+                -57.563310110718,
+                -38.040430982611
+              ],
+              [
+                -57.563035491203,
+                -38.040191872288
+              ],
+              [
+                -57.562872103562,
+                -38.040303984163
+              ],
+              [
+                -57.562696470438,
+                -38.040409812866
+              ],
+              [
+                -57.562243136952,
+                -38.040603178734
+              ],
+              [
+                -57.562131793458,
+                -38.040551900096
+              ],
+              [
+                -57.56163161341,
+                -38.040958804458
+              ],
+              [
+                -57.56155544359,
+                -38.040935987867
+              ],
+              [
+                -57.561431240483,
+                -38.040966463637
+              ],
+              [
+                -57.561286927152,
+                -38.04083590135
+              ],
+              [
+                -57.560990606522,
+                -38.041065265371
+              ],
+              [
+                -57.560839269589,
+                -38.04115451914
+              ],
+              [
+                -57.559583335722,
+                -38.041368018615
+              ],
+              [
+                -57.559015338831,
+                -38.041461035527
+              ],
+              [
+                -57.55889313044,
+                -38.041346248699
+              ],
+              [
+                -57.5582954473,
+                -38.04163321577
+              ],
+              [
+                -57.557819056135,
+                -38.041764559124
+              ],
+              [
+                -57.557473308048,
+                -38.041807777635
+              ],
+              [
+                -57.556909306481,
+                -38.041892053731
+              ],
+              [
+                -57.556631627548,
+                -38.041704053208
+              ],
+              [
+                -57.556229695397,
+                -38.041937433167
+              ],
+              [
+                -57.555480934695,
+                -38.042080054253
+              ],
+              [
+                -57.552756007582,
+                -38.042545733708
+              ],
+              [
+                -57.551362755069,
+                -38.042718542689
+              ],
+              [
+                -57.551355413471,
+                -38.042711517134
+              ],
+              [
+                -57.550910033942,
+                -38.042791751096
+              ],
+              [
+                -57.55086339317,
+                -38.042763079196
+              ],
+              [
+                -57.55082281391,
+                -38.04276184265
+              ],
+              [
+                -57.550177766153,
+                -38.042896513077
+              ],
+              [
+                -57.550183680605,
+                -38.042984851981
+              ],
+              [
+                -57.550358759981,
+                -38.043145534375
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -57.544527354241,
+                -38.046409517466
+              ],
+              [
+                -57.545105127518,
+                -38.045997700343
+              ],
+              [
+                -57.545682900796,
+                -38.045500446533
+              ],
+              [
+                -57.546761001145,
+                -38.044705086298
+              ],
+              [
+                -57.547203550889,
+                -38.044321543187
+              ],
+              [
+                -57.547685438388,
+                -38.044021592805
+              ],
+              [
+                -57.547558819989,
+                -38.043880222748
+              ],
+              [
+                -57.546789275156,
+                -38.044440785757
+              ],
+              [
+                -57.545906634277,
+                -38.045137801604
+              ],
+              [
+                -57.545926303155,
+                -38.045204184065
+              ],
+              [
+                -57.545599308066,
+                -38.045447586425
+              ],
+              [
+                -57.545541530738,
+                -38.045418083109
+              ],
+              [
+                -57.545153070407,
+                -38.045777040123
+              ],
+              [
+                -57.544942859279,
+                -38.045958362588
+              ],
+              [
+                -57.544446220122,
+                -38.046305026554
+              ],
+              [
+                -57.544527354241,
+                -38.046409517466
+              ]
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 800,
+          "NOMBRE_BAR": "Las Heras",
+          "FAMILIAS": 132,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1980",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Conexión irregular a la red de agua",
+          "COCINA": "Gas en garrafa",
+          "WKT": "MULTIPOLYGON(((-57.613960370843 -38.016780756162, -57.613139496591 -38.016115979389, -57.612351029784 -38.01677308045, -57.611048717227 -38.015727904262, -57.611936086847 -38.01505819534, -57.61314546603 -38.016034932762, -57.6132703 -38.0159782, -57.613",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063579509",
+          "RADIO": "",
+          "SUPERFICIE": 0.14,
+          "LATITUD_CE": -38.017438,
+          "LONGITUD_C": -57.61271
+        }
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -57.613960370843,
+                -38.016780756162
+              ],
+              [
+                -57.614820050645,
+                -38.016146230594
+              ],
+              [
+                -57.615641351884,
+                -38.016838324006
+              ],
+              [
+                -57.615935378588,
+                -38.016611256095
+              ],
+              [
+                -57.617152515583,
+                -38.017567624009
+              ],
+              [
+                -57.617810282672,
+                -38.017360025479
+              ],
+              [
+                -57.616381612529,
+                -38.016258416557
+              ],
+              [
+                -57.616503590257,
+                -38.016162861304
+              ],
+              [
+                -57.614776928725,
+                -38.014836851508
+              ],
+              [
+                -57.614285606209,
+                -38.015178334932
+              ],
+              [
+                -57.613921785339,
+                -38.015464955463
+              ],
+              [
+                -57.6132703,
+                -38.0159782
+              ],
+              [
+                -57.61314546603,
+                -38.016034932762
+              ],
+              [
+                -57.611936086847,
+                -38.01505819534
+              ],
+              [
+                -57.611048717227,
+                -38.015727904262
+              ],
+              [
+                -57.612351029784,
+                -38.01677308045
+              ],
+              [
+                -57.613139496591,
+                -38.016115979389
+              ],
+              [
+                -57.613960370843,
+                -38.016780756162
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -57.615424299791,
+                -38.017945119108
+              ],
+              [
+                -57.614820771944,
+                -38.017439698554
+              ],
+              [
+                -57.613917603725,
+                -38.018088203844
+              ],
+              [
+                -57.613132581841,
+                -38.017439690704
+              ],
+              [
+                -57.612241307987,
+                -38.018039931845
+              ],
+              [
+                -57.611485096354,
+                -38.017405639094
+              ],
+              [
+                -57.610634570815,
+                -38.0179902749
+              ],
+              [
+                -57.608994917764,
+                -38.016636449623
+              ],
+              [
+                -57.608758966423,
+                -38.016813838358
+              ],
+              [
+                -57.610206385794,
+                -38.018111974395
+              ],
+              [
+                -57.609757374631,
+                -38.018503654583
+              ],
+              [
+                -57.60864160727,
+                -38.01850353435
+              ],
+              [
+                -57.608495843172,
+                -38.01909282389
+              ],
+              [
+                -57.608137174357,
+                -38.019217795836
+              ],
+              [
+                -57.608449721821,
+                -38.019633612112
+              ],
+              [
+                -57.60853841564,
+                -38.019549067755
+              ],
+              [
+                -57.609009646218,
+                -38.019438874283
+              ],
+              [
+                -57.609677323257,
+                -38.020033978985
+              ],
+              [
+                -57.609986923558,
+                -38.019817148043
+              ],
+              [
+                -57.610289960014,
+                -38.020080703362
+              ],
+              [
+                -57.610517908475,
+                -38.019905351751
+              ],
+              [
+                -57.610198781349,
+                -38.019639156022
+              ],
+              [
+                -57.61058433662,
+                -38.019366191996
+              ],
+              [
+                -57.610382209523,
+                -38.019151272045
+              ],
+              [
+                -57.61693300373,
+                -38.017923797685
+              ],
+              [
+                -57.616869550846,
+                -38.017679900829
+              ],
+              [
+                -57.615424299791,
+                -38.017945119108
+              ]
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 2913,
+          "NOMBRE_BAR": "López de Gomara",
+          "FAMILIAS": 33,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1990",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión irregular a la red",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Conexión irregular a la red de agua",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.581860768446 -37.969123774057, -57.581284435078 -37.968332242022, -57.582127120003 -37.967912783014, -57.582175827174 -37.967839648723, -57.582165888031 -37.967737587407, -57.582012440825 -37.967508443554, -57.582754822107 -37.967118013785,",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063570711",
+          "RADIO": "",
+          "SUPERFICIE": 0.011,
+          "LATITUD_CE": -37.968223,
+          "LONGITUD_C": -57.582094
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.581860768446,
+              -37.969123774057
+            ],
+            [
+              -57.582314718001,
+              -37.968886368487
+            ],
+            [
+              -57.582754822107,
+              -37.967118013785
+            ],
+            [
+              -57.582012440825,
+              -37.967508443554
+            ],
+            [
+              -57.582165888031,
+              -37.967737587407
+            ],
+            [
+              -57.582175827174,
+              -37.967839648723
+            ],
+            [
+              -57.582127120003,
+              -37.967912783014
+            ],
+            [
+              -57.581284435078,
+              -37.968332242022
+            ],
+            [
+              -57.581860768446,
+              -37.969123774057
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barrio Popular Barrio Popular RENABAP",
+        "rawName": "BARRIO POPULAR RENABAP",
+        "idRenabap": "",
+        "isRenabap": true,
+        "color": "#ea580c",
+        "details": {
+          "ID_RENABAP": 4295,
+          "NOMBRE_BAR": "San Jacinto",
+          "FAMILIAS": 337,
+          "ANIO_CREAC": 0,
+          "DECADA_CRE": "Década 1970",
+          "CLASIFICAC": "Asentamiento",
+          "TITULO_PRO": "NO",
+          "ELECTRICID": "Conexión a la red con medidor comunitario",
+          "CLOACAS": "Desagüe sólo a pozo negro/ciego u hoyo",
+          "AGUA": "Bomba de agua de pozo domiciliaria",
+          "COCINA": "Gas en garrafa",
+          "WKT": "POLYGON((-57.593816275787 -38.091329420646, -57.593521937444 -38.091105974769, -57.593232983339 -38.090871760417, -57.593101069508 -38.0907559993, -57.592608411733 -38.090316286531, -57.591967687413 -38.090805803502, -57.592235160652 -38.091024678385, -5",
+          "CODPROV": "06",
+          "PROV": "Buenos Aires",
+          "CODDPTO": "06357",
+          "DPTO": "General Pueyrredón",
+          "REDCODE": "063577601",
+          "RADIO": "",
+          "SUPERFICIE": 0.553,
+          "LATITUD_CE": -38.091509,
+          "LONGITUD_C": -57.588219
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -57.593816275787,
+              -38.091329420646
+            ],
+            [
+              -57.596092462395,
+              -38.089660755557
+            ],
+            [
+              -57.594858350181,
+              -38.088552948591
+            ],
+            [
+              -57.594229291709,
+              -38.089016890431
+            ],
+            [
+              -57.593688904908,
+              -38.088574850102
+            ],
+            [
+              -57.593591091251,
+              -38.08849947077
+            ],
+            [
+              -57.593449306318,
+              -38.088600873919
+            ],
+            [
+              -57.592939598455,
+              -38.088185390221
+            ],
+            [
+              -57.592792429283,
+              -38.088042259228
+            ],
+            [
+              -57.592279131929,
+              -38.087621839978
+            ],
+            [
+              -57.592209136835,
+              -38.087542422468
+            ],
+            [
+              -57.591657420699,
+              -38.087079013443
+            ],
+            [
+              -57.592460120845,
+              -38.086459826075
+            ],
+            [
+              -57.592274981578,
+              -38.086311451058
+            ],
+            [
+              -57.592150358903,
+              -38.086211001369
+            ],
+            [
+              -57.592119119106,
+              -38.086229565772
+            ],
+            [
+              -57.592043515431,
+              -38.086168544409
+            ],
+            [
+              -57.591853777128,
+              -38.086326930743
+            ],
+            [
+              -57.591666674858,
+              -38.086468715676
+            ],
+            [
+              -57.591326626578,
+              -38.086784927486
+            ],
+            [
+              -57.591613197036,
+              -38.087022086344
+            ],
+            [
+              -57.591221297422,
+              -38.087325342331
+            ],
+            [
+              -57.592442622072,
+              -38.088346552802
+            ],
+            [
+              -57.59136128761,
+              -38.089173033333
+            ],
+            [
+              -57.590107489274,
+              -38.088140970257
+            ],
+            [
+              -57.588886332883,
+              -38.087161123072
+            ],
+            [
+              -57.586552947377,
+              -38.088932050923
+            ],
+            [
+              -57.586488540545,
+              -38.089010793132
+            ],
+            [
+              -57.584958823295,
+              -38.09016622585
+            ],
+            [
+              -57.583974551866,
+              -38.090920534196
+            ],
+            [
+              -57.581818582282,
+              -38.092546683939
+            ],
+            [
+              -57.580679127704,
+              -38.093383198966
+            ],
+            [
+              -57.580981374149,
+              -38.093629387638
+            ],
+            [
+              -57.581266738762,
+              -38.093862255931
+            ],
+            [
+              -57.580407078508,
+              -38.094520428931
+            ],
+            [
+              -57.581009399295,
+              -38.095037273208
+            ],
+            [
+              -57.581659907331,
+              -38.095565232751
+            ],
+            [
+              -57.581958445083,
+              -38.095812612014
+            ],
+            [
+              -57.582862099692,
+              -38.09511984006
+            ],
+            [
+              -57.582603656268,
+              -38.09491344427
+            ],
+            [
+              -57.583105287774,
+              -38.094532060746
+            ],
+            [
+              -57.582453514551,
+              -38.094008976416
+            ],
+            [
+              -57.583351336235,
+              -38.093333254549
+            ],
+            [
+              -57.585127686083,
+              -38.092017705734
+            ],
+            [
+              -57.585723093067,
+              -38.092500043721
+            ],
+            [
+              -57.5870496347,
+              -38.091492742531
+            ],
+            [
+              -57.588578758288,
+              -38.092750186444
+            ],
+            [
+              -57.588914375789,
+              -38.0930274747
+            ],
+            [
+              -57.588917516595,
+              -38.093033980654
+            ],
+            [
+              -57.587620812613,
+              -38.093995067134
+            ],
+            [
+              -57.586998035753,
+              -38.093453053844
+            ],
+            [
+              -57.585655565749,
+              -38.094494006521
+            ],
+            [
+              -57.585592300953,
+              -38.094542464663
+            ],
+            [
+              -57.584252074381,
+              -38.09557444361
+            ],
+            [
+              -57.585419107964,
+              -38.096542260387
+            ],
+            [
+              -57.585708510756,
+              -38.096751796982
+            ],
+            [
+              -57.585959541073,
+              -38.096786421592
+            ],
+            [
+              -57.586470436515,
+              -38.096875999016
+            ],
+            [
+              -57.587545489366,
+              -38.096073747556
+            ],
+            [
+              -57.586916823497,
+              -38.095548419793
+            ],
+            [
+              -57.58821711697,
+              -38.094564898988
+            ],
+            [
+              -57.588865020274,
+              -38.095109604397
+            ],
+            [
+              -57.590224540365,
+              -38.094043525276
+            ],
+            [
+              -57.589635863679,
+              -38.093533817414
+            ],
+            [
+              -57.590884109518,
+              -38.092592473139
+            ],
+            [
+              -57.591476375697,
+              -38.093108462613
+            ],
+            [
+              -57.59215389231,
+              -38.09258978102
+            ],
+            [
+              -57.591558036639,
+              -38.092089944261
+            ],
+            [
+              -57.592033644328,
+              -38.091715739721
+            ],
+            [
+              -57.592075820859,
+              -38.091683434293
+            ],
+            [
+              -57.59212697112,
+              -38.091643949881
+            ],
+            [
+              -57.592580144483,
+              -38.091283205936
+            ],
+            [
+              -57.592261184469,
+              -38.091004936179
+            ],
+            [
+              -57.592235160652,
+              -38.091024678385
+            ],
+            [
+              -57.591967687413,
+              -38.090805803502
+            ],
+            [
+              -57.592608411733,
+              -38.090316286531
+            ],
+            [
+              -57.593101069508,
+              -38.0907559993
+            ],
+            [
+              -57.593232983339,
+              -38.090871760417
+            ],
+            [
+              -57.593521937444,
+              -38.091105974769
+            ],
+            [
+              -57.593816275787,
+              -38.091329420646
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

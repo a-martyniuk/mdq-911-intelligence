@@ -98,16 +98,20 @@ function MapComponent({
         }),
         onEachFeature: (feature: any, layer: any) => {
           const isR = feature.properties.isRenabap;
+          const fams = feature.properties.familias;
+          const idRen = feature.properties.idRenabap;
           layer.bindPopup(`
             <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem;">
               <strong style="color: ${isR ? '#ea580c' : '#0284c7'}; font-size: 0.95rem;">
                 ${isR ? '🏡 RENABAP: ' : '📍 '}${feature.properties.name}
               </strong><br/>
               <span style="font-size: 0.8rem; color: #444;">
-                ${isR ? '<b>Categoría:</b> Registro Nacional de Barrios Populares (SISU / RENABAP)' : '<b>Categoría:</b> Barrio Oficial MGP'}
+                ${isR ? `<b>Categoría:</b> Registro Nacional de Barrios Populares 2023 (SISU)` : '<b>Categoría:</b> Barrio Oficial MGP'}
               </span><br/>
-              <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #ccc; font-size: 0.775rem; color: #666;">
-                GeoJSON Oficial MGP Subrubro 15
+              ${idRen ? `<span style="font-size: 0.775rem; color: #64748b;"><b>ID RENABAP:</b> #${idRen}</span><br/>` : ''}
+              ${fams ? `<span style="font-size: 0.775rem; color: #64748b;"><b>Familias Registradas:</b> ${fams}</span><br/>` : ''}
+              <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #ccc; font-size: 0.775rem; color: #ea580c; font-weight: 700;">
+                SHP Oficial RENABAP 2023 Mar del Plata
               </div>
             </div>
           `);
