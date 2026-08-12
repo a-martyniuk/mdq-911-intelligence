@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState, useMemo } from "react";
-import { Play, Pause, RotateCcw, Clock, Navigation, Filter } from "lucide-react";
+import { Play, Pause, RotateCcw, Clock, Navigation, Filter, Layers, ShieldAlert } from "lucide-react";
+import { POLICE_JURISDICTIONS_GEOJSON } from "@/lib/jurisdictionsGeoJSON";
 import "leaflet/dist/leaflet.css";
 
 interface GeoPoint {
@@ -30,9 +31,11 @@ interface SectionMapProps {
 function MapComponent({
   points,
   showVectors,
+  showJurisdictions,
 }: {
   points: GeoPoint[];
   showVectors: boolean;
+  showJurisdictions: boolean;
 }) {
   const [L, setL] = useState<any>(null);
 
@@ -54,6 +57,30 @@ function MapComponent({
       attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap',
       maxZoom: 19,
     }).addTo(map);
+
+    // Render Official MGP Police Jurisdiction Polygons layer
+    if (showJurisdictions) {
+      L.geoJSON(POLICE_JURISDICTIONS_GEOJSON, {
+        style: (feature: any) => ({
+          color: feature.properties.color || "#6366f1",
+          weight: 2,
+          opacity: 0.85,
+          fillColor: feature.properties.color || "#6366f1",
+          fillOpacity: 0.18,
+        }),
+        onEachFeature: (feature: any, layer: any) => {
+          layer.bindPopup(`
+            <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem;">
+              <strong style="color: ${feature.properties.color}; font-size: 0.95rem;">${feature.properties.name}</strong><br/>
+              <span style="font-size: 0.8rem; color: #444;"><b>Barrios:</b> ${feature.properties.description}</span><br/>
+              <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #ccc; font-size: 0.775rem;">
+                👮 <i>Cuadrante Policial Oficial MGP (Subrubro 122)</i>
+              </div>
+            </div>
+          `);
+        },
+      }).addTo(map);
+    }
 
     // Stratified sampling so ALL origins (Robo, Hallazgo, Disparos, Armas) are represented on map
     const samplePoints = (() => {
@@ -149,15 +176,16 @@ function MapComponent({
     return () => {
       map.remove();
     };
-  }, [L, points, showVectors]);
+  }, [L, points, showVectors, showJurisdictions]);
 
   return <div id="leaflet-map" style={{ width: "100%", height: "650px", borderRadius: "var(--radius-md)" }} />;
 }
 
-export default function SectionMap({ geoPoints }: SectionMapProps) {
+export default function SectionMap({ geoPoints = [] }: SectionMapProps) {
   const [selectedHour, setSelectedHour] = useState<number | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showVectors, setShowVectors] = useState(false);
+  const [showJurisdictions, setShowJurisdictions] = useState(true);
 
   // Time slider animation playback
   useEffect(() => {
@@ -228,17 +256,31 @@ export default function SectionMap({ geoPoints }: SectionMapProps) {
               </span>
             </div>
 
-            {/* Flow Vectors Toggle */}
-            <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.85rem", fontWeight: 600, color: "var(--text-primary)", cursor: "pointer" }}>
-              <input
-                type="checkbox"
-                checked={showVectors}
-                onChange={(e) => setShowVectors(e.target.checked)}
-                style={{ width: "16px", height: "16px", accentColor: "var(--accent-amber)" }}
-              />
-              <Navigation size={14} style={{ color: "var(--accent-amber)" }} />
-              Mostrar Vectores de Huida / Abandono
-            </label>
+            <div style={{ display: "flex", alignItems: "center", gap: "1.25rem", flexWrap: "wrap" }}>
+              {/* Police Jurisdictions Layer Toggle */}
+              <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.85rem", fontWeight: 700, color: "var(--accent-indigo)", cursor: "pointer" }}>
+                <input
+                  type="checkbox"
+                  checked={showJurisdictions}
+                  onChange={(e) => setShowJurisdictions(e.target.checked)}
+                  style={{ width: "16px", height: "16px", accentColor: "var(--accent-indigo)" }}
+                />
+                <Layers size={15} />
+                👮 Capa Jurisdicciones Policiales MGP (Subrubro 122)
+              </label>
+
+              {/* Flow Vectors Toggle */}
+              <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.85rem", fontWeight: 600, color: "var(--text-primary)", cursor: "pointer" }}>
+                <input
+                  type="checkbox"
+                  checked={showVectors}
+                  onChange={(e) => setShowVectors(e.target.checked)}
+                  style={{ width: "16px", height: "16px", accentColor: "var(--accent-amber)" }}
+                />
+                <Navigation size={14} style={{ color: "var(--accent-amber)" }} />
+                Mostrar Vectores de Huida / Abandono
+              </label>
+            </div>
           </div>
 
           {/* Time Slider Bar */}
@@ -280,7 +322,7 @@ export default function SectionMap({ geoPoints }: SectionMapProps) {
           )}
         </div>
 
-        <MapComponent points={filteredPoints} showVectors={showVectors} />
+        <MapComponent points={filteredPoints} showVectors={showVectors} showJurisdictions={showJurisdictions} />
       </div>
     </div>
   );
