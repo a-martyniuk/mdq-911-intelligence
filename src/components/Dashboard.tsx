@@ -14,6 +14,7 @@ import SectionNLP from "./SectionNLP";
 import SectionInvestigativeValue from "./SectionInvestigativeValue";
 import SectionGraph from "./SectionGraph";
 import SectionSearch from "./SectionSearch";
+import SectionRecoveryTracker from "./SectionRecoveryTracker";
 import SectionETL from "./SectionETL";
 import SectionDictionary from "./SectionDictionary";
 import { FilterState } from "@/lib/types";
@@ -145,6 +146,7 @@ export default function Dashboard() {
 
         {activeSection === "overview" && <SectionOverview stats={stats} />}
         {activeSection === "map" && <SectionMap geoPoints={data?.geoPoints || []} />}
+        {activeSection === "recovery-tracker" && <SectionRecoveryTracker recoveries={data?.recoveries || []} />}
         {activeSection === "graph" && <SectionGraph incidents={data?.incidentsSample || []} />}
         {activeSection === "search" && <SectionSearch incidents={data?.incidentsSample || []} />}
         {activeSection === "hotspots" && <SectionHotspots />}
