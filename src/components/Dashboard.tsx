@@ -12,6 +12,8 @@ import SectionTemporal from "./SectionTemporal";
 import SectionVehicles from "./SectionVehicles";
 import SectionNLP from "./SectionNLP";
 import SectionInvestigativeValue from "./SectionInvestigativeValue";
+import SectionGraph from "./SectionGraph";
+import SectionSearch from "./SectionSearch";
 import SectionETL from "./SectionETL";
 import SectionDictionary from "./SectionDictionary";
 import { FilterState } from "@/lib/types";
@@ -108,19 +110,21 @@ export default function Dashboard() {
       <header className="app-header">
         <div className="header-brand">
           <div className="brand-icon">911</div>
-          <div className="header-title">
-            <h1 className="gradient-text">MDQ 911 Intelligence Platform</h1>
-            <p>Mar del Plata · Análisis Forense e Inteligencia Relacional</p>
+          <div>
+            <h1 className="brand-title">MDQ 911 Intelligence Platform</h1>
+            <p className="brand-subtitle">Plataforma de Investigación & Inteligencia Relacional Delictiva</p>
           </div>
         </div>
 
-        <div className="header-actions">
-          <div className="badge">
-            <span className="badge-dot" />
-            <span>Usuario: <strong>{user}</strong></span>
+        <div className="header-user">
+          <div className="user-badge">
+            <span className="user-dot"></span>
+            <span>Usuario: {user}</span>
           </div>
-          <button className="btn-logout" onClick={handleLogout}>
-            <LogOut size={16} /> Salir
+
+          <button onClick={handleLogout} className="btn-logout" title="Cerrar sesión">
+            <LogOut size={16} />
+            <span>Salir</span>
           </button>
         </div>
       </header>
@@ -141,6 +145,8 @@ export default function Dashboard() {
 
         {activeSection === "overview" && <SectionOverview stats={stats} />}
         {activeSection === "map" && <SectionMap geoPoints={data?.geoPoints || []} />}
+        {activeSection === "graph" && <SectionGraph incidents={data?.incidentsSample || []} />}
+        {activeSection === "search" && <SectionSearch incidents={data?.incidentsSample || []} />}
         {activeSection === "hotspots" && <SectionHotspots />}
         {activeSection === "temporal" && <SectionTemporal incidents={data?.incidentsSample || []} />}
         {activeSection === "vehicles" && <SectionVehicles recoveries={data?.recoveries || []} />}

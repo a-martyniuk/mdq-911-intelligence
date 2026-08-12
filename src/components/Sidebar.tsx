@@ -35,7 +35,9 @@ export default function Sidebar({
 }: SidebarProps) {
   const sections = [
     { id: "overview", label: "Dashboard / Resumen Investigativo", icon: <LayoutDashboard size={18} /> },
-    { id: "map", label: "Mapeo de Incidentes", icon: <MapPin size={18} /> },
+    { id: "map", label: "Mapeo & Geointeligencia", icon: <MapPin size={18} /> },
+    { id: "graph", label: "Grafo Relacional & Redes", icon: <Workflow size={18} /> },
+    { id: "search", label: "Buscador Universal de Patentes", icon: <Search size={18} /> },
     { id: "hotspots", label: "Concentración Delictiva", icon: <Flame size={18} /> },
     { id: "temporal", label: "Patrones Temporales & Cronología", icon: <Clock size={18} /> },
     { id: "vehicles", label: "Robos, Hallazgos & Cruce de Patentes", icon: <Car size={18} /> },
