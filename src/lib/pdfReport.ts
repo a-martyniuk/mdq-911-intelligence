@@ -1,5 +1,6 @@
 import { POLICE_JURISDICTIONS_GEOJSON } from "./jurisdictionsGeoJSON";
 import { RENABAP_BARRIOS_GEOJSON } from "./renabapGeoJSON";
+import { formatTimeDifference } from "./formatters";
 
 /**
  * 📄 Generador de Expediente Individual / Ficha Policial por Banda (PDF)
@@ -48,7 +49,7 @@ export function generateCaseFilePrint(data: any) {
           <div class="field"><strong>Patente Identificada:</strong> ${data.Patente || data.Patente_Principal}</div>
           <div class="field"><strong>Marca / Modelo:</strong> ${data.Marca || data.Marca_Detectada}</div>
           <div class="field"><strong>ID 911 Robo:</strong> #${data.ID_Robo || "N/I"} | <strong>ID 911 Hallazgo:</strong> #${data.ID_Hallazgo || "N/I"}</div>
-          <div class="field"><strong>⏱️ Horas hasta Hallazgo:</strong> ${data.Horas_Hasta_Hallazgo} horas</div>
+          <div class="field"><strong>⏱️ Tiempo hasta Hallazgo:</strong> ${formatTimeDifference(data.Horas_Hasta_Hallazgo)}</div>
         </div>
 
         <div class="box" style="border-left: 5px solid #ef4444;">
@@ -546,8 +547,8 @@ export function generateAllTrajectoriesPDF(rawRecoveries: any[]) {
                   <div class="relato-box"><b>Relato 911:</b> ${relHall}</div>
                 </td>
                 <td>
-                  <strong style="color: ${c.Horas_Hasta_Hallazgo < 6 ? '#10b981' : '#d97706'}; font-size: 0.85rem;">
-                    ${typeof c.Horas_Hasta_Hallazgo === 'number' ? c.Horas_Hasta_Hallazgo.toFixed(1) : c.Horas_Hasta_Hallazgo}h
+                  <strong style="color: ${c.Horas_Hasta_Hallazgo < 6 ? '#10b981' : '#d97706'}; font-size: 0.8rem;">
+                    ${formatTimeDifference(c.Horas_Hasta_Hallazgo)}
                   </strong>
                 </td>
               </tr>

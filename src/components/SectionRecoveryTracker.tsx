@@ -6,6 +6,7 @@ import { Car, Bike, Clock, MapPin, Search, ArrowRight, ShieldCheck, AlertTriangl
 import { highlightRelato } from "@/lib/nlpExtractor";
 import { exportToCSV } from "@/lib/excelExport";
 import { generateCaseFilePrint, generateAllTrajectoriesPDF } from "@/lib/pdfReport";
+import { formatTimeDifference } from "@/lib/formatters";
 import { POLICE_JURISDICTIONS_GEOJSON } from "@/lib/jurisdictionsGeoJSON";
 import { RENABAP_BARRIOS_GEOJSON } from "@/lib/renabapGeoJSON";
 import "leaflet/dist/leaflet.css";
@@ -617,7 +618,7 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "var(--bg-base)", padding: "0.4rem 0.8rem", borderRadius: "6px", border: "1px solid var(--border)" }}>
               <Clock size={16} style={{ color: "var(--accent-amber)" }} />
               <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-primary)" }}>
-                Diferencial de Tiempo: {selectedCase.Horas_Hasta_Hallazgo} horas
+                Diferencial de Tiempo: {formatTimeDifference(selectedCase.Horas_Hasta_Hallazgo)}
               </span>
             </div>
           </div>
