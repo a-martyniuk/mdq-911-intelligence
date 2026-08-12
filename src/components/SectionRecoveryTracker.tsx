@@ -503,26 +503,32 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
             <h3 style={{ fontSize: "1rem", fontWeight: 700, margin: 0, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
               <MapPin size={16} style={{ color: "var(--accent-indigo)" }} /> Vector Espacial de Trayectoria ({vehicleType === "motos" ? "Moto" : vehicleType === "autos" ? "Auto" : "Vehículo"})
             </h3>
+          </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: "0.85rem", flexWrap: "wrap" }}>
-              <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.775rem", fontWeight: 700, color: "#ea580c", cursor: "pointer" }}>
+          {/* Selector Unificado de Capas Vectoriales */}
+          <div style={{ background: "var(--bg-base)", padding: "0.75rem", borderRadius: "8px", border: "1px solid var(--border)", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <div style={{ fontSize: "0.75rem", fontWeight: 800, color: "var(--text-muted)", textTransform: "uppercase", display: "flex", alignItems: "center", gap: "0.3rem" }}>
+              <Layers size={13} color="var(--accent-indigo)" /> Control de Capas Vectoriales del Mapa:
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.8rem", fontWeight: 700, color: "#ea580c", cursor: "pointer" }}>
                 <input
                   type="checkbox"
                   checked={showRenabap}
                   onChange={(e) => setShowRenabap(e.target.checked)}
                   style={{ width: "15px", height: "15px", accentColor: "#ea580c" }}
                 />
-                <Home size={14} /> Capa RENABAP
+                <Home size={14} /> Capa Asentamientos RENABAP (58 SHP)
               </label>
 
-              <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.775rem", fontWeight: 700, color: "var(--accent-indigo)", cursor: "pointer" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.8rem", fontWeight: 700, color: "var(--accent-indigo)", cursor: "pointer" }}>
                 <input
                   type="checkbox"
                   checked={showJurisdictions}
                   onChange={(e) => setShowJurisdictions(e.target.checked)}
                   style={{ width: "15px", height: "15px", accentColor: "var(--accent-indigo)" }}
                 />
-                <Layers size={14} /> Capa Jurisdicciones MGP
+                <Layers size={14} /> Capa Comisarías MGP (Subrubro 122)
               </label>
             </div>
           </div>

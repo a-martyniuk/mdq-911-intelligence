@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useMemo } from "react";
-import { Play, Pause, RotateCcw, Clock, Navigation, Filter, Layers, ShieldAlert, Home } from "lucide-react";
+import { Play, Pause, RotateCcw, Clock, Navigation, Filter, Layers, ShieldAlert, Home, Eye, CheckSquare, Square, Zap } from "lucide-react";
 import { POLICE_JURISDICTIONS_GEOJSON } from "@/lib/jurisdictionsGeoJSON";
 import { RENABAP_BARRIOS_GEOJSON } from "@/lib/renabapGeoJSON";
 import "leaflet/dist/leaflet.css";
@@ -34,11 +34,13 @@ function MapComponent({
   showVectors,
   showJurisdictions,
   showRenabap,
+  showPoints,
 }: {
   points: GeoPoint[];
   showVectors: boolean;
   showJurisdictions: boolean;
   showRenabap: boolean;
+  showPoints: boolean;
 }) {
   const [L, setL] = useState<any>(null);
 
@@ -69,14 +71,18 @@ function MapComponent({
           weight: 2,
           opacity: 0.85,
           fillColor: feature.properties.color || "#6366f1",
-          fillOpacity: 0.14,
+          fillOpacity: 0.12,
         }),
         onEachFeature: (feature: any, layer: any) => {
           layer.bindPopup(`
             <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem;">
-              <strong style="color: ${feature.properties.color}; font-size: 0.95rem;">${feature.properties.name}</strong><br/>
-              <span style="font-size: 0.8rem; color: #444;"><b>Barrios:</b> ${feature.properties.description}</span><br/>
-              <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #ccc; font-size: 0.775rem;">
+              <strong style="color: ${feature.properties.color || '#6366f1'}; font-size: 0.95rem;">
+                👮 ${feature.properties.name}
+              </strong><br/>
+              <span style="font-size: 0.8rem; color: #444;">
+                <b>Zonas Incluidas:</b> ${feature.properties.description || feature.properties.barrios}
+              </span><br/>
+              <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #ccc; font-size: 0.775rem; color: #666;">
                 👮 <i>Cuadrante Policial Oficial MGP (Subrubro 122)</i>
               </div>
             </div>
@@ -124,128 +130,178 @@ function MapComponent({
       if (!points || points.length === 0) return [];
       if (points.length <= 1500) return points;
 
-      const groups: Record<string, GeoPoint[]> = {};
+      const byOrigen: Record<string, GeoPoint[]> = {};
       points.forEach((pt) => {
-        const key = pt.origen || "OTROS";
-        if (!groups[key]) groups[key] = [];
-        groups[key].push(pt);
+        const o = pt.origen || "Otros";
+        if (!byOrigen[o]) byOrigen[o] = [];
+        byOrigen[o].push(pt);
       });
 
-      const sampled: GeoPoint[] = [];
-      const keys = Object.keys(groups);
-      const perGroup = Math.floor(1500 / (keys.length || 1));
+      const result: GeoPoint[] = [];
+      const keys = Object.keys(byOrigen);
+      const perKeyLimit = Math.floor(1500 / keys.length);
 
       keys.forEach((k) => {
-        sampled.push(...groups[k].slice(0, perGroup));
+        const arr = byOrigen[k];
+        if (arr.length <= perKeyLimit) {
+          result.push(...arr);
+        } else {
+          const step = arr.length / perKeyLimit;
+          for (let i = 0; i < perKeyLimit; i++) {
+            result.push(arr[Math.floor(i * step)]);
+          }
+        }
       });
-
-      return sampled;
+      return result;
     })();
 
-    const getOriginColor = (origen: string) => {
-      switch (origen) {
-        case "ROBO_AUTO_MOTO": return "#ef4444";
-        case "HALLAZGO_AUTOMOTOR": return "#10b981";
-        case "DISPAROS_PERSONAS": return "#f59e0b";
-        case "ARMA_FUEGO": return "#8b5cf6";
-        default: return "#06b6d4";
-      }
-    };
+    // Render 911 Incident Markers & Vector Trajectories
+    if (showPoints) {
+      samplePoints.forEach((pt) => {
+        const isHallazgos = pt.origen === "Hallazgos";
+        const isDisparos = pt.origen === "Disparos";
+        const isArmas = pt.origen === "Armas";
 
-    // Draw markers
-    samplePoints.forEach((pt) => {
-      const circle = L.circleMarker([pt.lat, pt.lng], {
-        radius: 6,
-        fillColor: getOriginColor(pt.origen),
-        color: "#000",
-        weight: 1,
-        opacity: 0.8,
-        fillOpacity: 0.75,
-      });
+        const color = isHallazgos ? "#10b981" : isDisparos ? "#f59e0b" : isArmas ? "#ef4444" : "#ec4899";
 
-      const popupContent = `
-        <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 4px; max-width: 280px;">
-          <strong style="color: #d97706;">ID: ${pt.id}</strong> - ${pt.origen}<br/>
-          <b>Tipo:</b> ${pt.tipo} (${pt.subtipo})<br/>
-          <b>Dirección:</b> ${pt.direccion}<br/>
-          <b>Fecha/Hora:</b> ${pt.fecha} (${pt.hora}:00 hs)<br/>
-          ${pt.patente ? `<b>Patente NLP:</b> <span style="background:#fef08a; padding:1px 4px; border-radius:3px; font-weight:bold;">${pt.patente}</span><br/>` : ""}
-          ${pt.marca && pt.marca !== "NO ESPECIFICADO" ? `<b>Marca:</b> ${pt.marca}<br/>` : ""}
-          ${pt.relato ? `<div style="margin-top:6px; padding:6px; background:#f3f4f6; border-radius:4px; font-size:0.75rem; color:#374151; max-height:100px; overflow-y:auto;"><b>Relato 911:</b> "${pt.relato}"</div>` : ""}
-        </div>
-      `;
-
-      circle.bindPopup(popupContent);
-      circle.addTo(map);
-    });
-
-    // Draw flow vectors if enabled (stolen -> recovered pairs)
-    if (showVectors) {
-      // Flow vector sample connections
-      const flowPairs = [
-        { from: [-38.012, -57.545], to: [-37.978, -57.589], brand: "Honda Tornado", time: "4.2 hs" },
-        { from: [-38.045, -57.562], to: [-37.962, -57.612], brand: "Fiat Uno", time: "3.5 hs" },
-        { from: [-37.992, -57.531], to: [-37.951, -57.575], brand: "Zanella ZB", time: "6.1 hs" },
-        { from: [-38.028, -57.578], to: [-37.989, -57.625], brand: "Peugeot 208", time: "5.8 hs" },
-        { from: [-38.051, -57.549], to: [-37.971, -57.598], brand: "Honda Wave", time: "2.1 hs" },
-      ];
-
-      flowPairs.forEach((pair) => {
-        const polyline = L.polyline([pair.from, pair.to], {
-          color: "#f59e0b",
-          weight: 3,
-          dashArray: "8, 6",
-          opacity: 0.85,
+        const marker = L.circleMarker([pt.lat, pt.lng], {
+          radius: isHallazgos ? 6.5 : 5,
+          fillColor: color,
+          color: "#ffffff",
+          weight: 1.2,
+          opacity: 0.9,
+          fillOpacity: 0.8,
         });
 
-        polyline.bindPopup(`
-          <div style="font-family: sans-serif; font-size: 0.8rem; color: #111;">
-            <strong style="color: #ea580c;">Vector de Huida / Abandono</strong><br/>
-            <b>Vehículo:</b> ${pair.brand}<br/>
-            <b>Tiempo Transcurrido:</b> ${pair.time}<br/>
-            <i>Trayecto desde punto de sustracción hasta punto de hallazgo.</i>
+        const popupContent = `
+          <div style="font-family: sans-serif; font-size: 0.825rem; color: #1e293b; padding: 0.2rem; max-width: 260px;">
+            <strong style="color: ${color}; font-size: 0.9rem;">${pt.tipo} (${pt.subtipo || "General"})</strong><br/>
+            <span><b>ID:</b> #${pt.id} | <b>Origen:</b> ${pt.origen}</span><br/>
+            <span><b>Fecha/Hora:</b> ${pt.fecha} - ${pt.hora}:00 hs</span><br/>
+            <span><b>Dirección:</b> ${pt.direccion}</span><br/>
+            ${pt.marca ? `<span><b>Marca:</b> ${pt.marca}</span><br/>` : ""}
+            ${pt.patente ? `<span><b>Patente:</b> ${pt.patente}</span><br/>` : ""}
+            ${pt.relato ? `<div style="margin-top:0.3rem; font-style:italic; font-size:0.75rem; background:#f1f5f9; padding:0.4rem; border-radius:4px;">"${pt.relato.slice(0, 110)}..."</div>` : ""}
           </div>
-        `);
-        polyline.addTo(map);
+        `;
+
+        marker.bindPopup(popupContent);
+        marker.addTo(map);
+
+        // Vector line from Theft -> Recovery
+        if (showVectors && pt.latHallazgo && pt.lngHallazgo) {
+          const polyline = L.polyline(
+            [
+              [pt.lat, pt.lng],
+              [pt.latHallazgo, pt.lngHallazgo],
+            ],
+            {
+              color: "#3b82f6",
+              weight: 2.5,
+              opacity: 0.85,
+              dashArray: "6, 6",
+            }
+          );
+
+          polyline.bindPopup(`
+            <div style="font-family: sans-serif; font-size: 0.8rem; color: #1e293b;">
+              <strong style="color: #3b82f6;">Vector Robo ➔ Hallazgo (Patente ${pt.patente || "Emparejada"})</strong><br/>
+              <b>Origen Sustracción:</b> ${pt.direccion}<br/>
+              <b>Destino Descarte:</b> Lat ${pt.latHallazgo.toFixed(4)}, Lng ${pt.lngHallazgo.toFixed(4)}
+            </div>
+          `);
+
+          polyline.addTo(map);
+
+          L.circleMarker([pt.latHallazgo, pt.lngHallazgo], {
+            radius: 7,
+            fillColor: "#10b981",
+            color: "#ffffff",
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.9,
+          }).bindPopup(`<b>Punto de Hallazgo / Descarte:</b> Patente ${pt.patente || "Identificada"}`).addTo(map);
+        }
       });
     }
 
     return () => {
       map.remove();
     };
-  }, [L, points, showVectors, showJurisdictions]);
+  }, [L, points, showVectors, showJurisdictions, showRenabap, showPoints]);
 
-  return <div id="leaflet-map" style={{ width: "100%", height: "650px", borderRadius: "var(--radius-md)" }} />;
+  return (
+    <div
+      id="leaflet-map"
+      style={{
+        width: "100%",
+        height: "600px",
+        borderRadius: "var(--radius-md)",
+        border: "1px solid var(--border)",
+        boxShadow: "var(--shadow-md)",
+        zIndex: 1,
+      }}
+    />
+  );
 }
 
 export default function SectionMap({ geoPoints = [] }: SectionMapProps) {
   const [selectedHour, setSelectedHour] = useState<number | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [showVectors, setShowVectors] = useState(false);
+
+  // Layer switches states
+  const [showPoints, setShowPoints] = useState(true);
+  const [showVectors, setShowVectors] = useState(true);
   const [showJurisdictions, setShowJurisdictions] = useState(true);
   const [showRenabap, setShowRenabap] = useState(true);
 
-  // Time slider animation playback
+  // Auto-play time slider
   useEffect(() => {
     let interval: any = null;
     if (isPlaying) {
       interval = setInterval(() => {
         setSelectedHour((prev) => {
-          if (prev === null || prev >= 23) return 0;
+          if (prev === null) return 0;
+          if (prev >= 23) return 0;
           return prev + 1;
         });
       }, 1200);
+    } else {
+      clearInterval(interval);
     }
-    return () => {
-      if (interval) clearInterval(interval);
-    };
+    return () => clearInterval(interval);
   }, [isPlaying]);
 
-  // Filter geo points by selected hour
+  // Filter geoPoints by hour slider
   const filteredPoints = useMemo(() => {
     if (selectedHour === null) return geoPoints;
     return geoPoints.filter((pt) => pt.hora === selectedHour);
   }, [geoPoints, selectedHour]);
+
+  // Quick Layer Presets
+  const applyPreset = (preset: "all" | "renabap" | "jurisdictions" | "points_only") => {
+    if (preset === "all") {
+      setShowPoints(true);
+      setShowVectors(true);
+      setShowJurisdictions(true);
+      setShowRenabap(true);
+    } else if (preset === "renabap") {
+      setShowPoints(true);
+      setShowVectors(true);
+      setShowJurisdictions(false);
+      setShowRenabap(true);
+    } else if (preset === "jurisdictions") {
+      setShowPoints(true);
+      setShowVectors(false);
+      setShowJurisdictions(true);
+      setShowRenabap(false);
+    } else if (preset === "points_only") {
+      setShowPoints(true);
+      setShowVectors(false);
+      setShowJurisdictions(false);
+      setShowRenabap(false);
+    }
+  };
 
   return (
     <div>
@@ -255,124 +311,189 @@ export default function SectionMap({ geoPoints = [] }: SectionMapProps) {
           Exploración espacial de {geoPoints.length.toLocaleString()} incidentes georreferenciados con time-slider animado de 24 horas y vectores de flujo (Robo $\rightarrow$ Hallazgo).
         </p>
 
-        {/* Control Bar: Time Slider & Vectors Toggle */}
-        <div style={{ background: "var(--bg-base)", padding: "1rem", borderRadius: "8px", border: "1px solid var(--border)", marginBottom: "1rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "1rem" }}>
-            {/* Play/Pause & Slider controls */}
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flex: 1, minWidth: "300px" }}>
+        {/* UNIFIED MAP LAYER SELECTOR PANEL */}
+        <div style={{ background: "linear-gradient(135deg, rgba(30,41,59,0.9) 0%, rgba(15,23,42,0.95) 100%)", padding: "1.1rem", borderRadius: "10px", border: "1px solid var(--accent-indigo)", marginBottom: "1rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
+          
+          {/* Header & Quick Presets Bar */}
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "0.75rem", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.75rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#fff", fontWeight: 800, fontSize: "0.95rem" }}>
+              <Layers size={20} color="var(--accent-indigo)" />
+              <span>Selector Global de Capas del Mapa</span>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
+              <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 700, textTransform: "uppercase" }}>Modos Rápidos:</span>
+              <button
+                onClick={() => applyPreset("all")}
+                style={{ padding: "0.3rem 0.65rem", fontSize: "0.75rem", fontWeight: 700, borderRadius: "5px", border: "1px solid var(--accent-indigo)", background: "rgba(99,102,241,0.2)", color: "#a5b4fc", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
+              >
+                <Zap size={12} /> Activar Todas las Capas
+              </button>
+              <button
+                onClick={() => applyPreset("renabap")}
+                style={{ padding: "0.3rem 0.65rem", fontSize: "0.75rem", fontWeight: 700, borderRadius: "5px", border: "1px solid #ea580c", background: "rgba(234,88,12,0.2)", color: "#fdba74", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
+              >
+                <Home size={12} /> Modo Enfriamiento RENABAP
+              </button>
+              <button
+                onClick={() => applyPreset("jurisdictions")}
+                style={{ padding: "0.3rem 0.65rem", fontSize: "0.75rem", fontWeight: 700, borderRadius: "5px", border: "1px solid #8b5cf6", background: "rgba(139,92,246,0.2)", color: "#c4b5fd", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
+              >
+                <Layers size={12} /> Modo Comisarías
+              </button>
+              <button
+                onClick={() => applyPreset("points_only")}
+                style={{ padding: "0.3rem 0.65rem", fontSize: "0.75rem", fontWeight: 700, borderRadius: "5px", border: "1px solid var(--border)", background: "var(--bg-card)", color: "var(--text-secondary)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
+              >
+                <Eye size={12} /> Solo Puntos 911
+              </button>
+            </div>
+          </div>
+
+          {/* Individual Interactive Checkbox Controls */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "0.75rem" }}>
+            {/* Layer 1: 911 Incidents Points */}
+            <label onClick={() => setShowPoints(!showPoints)} style={{ display: "flex", alignItems: "center", gap: "0.6rem", padding: "0.5rem 0.75rem", background: showPoints ? "rgba(16,185,129,0.15)" : "var(--bg-base)", border: `1px solid ${showPoints ? "#10b981" : "var(--border)"}`, borderRadius: "6px", cursor: "pointer" }}>
+              {showPoints ? <CheckSquare size={16} color="#10b981" /> : <Square size={16} color="var(--text-muted)" />}
+              <div>
+                <div style={{ fontSize: "0.825rem", fontWeight: 700, color: showPoints ? "#fff" : "var(--text-secondary)" }}>
+                  📍 Puntos & Incidentes 911
+                </div>
+                <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>
+                  {filteredPoints.length.toLocaleString()} eventos georreferenciados
+                </div>
+              </div>
+            </label>
+
+            {/* Layer 2: Trajectory Vectors */}
+            <label onClick={() => setShowVectors(!showVectors)} style={{ display: "flex", alignItems: "center", gap: "0.6rem", padding: "0.5rem 0.75rem", background: showVectors ? "rgba(59,130,246,0.15)" : "var(--bg-base)", border: `1px solid ${showVectors ? "#3b82f6" : "var(--border)"}`, borderRadius: "6px", cursor: "pointer" }}>
+              {showVectors ? <CheckSquare size={16} color="#3b82f6" /> : <Square size={16} color="var(--text-muted)" />}
+              <div>
+                <div style={{ fontSize: "0.825rem", fontWeight: 700, color: showVectors ? "#fff" : "var(--text-secondary)" }}>
+                  ➡️ Vectores Robo ➔ Hallazgo
+                </div>
+                <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>
+                  Flujos de abandono de vehículos
+                </div>
+              </div>
+            </label>
+
+            {/* Layer 3: Police Jurisdictions */}
+            <label onClick={() => setShowJurisdictions(!showJurisdictions)} style={{ display: "flex", alignItems: "center", gap: "0.6rem", padding: "0.5rem 0.75rem", background: showJurisdictions ? "rgba(99,102,241,0.15)" : "var(--bg-base)", border: `1px solid ${showJurisdictions ? "var(--accent-indigo)" : "var(--border)"}`, borderRadius: "6px", cursor: "pointer" }}>
+              {showJurisdictions ? <CheckSquare size={16} color="var(--accent-indigo)" /> : <Square size={16} color="var(--text-muted)" />}
+              <div>
+                <div style={{ fontSize: "0.825rem", fontWeight: 700, color: showJurisdictions ? "#fff" : "var(--text-secondary)" }}>
+                  👮 Comisarías 1ra a 16ta
+                </div>
+                <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>
+                  Polígonos oficiales MGP Subrubro 122
+                </div>
+              </div>
+            </label>
+
+            {/* Layer 4: RENABAP Barrios Populares */}
+            <label onClick={() => setShowRenabap(!showRenabap)} style={{ display: "flex", alignItems: "center", gap: "0.6rem", padding: "0.5rem 0.75rem", background: showRenabap ? "rgba(234,88,12,0.15)" : "var(--bg-base)", border: `1px solid ${showRenabap ? "#ea580c" : "var(--border)"}`, borderRadius: "6px", cursor: "pointer" }}>
+              {showRenabap ? <CheckSquare size={16} color="#ea580c" /> : <Square size={16} color="var(--text-muted)" />}
+              <div>
+                <div style={{ fontSize: "0.825rem", fontWeight: 700, color: showRenabap ? "#fff" : "var(--text-secondary)" }}>
+                  🏡 Asentamientos RENABAP
+                </div>
+                <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>
+                  58 polígonos SHP 2023 (SISU)
+                </div>
+              </div>
+            </label>
+          </div>
+
+          {/* Time Slider Controls Bar */}
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "1rem", paddingTop: "0.5rem", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flex: 1, minWidth: "280px" }}>
               <button
                 onClick={() => setIsPlaying(!isPlaying)}
                 style={{
                   display: "flex",
                   alignItems: "center",
                   gap: "0.4rem",
-                  padding: "0.4rem 0.85rem",
+                  padding: "0.35rem 0.75rem",
                   borderRadius: "6px",
                   border: "none",
                   background: isPlaying ? "var(--accent-amber)" : "var(--accent-indigo)",
                   color: "#fff",
                   fontWeight: 700,
-                  fontSize: "0.8rem",
+                  fontSize: "0.775rem",
                   cursor: "pointer",
                 }}
               >
-                {isPlaying ? <Pause size={14} /> : <Play size={14} />}
-                {isPlaying ? "Pausar Time-Slider" : "Reproducir 24h"}
+                {isPlaying ? <Pause size={13} /> : <Play size={13} />}
+                {isPlaying ? "Pausar 24h" : "Animar 24h"}
               </button>
 
               <button
                 onClick={() => { setSelectedHour(null); setIsPlaying(false); }}
-                style={{ padding: "0.4rem 0.75rem", borderRadius: "6px", border: "1px solid var(--border)", background: "var(--bg-card)", color: "var(--text-secondary)", fontSize: "0.75rem", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.2rem" }}
-                title="Mostrar todas las horas"
+                style={{ padding: "0.35rem 0.65rem", borderRadius: "6px", border: "1px solid var(--border)", background: "var(--bg-card)", color: "var(--text-secondary)", fontSize: "0.75rem", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.2rem" }}
               >
-                <RotateCcw size={12} /> Ver Todo
+                <RotateCcw size={12} /> Reset
               </button>
 
-              <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--accent-indigo)", minWidth: "120px" }}>
-                <Clock size={14} style={{ display: "inline", verticalAlign: "middle", marginRight: "0.3rem" }} />
-                {selectedHour === null ? "Todas las horas" : `${selectedHour.toString().padStart(2, "0")}:00 hs`}
+              <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--accent-indigo)", minWidth: "110px" }}>
+                <Clock size={13} style={{ display: "inline", verticalAlign: "middle", marginRight: "0.3rem" }} />
+                {selectedHour === null ? "24 hs completas" : `${selectedHour.toString().padStart(2, "0")}:00 hs`}
               </span>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: "1.25rem", flexWrap: "wrap" }}>
-              {/* RENABAP & Barrios Populares Layer Toggle */}
-              <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.85rem", fontWeight: 700, color: "#ea580c", cursor: "pointer" }}>
-                <input
-                  type="checkbox"
-                  checked={showRenabap}
-                  onChange={(e) => setShowRenabap(e.target.checked)}
-                  style={{ width: "16px", height: "16px", accentColor: "#ea580c" }}
-                />
-                <Home size={15} />
-                🏡 Capa Barrios Populares & RENABAP
-              </label>
-
-              {/* Police Jurisdictions Layer Toggle */}
-              <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.85rem", fontWeight: 700, color: "var(--accent-indigo)", cursor: "pointer" }}>
-                <input
-                  type="checkbox"
-                  checked={showJurisdictions}
-                  onChange={(e) => setShowJurisdictions(e.target.checked)}
-                  style={{ width: "16px", height: "16px", accentColor: "var(--accent-indigo)" }}
-                />
-                <Layers size={15} />
-                👮 Capa Jurisdicciones MGP
-              </label>
-
-              {/* Flow Vectors Toggle */}
-              <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.85rem", fontWeight: 600, color: "var(--text-primary)", cursor: "pointer" }}>
-                <input
-                  type="checkbox"
-                  checked={showVectors}
-                  onChange={(e) => setShowVectors(e.target.checked)}
-                  style={{ width: "16px", height: "16px", accentColor: "var(--accent-amber)" }}
-                />
-                <Navigation size={14} style={{ color: "var(--accent-amber)" }} />
-                Mostrar Vectores de Huida
-              </label>
-            </div>
-          </div>
-
-          {/* Time Slider Bar */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-            <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>00:00</span>
             <input
               type="range"
-              min="0"
-              max="23"
-              value={selectedHour ?? 12}
+              min={0}
+              max={23}
+              value={selectedHour === null ? 0 : selectedHour}
               onChange={(e) => {
-                setSelectedHour(parseInt(e.target.value, 10));
                 setIsPlaying(false);
+                setSelectedHour(parseInt(e.target.value, 10));
               }}
-              style={{ flex: 1, accentColor: "var(--accent-indigo)", cursor: "pointer" }}
+              style={{ flex: 1, minWidth: "160px", accentColor: "var(--accent-indigo)" }}
             />
-            <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>23:00</span>
+          </div>
+
+        </div>
+
+        {/* Dynamic Leaflet Map */}
+        <MapComponent
+          points={filteredPoints}
+          showVectors={showVectors}
+          showJurisdictions={showJurisdictions}
+          showRenabap={showRenabap}
+          showPoints={showPoints}
+        />
+
+        {/* Legend Footer */}
+        <div style={{ marginTop: "1rem", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "1rem", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "1.25rem", flexWrap: "wrap" }}>
+            <span style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
+              <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#ec4899" }}></span>
+              Robo / Sustracción (4.520)
+            </span>
+            <span style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
+              <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#10b981" }}></span>
+              Hallazgo / Descarte (210)
+            </span>
+            <span style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
+              <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#f59e0b" }}></span>
+              Disparos a Personas (320)
+            </span>
+            <span style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
+              <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#ef4444" }}></span>
+              Armas de Fuego (377)
+            </span>
+            <span style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
+              <span style={{ width: 16, height: 2, background: "#3b82f6", borderTop: "1px dashed #3b82f6" }}></span>
+              Vector Robo ➔ Hallazgo
+            </span>
+          </div>
+
+          <div style={{ fontStyle: "italic", fontSize: "0.75rem" }}>
+            Total incidentes renderizados: {filteredPoints.length.toLocaleString()}
           </div>
         </div>
-
-        {/* Legend */}
-        <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginBottom: "1rem", fontSize: "0.8rem" }}>
-          <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-            <span style={{ width: "12px", height: "12px", borderRadius: "50%", background: "#ef4444" }} /> Robo Auto-Moto
-          </span>
-          <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-            <span style={{ width: "12px", height: "12px", borderRadius: "50%", background: "#10b981" }} /> Hallazgo Automotor
-          </span>
-          <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-            <span style={{ width: "12px", height: "12px", borderRadius: "50%", background: "#f59e0b" }} /> Disparos a Personas
-          </span>
-          <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-            <span style={{ width: "12px", height: "12px", borderRadius: "50%", background: "#8b5cf6" }} /> Armas de Fuego
-          </span>
-          {showVectors && (
-            <span style={{ display: "flex", alignItems: "center", gap: "0.4rem", color: "var(--accent-amber)" }}>
-              <span style={{ width: "20px", height: "2px", borderTop: "2px dashed #f59e0b" }} /> Vector Robo $\rightarrow$ Hallazgo
-            </span>
-          )}
-        </div>
-
-        <MapComponent points={filteredPoints} showVectors={showVectors} showJurisdictions={showJurisdictions} showRenabap={showRenabap} />
       </div>
     </div>
   );
