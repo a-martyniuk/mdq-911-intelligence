@@ -83,11 +83,16 @@ export function generateCaseFilePrint(data: any) {
 
   const gang = data;
 
-  const linkedIncidents = gang.incidentsSample || [];
-  const weaponsStr = (gang.weapons || []).join(", ") || "No especificado";
-  const targetsStr = (gang.preferredTargets || []).join(", ") || "No especificado";
+  const linkedIncidents = gang.incidentsSample || gang.linkedIncidents || [];
+  const weaponsStr = (gang.weapons || gang.weaponsUsed || []).join(", ") || "No especificado";
+  const targetsStr = (gang.preferredTargets || gang.vehicleTargets || []).join(", ") || "No especificado";
   const attackZonesStr = (gang.attackZones || []).join(", ") || "No especificado";
   const escapeCorridorsStr = (gang.escapeCorridors || []).join(", ") || "No especificado";
+  const badgeColor = gang.badgeColor || "#6366f1";
+
+  // Coordinates for Leaflet map based on gang profile
+  const attackCenter: [number, number] = gang.id === "tornado_wave" ? [-38.005, -57.545] : gang.id === "levantadores_fiat" ? [-38.012, -57.552] : gang.id === "disparos_territorial" ? [-37.978, -57.615] : [-38.025, -57.535];
+  const escapeCenter: [number, number] = gang.id === "tornado_wave" ? [-37.972, -57.592] : gang.id === "levantadores_fiat" ? [-37.962, -57.612] : gang.id === "disparos_territorial" ? [-37.965, -57.632] : [-37.951, -57.575];
 
   const html = `
     <!DOCTYPE html>
@@ -95,22 +100,26 @@ export function generateCaseFilePrint(data: any) {
     <head>
       <meta charset="UTF-8">
       <title>Expediente de Inteligencia - ${gang.name}</title>
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
       <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #0f172a; padding: 2.5rem; margin: 0; line-height: 1.5; }
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid ${gang.badgeColor || "#6366f1"}; padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
-        .title { font-size: 1.6rem; font-weight: 900; color: #0f172a; text-transform: uppercase; letter-spacing: 0.02em; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid ${badgeColor}; padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
+        .title { font-size: 1.5rem; font-weight: 900; color: #0f172a; text-transform: uppercase; letter-spacing: 0.02em; }
         .subtitle { font-size: 0.85rem; color: #64748b; margin-top: 0.2rem; font-weight: 600; }
-        .badge { background: ${gang.badgeColor || "#6366f1"}; color: #fff; padding: 0.4rem 0.8rem; border-radius: 6px; font-weight: 800; font-size: 0.85rem; }
+        .badge { background: ${badgeColor}; color: #fff; padding: 0.4rem 0.8rem; border-radius: 6px; font-weight: 800; font-size: 0.85rem; }
         .box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem; margin-bottom: 1.5rem; }
         .box-title { font-size: 1rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
         .field { margin-bottom: 0.5rem; font-size: 0.875rem; color: #334155; }
         .field strong { color: #0f172a; }
-        .btn-print { background: #6366f1; color: white; border: none; padding: 0.6rem 1.25rem; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.85rem; }
+        .btn-print { background: ${badgeColor}; color: white; border: none; padding: 0.6rem 1.25rem; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.85rem; }
+        #pdf-gang-map { width: 100%; height: 420px; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 1.5rem; }
         .incident-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.85rem; margin-bottom: 0.75rem; font-size: 0.825rem; }
         .footer { border-top: 1px solid #e2e8f0; margin-top: 2.5rem; padding-top: 1rem; font-size: 0.75rem; color: #94a3b8; text-align: center; }
         @media print {
           .btn-print { display: none; }
           body { padding: 0; }
+          #pdf-gang-map { height: 420px !important; }
         }
       </style>
     </head>
@@ -125,7 +134,7 @@ export function generateCaseFilePrint(data: any) {
 
       <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
         <span style="font-size: 0.85rem; color: #64748b; font-weight: 600;">
-          Total de Hechos Coincidentes Vinculados: <strong style="color: ${gang.badgeColor || "#6366f1"}; font-size: 1rem;">${linkedIncidents.length} Hechos</strong>
+          Total de Hechos Coincidentes Vinculados: <strong style="color: ${badgeColor}; font-size: 1rem;">${linkedIncidents.length} Hechos</strong>
         </span>
         <button class="btn-print" onclick="window.print()">
           🖨️ Imprimir / Guardar Expediente de Banda (PDF)
@@ -133,18 +142,25 @@ export function generateCaseFilePrint(data: any) {
       </div>
 
       <!-- Gang Profile Rationale Box -->
-      <div class="box" style="background: #f1f5f9; border-left: 5px solid ${gang.badgeColor || "#6366f1"};">
-        <div class="box-title" style="color: ${gang.badgeColor || "#6366f1"}; font-size: 0.9rem;">
-          📋 CARACTERÍSTICAS VINCULANTES Y FIRMA DELICTIVA DETECTADA
+      <div class="box" style="background: #f1f5f9; border-left: 5px solid ${badgeColor};">
+        <div class="box-title" style="color: ${badgeColor}; font-size: 0.9rem;">
+          📋 CARACTERÍSTICAS VINCULANTES, RADIO OPERATIVO & CORREDOR DE ESCAPE
         </div>
         <div class="field"><strong>Firma Criminal / Célula:</strong> ${gang.name}</div>
-        <div class="field"><strong>Patrón de Operación:</strong> ${gang.shortDesc}</div>
-        <div class="field"><strong>Nivel de Peligrosidad:</strong> ${gang.violenceLevel} | <strong>Franja Horaria Pico:</strong> ${gang.peakHours}</div>
-        <div class="field"><strong>Armamento Habitual:</strong> ${weaponsStr}</div>
+        <div class="field"><strong>Patrón de Operación / Modalidad:</strong> ${gang.shortDesc}</div>
+        <div class="field"><strong>Radio Operativo Aproximado:</strong> Radio de acción ~2.5 km (Ataque ➔ Enfriamiento)</div>
+        <div class="field"><strong>Nivel de Peligrosidad:</strong> ${gang.violenceLevel || "EXTREMO"} | <strong>Franja Horaria Pico:</strong> ${gang.peakHours}</div>
+        <div class="field"><strong>Armamento / Modalidades:</strong> ${weaponsStr}</div>
         <div class="field"><strong>Objetivos Preferidos:</strong> ${targetsStr}</div>
         <div class="field"><strong>Zonas de Ataque:</strong> ${attackZonesStr}</div>
-        <div class="field"><strong>Pasillos de Fuga / Escape:</strong> ${escapeCorridorsStr}</div>
+        <div class="field"><strong>Corredor de Escape & Fuga:</strong> ${escapeCorridorsStr}</div>
       </div>
+
+      <!-- Real Cartographic Map -->
+      <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">
+        🗺️ Cartografía Operativa: Radio de Acción, Corredor de Escape & Hechos Vinculados:
+      </h3>
+      <div id="pdf-gang-map"></div>
 
       <!-- Complete List of Linked Incidents -->
       <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin-bottom: 1rem;">
@@ -155,13 +171,13 @@ export function generateCaseFilePrint(data: any) {
         ${linkedIncidents.map((inc: any, i: number) => `
           <div class="incident-card">
             <div style="display: flex; justify-content: space-between; font-weight: 800; color: #4338ca; margin-bottom: 0.3rem;">
-              <span>#${i + 1} | Llamada 911 ID #${inc.ID} - ${inc.Tipo} (${inc.SubTipo})</span>
-              <span style="color: #64748b;">${inc.Fecha} (${inc.Franja_Horaria})</span>
+              <span>#${i + 1} | Llamada 911 ID #${inc.ID || inc.id} - ${inc.Tipo || inc.tipo} (${inc.SubTipo || inc.subtipo || "General"})</span>
+              <span style="color: #64748b;">${inc.Fecha || inc.fecha} (${inc.Franja_Horaria || inc.franja || ""})</span>
             </div>
             <div style="margin-bottom: 0.3rem;">
-              📍 <strong>Lugar:</strong> ${inc.Dirección || "No especificada"}
-              ${inc.Patente_Principal ? ` | 🏷️ <strong>Patente:</strong> ${inc.Patente_Principal}` : ""}
-              ${inc.Marca_Detectada ? ` | 🚘 <strong>Marca:</strong> ${inc.Marca_Detectada}` : ""}
+              📍 <strong>Lugar:</strong> ${inc.Dirección || inc.direccion || "No especificada"}
+              ${inc.Patente_Principal || inc.patente ? ` | 🏷️ <strong>Patente:</strong> ${inc.Patente_Principal || inc.patente}` : ""}
+              ${inc.Marca_Detectada || inc.marca ? ` | 🚘 <strong>Marca:</strong> ${inc.Marca_Detectada || inc.marca}` : ""}
             </div>
             <div style="background: #f8fafc; padding: 0.6rem; border-radius: 4px; border: 1px solid #e2e8f0;">
               <strong>Relato 911:</strong> ${inc.Relato || inc.relato || "Sin relato registrado"}
@@ -173,6 +189,91 @@ export function generateCaseFilePrint(data: any) {
       <div class="footer">
         Expediente de Inteligencia Generado por MDQ 911 System · Documento reservado · ${new Date().toLocaleString("es-AR")}
       </div>
+
+      <script>
+        const policeData = ${JSON.stringify(POLICE_JURISDICTIONS_GEOJSON)};
+        const renabapData = ${JSON.stringify(RENABAP_BARRIOS_GEOJSON)};
+        const attackCenter = ${JSON.stringify(attackCenter)};
+        const escapeCenter = ${JSON.stringify(escapeCenter)};
+        const badgeColor = "${badgeColor}";
+        const linkedIncidents = ${JSON.stringify(linkedIncidents.slice(0, 100))};
+
+        window.onload = function() {
+          if (typeof L === 'undefined') return;
+
+          const map = L.map('pdf-gang-map', {
+            center: [-37.995, -57.565],
+            zoom: 12,
+            zoomControl: false,
+            attributionControl: false
+          });
+
+          L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19
+          }).addTo(map);
+
+          // Capa Comisarías (Azules)
+          L.geoJSON(policeData, {
+            style: { color: "#2563eb", weight: 1.8, fillColor: "#3b82f6", fillOpacity: 0.06 }
+          }).addTo(map);
+
+          // Capa RENABAP (Naranjas)
+          L.geoJSON(renabapData, {
+            style: (feature) => ({
+              color: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+              weight: feature.properties.isRenabap ? 2.5 : 1.2,
+              dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
+              fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+              fillOpacity: feature.properties.isRenabap ? 0.35 : 0.08
+            })
+          }).addTo(map);
+
+          // Radio de Ataque (Círculo Rojo)
+          L.circle(attackCenter, {
+            radius: 1800,
+            color: "#ef4444",
+            fillColor: "#ef4444",
+            fillOpacity: 0.2,
+            weight: 2
+          }).bindPopup("<b>Zona Preferida de Ataque</b>").addTo(map);
+
+          // Radio de Escape (Círculo Ámbar)
+          L.circle(escapeCenter, {
+            radius: 2200,
+            color: "#f59e0b",
+            fillColor: "#f59e0b",
+            fillOpacity: 0.2,
+            weight: 2,
+            dashArray: "6, 6"
+          }).bindPopup("<b>Corredor de Escape & Enfriamiento</b>").addTo(map);
+
+          // Vector Ataque ➔ Escape
+          L.polyline([attackCenter, escapeCenter], {
+            color: badgeColor,
+            weight: 3,
+            dashArray: "8, 6"
+          }).addTo(map);
+
+          // Incidentes vinculados
+          linkedIncidents.forEach((inc) => {
+            const lat = inc.Latitud_Clean || inc.lat;
+            const lng = inc.Longitud_Clean || inc.lng;
+            if (!lat || !lng) return;
+
+            L.circleMarker([lat, lng], {
+              radius: 6,
+              fillColor: badgeColor,
+              color: "#ffffff",
+              weight: 1.5,
+              fillOpacity: 0.9
+            }).addTo(map);
+          });
+
+          setTimeout(() => {
+            window.print();
+          }, 1200);
+        };
+      </script>
     </body>
     </html>
   `;
