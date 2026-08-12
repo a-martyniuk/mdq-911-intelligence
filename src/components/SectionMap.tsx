@@ -27,16 +27,19 @@ interface GeoPoint {
 
 interface SectionMapProps {
   geoPoints: GeoPoint[];
+  recoveries?: any[];
 }
 
 function MapComponent({
   points,
+  recoveries = [],
   showVectors,
   showJurisdictions,
   showRenabap,
   showPoints,
 }: {
   points: GeoPoint[];
+  recoveries?: any[];
   showVectors: boolean;
   showJurisdictions: boolean;
   showRenabap: boolean;
@@ -190,39 +193,59 @@ function MapComponent({
         marker.bindPopup(popupContent);
         marker.addTo(map);
 
-        // Vector line from Theft -> Recovery
-        if (showVectors && pt.latHallazgo && pt.lngHallazgo) {
+      });
+    }
+
+    // Render Vector Polylines (Robo -> Hallazgo 58 cases)
+    if (showVectors && recoveries && recoveries.length > 0) {
+      recoveries.forEach((c) => {
+        const latRobo = c.Latitud_Clean_Robo || c.Latitud_Robo;
+        const lngRobo = c.Longitud_Clean_Robo || c.Longitud_Robo;
+        const latHall = c.Latitud_Clean_Hallazgo || c.Latitud_Hallazgo;
+        const lngHall = c.Longitud_Clean_Hallazgo || c.Longitud_Hallazgo;
+
+        if (latRobo && lngRobo && latHall && lngHall) {
           const polyline = L.polyline(
             [
-              [pt.lat, pt.lng],
-              [pt.latHallazgo, pt.lngHallazgo],
+              [latRobo, lngRobo],
+              [latHall, lngHall],
             ],
             {
               color: "#3b82f6",
-              weight: 2.5,
-              opacity: 0.85,
+              weight: 3,
+              opacity: 0.9,
               dashArray: "6, 6",
             }
           );
 
           polyline.bindPopup(`
-            <div style="font-family: sans-serif; font-size: 0.8rem; color: #1e293b;">
-              <strong style="color: #3b82f6;">Vector Robo ➔ Hallazgo (Patente ${pt.patente || "Emparejada"})</strong><br/>
-              <b>Origen Sustracción:</b> ${pt.direccion}<br/>
-              <b>Destino Descarte:</b> Lat ${pt.latHallazgo.toFixed(4)}, Lng ${pt.lngHallazgo.toFixed(4)}
+            <div style="font-family: sans-serif; font-size: 0.8rem; color: #1e293b; padding: 0.2rem;">
+              <strong style="color: #2563eb; font-size: 0.9rem;">Vector Robo ➔ Hallazgo (Patente ${c.Patente_Principal || "Emparejada"})</strong><br/>
+              <b>🔴 Origen Sustracción:</b> ${c.Dirección_Robo || "Macrocentro"}<br/>
+              <b>🟢 Destino Descarte:</b> ${c.Dirección_Hallazgo || "Periferia / Descarte"}<br/>
+              <b>⏱️ Diferencial de Tiempo:</b> ${typeof c.Horas_Hasta_Hallazgo === "number" ? c.Horas_Hasta_Hallazgo.toFixed(1) : c.Horas_Hasta_Hallazgo} hs
             </div>
           `);
 
           polyline.addTo(map);
 
-          L.circleMarker([pt.latHallazgo, pt.lngHallazgo], {
-            radius: 7,
+          // Theft Marker (Red)
+          L.circleMarker([latRobo, lngRobo], {
+            radius: 6,
+            fillColor: "#ef4444",
+            color: "#ffffff",
+            weight: 1.5,
+            fillOpacity: 0.9,
+          }).bindPopup(`<b>🔴 Sustracción: Patente ${c.Patente_Principal}</b><br/>${c.Dirección_Robo || ""}`).addTo(map);
+
+          // Recovery Marker (Green)
+          L.circleMarker([latHall, lngHall], {
+            radius: 6,
             fillColor: "#10b981",
             color: "#ffffff",
-            weight: 2,
-            opacity: 1,
+            weight: 1.5,
             fillOpacity: 0.9,
-          }).bindPopup(`<b>Punto de Hallazgo / Descarte:</b> Patente ${pt.patente || "Identificada"}`).addTo(map);
+          }).bindPopup(`<b>🟢 Hallazgo / Descarte: Patente ${c.Patente_Principal}</b><br/>${c.Dirección_Hallazgo || ""}`).addTo(map);
         }
       });
     }
@@ -230,7 +253,7 @@ function MapComponent({
     return () => {
       map.remove();
     };
-  }, [L, points, showVectors, showJurisdictions, showRenabap, showPoints]);
+  }, [L, points, recoveries, showVectors, showJurisdictions, showRenabap, showPoints]);
 
   return (
     <div
@@ -247,7 +270,7 @@ function MapComponent({
   );
 }
 
-export default function SectionMap({ geoPoints = [] }: SectionMapProps) {
+export default function SectionMap({ geoPoints = [], recoveries = [] }: SectionMapProps) {
   const [selectedHour, setSelectedHour] = useState<number | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -257,28 +280,24 @@ export default function SectionMap({ geoPoints = [] }: SectionMapProps) {
   const [showJurisdictions, setShowJurisdictions] = useState(true);
   const [showRenabap, setShowRenabap] = useState(true);
 
-  // Auto-play time slider
-  useEffect(() => {
-    let interval: any = null;
-    if (isPlaying) {
-      interval = setInterval(() => {
-        setSelectedHour((prev) => {
-          if (prev === null) return 0;
-          if (prev >= 23) return 0;
-          return prev + 1;
-        });
-      }, 1200);
-    } else {
-      clearInterval(interval);
-    }
-    return () => clearInterval(interval);
-  }, [isPlaying]);
-
   // Filter geoPoints by hour slider
   const filteredPoints = useMemo(() => {
     if (selectedHour === null) return geoPoints;
     return geoPoints.filter((pt) => pt.hora === selectedHour);
   }, [geoPoints, selectedHour]);
+
+  // Dynamic count calculation for legend from filtered points
+  const counts = useMemo(() => {
+    let robos = 0, hallazgos = 0, disparos = 0, armas = 0;
+    filteredPoints.forEach((pt) => {
+      const o = (pt.origen || pt.tipo || "").toUpperCase();
+      if (o.includes("HALLAZGO")) hallazgos++;
+      else if (o.includes("DISPARO")) disparos++;
+      else if (o.includes("ARMA")) armas++;
+      else robos++;
+    });
+    return { robos, hallazgos, disparos, armas };
+  }, [filteredPoints]);
 
   // Quick Layer Presets
   const applyPreset = (preset: "all" | "renabap" | "jurisdictions" | "points_only") => {
@@ -461,6 +480,7 @@ export default function SectionMap({ geoPoints = [] }: SectionMapProps) {
         {/* Dynamic Leaflet Map */}
         <MapComponent
           points={filteredPoints}
+          recoveries={recoveries}
           showVectors={showVectors}
           showJurisdictions={showJurisdictions}
           showRenabap={showRenabap}
@@ -472,19 +492,19 @@ export default function SectionMap({ geoPoints = [] }: SectionMapProps) {
           <div style={{ display: "flex", alignItems: "center", gap: "1.25rem", flexWrap: "wrap" }}>
             <span style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
               <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#ef4444" }}></span>
-              Robo / Sustracción (4.520)
+              Robo / Sustracción ({counts.robos.toLocaleString()})
             </span>
             <span style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
               <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#10b981" }}></span>
-              Hallazgo / Descarte (210)
+              Hallazgo / Descarte ({counts.hallazgos.toLocaleString()})
             </span>
             <span style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
               <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#f59e0b" }}></span>
-              Disparos a Personas (320)
+              Disparos a Personas ({counts.disparos.toLocaleString()})
             </span>
             <span style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
               <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#dc2626" }}></span>
-              Armas de Fuego (377)
+              Armas de Fuego ({counts.armas.toLocaleString()})
             </span>
             <span style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
               <span style={{ width: 16, height: 2, background: "#3b82f6", borderTop: "1px dashed #3b82f6" }}></span>

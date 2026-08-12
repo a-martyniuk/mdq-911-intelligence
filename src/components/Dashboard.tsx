@@ -181,7 +181,7 @@ export default function Dashboard() {
         <IntroBanner />
 
         {activeSection === "overview" && <SectionOverview stats={stats} />}
-        {activeSection === "map" && <SectionMap geoPoints={data?.geoPoints || []} />}
+        {activeSection === "map" && <SectionMap geoPoints={data?.geoPoints || []} recoveries={data?.recoveries || []} />}
         {activeSection === "recovery-tracker" && <SectionRecoveryTracker recoveries={data?.recoveries || []} />}
         {activeSection === "gang-intelligence" && <SectionGangIntelligence incidents={data?.incidentsSample || []} />}
         {activeSection === "jurisdictions" && <SectionJurisdictions incidents={data?.incidentsSample || []} recoveries={data?.recoveries || []} />}
