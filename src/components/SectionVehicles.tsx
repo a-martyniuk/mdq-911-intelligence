@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import MetricCard from "./MetricCard";
 import { Car, Bike, Clock, FileText, ChevronDown, ChevronUp, Eye, Wrench, Download } from "lucide-react";
 import { exportToCSV } from "@/lib/excelExport";
+import { formatTimeDifference } from "@/lib/formatters";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -244,7 +245,7 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
                       <td>{r.Fecha_Robo}</td>
                       <td>{r.Fecha_Hallazgo}</td>
                       <td>
-                        <strong style={{ color: "var(--accent-green)" }}>{hoursNum.toFixed(1)} hs</strong> ({(hoursNum / 24).toFixed(1)} d)
+                        <strong style={{ color: "var(--accent-green)" }}>{formatTimeDifference(hoursNum)}</strong>
                       </td>
                       <td>
                         <button

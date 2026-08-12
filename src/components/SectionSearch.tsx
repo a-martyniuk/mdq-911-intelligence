@@ -43,15 +43,17 @@ export default function SectionSearch({ incidents = [] }: SectionSearchProps) {
 
       results = results.filter((inc) => {
         const relato = normalizeStr(inc.Relato || inc.relato || "");
-        const tipo = normalizeStr(inc.Tipo || "");
-        const subtipo = normalizeStr(inc.SubTipo || "");
-        const direccion = normalizeStr(inc.Dirección || "");
-        const patente = normalizeStr(inc.Patente_Principal || "");
-        const marca = normalizeStr(inc.Marca_Detectada || "");
+        const tipo = normalizeStr(inc.Tipo || inc.tipo || "");
+        const origen = normalizeStr(inc.Origen_Dataset || inc.origen || "");
+        const subtipo = normalizeStr(inc.SubTipo || inc.subtipo || "");
+        const direccion = normalizeStr(inc.Dirección || inc.direccion || "");
+        const patente = normalizeStr(inc.Patente_Principal || inc.patente || "");
+        const marca = normalizeStr(inc.Marca_Detectada || inc.marca || "");
 
         return (
           relato.includes(q) ||
           tipo.includes(q) ||
+          origen.includes(q) ||
           subtipo.includes(q) ||
           direccion.includes(q) ||
           patente.includes(q) ||
