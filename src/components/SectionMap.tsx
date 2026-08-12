@@ -158,11 +158,13 @@ function MapComponent({
     // Render 911 Incident Markers & Vector Trajectories
     if (showPoints) {
       samplePoints.forEach((pt) => {
-        const isHallazgos = pt.origen === "Hallazgos";
-        const isDisparos = pt.origen === "Disparos";
-        const isArmas = pt.origen === "Armas";
+        const origenUpper = (pt.origen || pt.tipo || "").toUpperCase();
 
-        const color = isHallazgos ? "#10b981" : isDisparos ? "#f59e0b" : isArmas ? "#ef4444" : "#ec4899";
+        const isHallazgos = origenUpper.includes("HALLAZGO");
+        const isDisparos = origenUpper.includes("DISPARO");
+        const isArmas = origenUpper.includes("ARMA");
+
+        const color = isHallazgos ? "#10b981" : isDisparos ? "#f59e0b" : isArmas ? "#dc2626" : "#ef4444";
 
         const marker = L.circleMarker([pt.lat, pt.lng], {
           radius: isHallazgos ? 6.5 : 5,
@@ -469,7 +471,7 @@ export default function SectionMap({ geoPoints = [] }: SectionMapProps) {
         <div style={{ marginTop: "1rem", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "1rem", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "1.25rem", flexWrap: "wrap" }}>
             <span style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
-              <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#ec4899" }}></span>
+              <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#ef4444" }}></span>
               Robo / Sustracción (4.520)
             </span>
             <span style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
@@ -481,7 +483,7 @@ export default function SectionMap({ geoPoints = [] }: SectionMapProps) {
               Disparos a Personas (320)
             </span>
             <span style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
-              <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#ef4444" }}></span>
+              <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#dc2626" }}></span>
               Armas de Fuego (377)
             </span>
             <span style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
