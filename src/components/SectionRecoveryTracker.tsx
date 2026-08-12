@@ -187,12 +187,14 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
     });
   }, [recoveries, vehicleType, searchTerm]);
 
-  // Automatically select first case if filter changes
+  // Automatically select first case when vehicle type or search filter changes
   useEffect(() => {
-    if (filteredCases.length > 0 && (!selectedCase || !filteredCases.some((c) => c.ID_Robo === selectedCase.ID_Robo))) {
+    if (filteredCases.length > 0) {
       setSelectedCase(filteredCases[0]);
+    } else {
+      setSelectedCase(null);
     }
-  }, [filteredCases]);
+  }, [vehicleType, searchTerm]);
 
   const medianHours = vehicleType === "motos" ? 7.0 : vehicleType === "autos" ? 4.9 : 5.4;
 
@@ -334,15 +336,15 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
 
           {/* Cases Scrollable List */}
           <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", maxHeight: "420px", overflowY: "auto" }}>
-            {filteredCases.map((c) => {
-              const isSelected = selectedCase?.ID_Robo === c.ID_Robo;
+            {filteredCases.map((c, idx) => {
+              const isSelected = selectedCase?.ID_Robo === c.ID_Robo && selectedCase?.ID_Hallazgo === c.ID_Hallazgo;
               const hours = c.Horas_Hasta_Hallazgo;
               const isFast = hours < 6;
               const isMotoCase = checkIsMoto(c);
 
               return (
                 <div
-                  key={c.ID_Robo}
+                  key={`${c.ID_Robo}_${c.ID_Hallazgo}_${idx}`}
                   onClick={() => setSelectedCase(c)}
                   style={{
                     padding: "0.75rem",
