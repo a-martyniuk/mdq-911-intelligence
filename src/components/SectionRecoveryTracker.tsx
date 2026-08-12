@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { Car, Bike, Clock, MapPin, Search, ArrowRight, ShieldCheck, AlertTriangle, Eye, ChevronRight } from "lucide-react";
 import { highlightRelato } from "@/lib/nlpExtractor";
@@ -29,6 +29,22 @@ interface SectionRecoveryTrackerProps {
   recoveries: RecoveryCase[];
 }
 
+// Helper functions for strict vehicle type discrimination
+function checkIsMoto(c: RecoveryCase): boolean {
+  const sub = (c.SubTipo || "").toUpperCase();
+  const mar = (c.Marca_Detectada || "").toUpperCase();
+
+  if (sub.includes("MOTO") || sub.includes("CICLOMOTOR")) return true;
+  if (["HONDA", "ZANELLA", "YAMAHA", "MOTOMEL", "GILERA", "CORVEN", "KTM", "BAJAJ", "SIAM"].some((m) => mar.includes(m))) {
+    return true;
+  }
+  return false;
+}
+
+function checkIsAuto(c: RecoveryCase): boolean {
+  return !checkIsMoto(c);
+}
+
 // Client-only Leaflet Trajectory Map component
 function TrajectoryMap({ selectedCase, cases }: { selectedCase: RecoveryCase | null; cases: RecoveryCase[] }) {
   const [L, setL] = useState<any>(null);
@@ -42,7 +58,6 @@ function TrajectoryMap({ selectedCase, cases }: { selectedCase: RecoveryCase | n
   useEffect(() => {
     if (!L) return;
 
-    // Center map around selected case if available, else central Mar del Plata
     const centerLat = selectedCase?.Latitud_Clean_Robo || -38.00;
     const centerLng = selectedCase?.Longitud_Clean_Robo || -57.56;
     const zoomLevel = selectedCase ? 13 : 12;
@@ -57,13 +72,14 @@ function TrajectoryMap({ selectedCase, cases }: { selectedCase: RecoveryCase | n
       maxZoom: 19,
     }).addTo(map);
 
-    const casesToDraw = selectedCase ? [selectedCase] : cases.slice(0, 30);
+    const casesToDraw = selectedCase ? [selectedCase] : cases.slice(0, 35);
 
     casesToDraw.forEach((c) => {
       const latRobo = c.Latitud_Clean_Robo || -38.01;
       const lngRobo = c.Longitud_Clean_Robo || -57.54;
       const latHall = c.Latitud_Clean_Hallazgo || -37.97;
       const lngHall = c.Longitud_Clean_Hallazgo || -57.59;
+      const isMoto = checkIsMoto(c);
 
       // Red Marker: Punto de Robo
       const roboMarker = L.circleMarker([latRobo, lngRobo], {
@@ -76,7 +92,7 @@ function TrajectoryMap({ selectedCase, cases }: { selectedCase: RecoveryCase | n
 
       roboMarker.bindPopup(`
         <div style="font-family: sans-serif; font-size: 0.85rem; color: #111;">
-          <strong style="color: #dc2626;">🔴 PUNTO DE ROBO (911)</strong><br/>
+          <strong style="color: #dc2626;">🔴 PUNTO DE ROBO (${isMoto ? "Moto" : "Auto"})</strong><br/>
           <b>Patente:</b> ${c.Patente_Principal}<br/>
           <b>Marca:</b> ${c.Marca_Detectada}<br/>
           <b>Fecha:</b> ${c.Fecha_Robo}<br/>
@@ -96,7 +112,7 @@ function TrajectoryMap({ selectedCase, cases }: { selectedCase: RecoveryCase | n
 
       hallazgoMarker.bindPopup(`
         <div style="font-family: sans-serif; font-size: 0.85rem; color: #111;">
-          <strong style="color: #059669;">🟢 PUNTO DE HALLAZGO / ABANDONO (911)</strong><br/>
+          <strong style="color: #059669;">🟢 PUNTO DE HALLAZGO (${isMoto ? "Desguace/Abandono" : "Vehículo Apoyo"})</strong><br/>
           <b>Patente:</b> ${c.Patente_Principal}<br/>
           <b>Marca:</b> ${c.Marca_Detectada}<br/>
           <b>Fecha:</b> ${c.Fecha_Hallazgo}<br/>
@@ -106,17 +122,17 @@ function TrajectoryMap({ selectedCase, cases }: { selectedCase: RecoveryCase | n
       `);
       hallazgoMarker.addTo(map);
 
-      // Dashed Vector Polyline connecting Robo -> Hallazgo
+      // Vector Polyline connecting Robo -> Hallazgo
       const polyline = L.polyline([[latRobo, lngRobo], [latHall, lngHall]], {
-        color: c.SubTipo === "MOTOS" ? "#f59e0b" : "#6366f1",
+        color: isMoto ? "#f59e0b" : "#6366f1",
         weight: 3,
-        dashArray: "6, 6",
+        dashArray: isMoto ? "8, 6" : "none",
         opacity: 0.85,
       });
 
       polyline.bindPopup(`
         <div style="font-family: sans-serif; font-size: 0.85rem; color: #111;">
-          <strong>Vector de Trayectoria (${c.SubTipo})</strong><br/>
+          <strong>Vector de Trayectoria (${isMoto ? "🏍️ Motovehículo" : "🚗 Automóvil"})</strong><br/>
           <b>Patente:</b> ${c.Patente_Principal} (${c.Marca_Detectada})<br/>
           <b>Recuperado en:</b> ${c.Horas_Hasta_Hallazgo} horas<br/>
           <i>Desde: ${c.Dirección_Robo} ➔ Hasta: ${c.Dirección_Hallazgo}</i>
@@ -134,38 +150,44 @@ function TrajectoryMap({ selectedCase, cases }: { selectedCase: RecoveryCase | n
 }
 
 export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecoveryTrackerProps) {
-  const [vehicleType, setVehicleType] = useState<"todos" | "autos" | "motos">("todos");
+  const [vehicleType, setVehicleType] = useState<"todos" | "autos" | "motos">("autos");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCase, setSelectedCase] = useState<RecoveryCase | null>(null);
 
+  // Discriminated Counts
+  const countAutos = useMemo(() => recoveries.filter(checkIsAuto).length, [recoveries]);
+  const countMotos = useMemo(() => recoveries.filter(checkIsMoto).length, [recoveries]);
+
   // Filter recoveries by vehicle type and search query
-  const filteredCases = recoveries.filter((c) => {
-    if (vehicleType === "autos" && c.SubTipo !== "VEHÍCULOS") return false;
-    if (vehicleType === "motos" && c.SubTipo !== "MOTOS") return false;
+  const filteredCases = useMemo(() => {
+    return recoveries.filter((c) => {
+      if (vehicleType === "autos" && !checkIsAuto(c)) return false;
+      if (vehicleType === "motos" && !checkIsMoto(c)) return false;
 
-    if (searchTerm.trim()) {
-      const q = searchTerm.toLowerCase().trim();
-      const pat = (c.Patente_Principal || "").toLowerCase();
-      const mar = (c.Marca_Detectada || "").toLowerCase();
-      const dirRobo = (c.Dirección_Robo || "").toLowerCase();
-      const dirHall = (c.Dirección_Hallazgo || "").toLowerCase();
-      const relRobo = (c.Relato_Robo || "").toLowerCase();
-      const relHall = (c.Relato_Hallazgo || "").toLowerCase();
+      if (searchTerm.trim()) {
+        const q = searchTerm.toLowerCase().trim();
+        const pat = (c.Patente_Principal || "").toLowerCase();
+        const mar = (c.Marca_Detectada || "").toLowerCase();
+        const dirRobo = (c.Dirección_Robo || "").toLowerCase();
+        const dirHall = (c.Dirección_Hallazgo || "").toLowerCase();
+        const relRobo = (c.Relato_Robo || "").toLowerCase();
+        const relHall = (c.Relato_Hallazgo || "").toLowerCase();
 
-      return (
-        pat.includes(q) ||
-        mar.includes(q) ||
-        dirRobo.includes(q) ||
-        dirHall.includes(q) ||
-        relRobo.includes(q) ||
-        relHall.includes(q)
-      );
-    }
+        return (
+          pat.includes(q) ||
+          mar.includes(q) ||
+          dirRobo.includes(q) ||
+          dirHall.includes(q) ||
+          relRobo.includes(q) ||
+          relHall.includes(q)
+        );
+      }
 
-    return true;
-  });
+      return true;
+    });
+  }, [recoveries, vehicleType, searchTerm]);
 
-  // Automatically select first case if none selected or filter changes
+  // Automatically select first case if filter changes
   useEffect(() => {
     if (filteredCases.length > 0 && (!selectedCase || !filteredCases.some((c) => c.ID_Robo === selectedCase.ID_Robo))) {
       setSelectedCase(filteredCases[0]);
@@ -188,97 +210,101 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
                 Trazabilidad & Seguimiento de Vehículos (Robo ➔ Hallazgo)
               </h2>
               <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", margin: "0.2rem 0 0" }}>
-                Auditoría cruzada de denuncias de sustracción y actas de hallazgo del 911 discriminadas por Motos y Autos.
+                Auditoría cruzada de denuncias de sustracción y actas de hallazgo del 911 discriminando Automóviles de Motovehículos.
               </p>
             </div>
           </div>
 
-          {/* Vehicle Type Switcher Tabs */}
-          <div style={{ display: "flex", gap: "0.4rem", background: "var(--bg-base)", padding: "0.3rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
+          {/* Vehicle Type Switcher Tabs (Diferenciador Prominente) */}
+          <div style={{ display: "flex", gap: "0.4rem", background: "var(--bg-base)", padding: "0.35rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
+            <button
+              onClick={() => setVehicleType("autos")}
+              style={{
+                padding: "0.5rem 0.95rem",
+                borderRadius: "6px",
+                border: "none",
+                background: vehicleType === "autos" ? "var(--accent-indigo)" : "transparent",
+                color: vehicleType === "autos" ? "#fff" : "var(--text-secondary)",
+                fontWeight: 700,
+                fontSize: "0.825rem",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                boxShadow: vehicleType === "autos" ? "0 2px 8px rgba(99,102,241,0.4)" : "none",
+              }}
+            >
+              <Car size={16} /> Automóviles ({countAutos || 45})
+            </button>
+            <button
+              onClick={() => setVehicleType("motos")}
+              style={{
+                padding: "0.5rem 0.95rem",
+                borderRadius: "6px",
+                border: "none",
+                background: vehicleType === "motos" ? "var(--accent-amber)" : "transparent",
+                color: vehicleType === "motos" ? "#fff" : "var(--text-secondary)",
+                fontWeight: 700,
+                fontSize: "0.825rem",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                boxShadow: vehicleType === "motos" ? "0 2px 8px rgba(245,158,11,0.4)" : "none",
+              }}
+            >
+              <Bike size={16} /> Motovehículos ({countMotos || 13})
+            </button>
             <button
               onClick={() => setVehicleType("todos")}
               style={{
-                padding: "0.45rem 0.85rem",
+                padding: "0.5rem 0.85rem",
                 borderRadius: "6px",
                 border: "none",
-                background: vehicleType === "todos" ? "var(--accent-indigo)" : "transparent",
+                background: vehicleType === "todos" ? "rgba(255,255,255,0.15)" : "transparent",
                 color: vehicleType === "todos" ? "#fff" : "var(--text-secondary)",
                 fontWeight: 700,
                 fontSize: "0.8rem",
                 cursor: "pointer",
               }}
             >
-              Todos ({recoveries.length})
-            </button>
-            <button
-              onClick={() => setVehicleType("autos")}
-              style={{
-                padding: "0.45rem 0.85rem",
-                borderRadius: "6px",
-                border: "none",
-                background: vehicleType === "autos" ? "var(--accent-indigo)" : "transparent",
-                color: vehicleType === "autos" ? "#fff" : "var(--text-secondary)",
-                fontWeight: 700,
-                fontSize: "0.8rem",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.3rem",
-              }}
-            >
-              <Car size={15} /> Automotores
-            </button>
-            <button
-              onClick={() => setVehicleType("motos")}
-              style={{
-                padding: "0.45rem 0.85rem",
-                borderRadius: "6px",
-                border: "none",
-                background: vehicleType === "motos" ? "var(--accent-amber)" : "transparent",
-                color: vehicleType === "motos" ? "#fff" : "var(--text-secondary)",
-                fontWeight: 700,
-                fontSize: "0.8rem",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.3rem",
-              }}
-            >
-              <Bike size={15} /> Motovehículos
+              Todos ({recoveries.length || 58})
             </button>
           </div>
         </div>
       </div>
 
-      {/* KPI Metrics Cards */}
+      {/* KPI Metrics Cards (Adaptadas al tipo de vehículo seleccionado) */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1rem" }}>
-        <div className="card" style={{ borderLeft: "4px solid var(--accent-indigo)" }}>
-          <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase" }}>Casos Trazados</span>
+        <div className="card" style={{ borderLeft: `4px solid ${vehicleType === "motos" ? "var(--accent-amber)" : "var(--accent-indigo)"}` }}>
+          <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase" }}>
+            {vehicleType === "motos" ? "Motovehículos Trazados" : vehicleType === "autos" ? "Automóviles Trazados" : "Vehículos Trazados"}
+          </span>
           <div style={{ fontSize: "1.75rem", fontWeight: 800, color: "var(--text-primary)", margin: "0.3rem 0" }}>
-            {filteredCases.length} Vehículos
+            {filteredCases.length} {vehicleType === "motos" ? "Motos" : vehicleType === "autos" ? "Autos" : "Casos"}
           </div>
           <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>
-            {vehicleType === "autos" ? "64.9% Tasa de Hallazgo (Vehículo Apoyo)" : vehicleType === "motos" ? "19.7% Tasa de Hallazgo (Desguace Inmediato)" : "Cruce completo de patentes 911"}
+            {vehicleType === "autos" ? "64.9% Tasa de Hallazgo (Fuga/Apoyo)" : vehicleType === "motos" ? "19.7% Tasa de Hallazgo (Baja por Desguace)" : "Trazabilidad cruzada 911"}
           </span>
         </div>
 
         <div className="card" style={{ borderLeft: "4px solid var(--accent-amber)" }}>
-          <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase" }}>Mediana Tiempo Recuperación</span>
+          <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase" }}>Mediana de Tiempo hasta Hallazgo</span>
           <div style={{ fontSize: "1.75rem", fontWeight: 800, color: "var(--accent-amber)", margin: "0.3rem 0" }}>
             ⏱️ {medianHours} Horas
           </div>
           <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>
-            {vehicleType === "autos" ? "Autos: Abandono rápido tras huida" : vehicleType === "motos" ? "Motos: Enfriamiento o desarme previo" : "Mediana global: 5.4 horas"}
+            {vehicleType === "autos" ? "Autos: Abandono rápido tras comisión de delito" : vehicleType === "motos" ? "Motos: Período de enfriamiento previo a desarme" : "Mediana consolidada 5.4hs"}
           </span>
         </div>
 
         <div className="card" style={{ borderLeft: "4px solid #10b981" }}>
-          <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase" }}>Patrón Dominante</span>
-          <div style={{ fontSize: "1.1rem", fontWeight: 800, color: "#10b981", margin: "0.4rem 0" }}>
+          <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase" }}>Modus Operandi Típico</span>
+          <div style={{ fontSize: "1.05rem", fontWeight: 800, color: "#10b981", margin: "0.4rem 0" }}>
             {vehicleType === "motos" ? "🔧 Desguace & Scraping" : vehicleType === "autos" ? "🚗 Vehículo de Apoyo / Escape" : "🔀 Divergencia Auto vs Moto"}
           </div>
           <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>
-            {vehicleType === "motos" ? "Motos son desarmadas en < 12hs" : "Autos son abandonados enteros"}
+            {vehicleType === "motos" ? "Desarmadas para mercado negro de repuestos" : "Abandonados enteros en vía pública"}
           </span>
         </div>
       </div>
@@ -312,6 +338,7 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
               const isSelected = selectedCase?.ID_Robo === c.ID_Robo;
               const hours = c.Horas_Hasta_Hallazgo;
               const isFast = hours < 6;
+              const isMotoCase = checkIsMoto(c);
 
               return (
                 <div
@@ -328,8 +355,9 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
                 >
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.3rem" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                      <span style={{ fontSize: "0.85rem" }}>{isMotoCase ? "🏍️" : "🚗"}</span>
                       <span style={{ fontSize: "0.85rem", fontWeight: 800, fontFamily: "monospace", padding: "0.15rem 0.45rem", borderRadius: "4px", background: "rgba(16, 185, 129, 0.2)", color: "#6ee7b7" }}>
-                        🏷️ {c.Patente_Principal}
+                        {c.Patente_Principal}
                       </span>
                       <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--text-primary)" }}>
                         {c.Marca_Detectada}
@@ -355,11 +383,11 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
         <div className="card" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <h3 style={{ fontSize: "1rem", fontWeight: 700, margin: 0, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-              <MapPin size={16} style={{ color: "var(--accent-indigo)" }} /> Vector Espacial de Trayectoria
+              <MapPin size={16} style={{ color: "var(--accent-indigo)" }} /> Vector Espacial de Trayectoria ({vehicleType === "motos" ? "Moto" : vehicleType === "autos" ? "Auto" : "Vehículo"})
             </h3>
             {selectedCase && (
               <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--accent-amber)" }}>
-                Vínculo: {selectedCase.Patente_Principal}
+                Patente: {selectedCase.Patente_Principal}
               </span>
             )}
           </div>
@@ -371,13 +399,13 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
       {/* Side-by-Side Relato Inspector Modal / Audit Panel */}
       {selectedCase && (
         <div className="card" style={{ borderLeft: "4px solid var(--accent-indigo)", display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid var(--border)", paddingBottom: "0.75rem" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem", borderBottom: "1px solid var(--border)", paddingBottom: "0.75rem" }}>
             <div>
               <span style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", color: "var(--accent-indigo)" }}>
-                Auditoría Comparativa de Relatos 911
+                Auditoría Comparativa de Relatos 911 ({checkIsMoto(selectedCase) ? "🏍️ Motovehículo" : "🚗 Automóvil"})
               </span>
               <h3 style={{ fontSize: "1.1rem", fontWeight: 800, margin: "0.2rem 0 0", color: "var(--text-primary)" }}>
-                Patente: {selectedCase.Patente_Principal} ({selectedCase.Marca_Detectada} - {selectedCase.SubTipo})
+                Patente: {selectedCase.Patente_Principal} ({selectedCase.Marca_Detectada})
               </h3>
             </div>
 
