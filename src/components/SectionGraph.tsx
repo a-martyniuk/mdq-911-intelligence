@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { GitFork, Share2, Layers, Info, Filter, Shield } from "lucide-react";
+import { GitFork, Share2, Layers, Info, Filter, Shield, Download } from "lucide-react";
 import { highlightRelato } from "@/lib/nlpExtractor";
+import { exportToCSV } from "@/lib/excelExport";
 
 interface Node {
   id: string;
@@ -255,12 +256,39 @@ export default function SectionGraph({ incidents = [] }: SectionGraphProps) {
 
               {/* Sample Incidents Matching Node */}
               <div>
-                <h4 style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-secondary)", marginBottom: "0.5rem" }}>
-                  Incidentes Muestra ({filteredIncidents.length} encontrados):
-                </h4>
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", maxHeight: "250px", overflowY: "auto" }}>
-                  {filteredIncidents.slice(0, 10).map((inc, i) => (
-                    <div key={i} style={{ fontSize: "0.775rem", padding: "0.6rem", borderRadius: "6px", background: "var(--bg-base)", border: "1px solid var(--border)" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
+                  <h4 style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-secondary)", margin: 0 }}>
+                    Incidentes Vinculados ({filteredIncidents.length} Coincidencias):
+                  </h4>
+
+                  {filteredIncidents.length > 0 && (
+                    <button
+                      onClick={() => {
+                        const exportData = filteredIncidents.map((inc) => ({
+                          Nodo_Grafo: selectedNode.label,
+                          ID_911: inc.ID,
+                          Tipo: inc.Tipo,
+                          SubTipo: inc.SubTipo,
+                          Fecha: inc.Fecha,
+                          Franja_Horaria: inc.Franja_Horaria,
+                          Direccion: inc.Dirección || "",
+                          Patente: inc.Patente_Principal || "",
+                          Marca: inc.Marca_Detectada || "",
+                          Relato_911: inc.Relato || inc.relato || "",
+                        }));
+                        exportToCSV(`grafo_relaciones_${selectedNode.id}`, exportData);
+                      }}
+                      className="btn-logout"
+                      style={{ height: "28px", padding: "0 0.6rem", fontSize: "0.725rem", fontWeight: 700, background: "rgba(16, 185, 129, 0.15)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.25rem" }}
+                    >
+                      <Download size={12} /> Excel
+                    </button>
+                  )}
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", maxHeight: "350px", overflowY: "auto", paddingRight: "0.3rem" }}>
+                  {filteredIncidents.map((inc, i) => (
+                    <div key={`${inc.ID}_${i}`} style={{ fontSize: "0.775rem", padding: "0.6rem", borderRadius: "6px", background: "var(--bg-base)", border: "1px solid var(--border)" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.2rem", fontWeight: 700, color: "var(--accent-indigo)" }}>
                         <span>ID #{inc.ID} - {inc.Tipo} ({inc.SubTipo})</span>
                         <span>{inc.Fecha}</span>

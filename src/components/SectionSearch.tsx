@@ -163,13 +163,13 @@ export default function SectionSearch({ incidents = [] }: SectionSearchProps) {
       </div>
 
       {/* Incidents List */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(380px, 1fr))", gap: "1rem" }}>
-        {filteredIncidents.slice(0, 50).map((inc, i) => {
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(380px, 1fr))", gap: "1rem", maxHeight: "650px", overflowY: "auto", paddingRight: "0.4rem" }}>
+        {filteredIncidents.map((inc, i) => {
           const relatoText = inc.Relato || inc.relato || "";
           const entities = extractEntities(relatoText);
 
           return (
-            <div key={inc.ID || i} className="card" style={{ display: "flex", flexDirection: "column", gap: "0.75rem", borderLeft: "4px solid var(--accent-indigo)" }}>
+            <div key={`${inc.ID}_${i}`} className="card" style={{ display: "flex", flexDirection: "column", gap: "0.75rem", borderLeft: "4px solid var(--accent-indigo)" }}>
               {/* Card Header */}
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
                 <div>
