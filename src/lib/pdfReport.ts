@@ -113,9 +113,19 @@ export function generateCaseFilePrint(data: any) {
   const escapeCorridorsStr = (gang.escapeCorridors || []).join(", ") || "No especificado";
   const badgeColor = gang.badgeColor || "#6366f1";
 
-  // Coordinates for Leaflet map based on gang profile
-  const attackCenter: [number, number] = gang.id === "tornado_wave" ? [-38.005, -57.545] : gang.id === "levantadores_fiat" ? [-38.012, -57.552] : gang.id === "disparos_territorial" ? [-37.978, -57.615] : [-38.025, -57.535];
-  const escapeCenter: [number, number] = gang.id === "tornado_wave" ? [-37.972, -57.592] : gang.id === "levantadores_fiat" ? [-37.962, -57.612] : gang.id === "disparos_territorial" ? [-37.965, -57.632] : [-37.951, -57.575];
+  const gangCoordsMap: Record<string, { attack: [number, number]; escape: [number, number] }> = {
+    ciclomotor_110: { attack: [-38.002, -57.551], escape: [-37.972, -57.592] },
+    tornado_alta: { attack: [-37.991, -57.561], escape: [-37.962, -57.612] },
+    levantadores_fiat: { attack: [-38.012, -57.552], escape: [-37.985, -57.601] },
+    llave_corrida_pickups: { attack: [-38.025, -57.535], escape: [-37.951, -57.575] },
+    disparos_territorial: { attack: [-37.978, -57.615], escape: [-37.965, -57.632] },
+    deliverys_bicis: { attack: [-38.005, -57.545], escape: [-37.989, -57.581] },
+    entraderas_cocheras: { attack: [-38.015, -57.542], escape: [-37.979, -57.572] },
+  };
+
+  const coords = gangCoordsMap[gang.id] || { attack: [-38.005, -57.545], escape: [-37.972, -57.592] };
+  const attackCenter = coords.attack;
+  const escapeCenter = coords.escape;
 
   const html = `
     <!DOCTYPE html>
