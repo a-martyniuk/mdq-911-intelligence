@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { GitFork, Share2, Layers, Info, Filter, Shield, Download, FileText, Zap, Link as LinkIcon } from "lucide-react";
+import React, { useState, useRef } from "react";
+import { GitFork, Share2, Layers, Info, Filter, Shield, Download, FileText, Zap, Link as LinkIcon, ZoomIn, ZoomOut, RotateCcw, Move } from "lucide-react";
 import { highlightRelato } from "@/lib/nlpExtractor";
 import { exportToCSV } from "@/lib/excelExport";
 import { generateExecutiveDossierPDF } from "@/lib/pdfReport";
@@ -69,6 +69,47 @@ interface SectionGraphProps {
 
 export default function SectionGraph({ incidents = [], recoveries = [], gangs = [] }: SectionGraphProps) {
   const [selectedNode, setSelectedNode] = useState<Node | null>(GRAPH_NODES[0]);
+
+  // Zoom & Pan Interactive State
+  const [zoomScale, setZoomScale] = useState<number>(1.0);
+  const [panOffset, setPanOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const dragStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+
+  const handleZoomIn = () => setZoomScale((prev) => Math.min(prev + 0.25, 3.0));
+  const handleZoomOut = () => setZoomScale((prev) => Math.max(prev - 0.25, 0.4));
+  const handleResetZoom = () => {
+    setZoomScale(1.0);
+    setPanOffset({ x: 0, y: 0 });
+  };
+
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+    if (e.deltaY < 0) {
+      setZoomScale((prev) => Math.min(prev + 0.15, 3.0));
+    } else {
+      setZoomScale((prev) => Math.max(prev - 0.15, 0.4));
+    }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    // Only pan if not clicking directly on a node element
+    if ((e.target as HTMLElement).tagName === "svg" || (e.target as HTMLElement).tagName === "g" || (e.target as HTMLElement).tagName === "rect") {
+      setIsDragging(true);
+      dragStartRef.current = { x: e.clientX - panOffset.x, y: e.clientY - panOffset.y };
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (isDragging) {
+      setPanOffset({
+        x: e.clientX - dragStartRef.current.x,
+        y: e.clientY - dragStartRef.current.y,
+      });
+    }
+  };
+
+  const handleMouseUp = () => setIsDragging(false);
 
   // Find edges connected to selected node
   const activeEdges = GRAPH_EDGES.filter(
@@ -152,93 +193,144 @@ export default function SectionGraph({ incidents = [], recoveries = [], gangs = 
 
       {/* Main Grid: Interactive Graph Canvas + Incident Inspector */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(420px, 1fr))", gap: "1.5rem" }}>
-        {/* Left Column: Interactive Network SVG Graph */}
+        {/* Left Column: Interactive Network SVG Graph with Zoom & Pan */}
         <div className="card" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.5rem" }}>
             <h3 style={{ fontSize: "1rem", fontWeight: 700, margin: 0, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
               <Share2 size={16} color="var(--accent-purple)" /> Red de Coincidencias & Células Multi-Vehículo
             </h3>
-            <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
-              Hacé clic en cualquier nodo para explorar vínculos
-            </span>
+            
+            {/* Interactive Zoom Controls */}
+            <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+              <button
+                onClick={handleZoomIn}
+                style={{ padding: "0.3rem 0.55rem", fontSize: "0.75rem", fontWeight: 700, borderRadius: "5px", border: "1px solid var(--border)", background: "var(--bg-base)", color: "var(--text-primary)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.2rem" }}
+                title="Acercar (Zoom In)"
+              >
+                <ZoomIn size={14} /> +
+              </button>
+              <button
+                onClick={handleZoomOut}
+                style={{ padding: "0.3rem 0.55rem", fontSize: "0.75rem", fontWeight: 700, borderRadius: "5px", border: "1px solid var(--border)", background: "var(--bg-base)", color: "var(--text-primary)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.2rem" }}
+                title="Alejar (Zoom Out)"
+              >
+                <ZoomOut size={14} /> -
+              </button>
+              <button
+                onClick={handleResetZoom}
+                style={{ padding: "0.3rem 0.55rem", fontSize: "0.75rem", fontWeight: 700, borderRadius: "5px", border: "1px solid var(--border)", background: "var(--bg-base)", color: "var(--text-muted)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.2rem" }}
+                title="Restablecer Vista Ortogonal"
+              >
+                <RotateCcw size={12} /> Reset ({Math.round(zoomScale * 100)}%)
+              </button>
+            </div>
           </div>
 
-          {/* SVG Graph Canvas */}
-          <div style={{ width: "100%", height: "500px", background: "var(--bg-base)", borderRadius: "8px", border: "1px solid var(--border)", position: "relative", overflow: "hidden" }}>
-            <svg style={{ width: "100%", height: "100%" }}>
-              {/* Draw Edges */}
-              {GRAPH_EDGES.map((edge, idx) => {
-                const sourceNode = GRAPH_NODES.find((n) => n.id === edge.source);
-                const targetNode = GRAPH_NODES.find((n) => n.id === edge.target);
+          <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", display: "flex", alignItems: "center", gap: "0.3rem" }}>
+            <Move size={12} /> Podés arrastrar el canvas para desplazarte o usar la rueda del mouse para hacer Zoom.
+          </span>
 
-                if (!sourceNode || !targetNode) return null;
+          {/* SVG Graph Canvas with Interactive Zoom Transformation */}
+          <div
+            onWheel={handleWheel}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            style={{
+              width: "100%",
+              height: "520px",
+              background: "var(--bg-base)",
+              borderRadius: "8px",
+              border: "1px solid var(--border)",
+              position: "relative",
+              overflow: "hidden",
+              cursor: isDragging ? "grabbing" : "grab",
+              userSelect: "none"
+            }}
+          >
+            <svg
+              style={{ width: "100%", height: "100%" }}
+              viewBox="0 0 800 550"
+            >
+              {/* Transformed Group Container */}
+              <g transform={`translate(${panOffset.x}, ${panOffset.y}) scale(${zoomScale})`}>
+                {/* Draw Edges */}
+                {GRAPH_EDGES.map((edge, idx) => {
+                  const sourceNode = GRAPH_NODES.find((n) => n.id === edge.source);
+                  const targetNode = GRAPH_NODES.find((n) => n.id === edge.target);
 
-                const isConnected =
-                  selectedNode && (sourceNode.id === selectedNode.id || targetNode.id === selectedNode.id);
+                  if (!sourceNode || !targetNode) return null;
 
-                return (
-                  <g key={idx}>
-                    <line
-                      x1={sourceNode.x}
-                      y1={sourceNode.y}
-                      x2={targetNode.x}
-                      y2={targetNode.y}
-                      stroke={isConnected ? "var(--accent-indigo)" : "rgba(255,255,255,0.12)"}
-                      strokeWidth={isConnected ? 3.5 : 1.5}
-                      strokeDasharray={isConnected ? "none" : "4, 4"}
-                    />
-                    {isConnected && (
-                      <text
-                        x={(sourceNode.x + targetNode.x) / 2}
-                        y={(sourceNode.y + targetNode.y) / 2 - 8}
-                        fill="#a5b4fc"
-                        fontSize="10"
-                        fontWeight="700"
-                        textAnchor="middle"
-                        style={{ background: "#0f172a", padding: "2px" }}
-                      >
-                        {edge.label}
-                      </text>
-                    )}
-                  </g>
-                );
-              })}
+                  const isConnected =
+                    selectedNode && (sourceNode.id === selectedNode.id || targetNode.id === selectedNode.id);
 
-              {/* Draw Nodes */}
-              {GRAPH_NODES.map((node) => {
-                const isSelected = selectedNode?.id === node.id;
-                const isConnected = activeEdges.some(
-                  (e) => e.source === node.id || e.target === node.id
-                );
+                  return (
+                    <g key={idx}>
+                      <line
+                        x1={sourceNode.x}
+                        y1={sourceNode.y}
+                        x2={targetNode.x}
+                        y2={targetNode.y}
+                        stroke={isConnected ? "var(--accent-indigo)" : "rgba(255,255,255,0.12)"}
+                        strokeWidth={isConnected ? 3.5 : 1.5}
+                        strokeDasharray={isConnected ? "none" : "4, 4"}
+                      />
+                      {isConnected && (
+                        <text
+                          x={(sourceNode.x + targetNode.x) / 2}
+                          y={(sourceNode.y + targetNode.y) / 2 - 8}
+                          fill="#a5b4fc"
+                          fontSize="10"
+                          fontWeight="700"
+                          textAnchor="middle"
+                        >
+                          {edge.label}
+                        </text>
+                      )}
+                    </g>
+                  );
+                })}
 
-                return (
-                  <g
-                    key={node.id}
-                    onClick={() => setSelectedNode(node)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <circle
-                      cx={node.x}
-                      cy={node.y}
-                      r={isSelected ? 26 : isConnected ? 22 : 18}
-                      fill={node.color}
-                      stroke={isSelected ? "#ffffff" : isConnected ? "var(--accent-indigo)" : "transparent"}
-                      strokeWidth={isSelected ? 3.5 : 2}
-                      style={{ transition: "all 0.2s ease" }}
-                    />
-                    <text
-                      x={node.x}
-                      y={node.y + (isSelected ? 42 : 36)}
-                      fill={isSelected ? "#ffffff" : "var(--text-secondary)"}
-                      fontSize={isSelected ? "11.5" : "10"}
-                      fontWeight={isSelected ? "800" : "600"}
-                      textAnchor="middle"
+                {/* Draw Nodes */}
+                {GRAPH_NODES.map((node) => {
+                  const isSelected = selectedNode?.id === node.id;
+                  const isConnected = activeEdges.some(
+                    (e) => e.source === node.id || e.target === node.id
+                  );
+
+                  return (
+                    <g
+                      key={node.id}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedNode(node);
+                      }}
+                      style={{ cursor: "pointer" }}
                     >
-                      {node.label}
-                    </text>
-                  </g>
-                );
-              })}
+                      <circle
+                        cx={node.x}
+                        cy={node.y}
+                        r={isSelected ? 26 : isConnected ? 22 : 18}
+                        fill={node.color}
+                        stroke={isSelected ? "#ffffff" : isConnected ? "var(--accent-indigo)" : "transparent"}
+                        strokeWidth={isSelected ? 3.5 : 2}
+                        style={{ transition: "all 0.2s ease" }}
+                      />
+                      <text
+                        x={node.x}
+                        y={node.y + (isSelected ? 42 : 36)}
+                        fill={isSelected ? "#ffffff" : "var(--text-secondary)"}
+                        fontSize={isSelected ? "11.5" : "10"}
+                        fontWeight={isSelected ? "800" : "600"}
+                        textAnchor="middle"
+                      >
+                        {node.label}
+                      </text>
+                    </g>
+                  );
+                })}
+              </g>
             </svg>
           </div>
         </div>

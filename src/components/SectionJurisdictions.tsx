@@ -50,38 +50,38 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
     // Helper: Determine comisaría code by latitude and longitude or address keywords
     const getComisariaCode = (lat?: number, lon?: number, address: string = "") => {
       const addr = address.toLowerCase();
-      if (addr.includes("batan") || addr.includes("batán") || addr.includes("ruta 88")) return "CRIA_8VA";
-      if (addr.includes("sierra") || addr.includes("peregrina") || addr.includes("ruta 226")) return "CRIA_14TA";
-      if (addr.includes("camet") || addr.includes("dalias")) return "CRIA_15TA";
-      if (addr.includes("constitucion") || addr.includes("constitución") || addr.includes("tejedor")) return "CRIA_7MA";
-      if (addr.includes("serena") || addr.includes("acantilados")) return "CRIA_13RA";
-      if (addr.includes("bosque") || addr.includes("peralta ramos")) return "CRIA_12DA";
-      if (addr.includes("heras") || addr.includes("autodromo") || addr.includes("autódromo")) return "CRIA_11RA";
-      if (addr.includes("regional") || addr.includes("don emilio") || addr.includes("higa")) return "CRIA_16TA";
-      if (addr.includes("puerto") || addr.includes("playa grande")) return "CRIA_3RA";
-      if (addr.includes("güemes") || addr.includes("guemes") || addr.includes("chauvin") || addr.includes("chauvín")) return "CRIA_2DA";
-      if (addr.includes("la perla") || addr.includes("peatonal") || addr.includes("casino") || addr.includes("san martin")) return "CRIA_1RA";
-      if (addr.includes("varese") || addr.includes("alem") || addr.includes("playa chica")) return "CRIA_9NA";
+      if (addr.includes("batan") || addr.includes("batán") || addr.includes("ruta 88")) return "CRIA_8";
+      if (addr.includes("sierra") || addr.includes("peregrina") || addr.includes("ruta 226")) return "CRIA_14";
+      if (addr.includes("camet") || addr.includes("dalias")) return "CRIA_15";
+      if (addr.includes("constitucion") || addr.includes("constitución") || addr.includes("tejedor")) return "CRIA_7";
+      if (addr.includes("serena") || addr.includes("acantilados")) return "CRIA_13";
+      if (addr.includes("bosque") || addr.includes("peralta ramos")) return "CRIA_12";
+      if (addr.includes("heras") || addr.includes("autodromo") || addr.includes("autódromo")) return "CRIA_11";
+      if (addr.includes("regional") || addr.includes("don emilio") || addr.includes("higa")) return "CRIA_16";
+      if (addr.includes("puerto") || addr.includes("playa grande")) return "CRIA_3";
+      if (addr.includes("güemes") || addr.includes("guemes") || addr.includes("chauvin") || addr.includes("chauvín")) return "CRIA_2";
+      if (addr.includes("la perla") || addr.includes("peatonal") || addr.includes("casino") || addr.includes("san martin")) return "CRIA_1";
+      if (addr.includes("varese") || addr.includes("alem") || addr.includes("playa chica")) return "CRIA_9";
 
       if (lat && lon) {
-        if (lat > -38.00 && lon > -57.545) return "CRIA_1RA";
-        if (lat > -38.02 && lon > -57.555) return "CRIA_2DA";
-        if (lat > -38.05 && lon > -57.560) return "CRIA_3RA";
-        if (lat > -38.00 && lon > -57.575) return "CRIA_4TA";
-        if (lat < -38.05 && lon > -57.580) return "CRIA_5TA";
-        if (lat > -37.99 && lon < -57.575) return "CRIA_6TA";
-        if (lat > -37.98 && lon > -57.565) return "CRIA_7MA";
-        if (lon < -57.610) return "CRIA_8VA";
-        if (lat < -38.00 && lat > -38.02 && lon > -57.540) return "CRIA_9NA";
-        if (lat < -38.00 && lon < -57.585) return "CRIA_11RA";
-        if (lat < -38.05 && lon > -57.570) return "CRIA_12DA";
-        if (lat < -38.09) return "CRIA_13RA";
-        if (lat > -37.96 && lon > -57.560) return "CRIA_15TA";
-        if (lat < -38.01 && lon < -57.585) return "CRIA_16TA";
+        if (lat < -38.09) return "CRIA_13";
+        if (lat < -38.05 && lon > -57.570) return "CRIA_12";
+        if (lat < -38.05 && lon <= -57.570) return "CRIA_5";
+        if (lon < -57.610) return "CRIA_8";
+        if (lat > -37.96 && lon > -57.560) return "CRIA_15";
+        if (lat > -37.98 && lon > -57.565) return "CRIA_7";
+        if (lat > -37.99 && lon < -57.575) return "CRIA_6";
+        if (lat < -38.01 && lon < -57.585) return "CRIA_16";
+        if (lat < -38.00 && lon < -57.585) return "CRIA_11";
+        if (lat > -38.00 && lon < -57.565) return "CRIA_4";
+        if (lat < -38.00 && lat > -38.02 && lon > -57.540) return "CRIA_9";
+        if (lat > -38.05 && lon > -57.560) return "CRIA_3";
+        if (lat > -38.02 && lon > -57.555) return "CRIA_2";
+        if (lat > -38.00 && lon > -57.545) return "CRIA_1";
       }
 
       // Default distribution for general Pueyrredon incidents
-      return "CRIA_2DA";
+      return "CRIA_2";
     };
 
     // 1. Process 911 Incidents Dataset (8,598 rows)
