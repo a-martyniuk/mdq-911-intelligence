@@ -232,10 +232,14 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
   const [showRenabap, setShowRenabap] = useState(true);
   const [showAllTrajectories, setShowAllTrajectories] = useState(true);
 
-  // Unique deduplicated recoveries by stolen vehicle (ID_Robo)
+  // Unique deduplicated recoveries by stolen vehicle (ID_Robo), excluding self-matched dummy records
   const uniqueRecoveries = useMemo(() => {
     const map = new Map<number, RecoveryCase>();
     recoveries.forEach((c) => {
+      // Exclude self-matches where theft dispatch ID equals recovery dispatch ID or location & time are identical
+      if (c.ID_Robo && c.ID_Hallazgo && c.ID_Robo === c.ID_Hallazgo) return;
+      if (c.Dirección_Robo && c.Dirección_Hallazgo && c.Dirección_Robo === c.Dirección_Hallazgo && c.Horas_Hasta_Hallazgo === 0) return;
+
       const existing = map.get(c.ID_Robo);
       if (!existing || c.Horas_Hasta_Hallazgo < existing.Horas_Hasta_Hallazgo) {
         map.set(c.ID_Robo, c);
