@@ -1,14 +1,102 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { Flame, Car, ShieldAlert, Info, Filter, Download, FileText, Clock, Calendar, Layers, MapPin } from "lucide-react";
+import React, { useState, useEffect, useMemo } from "react";
+import { Flame, Car, ShieldAlert, Info, Filter, Download, FileText, Clock, Calendar, Layers, MapPin, Eye } from "lucide-react";
 import { getApiUrl } from "@/lib/apiUrl";
 import { exportToCSV } from "@/lib/excelExport";
 import { generateHotspotsPDF } from "@/lib/pdfReport";
+import { POLICE_JURISDICTIONS_GEOJSON } from "@/lib/jurisdictionsGeoJSON";
+import { RENABAP_BARRIOS_GEOJSON } from "@/lib/renabapGeoJSON";
+import "leaflet/dist/leaflet.css";
 
 interface SectionHotspotsProps {
   incidents?: any[];
   geoPoints?: any[];
+}
+
+// Interactive Leaflet Dynamic Hotspots Map Component
+function InteractiveHotspotsMap({ incidents = [] }: { incidents: any[] }) {
+  const [L, setL] = useState<any>(null);
+
+  useEffect(() => {
+    import("leaflet").then((leaflet) => {
+      setL(leaflet.default);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!L) return;
+
+    const map = L.map("interactive-hotspots-map", {
+      center: [-37.995, -57.565],
+      zoom: 12,
+    });
+
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+      attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap',
+      maxZoom: 19,
+    }).addTo(map);
+
+    // Layer: Comisarías (Blue Boundaries)
+    L.geoJSON(POLICE_JURISDICTIONS_GEOJSON, {
+      style: { color: "#2563eb", weight: 1.8, fillColor: "#3b82f6", fillOpacity: 0.05 },
+    }).addTo(map);
+
+    // Layer: RENABAP (Orange Boundaries)
+    L.geoJSON(RENABAP_BARRIOS_GEOJSON, {
+      style: (feature: any) => ({
+        color: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+        weight: feature.properties.isRenabap ? 2.5 : 1.2,
+        dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
+        fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+        fillOpacity: feature.properties.isRenabap ? 0.3 : 0.06,
+      }),
+    }).addTo(map);
+
+    // Plot dynamic filtered incident markers / heat points
+    const pointsToPlot = incidents.slice(0, 1500); // Top 1500 filtered for crisp rendering
+
+    pointsToPlot.forEach((inc: any) => {
+      const lat = parseFloat(inc.Latitud_Clean || inc.lat);
+      const lng = parseFloat(inc.Longitud_Clean || inc.lng);
+      if (isNaN(lat) || isNaN(lng)) return;
+
+      const origenUpper = (inc.Origen_Dataset || inc.origen || inc.Tipo || inc.tipo || "").toUpperCase();
+      const isHallazgos = origenUpper.includes("HALLAZGO");
+      const isDisparos = origenUpper.includes("DISPARO");
+      const isArmas = origenUpper.includes("ARMA");
+
+      const color = isHallazgos ? "#10b981" : isDisparos ? "#f59e0b" : isArmas ? "#dc2626" : "#ef4444";
+
+      const marker = L.circleMarker([lat, lng], {
+        radius: isArmas || isDisparos ? 6.5 : 5,
+        fillColor: color,
+        color: "#ffffff",
+        weight: 1.2,
+        fillOpacity: 0.82,
+      });
+
+      marker.bindPopup(`
+        <div style="font-size:0.8rem; line-height:1.4;">
+          <strong style="color:${color};">ID 911 #${inc.ID || inc.id} - ${inc.Tipo || inc.tipo}</strong><br/>
+          📍 ${inc.Dirección || inc.direccion || "MDQ"}<br/>
+          🕒 ${inc.Fecha || inc.fecha || ""} (${inc.Franja_Horaria || inc.franja || ""})<br/>
+          ${inc.Patente_Principal ? `🏷️ <strong>Patente:</strong> ${inc.Patente_Principal}<br/>` : ""}
+          <div style="background:#f8fafc; padding:0.4rem; border-radius:4px; margin-top:0.3rem; border:1px solid #cbd5e1; max-height:80px; overflow-y:auto;">
+            ${(inc.Relato || inc.relato || "Sin relato").slice(0, 140)}...
+          </div>
+        </div>
+      `);
+
+      marker.addTo(map);
+    });
+
+    return () => {
+      map.remove();
+    };
+  }, [L, incidents]);
+
+  return <div id="interactive-hotspots-map" style={{ width: "100%", height: "650px", borderRadius: "8px" }} />;
 }
 
 export default function SectionHotspots({ incidents = [], geoPoints = [] }: SectionHotspotsProps) {
@@ -18,7 +106,7 @@ export default function SectionHotspots({ incidents = [], geoPoints = [] }: Sect
   const [filterTipo, setFilterTipo] = useState<string>("todos");
   const [filterFranja, setFilterFranja] = useState<string>("todos");
   const [filterDia, setFilterDia] = useState<string>("todos");
-  const [viewMode, setViewMode] = useState<"kde_hd" | "interactive">("kde_hd");
+  const [mapMode, setMapMode] = useState<"interactive" | "kde_hd">("interactive");
 
   // Determine effective dataset to filter
   const dataset = useMemo(() => {
@@ -54,6 +142,18 @@ export default function SectionHotspots({ incidents = [], geoPoints = [] }: Sect
     });
   }, [dataset, filterTipo, filterFranja, filterDia]);
 
+  // Handle Tipo Dropdown Change & Sync with Active Tab
+  const handleTipoChange = (val: string) => {
+    setFilterTipo(val);
+    if (val === "robos") {
+      setActiveTab("robos");
+    } else if (val === "armas") {
+      setActiveTab("armas");
+    } else if (val === "todos") {
+      setActiveTab("general");
+    }
+  };
+
   // Generate Filter Summary text for reports
   const filterSummary = useMemo(() => {
     const parts = [];
@@ -74,7 +174,7 @@ export default function SectionHotspots({ incidents = [], geoPoints = [] }: Sect
               <span>🔥 Hotspots Delictivos y Mapa de Densidad Kernel (KDE)</span>
             </div>
             <p className="card-subtitle" style={{ margin: "0.2rem 0 0" }}>
-              Identificación de núcleos urbanos de alta concentración delictiva con radio de suavizado optimizado ($r=5$px) sobre mapa base de calles.
+              Identificación de núcleos urbanos de alta concentración delictiva sobre mapa base con filtros dinámicos en vivo.
             </p>
           </div>
 
@@ -162,7 +262,7 @@ export default function SectionHotspots({ incidents = [], geoPoints = [] }: Sect
               </label>
               <select
                 value={filterTipo}
-                onChange={(e) => setFilterTipo(e.target.value)}
+                onChange={(e) => handleTipoChange(e.target.value)}
                 className="form-input"
                 style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}
               >
@@ -221,6 +321,7 @@ export default function SectionHotspots({ incidents = [], geoPoints = [] }: Sect
                   setFilterTipo("todos");
                   setFilterFranja("todos");
                   setFilterDia("todos");
+                  setActiveTab("general");
                 }}
                 className="btn-logout"
                 style={{ height: "36px", padding: "0 0.75rem", fontSize: "0.75rem", fontWeight: 700, width: "100%" }}
@@ -231,62 +332,90 @@ export default function SectionHotspots({ incidents = [], geoPoints = [] }: Sect
           </div>
         </div>
 
-        {/* Tab Presets Bar */}
-        <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.25rem", flexWrap: "wrap" }}>
-          <button
-            className={`btn-logout ${activeTab === "general" ? "active" : ""}`}
-            style={activeTab === "general" ? { background: "var(--accent-indigo)", color: "#fff", borderColor: "var(--accent-indigo)" } : undefined}
-            onClick={() => {
-              setActiveTab("general");
-              setFilterTipo("todos");
-            }}
-          >
-            <Flame size={16} /> Densidad General (8.598 Casos)
-          </button>
-          <button
-            className={`btn-logout ${activeTab === "robos" ? "active" : ""}`}
-            style={activeTab === "robos" ? { background: "var(--accent-indigo)", color: "#fff", borderColor: "var(--accent-indigo)" } : undefined}
-            onClick={() => {
-              setActiveTab("robos");
-              setFilterTipo("robos");
-            }}
-          >
-            <Car size={16} /> Hotspots de Robos Vehiculares
-          </button>
-          <button
-            className={`btn-logout ${activeTab === "armas" ? "active" : ""}`}
-            style={activeTab === "armas" ? { background: "var(--accent-indigo)", color: "#fff", borderColor: "var(--accent-indigo)" } : undefined}
-            onClick={() => {
-              setActiveTab("armas");
-              setFilterTipo("armas");
-            }}
-          >
-            <ShieldAlert size={16} /> Hotspots Armas & Disparos
-          </button>
+        {/* Tab Presets & Map View Mode Selector */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem", marginBottom: "1.25rem" }}>
+          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+            <button
+              className={`btn-logout ${activeTab === "general" ? "active" : ""}`}
+              style={activeTab === "general" ? { background: "var(--accent-indigo)", color: "#fff", borderColor: "var(--accent-indigo)" } : undefined}
+              onClick={() => {
+                setActiveTab("general");
+                setFilterTipo("todos");
+              }}
+            >
+              <Flame size={16} /> Densidad General (8.598 Casos)
+            </button>
+
+            <button
+              className={`btn-logout ${activeTab === "robos" ? "active" : ""}`}
+              style={activeTab === "robos" ? { background: "var(--accent-indigo)", color: "#fff", borderColor: "var(--accent-indigo)" } : undefined}
+              onClick={() => {
+                setActiveTab("robos");
+                setFilterTipo("robos");
+              }}
+            >
+              <Car size={16} /> Hotspots de Robos Vehiculares
+            </button>
+
+            <button
+              className={`btn-logout ${activeTab === "armas" ? "active" : ""}`}
+              style={activeTab === "armas" ? { background: "var(--accent-indigo)", color: "#fff", borderColor: "var(--accent-indigo)" } : undefined}
+              onClick={() => {
+                setActiveTab("armas");
+                setFilterTipo("armas");
+              }}
+            >
+              <ShieldAlert size={16} /> Hotspots Armas & Disparos
+            </button>
+          </div>
+
+          <div style={{ display: "flex", gap: "0.4rem" }}>
+            <button
+              onClick={() => setMapMode("interactive")}
+              className={`btn-logout ${mapMode === "interactive" ? "active" : ""}`}
+              style={mapMode === "interactive" ? { background: "#10b981", color: "#fff" } : undefined}
+            >
+              🗺️ Mapa Dinámico (Filtros en Vivo)
+            </button>
+
+            <button
+              onClick={() => setMapMode("kde_hd")}
+              className={`btn-logout ${mapMode === "kde_hd" ? "active" : ""}`}
+              style={mapMode === "kde_hd" ? { background: "#8b5cf6", color: "#fff" } : undefined}
+            >
+              🖼️ Capa KDE HD Pre-Calculada
+            </button>
+          </div>
         </div>
 
         {/* Map Container View */}
         <div style={{ background: "var(--bg-base)", borderRadius: "var(--radius-md)", border: "1px solid var(--border)", overflow: "hidden" }}>
-          {activeTab === "general" && (
-            <iframe
-              src={getApiUrl("/api/raw_html/05_mapa_hotspots_densidad.html")}
-              style={{ width: "100%", height: "650px", border: "none" }}
-              title="Hotspots General"
-            />
-          )}
-          {activeTab === "robos" && (
-            <iframe
-              src={getApiUrl("/api/raw_html/05_mapa_hotspots_robos.html")}
-              style={{ width: "100%", height: "650px", border: "none" }}
-              title="Hotspots Robos"
-            />
-          )}
-          {activeTab === "armas" && (
-            <iframe
-              src={getApiUrl("/api/raw_html/05_mapa_hotspots_armas_disparos.html")}
-              style={{ width: "100%", height: "650px", border: "none" }}
-              title="Hotspots Armas"
-            />
+          {mapMode === "interactive" ? (
+            <InteractiveHotspotsMap incidents={filteredIncidents} />
+          ) : (
+            <>
+              {activeTab === "general" && (
+                <iframe
+                  src={getApiUrl("/api/raw_html/05_mapa_hotspots_densidad.html")}
+                  style={{ width: "100%", height: "650px", border: "none" }}
+                  title="Hotspots General"
+                />
+              )}
+              {activeTab === "robos" && (
+                <iframe
+                  src={getApiUrl("/api/raw_html/05_mapa_hotspots_robos.html")}
+                  style={{ width: "100%", height: "650px", border: "none" }}
+                  title="Hotspots Robos"
+                />
+              )}
+              {activeTab === "armas" && (
+                <iframe
+                  src={getApiUrl("/api/raw_html/05_mapa_hotspots_armas_disparos.html")}
+                  style={{ width: "100%", height: "650px", border: "none" }}
+                  title="Hotspots Armas"
+                />
+              )}
+            </>
           )}
         </div>
       </div>
