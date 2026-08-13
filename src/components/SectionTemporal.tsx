@@ -28,6 +28,10 @@ export default function SectionTemporal({ incidents }: SectionTemporalProps) {
   const weekendCount = incidents.filter((r) => r.Es_FinDeSemana).length;
   const weekdayCount = incidents.length - weekendCount;
 
+  // Dynamic Night Calculation
+  const nightCases = incidents.filter((r) => r.Hora >= 18 && r.Hora <= 23).length;
+  const nightPct = incidents.length > 0 ? (nightCases / incidents.length) * 100 : 0;
+
   return (
     <div>
       <div className="card" style={{ marginBottom: "1.5rem" }}>
@@ -54,7 +58,7 @@ export default function SectionTemporal({ incidents }: SectionTemporalProps) {
               Hallazgo Crítico: Picos de Nocturnidad y Fin de Semana
             </strong>
             <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.2rem" }}>
-              La franja de <strong style={{ color: "var(--accent-indigo)" }}>18:00 a 24:00 hs concentra el 39,5% de los incidentes totales</strong> (3.397 casos). Asimismo, los <strong style={{ color: "var(--accent-pink)" }}>sábados por la noche</strong> registran la mayor densidad semanal de llamados al 911.
+              La franja de <strong style={{ color: "var(--accent-indigo)" }}>18:00 a 24:00 hs concentra el {nightPct.toFixed(1)}% de los incidentes</strong> ({nightCases.toLocaleString()} casos). Asimismo, los <strong style={{ color: "var(--accent-pink)" }}>sábados por la noche</strong> registran la mayor densidad semanal de llamados al 911.
             </p>
           </div>
         </div>

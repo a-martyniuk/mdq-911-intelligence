@@ -58,8 +58,17 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
   }, [uniqueRecoveries, selectedCategory]);
 
   const hoursList = filteredRecoveries.map((r) => r.Horas_Hasta_Hallazgo);
-  const medianHours = selectedCategory === "motos" ? 7.0 : selectedCategory === "autos" ? 4.9 : 5.4;
-  const meanHours = selectedCategory === "motos" ? 75.7 : selectedCategory === "autos" ? 51.2 : 53.6;
+  const sortedHours = [...hoursList].filter((h) => typeof h === "number" && !isNaN(h) && h > 0).sort((a, b) => a - b);
+
+  const medianHours = sortedHours.length > 0
+    ? sortedHours.length % 2 !== 0
+      ? sortedHours[Math.floor(sortedHours.length / 2)]
+      : (sortedHours[Math.floor(sortedHours.length / 2) - 1] + sortedHours[Math.floor(sortedHours.length / 2)]) / 2
+    : selectedCategory === "motos" ? 7.0 : selectedCategory === "autos" ? 4.9 : 5.4;
+
+  const meanHours = sortedHours.length > 0
+    ? sortedHours.reduce((acc, val) => acc + val, 0) / sortedHours.length
+    : selectedCategory === "motos" ? 75.7 : selectedCategory === "autos" ? 51.2 : 53.6;
 
   return (
     <div>
