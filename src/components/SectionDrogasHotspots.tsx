@@ -96,6 +96,10 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
 
     return () => {
       isMounted = false;
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
     };
   }, [filtered]);
 

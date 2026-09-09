@@ -1137,3 +1137,144 @@ export function generateSNAWarrantPDF(data: {
   win.document.close();
 }
 
+/**
+ * Generates an institutional executive dossier for José C. Paz Drug Intelligence
+ */
+export function generateDrogasJcpPDF(data: {
+  totalIncidents: number;
+  georeferencedCount: number;
+  armasCount: number;
+  cocainaCount: number;
+  marihuanaCount: number;
+  pacoCount: number;
+  incidents: any[];
+}) {
+  const win = window.open("", "_blank");
+  if (!win) {
+    alert("Por favor habilita las ventanas emergentes (popups) para descargar el informe PDF.");
+    return;
+  }
+
+  const {
+    totalIncidents,
+    georeferencedCount,
+    armasCount,
+    cocainaCount,
+    marihuanaCount,
+    pacoCount,
+    incidents,
+  } = data;
+
+  const sample = (incidents || []).slice(0, 40);
+
+  const html = `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <title>Dossier Pericial Drogas 911 - José C. Paz</title>
+      <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #0f172a; padding: 2.5rem; margin: 0; line-height: 1.5; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #ef4444; padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
+        .title { font-size: 1.4rem; font-weight: 900; color: #0f172a; text-transform: uppercase; letter-spacing: 0.02em; }
+        .subtitle { font-size: 0.85rem; color: #64748b; font-weight: 600; text-transform: uppercase; margin-top: 0.2rem; }
+        .badge { background: #ef4444; color: #fff; padding: 0.35rem 0.75rem; border-radius: 4px; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; border-top: 3px solid #ef4444; }
+        .stat-val { font-size: 1.4rem; font-weight: 900; color: #0f172a; margin: 0.2rem 0; }
+        .stat-lbl { font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; }
+        .stat-sub { font-size: 0.7rem; color: #94a3b8; }
+        .section-title { font-size: 1rem; font-weight: 800; color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.4rem; margin: 1.5rem 0 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+        .info-box { background: #fef2f2; border-left: 4px solid #ef4444; padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem; font-size: 0.85rem; color: #991b1b; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-bottom: 1.5rem; }
+        th { background: #0f172a; color: #fff; text-align: left; padding: 0.6rem; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; }
+        td { padding: 0.55rem 0.6rem; border-bottom: 1px solid #e2e8f0; }
+        tr:nth-child(even) { background: #f8fafc; }
+        .footer { border-top: 1px solid #cbd5e1; padding-top: 1rem; margin-top: 2rem; font-size: 0.7rem; color: #94a3b8; text-align: center; }
+        @media print {
+          body { padding: 1rem; }
+          .no-print { display: none; }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div>
+          <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
+          <div class="subtitle">Dossier de Inteligencia Criminal & Puntos de Venta (911) · Partido de José C. Paz</div>
+        </div>
+        <div class="badge">Uso Oficial / Pericial</div>
+      </div>
+
+      <div class="info-box">
+        <strong>ALCANCE METODOLÓGICO:</strong> Consolidación de <strong>${totalIncidents.toLocaleString()} denuncias</strong> integrando dos vertientes analíticas complementarias:
+        (1) 989 despachos formalmente tipificados como drogas ilícitas; (2) 781 alertas rescatadas mediante filtrado semántico por palabras clave en los relatos libres de los operadores (cocaína, búnkers, marihuana, transas).
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-lbl">Denuncias Totales</div>
+          <div class="stat-val">${totalIncidents.toLocaleString()}</div>
+          <div class="stat-sub">Eventos únicos 911</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Georreferenciados</div>
+          <div class="stat-val">${georeferencedCount.toLocaleString()}</div>
+          <div class="stat-sub">${((georeferencedCount / totalIncidents) * 100).toFixed(1)}% precisión espacial</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Presencia de Armas</div>
+          <div class="stat-val">${armasCount.toLocaleString()}</div>
+          <div class="stat-sub">${((armasCount / totalIncidents) * 100).toFixed(1)}% con armas o disparos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Focos Cocaína / Paco</div>
+          <div class="stat-val">${(cocainaCount + pacoCount).toLocaleString()}</div>
+          <div class="stat-sub">${cocainaCount} cocaína | ${pacoCount} paco</div>
+        </div>
+      </div>
+
+      <div class="section-title">Muestra Pericial de Despachos 911 Correlacionados</div>
+      <table>
+        <thead>
+          <tr>
+            <th>ID 911</th>
+            <th>Fecha / Hora</th>
+            <th>Dirección / Barrio</th>
+            <th>Sustancia & Lugar</th>
+            <th>Armas</th>
+            <th>Relato Policial 911</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${sample.map((inc) => `
+            <tr>
+              <td><strong>#${inc.id || inc.ID}</strong></td>
+              <td>${inc.fecha || inc.Fecha}</td>
+              <td>${inc.direccion || inc.Dirección || "José C. Paz"}<br/><small style="color:#64748b;">${inc.barrio || inc.Barrio_Detectado || ""}</small></td>
+              <td><strong>${inc.sustancia || inc.Sustancia || "Polirubro"}</strong><br/><small style="color:#64748b;">${inc.tipoLugar || inc.Tipo_Punto_Venta || ""}</small></td>
+              <td>${inc.tieneArmas ? '<span style="color:#dc2626; font-weight:700;">SÍ</span>' : 'No'}</td>
+              <td style="font-size: 0.72rem; max-width: 250px;">${(inc.relato || inc.Relato || "").slice(0, 140)}...</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+
+      <div class="footer">
+        Documento emitido por la Plataforma MSEG Intelligence · Reserva de Sumario · ${new Date().toLocaleString("es-AR")}
+      </div>
+
+      <script>
+        window.onload = function() {
+          setTimeout(() => { window.print(); }, 800);
+        };
+      </script>
+    </body>
+    </html>
+  `;
+
+  win.document.write(html);
+  win.document.close();
+}
+
+

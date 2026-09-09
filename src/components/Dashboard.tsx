@@ -47,6 +47,15 @@ export default function Dashboard() {
     origenDataset: "todos",
   });
 
+  // Keep active section in sync with active project
+  useEffect(() => {
+    if (currentProject === "jcp" && !activeSection.startsWith("drogas-")) {
+      setActiveSection("drogas-overview");
+    } else if (currentProject === "mdp" && activeSection.startsWith("drogas-")) {
+      setActiveSection("overview");
+    }
+  }, [currentProject, activeSection]);
+
   // Verify auth session on load
   useEffect(() => {
     fetch(getApiUrl("/api/auth/session"))
@@ -194,6 +203,41 @@ export default function Dashboard() {
             </button>
           )}
 
+          {currentProject === "jcp" && (
+            <button
+              onClick={() => {
+                import("@/lib/pdfReport").then((mod) => {
+                  mod.generateDrogasJcpPDF({
+                    totalIncidents: jcpStats.totalIncidents,
+                    georeferencedCount: jcpStats.georeferencedCount,
+                    armasCount: jcpStats.armasCount,
+                    cocainaCount: jcpStats.cocainaCount,
+                    marihuanaCount: jcpStats.marihuanaCount,
+                    pacoCount: jcpStats.pacoCount,
+                    incidents: data?.incidents || data?.geoPoints || [],
+                  });
+                });
+              }}
+              style={{
+                height: "36px",
+                padding: "0 1rem",
+                fontSize: "0.8rem",
+                fontWeight: 800,
+                background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
+                color: "#fff",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                boxShadow: "0 2px 8px rgba(239,68,68,0.3)"
+              }}
+            >
+              📄 Dossier Drogas JCP (PDF)
+            </button>
+          )}
+
           <div className="user-badge">
             <span className="user-dot"></span>
             <span>Usuario: {user}</span>
@@ -220,7 +264,7 @@ export default function Dashboard() {
 
       {/* Main Content Area */}
       <main className="app-main">
-        <IntroBanner />
+        <IntroBanner currentProject={currentProject} />
 
         {/* ======================================= */}
         {/* PROYECTO 1: MAR DEL PLATA               */}

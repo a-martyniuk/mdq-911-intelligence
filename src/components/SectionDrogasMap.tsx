@@ -142,6 +142,10 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
 
     return () => {
       isMounted = false;
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
     };
   }, [filteredIncidents]);
 
