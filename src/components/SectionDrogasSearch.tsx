@@ -10,12 +10,17 @@ interface SectionDrogasSearchProps {
 
 export default function SectionDrogasSearch({ incidents = [] }: SectionDrogasSearchProps) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [filterOrigen, setFilterOrigen] = useState("todos");
   const [filterSustancia, setFilterSustancia] = useState("todos");
   const [filterArmas, setFilterArmas] = useState("todos");
   const [selectedIncident, setSelectedIncident] = useState<any | null>(null);
 
   const filtered = useMemo(() => {
     let result = incidents;
+
+    if (filterOrigen !== "todos") {
+      result = result.filter((r) => (r.origen || r.Origen_Dataset || "").toUpperCase() === filterOrigen.toUpperCase());
+    }
 
     if (filterSustancia !== "todos") {
       const s = filterSustancia.toUpperCase();
@@ -39,7 +44,7 @@ export default function SectionDrogasSearch({ incidents = [] }: SectionDrogasSea
     }
 
     return result;
-  }, [incidents, searchTerm, filterSustancia, filterArmas]);
+  }, [incidents, searchTerm, filterOrigen, filterSustancia, filterArmas]);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
@@ -60,6 +65,7 @@ export default function SectionDrogasSearch({ incidents = [] }: SectionDrogasSea
               const exportData = filtered.map((inc) => ({
                 ID: inc.id,
                 Fecha: inc.fecha,
+                Origen: inc.origenLabel || inc.origen,
                 Direccion: inc.direccion,
                 Barrio: inc.barrio,
                 Sustancia: inc.sustancia,
@@ -91,7 +97,7 @@ export default function SectionDrogasSearch({ incidents = [] }: SectionDrogasSea
 
         {/* Search & Filter Bar */}
         <div style={{ background: "var(--bg-base)", padding: "1rem", borderRadius: "8px", border: "1px solid var(--border)", marginBottom: "1.25rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 200px 200px", gap: "0.75rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 190px 170px 170px", gap: "0.75rem" }}>
             <input
               type="text"
               placeholder="Buscar por ID, calle, alias (ej: Peter, El Mono), búnker, vehículo..."
@@ -100,6 +106,17 @@ export default function SectionDrogasSearch({ incidents = [] }: SectionDrogasSea
               className="form-input"
               style={{ width: "100%", height: "38px", fontSize: "0.85rem" }}
             />
+
+            <select
+              value={filterOrigen}
+              onChange={(e) => setFilterOrigen(e.target.value)}
+              className="form-input"
+              style={{ width: "100%", height: "38px", fontSize: "0.8rem" }}
+            >
+              <option value="todos">Todas las Fuentes</option>
+              <option value="DROGAS_ILICITAS_FORMAL">🔴 Despacho Formal Drogas</option>
+              <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Búsqueda Semántica</option>
+            </select>
 
             <select
               value={filterSustancia}

@@ -10,27 +10,32 @@ interface SectionTemporalProps {
   incidents: any[];
 }
 
-export default function SectionTemporal({ incidents }: SectionTemporalProps) {
+export default function SectionTemporal({ incidents = [] }: SectionTemporalProps) {
+  const safeIncidents = incidents || [];
+
   // Aggregate hourly data
   const hours = Array.from({ length: 24 }, (_, i) => i);
-  const hourlyCounts = hours.map((h) => incidents.filter((r) => r.Hora === h).length);
+  const hourlyCounts = hours.map((h) => safeIncidents.filter((r) => (r.Hora ?? r.hora) === h).length);
 
   // Aggregate day of week data
   const daysOrder = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
-  const dailyCounts = daysOrder.map((d) => incidents.filter((r) => r.Dia_Semana === d).length);
+  const dailyCounts = daysOrder.map((d) => safeIncidents.filter((r) => (r.Dia_Semana || r.dia || r.diaSemana) === d).length);
 
   // 2D Crosstab Matrix (Day x Hour)
   const zMatrix = daysOrder.map((d) =>
-    hours.map((h) => incidents.filter((r) => r.Dia_Semana === d && r.Hora === h).length)
+    hours.map((h) => safeIncidents.filter((r) => (r.Dia_Semana || r.dia || r.diaSemana) === d && (r.Hora ?? r.hora) === h).length)
   );
 
   // Weekend vs Weekday
-  const weekendCount = incidents.filter((r) => r.Es_FinDeSemana).length;
-  const weekdayCount = incidents.length - weekendCount;
+  const weekendCount = safeIncidents.filter((r) => r.Es_FinDeSemana || r.es_fin_de_semana || (r.Dia_Semana === "Sábado" || r.Dia_Semana === "Domingo" || r.dia === "Sábado" || r.dia === "Domingo")).length;
+  const weekdayCount = safeIncidents.length - weekendCount;
 
   // Dynamic Night Calculation
-  const nightCases = incidents.filter((r) => r.Hora >= 18 && r.Hora <= 23).length;
-  const nightPct = incidents.length > 0 ? (nightCases / incidents.length) * 100 : 0;
+  const nightCases = safeIncidents.filter((r) => {
+    const h = r.Hora ?? r.hora;
+    return typeof h === "number" && h >= 18 && h <= 23;
+  }).length;
+  const nightPct = safeIncidents.length > 0 ? (nightCases / safeIncidents.length) * 100 : 0;
 
   return (
     <div>

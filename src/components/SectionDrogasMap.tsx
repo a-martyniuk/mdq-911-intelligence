@@ -14,6 +14,7 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
   const mapInstanceRef = useRef<any>(null);
 
   // Filters State
+  const [filterOrigen, setFilterOrigen] = useState<string>("todos");
   const [filterSustancia, setFilterSustancia] = useState<string>("todos");
   const [filterLugar, setFilterLugar] = useState<string>("todos");
   const [filterArmas, setFilterArmas] = useState<string>("todos");
@@ -22,6 +23,10 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
   // Filtered dataset
   const filteredIncidents = useMemo(() => {
     return incidents.filter((inc) => {
+      if (filterOrigen !== "todos") {
+        const orig = (inc.origen || inc.Origen_Dataset || "").toUpperCase();
+        if (orig !== filterOrigen.toUpperCase()) return false;
+      }
       if (filterSustancia !== "todos") {
         const sust = (inc.sustancia || inc.SubTipo || "").toUpperCase();
         if (!sust.includes(filterSustancia.toUpperCase())) return false;
@@ -40,7 +45,7 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
       }
       return true;
     });
-  }, [incidents, filterSustancia, filterLugar, filterArmas, filterBarrio]);
+  }, [incidents, filterOrigen, filterSustancia, filterLugar, filterArmas, filterBarrio]);
 
   // Distinct barrios for select dropdown
   const barriosList = useMemo(() => {
@@ -85,8 +90,8 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
 
       const markersGroup = L.layerGroup();
 
-      // Plot markers (top 1,200 for smooth performance)
-      const points = filteredIncidents.filter((r) => r.lat && r.lng).slice(0, 1200);
+      // Plot all georeferenced markers
+      const points = filteredIncidents.filter((r) => r.lat && r.lng);
 
       points.forEach((inc) => {
         const sust = (inc.sustancia || "").toUpperCase();
@@ -213,7 +218,24 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
             </span>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "0.75rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: "0.75rem" }}>
+            {/* Vertiente / Fuente 911 */}
+            <div>
+              <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", display: "block", marginBottom: "0.25rem" }}>
+                📑 Vertiente / Fuente 911:
+              </label>
+              <select
+                value={filterOrigen}
+                onChange={(e) => setFilterOrigen(e.target.value)}
+                className="form-input"
+                style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}
+              >
+                <option value="todos">Todas las Fuentes</option>
+                <option value="DROGAS_ILICITAS_FORMAL">🔴 Despacho Formal Drogas</option>
+                <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Búsqueda Semántica Relatos</option>
+              </select>
+            </div>
+
             {/* Sustancia */}
             <div>
               <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", display: "block", marginBottom: "0.25rem" }}>
@@ -291,6 +313,7 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
             <div style={{ display: "flex", alignItems: "flex-end" }}>
               <button
                 onClick={() => {
+                  setFilterOrigen("todos");
                   setFilterSustancia("todos");
                   setFilterLugar("todos");
                   setFilterArmas("todos");

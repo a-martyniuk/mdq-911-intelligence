@@ -32,7 +32,7 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
       });
     });
 
-    return Object.entries(counts)
+    let list = Object.entries(counts)
       .map(([alias, data]) => ({
         alias,
         count: data.count,
@@ -41,9 +41,19 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
         sampleRelato: data.sampleRelato,
         isFullName: data.isFullName,
       }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 25);
-  }, [incidents]);
+      .sort((a, b) => b.count - a.count);
+
+    if (searchTerm.trim() !== "") {
+      const q = searchTerm.toLowerCase();
+      list = list.filter((item) =>
+        item.alias.toLowerCase().includes(q) ||
+        item.barrios.toLowerCase().includes(q) ||
+        item.sampleRelato.toLowerCase().includes(q)
+      );
+    }
+
+    return list.slice(0, 35);
+  }, [incidents, searchTerm]);
 
   // Points of sale distribution
   const lugaresStats = useMemo(() => {

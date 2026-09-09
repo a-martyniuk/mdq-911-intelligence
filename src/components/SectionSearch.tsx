@@ -49,8 +49,10 @@ export default function SectionSearch({ incidents = [] }: SectionSearchProps) {
         const direccion = normalizeStr(inc.Dirección || inc.direccion || "");
         const patente = normalizeStr(inc.Patente_Principal || inc.patente || "");
         const marca = normalizeStr(inc.Marca_Detectada || inc.marca || "");
+        const id = (inc.ID?.toString() || inc.id?.toString() || "");
 
         return (
+          id.includes(q) ||
           relato.includes(q) ||
           tipo.includes(q) ||
           origen.includes(q) ||

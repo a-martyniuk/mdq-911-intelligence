@@ -55,3 +55,42 @@ export interface DictionaryItem {
   ejemplo: string;
   categoria: 'original' | 'derivada' | 'recuperacion';
 }
+
+export interface DrogasIncidentRecord {
+  id: number;
+  ID?: number;
+  fecha: string;
+  Fecha?: string;
+  hora: number;
+  Hora?: number;
+  franja: string;
+  Franja_Horaria?: string;
+  dia: string;
+  Dia_Semana?: string;
+  direccion: string;
+  Dirección?: string;
+  lat?: number;
+  Latitud_Clean?: number;
+  lng?: number;
+  Longitud_Clean?: number;
+  relato: string;
+  Relato?: string;
+  comentario?: string;
+  origen: "DROGAS_ILICITAS_FORMAL" | "INFORMACION_VECINAL_KEYWORDS";
+  Origen_Dataset?: string;
+  origenLabel?: string;
+  tipo: string;
+  Tipo?: string;
+  subtipo: string;
+  SubTipo?: string;
+  sustancia: string;
+  Sustancia?: string;
+  tieneArmas: boolean;
+  Tiene_Armas?: boolean;
+  tipoLugar: string;
+  Tipo_Punto_Venta?: string;
+  alias: string[];
+  Alias_Identificados?: string[];
+  barrio: string;
+  Barrio_Detectado?: string;
+}

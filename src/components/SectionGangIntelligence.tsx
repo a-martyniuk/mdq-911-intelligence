@@ -161,79 +161,96 @@ const GANG_PROFILES: GangProfile[] = [
 
 // Leaflet map component for gang operations
 function GangMap({ gang }: { gang: GangProfile }) {
-  const [L, setL] = useState<any>(null);
+  const mapContainerRef = React.useRef<HTMLDivElement | null>(null);
+  const mapInstanceRef = React.useRef<any>(null);
+  const layerGroupRef = React.useRef<any>(null);
+  const LRef = React.useRef<any>(null);
 
   useEffect(() => {
-    import("leaflet").then((leaflet) => {
-      setL(leaflet.default);
+    let isMounted = true;
+
+    import("leaflet").then((L) => {
+      if (!isMounted || !mapContainerRef.current) return;
+      LRef.current = L;
+
+      if (!mapInstanceRef.current) {
+        const map = L.map(mapContainerRef.current, {
+          center: [-38.00, -57.56],
+          zoom: 12,
+        });
+
+        L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+          attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap',
+          maxZoom: 19,
+        }).addTo(map);
+
+        layerGroupRef.current = L.layerGroup().addTo(map);
+        mapInstanceRef.current = map;
+      }
+
+      const layerGroup = layerGroupRef.current;
+      if (!layerGroup) return;
+
+      layerGroup.clearLayers();
+
+      const gangCoords: Record<string, { attack: [number, number]; escape: [number, number] }> = {
+        ciclomotor_110: { attack: [-38.002, -57.551], escape: [-37.972, -57.592] },
+        tornado_alta: { attack: [-37.991, -57.561], escape: [-37.962, -57.612] },
+        levantadores_fiat: { attack: [-38.012, -57.552], escape: [-37.985, -57.601] },
+        llave_corrida_pickups: { attack: [-38.025, -57.535], escape: [-37.951, -57.575] },
+        disparos_territorial: { attack: [-37.978, -57.615], escape: [-37.965, -57.632] },
+        deliverys_bicis: { attack: [-38.005, -57.545], escape: [-37.989, -57.581] },
+        entraderas_cocheras: { attack: [-38.015, -57.542], escape: [-37.979, -57.572] },
+      };
+
+      const coords = gangCoords[gang.id] || { attack: [-38.005, -57.545], escape: [-37.972, -57.592] };
+      const attackCenter = coords.attack;
+      const escapeCenter = coords.escape;
+
+      // Draw Attack Zone Circle (Red)
+      const attackCircle = L.circle(attackCenter, {
+        radius: 1800,
+        color: "#ef4444",
+        fillColor: "#ef4444",
+        fillOpacity: 0.25,
+        weight: 2,
+      });
+      attackCircle.bindPopup(`<strong>Zona Preferida de Ataque:</strong><br/>${gang.attackZones.join(", ")}`);
+      attackCircle.addTo(layerGroup);
+
+      // Draw Escape Zone Circle (Amber/Green)
+      const escapeCircle = L.circle(escapeCenter, {
+        radius: 2200,
+        color: "#f59e0b",
+        fillColor: "#f59e0b",
+        fillOpacity: 0.25,
+        weight: 2,
+        dashArray: "6, 6",
+      });
+      escapeCircle.bindPopup(`<strong>Corredor de Escape & Enfriamiento:</strong><br/>${gang.escapeCorridors.join(", ")}`);
+      escapeCircle.addTo(layerGroup);
+
+      // Draw Vector connecting Attack -> Escape
+      const vectorLine = L.polyline([attackCenter, escapeCenter], {
+        color: gang.badgeColor,
+        weight: 3,
+        dashArray: "8, 6",
+      });
+      vectorLine.bindPopup(`<strong>Vector de Movilidad Criminal Asignado</strong>`);
+      vectorLine.addTo(layerGroup);
     });
-  }, []);
-
-  useEffect(() => {
-    if (!L) return;
-
-    const map = L.map("gang-map", {
-      center: [-38.00, -57.56],
-      zoom: 12,
-    });
-
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
-      attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap',
-      maxZoom: 19,
-    }).addTo(map);
-
-    const gangCoords: Record<string, { attack: [number, number]; escape: [number, number] }> = {
-      ciclomotor_110: { attack: [-38.002, -57.551], escape: [-37.972, -57.592] },
-      tornado_alta: { attack: [-37.991, -57.561], escape: [-37.962, -57.612] },
-      levantadores_fiat: { attack: [-38.012, -57.552], escape: [-37.985, -57.601] },
-      llave_corrida_pickups: { attack: [-38.025, -57.535], escape: [-37.951, -57.575] },
-      disparos_territorial: { attack: [-37.978, -57.615], escape: [-37.965, -57.632] },
-      deliverys_bicis: { attack: [-38.005, -57.545], escape: [-37.989, -57.581] },
-      entraderas_cocheras: { attack: [-38.015, -57.542], escape: [-37.979, -57.572] },
-    };
-
-    const coords = gangCoords[gang.id] || { attack: [-38.005, -57.545], escape: [-37.972, -57.592] };
-    const attackCenter = coords.attack;
-    const escapeCenter = coords.escape;
-
-    // Draw Attack Zone Circle (Red)
-    const attackCircle = L.circle(attackCenter, {
-      radius: 1800,
-      color: "#ef4444",
-      fillColor: "#ef4444",
-      fillOpacity: 0.25,
-      weight: 2,
-    });
-    attackCircle.bindPopup(`<strong>Zona Preferida de Ataque:</strong><br/>${gang.attackZones.join(", ")}`);
-    attackCircle.addTo(map);
-
-    // Draw Escape Zone Circle (Amber/Green)
-    const escapeCircle = L.circle(escapeCenter, {
-      radius: 2200,
-      color: "#f59e0b",
-      fillColor: "#f59e0b",
-      fillOpacity: 0.25,
-      weight: 2,
-      dashArray: "6, 6",
-    });
-    escapeCircle.bindPopup(`<strong>Corredor de Escape & Enfriamiento:</strong><br/>${gang.escapeCorridors.join(", ")}`);
-    escapeCircle.addTo(map);
-
-    // Draw Vector connecting Attack -> Escape
-    const vectorLine = L.polyline([attackCenter, escapeCenter], {
-      color: gang.badgeColor,
-      weight: 3,
-      dashArray: "8, 6",
-    });
-    vectorLine.bindPopup(`<strong>Vector de Movilidad Criminal Asignado</strong>`);
-    vectorLine.addTo(map);
 
     return () => {
-      map.remove();
+      isMounted = false;
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+        layerGroupRef.current = null;
+      }
     };
-  }, [L, gang]);
+  }, [gang]);
 
-  return <div id="gang-map" style={{ width: "100%", height: "450px", borderRadius: "var(--radius-md)" }} />;
+  return <div ref={mapContainerRef} style={{ width: "100%", height: "450px", borderRadius: "var(--radius-md)" }} />;
 }
 
 export default function SectionGangIntelligence({ incidents = [] }: SectionGangIntelligenceProps) {

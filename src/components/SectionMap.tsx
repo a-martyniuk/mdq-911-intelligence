@@ -45,92 +45,150 @@ function MapComponent({
   showRenabap: boolean;
   showPoints: boolean;
 }) {
-  const [L, setL] = useState<any>(null);
+  const mapContainerRef = React.useRef<HTMLDivElement | null>(null);
+  const mapInstanceRef = React.useRef<any>(null);
+  const pointsLayerRef = React.useRef<any>(null);
+  const vectorsLayerRef = React.useRef<any>(null);
+  const jurisLayerRef = React.useRef<any>(null);
+  const renabapLayerRef = React.useRef<any>(null);
+  const LRef = React.useRef<any>(null);
 
+  // Initialize Map Once
   useEffect(() => {
-    import("leaflet").then((leaflet) => {
-      setL(leaflet.default);
+    let isMounted = true;
+
+    import("leaflet").then((L) => {
+      if (!isMounted || !mapContainerRef.current) return;
+      LRef.current = L;
+
+      if (!mapInstanceRef.current) {
+        const map = L.map(mapContainerRef.current, {
+          center: [-38.00, -57.56],
+          zoom: 12,
+        });
+
+        L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+          attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap',
+          maxZoom: 19,
+        }).addTo(map);
+
+        // Jurisdictions Layer
+        const jurisLayer = L.geoJSON(POLICE_JURISDICTIONS_GEOJSON, {
+          style: (feature: any) => ({
+            color: feature.properties.color || "#6366f1",
+            weight: 2,
+            opacity: 0.85,
+            fillColor: feature.properties.color || "#6366f1",
+            fillOpacity: 0.12,
+          }),
+          onEachFeature: (feature: any, layer: any) => {
+            layer.bindPopup(`
+              <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem;">
+                <strong style="color: ${feature.properties.color || '#6366f1'}; font-size: 0.95rem;">
+                  👮 ${feature.properties.name}
+                </strong><br/>
+                <span style="font-size: 0.8rem; color: #444;">
+                  <b>Zonas Incluidas:</b> ${feature.properties.description || feature.properties.barrios}
+                </span><br/>
+                <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #ccc; font-size: 0.775rem; color: #666;">
+                  👮 <i>Cuadrante Policial Oficial MGP (Subrubro 122)</i>
+                </div>
+              </div>
+            `);
+          },
+        });
+        jurisLayerRef.current = jurisLayer;
+
+        // RENABAP Layer
+        const renabapLayer = L.geoJSON(RENABAP_BARRIOS_GEOJSON, {
+          style: (feature: any) => ({
+            color: feature.properties.isRenabap ? "#f97316" : "#38bdf8",
+            weight: feature.properties.isRenabap ? 2.5 : 1.2,
+            dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
+            opacity: 0.9,
+            fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+            fillOpacity: feature.properties.isRenabap ? 0.35 : 0.08,
+          }),
+          onEachFeature: (feature: any, layer: any) => {
+            const isR = feature.properties.isRenabap;
+            const fams = feature.properties.familias;
+            const idRen = feature.properties.idRenabap;
+            layer.bindPopup(`
+              <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem;">
+                <strong style="color: ${isR ? '#ea580c' : '#0284c7'}; font-size: 0.95rem;">
+                  ${isR ? '🏡 RENABAP: ' : '📍 '}${feature.properties.name}
+                </strong><br/>
+                <span style="font-size: 0.8rem; color: #444;">
+                  ${isR ? `<b>Categoría:</b> Registro Nacional de Barrios Populares 2023 (SISU)` : '<b>Categoría:</b> Barrio Oficial MGP'}
+                </span><br/>
+                ${idRen ? `<span style="font-size: 0.775rem; color: #64748b;"><b>ID RENABAP:</b> #${idRen}</span><br/>` : ''}
+                ${fams ? `<span style="font-size: 0.775rem; color: #64748b;"><b>Familias Registradas:</b> ${fams}</span><br/>` : ''}
+                <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #ccc; font-size: 0.775rem; color: #ea580c; font-weight: 700;">
+                  SHP Oficial RENABAP 2023 Mar del Plata
+                </div>
+              </div>
+            `);
+          },
+        });
+        renabapLayerRef.current = renabapLayer;
+
+        pointsLayerRef.current = L.layerGroup().addTo(map);
+        vectorsLayerRef.current = L.layerGroup().addTo(map);
+
+        if (showJurisdictions) jurisLayer.addTo(map);
+        if (showRenabap) renabapLayer.addTo(map);
+
+        mapInstanceRef.current = map;
+      }
     });
+
+    return () => {
+      isMounted = false;
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+        pointsLayerRef.current = null;
+        vectorsLayerRef.current = null;
+        jurisLayerRef.current = null;
+        renabapLayerRef.current = null;
+      }
+    };
   }, []);
 
+  // Toggle Jurisdictions Layer
   useEffect(() => {
-    if (!L) return;
-
-    const map = L.map("leaflet-map", {
-      center: [-38.00, -57.56],
-      zoom: 12,
-    });
-
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
-      attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap',
-      maxZoom: 19,
-    }).addTo(map);
-
-    // Render Official MGP Police Jurisdiction Polygons layer
+    const map = mapInstanceRef.current;
+    const layer = jurisLayerRef.current;
+    if (!map || !layer) return;
     if (showJurisdictions) {
-      L.geoJSON(POLICE_JURISDICTIONS_GEOJSON, {
-        style: (feature: any) => ({
-          color: feature.properties.color || "#6366f1",
-          weight: 2,
-          opacity: 0.85,
-          fillColor: feature.properties.color || "#6366f1",
-          fillOpacity: 0.12,
-        }),
-        onEachFeature: (feature: any, layer: any) => {
-          layer.bindPopup(`
-            <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem;">
-              <strong style="color: ${feature.properties.color || '#6366f1'}; font-size: 0.95rem;">
-                👮 ${feature.properties.name}
-              </strong><br/>
-              <span style="font-size: 0.8rem; color: #444;">
-                <b>Zonas Incluidas:</b> ${feature.properties.description || feature.properties.barrios}
-              </span><br/>
-              <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #ccc; font-size: 0.775rem; color: #666;">
-                👮 <i>Cuadrante Policial Oficial MGP (Subrubro 122)</i>
-              </div>
-            </div>
-          `);
-        },
-      }).addTo(map);
+      if (!map.hasLayer(layer)) map.addLayer(layer);
+    } else {
+      if (map.hasLayer(layer)) map.removeLayer(layer);
     }
+  }, [showJurisdictions]);
 
-    // Render RENABAP & Barrios Populares layer
+  // Toggle RENABAP Layer
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    const layer = renabapLayerRef.current;
+    if (!map || !layer) return;
     if (showRenabap) {
-      L.geoJSON(RENABAP_BARRIOS_GEOJSON, {
-        style: (feature: any) => ({
-          color: feature.properties.isRenabap ? "#f97316" : "#38bdf8",
-          weight: feature.properties.isRenabap ? 2.5 : 1.2,
-          dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
-          opacity: 0.9,
-          fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
-          fillOpacity: feature.properties.isRenabap ? 0.35 : 0.08,
-        }),
-        onEachFeature: (feature: any, layer: any) => {
-          const isR = feature.properties.isRenabap;
-          const fams = feature.properties.familias;
-          const idRen = feature.properties.idRenabap;
-          layer.bindPopup(`
-            <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem;">
-              <strong style="color: ${isR ? '#ea580c' : '#0284c7'}; font-size: 0.95rem;">
-                ${isR ? '🏡 RENABAP: ' : '📍 '}${feature.properties.name}
-              </strong><br/>
-              <span style="font-size: 0.8rem; color: #444;">
-                ${isR ? `<b>Categoría:</b> Registro Nacional de Barrios Populares 2023 (SISU)` : '<b>Categoría:</b> Barrio Oficial MGP'}
-              </span><br/>
-              ${idRen ? `<span style="font-size: 0.775rem; color: #64748b;"><b>ID RENABAP:</b> #${idRen}</span><br/>` : ''}
-              ${fams ? `<span style="font-size: 0.775rem; color: #64748b;"><b>Familias Registradas:</b> ${fams}</span><br/>` : ''}
-              <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #ccc; font-size: 0.775rem; color: #ea580c; font-weight: 700;">
-                SHP Oficial RENABAP 2023 Mar del Plata
-              </div>
-            </div>
-          `);
-        },
-      }).addTo(map);
+      if (!map.hasLayer(layer)) map.addLayer(layer);
+    } else {
+      if (map.hasLayer(layer)) map.removeLayer(layer);
     }
+  }, [showRenabap]);
 
-    // Stratified sampling so ALL origins (Robo, Hallazgo, Disparos, Armas) are represented on map
+  // Update Points Layer Group (dynamic time slider / filter)
+  useEffect(() => {
+    const layerGroup = pointsLayerRef.current;
+    const L = LRef.current;
+    if (!layerGroup || !L) return;
+
+    layerGroup.clearLayers();
+    if (!showPoints || !points || points.length === 0) return;
+
     const samplePoints = (() => {
-      if (!points || points.length === 0) return [];
       if (points.length <= 1500) return points;
 
       const byOrigen: Record<string, GeoPoint[]> = {};
@@ -158,106 +216,104 @@ function MapComponent({
       return result;
     })();
 
-    // Render 911 Incident Markers & Vector Trajectories
-    if (showPoints) {
-      samplePoints.forEach((pt) => {
-        const origenUpper = (pt.origen || pt.tipo || "").toUpperCase();
+    samplePoints.forEach((pt) => {
+      const origenUpper = (pt.origen || pt.tipo || "").toUpperCase();
+      const isHallazgos = origenUpper.includes("HALLAZGO");
+      const isDisparos = origenUpper.includes("DISPARO");
+      const isArmas = origenUpper.includes("ARMA");
 
-        const isHallazgos = origenUpper.includes("HALLAZGO");
-        const isDisparos = origenUpper.includes("DISPARO");
-        const isArmas = origenUpper.includes("ARMA");
+      const color = isHallazgos ? "#10b981" : isDisparos ? "#f59e0b" : isArmas ? "#dc2626" : "#ef4444";
 
-        const color = isHallazgos ? "#10b981" : isDisparos ? "#f59e0b" : isArmas ? "#dc2626" : "#ef4444";
+      const marker = L.circleMarker([pt.lat, pt.lng], {
+        radius: isHallazgos ? 6.5 : 5,
+        fillColor: color,
+        color: "#ffffff",
+        weight: 1.2,
+        opacity: 0.9,
+        fillOpacity: 0.8,
+      });
 
-        const marker = L.circleMarker([pt.lat, pt.lng], {
-          radius: isHallazgos ? 6.5 : 5,
-          fillColor: color,
-          color: "#ffffff",
-          weight: 1.2,
-          opacity: 0.9,
-          fillOpacity: 0.8,
-        });
+      const popupContent = `
+        <div style="font-family: sans-serif; font-size: 0.825rem; color: #1e293b; padding: 0.2rem; max-width: 260px;">
+          <strong style="color: ${color}; font-size: 0.9rem;">${pt.tipo} (${pt.subtipo || "General"})</strong><br/>
+          <span><b>ID:</b> #${pt.id} | <b>Origen:</b> ${pt.origen}</span><br/>
+          <span><b>Fecha/Hora:</b> ${pt.fecha} - ${pt.hora}:00 hs</span><br/>
+          <span><b>Dirección:</b> ${pt.direccion}</span><br/>
+          ${pt.marca ? `<span><b>Marca:</b> ${pt.marca}</span><br/>` : ""}
+          ${pt.patente ? `<span><b>Patente:</b> ${pt.patente}</span><br/>` : ""}
+          ${pt.relato ? `<div style="margin-top:0.3rem; font-style:italic; font-size:0.75rem; background:#f1f5f9; padding:0.4rem; border-radius:4px;">"${pt.relato.slice(0, 110)}..."</div>` : ""}
+        </div>
+      `;
 
-        const popupContent = `
-          <div style="font-family: sans-serif; font-size: 0.825rem; color: #1e293b; padding: 0.2rem; max-width: 260px;">
-            <strong style="color: ${color}; font-size: 0.9rem;">${pt.tipo} (${pt.subtipo || "General"})</strong><br/>
-            <span><b>ID:</b> #${pt.id} | <b>Origen:</b> ${pt.origen}</span><br/>
-            <span><b>Fecha/Hora:</b> ${pt.fecha} - ${pt.hora}:00 hs</span><br/>
-            <span><b>Dirección:</b> ${pt.direccion}</span><br/>
-            ${pt.marca ? `<span><b>Marca:</b> ${pt.marca}</span><br/>` : ""}
-            ${pt.patente ? `<span><b>Patente:</b> ${pt.patente}</span><br/>` : ""}
-            ${pt.relato ? `<div style="margin-top:0.3rem; font-style:italic; font-size:0.75rem; background:#f1f5f9; padding:0.4rem; border-radius:4px;">"${pt.relato.slice(0, 110)}..."</div>` : ""}
+      marker.bindPopup(popupContent);
+      marker.addTo(layerGroup);
+    });
+  }, [points, showPoints]);
+
+  // Update Vectors Layer Group
+  useEffect(() => {
+    const layerGroup = vectorsLayerRef.current;
+    const L = LRef.current;
+    if (!layerGroup || !L) return;
+
+    layerGroup.clearLayers();
+    if (!showVectors || !recoveries || recoveries.length === 0) return;
+
+    recoveries.forEach((c) => {
+      const latRobo = c.Latitud_Clean_Robo || c.Latitud_Robo;
+      const lngRobo = c.Longitud_Clean_Robo || c.Longitud_Robo;
+      const latHall = c.Latitud_Clean_Hallazgo || c.Latitud_Hallazgo;
+      const lngHall = c.Longitud_Clean_Hallazgo || c.Longitud_Hallazgo;
+
+      if (latRobo && lngRobo && latHall && lngHall) {
+        const polyline = L.polyline(
+          [
+            [latRobo, lngRobo],
+            [latHall, lngHall],
+          ],
+          {
+            color: "#3b82f6",
+            weight: 3,
+            opacity: 0.9,
+            dashArray: "6, 6",
+          }
+        );
+
+        polyline.bindPopup(`
+          <div style="font-family: sans-serif; font-size: 0.8rem; color: #1e293b; padding: 0.2rem;">
+            <strong style="color: #2563eb; font-size: 0.9rem;">Vector Robo ➔ Hallazgo (Patente ${c.Patente_Principal || "Emparejada"})</strong><br/>
+            <b>🔴 Origen Sustracción:</b> ${c.Dirección_Robo || "Macrocentro"}<br/>
+            <b>🟢 Destino Descarte:</b> ${c.Dirección_Hallazgo || "Periferia / Descarte"}<br/>
+            <b>⏱️ Diferencial de Tiempo:</b> ${typeof c.Horas_Hasta_Hallazgo === "number" ? c.Horas_Hasta_Hallazgo.toFixed(1) : c.Horas_Hasta_Hallazgo} hs
           </div>
-        `;
+        `);
 
-        marker.bindPopup(popupContent);
-        marker.addTo(map);
+        polyline.addTo(layerGroup);
 
-      });
-    }
+        // Theft Marker (Red)
+        L.circleMarker([latRobo, lngRobo], {
+          radius: 6,
+          fillColor: "#ef4444",
+          color: "#ffffff",
+          weight: 1.5,
+          fillOpacity: 0.9,
+        }).bindPopup(`<b>🔴 Sustracción: Patente ${c.Patente_Principal}</b><br/>${c.Dirección_Robo || ""}`).addTo(layerGroup);
 
-    // Render Vector Polylines (Robo -> Hallazgo 58 cases)
-    if (showVectors && recoveries && recoveries.length > 0) {
-      recoveries.forEach((c) => {
-        const latRobo = c.Latitud_Clean_Robo || c.Latitud_Robo;
-        const lngRobo = c.Longitud_Clean_Robo || c.Longitud_Robo;
-        const latHall = c.Latitud_Clean_Hallazgo || c.Latitud_Hallazgo;
-        const lngHall = c.Longitud_Clean_Hallazgo || c.Longitud_Hallazgo;
-
-        if (latRobo && lngRobo && latHall && lngHall) {
-          const polyline = L.polyline(
-            [
-              [latRobo, lngRobo],
-              [latHall, lngHall],
-            ],
-            {
-              color: "#3b82f6",
-              weight: 3,
-              opacity: 0.9,
-              dashArray: "6, 6",
-            }
-          );
-
-          polyline.bindPopup(`
-            <div style="font-family: sans-serif; font-size: 0.8rem; color: #1e293b; padding: 0.2rem;">
-              <strong style="color: #2563eb; font-size: 0.9rem;">Vector Robo ➔ Hallazgo (Patente ${c.Patente_Principal || "Emparejada"})</strong><br/>
-              <b>🔴 Origen Sustracción:</b> ${c.Dirección_Robo || "Macrocentro"}<br/>
-              <b>🟢 Destino Descarte:</b> ${c.Dirección_Hallazgo || "Periferia / Descarte"}<br/>
-              <b>⏱️ Diferencial de Tiempo:</b> ${typeof c.Horas_Hasta_Hallazgo === "number" ? c.Horas_Hasta_Hallazgo.toFixed(1) : c.Horas_Hasta_Hallazgo} hs
-            </div>
-          `);
-
-          polyline.addTo(map);
-
-          // Theft Marker (Red)
-          L.circleMarker([latRobo, lngRobo], {
-            radius: 6,
-            fillColor: "#ef4444",
-            color: "#ffffff",
-            weight: 1.5,
-            fillOpacity: 0.9,
-          }).bindPopup(`<b>🔴 Sustracción: Patente ${c.Patente_Principal}</b><br/>${c.Dirección_Robo || ""}`).addTo(map);
-
-          // Recovery Marker (Green)
-          L.circleMarker([latHall, lngHall], {
-            radius: 6,
-            fillColor: "#10b981",
-            color: "#ffffff",
-            weight: 1.5,
-            fillOpacity: 0.9,
-          }).bindPopup(`<b>🟢 Hallazgo / Descarte: Patente ${c.Patente_Principal}</b><br/>${c.Dirección_Hallazgo || ""}`).addTo(map);
-        }
-      });
-    }
-
-    return () => {
-      map.remove();
-    };
-  }, [L, points, recoveries, showVectors, showJurisdictions, showRenabap, showPoints]);
+        // Recovery Marker (Green)
+        L.circleMarker([latHall, lngHall], {
+          radius: 6,
+          fillColor: "#10b981",
+          color: "#ffffff",
+          weight: 1.5,
+          fillOpacity: 0.9,
+        }).bindPopup(`<b>🟢 Hallazgo / Descarte: Patente ${c.Patente_Principal}</b><br/>${c.Dirección_Hallazgo || ""}`).addTo(layerGroup);
+      }
+    });
+  }, [recoveries, showVectors]);
 
   return (
     <div
-      id="leaflet-map"
+      ref={mapContainerRef}
       style={{
         width: "100%",
         height: "600px",

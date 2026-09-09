@@ -16,87 +16,105 @@ interface SectionHotspotsProps {
 
 // Interactive Leaflet Dynamic Hotspots Map Component
 function InteractiveHotspotsMap({ incidents = [] }: { incidents: any[] }) {
-  const [L, setL] = useState<any>(null);
+  const mapContainerRef = React.useRef<HTMLDivElement | null>(null);
+  const mapInstanceRef = React.useRef<any>(null);
+  const markersGroupRef = React.useRef<any>(null);
 
   useEffect(() => {
-    import("leaflet").then((leaflet) => {
-      setL(leaflet.default);
-    });
-  }, []);
+    let isMounted = true;
 
-  useEffect(() => {
-    if (!L) return;
+    import("leaflet").then((L) => {
+      if (!isMounted || !mapContainerRef.current) return;
 
-    const map = L.map("interactive-hotspots-map", {
-      center: [-37.995, -57.565],
-      zoom: 12,
-    });
+      if (!mapInstanceRef.current) {
+        const map = L.map(mapContainerRef.current, {
+          center: [-37.995, -57.565],
+          zoom: 12,
+        });
 
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
-      attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap',
-      maxZoom: 19,
-    }).addTo(map);
+        L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+          attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap',
+          maxZoom: 19,
+        }).addTo(map);
 
-    // Layer: Comisarías (Blue Boundaries)
-    L.geoJSON(POLICE_JURISDICTIONS_GEOJSON, {
-      style: { color: "#2563eb", weight: 1.8, fillColor: "#3b82f6", fillOpacity: 0.05 },
-    }).addTo(map);
+        // Layer: Comisarías (Blue Boundaries)
+        L.geoJSON(POLICE_JURISDICTIONS_GEOJSON, {
+          style: { color: "#2563eb", weight: 1.8, fillColor: "#3b82f6", fillOpacity: 0.05 },
+        }).addTo(map);
 
-    // Layer: RENABAP (Orange Boundaries)
-    L.geoJSON(RENABAP_BARRIOS_GEOJSON, {
-      style: (feature: any) => ({
-        color: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
-        weight: feature.properties.isRenabap ? 2.5 : 1.2,
-        dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
-        fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
-        fillOpacity: feature.properties.isRenabap ? 0.3 : 0.06,
-      }),
-    }).addTo(map);
+        // Layer: RENABAP (Orange Boundaries)
+        L.geoJSON(RENABAP_BARRIOS_GEOJSON, {
+          style: (feature: any) => ({
+            color: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+            weight: feature.properties.isRenabap ? 2.5 : 1.2,
+            dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
+            fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+            fillOpacity: feature.properties.isRenabap ? 0.3 : 0.06,
+          }),
+        }).addTo(map);
 
-    // Plot dynamic filtered incident markers / heat points
-    const pointsToPlot = incidents.slice(0, 1500); // Top 1500 filtered for crisp rendering
+        const markersGroup = L.layerGroup().addTo(map);
+        markersGroupRef.current = markersGroup;
+        mapInstanceRef.current = map;
+      }
 
-    pointsToPlot.forEach((inc: any) => {
-      const lat = parseFloat(inc.Latitud_Clean || inc.lat);
-      const lng = parseFloat(inc.Longitud_Clean || inc.lng);
-      if (isNaN(lat) || isNaN(lng)) return;
+      const map = mapInstanceRef.current;
+      const markersGroup = markersGroupRef.current;
+      if (!map || !markersGroup) return;
 
-      const origenUpper = (inc.Origen_Dataset || inc.origen || inc.Tipo || inc.tipo || "").toUpperCase();
-      const isHallazgos = origenUpper.includes("HALLAZGO");
-      const isDisparos = origenUpper.includes("DISPARO");
-      const isArmas = origenUpper.includes("ARMA");
+      // Clear existing markers without destroying map
+      markersGroup.clearLayers();
 
-      const color = isHallazgos ? "#10b981" : isDisparos ? "#f59e0b" : isArmas ? "#dc2626" : "#ef4444";
+      // Plot dynamic filtered incident markers / heat points
+      const pointsToPlot = incidents.slice(0, 1500);
 
-      const marker = L.circleMarker([lat, lng], {
-        radius: isArmas || isDisparos ? 6.5 : 5,
-        fillColor: color,
-        color: "#ffffff",
-        weight: 1.2,
-        fillOpacity: 0.82,
-      });
+      pointsToPlot.forEach((inc: any) => {
+        const lat = parseFloat(inc.Latitud_Clean || inc.lat);
+        const lng = parseFloat(inc.Longitud_Clean || inc.lng);
+        if (isNaN(lat) || isNaN(lng)) return;
 
-      marker.bindPopup(`
-        <div style="font-size:0.8rem; line-height:1.4;">
-          <strong style="color:${color};">ID 911 #${inc.ID || inc.id} - ${inc.Tipo || inc.tipo}</strong><br/>
-          📍 ${inc.Dirección || inc.direccion || "MDQ"}<br/>
-          🕒 ${inc.Fecha || inc.fecha || ""} (${inc.Franja_Horaria || inc.franja || ""})<br/>
-          ${inc.Patente_Principal ? `🏷️ <strong>Patente:</strong> ${inc.Patente_Principal}<br/>` : ""}
-          <div style="background:#f8fafc; padding:0.4rem; border-radius:4px; margin-top:0.3rem; border:1px solid #cbd5e1; max-height:80px; overflow-y:auto;">
-            ${(inc.Relato || inc.relato || "Sin relato").slice(0, 140)}...
+        const origenUpper = (inc.Origen_Dataset || inc.origen || inc.Tipo || inc.tipo || "").toUpperCase();
+        const isHallazgos = origenUpper.includes("HALLAZGO");
+        const isDisparos = origenUpper.includes("DISPARO");
+        const isArmas = origenUpper.includes("ARMA");
+
+        const color = isHallazgos ? "#10b981" : isDisparos ? "#f59e0b" : isArmas ? "#dc2626" : "#ef4444";
+
+        const marker = L.circleMarker([lat, lng], {
+          radius: isArmas || isDisparos ? 6.5 : 5,
+          fillColor: color,
+          color: "#ffffff",
+          weight: 1.2,
+          fillOpacity: 0.82,
+        });
+
+        marker.bindPopup(`
+          <div style="font-size:0.8rem; line-height:1.4;">
+            <strong style="color:${color};">ID 911 #${inc.ID || inc.id} - ${inc.Tipo || inc.tipo}</strong><br/>
+            📍 ${inc.Dirección || inc.direccion || "MDQ"}<br/>
+            🕒 ${inc.Fecha || inc.fecha || ""} (${inc.Franja_Horaria || inc.franja || ""})<br/>
+            ${inc.Patente_Principal ? `🏷️ <strong>Patente:</strong> ${inc.Patente_Principal}<br/>` : ""}
+            <div style="background:#f8fafc; padding:0.4rem; border-radius:4px; margin-top:0.3rem; border:1px solid #cbd5e1; max-height:80px; overflow-y:auto;">
+              ${(inc.Relato || inc.relato || "Sin relato").slice(0, 140)}...
+            </div>
           </div>
-        </div>
-      `);
+        `);
 
-      marker.addTo(map);
+        marker.addTo(markersGroup);
+      });
     });
 
     return () => {
-      map.remove();
+      isMounted = false;
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+        markersGroupRef.current = null;
+      }
     };
-  }, [L, incidents]);
+  }, [incidents]);
 
-  return <div id="interactive-hotspots-map" style={{ width: "100%", height: "650px", borderRadius: "8px" }} />;
+  return <div ref={mapContainerRef} style={{ width: "100%", height: "650px", borderRadius: "8px" }} />;
 }
 
 export default function SectionHotspots({ incidents = [], geoPoints = [] }: SectionHotspotsProps) {

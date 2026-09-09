@@ -52,102 +52,156 @@ function checkIsAuto(c: RecoveryCase): boolean {
 
 // Client-only Leaflet Trajectory Map component
 function TrajectoryMap({
-  selectedCase,
   cases,
-  showJurisdictions = true,
-  showRenabap = true,
-  showAllTrajectories = false,
+  selectedCase,
+  showJurisdictions,
+  showRenabap,
+  showAllTrajectories,
 }: {
-  selectedCase: RecoveryCase | null;
   cases: RecoveryCase[];
+  selectedCase: RecoveryCase | null;
   showJurisdictions: boolean;
   showRenabap: boolean;
   showAllTrajectories: boolean;
 }) {
-  const [L, setL] = useState<any>(null);
+  const mapContainerRef = React.useRef<HTMLDivElement | null>(null);
+  const mapInstanceRef = React.useRef<any>(null);
+  const jurisLayerRef = React.useRef<any>(null);
+  const renabapLayerRef = React.useRef<any>(null);
+  const trajectoriesLayerRef = React.useRef<any>(null);
+  const LRef = React.useRef<any>(null);
 
   useEffect(() => {
-    import("leaflet").then((leaflet) => {
-      setL(leaflet.default);
+    let isMounted = true;
+
+    import("leaflet").then((L) => {
+      if (!isMounted || !mapContainerRef.current) return;
+      LRef.current = L;
+
+      if (!mapInstanceRef.current) {
+        const map = L.map(mapContainerRef.current, {
+          center: [-38.00, -57.56],
+          zoom: 12,
+        });
+
+        L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+          attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap',
+          maxZoom: 19,
+        }).addTo(map);
+
+        // Render Official MGP Police Jurisdiction Polygons layer
+        const jurisLayer = L.geoJSON(POLICE_JURISDICTIONS_GEOJSON, {
+          style: (feature: any) => ({
+            color: feature.properties.color || "#6366f1",
+            weight: 2,
+            opacity: 0.85,
+            fillColor: feature.properties.color || "#6366f1",
+            fillOpacity: 0.12,
+          }),
+          onEachFeature: (feature: any, layer: any) => {
+            layer.bindPopup(`
+              <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem;">
+                <strong style="color: ${feature.properties.color || '#6366f1'}; font-size: 0.95rem;">
+                  👮 ${feature.properties.name}
+                </strong><br/>
+                <span style="font-size: 0.8rem; color: #444;">
+                  <b>Zonas Incluidas:</b> ${feature.properties.description || feature.properties.barrios}
+                </span><br/>
+                <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #ccc; font-size: 0.775rem; color: #666;">
+                  👮 <i>Cuadrante Policial Oficial MGP (Subrubro 122)</i>
+                </div>
+              </div>
+            `);
+          },
+        });
+        jurisLayerRef.current = jurisLayer;
+
+        // Render RENABAP & Barrios Populares layer
+        const renabapLayer = L.geoJSON(RENABAP_BARRIOS_GEOJSON, {
+          style: (feature: any) => ({
+            color: feature.properties.isRenabap ? "#f97316" : "#38bdf8",
+            weight: feature.properties.isRenabap ? 2.5 : 1.2,
+            dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
+            opacity: 0.9,
+            fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+            fillOpacity: feature.properties.isRenabap ? 0.35 : 0.08,
+          }),
+          onEachFeature: (feature: any, layer: any) => {
+            const isR = feature.properties.isRenabap;
+            const fams = feature.properties.familias;
+            const idRen = feature.properties.idRenabap;
+            layer.bindPopup(`
+              <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem;">
+                <strong style="color: ${isR ? '#ea580c' : '#0284c7'}; font-size: 0.95rem;">
+                  ${isR ? '🏡 RENABAP: ' : '📍 '}${feature.properties.name}
+                </strong><br/>
+                <span style="font-size: 0.8rem; color: #444;">
+                  ${isR ? `<b>Categoría:</b> Registro Nacional de Barrios Populares 2023 (SISU)` : '<b>Categoría:</b> Barrio Oficial MGP'}
+                </span><br/>
+                ${idRen ? `<span style="font-size: 0.775rem; color: #64748b;"><b>ID RENABAP:</b> #${idRen}</span><br/>` : ''}
+                ${fams ? `<span style="font-size: 0.775rem; color: #64748b;"><b>Familias Registradas:</b> ${fams}</span><br/>` : ''}
+                <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #ccc; font-size: 0.775rem; color: #ea580c; font-weight: 700;">
+                  SHP Oficial RENABAP 2023 Mar del Plata
+                </div>
+              </div>
+            `);
+          },
+        });
+        renabapLayerRef.current = renabapLayer;
+
+        trajectoriesLayerRef.current = L.layerGroup().addTo(map);
+
+        if (showJurisdictions) jurisLayer.addTo(map);
+        if (showRenabap) renabapLayer.addTo(map);
+
+        mapInstanceRef.current = map;
+      }
     });
+
+    return () => {
+      isMounted = false;
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+        jurisLayerRef.current = null;
+        renabapLayerRef.current = null;
+        trajectoriesLayerRef.current = null;
+      }
+    };
   }, []);
 
+  // Toggle Jurisdictions Layer
   useEffect(() => {
-    if (!L) return;
-
-    const map = L.map("trajectory-map", {
-      center: [-38.00, -57.56],
-      zoom: 12,
-    });
-
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
-      attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap',
-      maxZoom: 19,
-    }).addTo(map);
-
-    // Render Official MGP Police Jurisdiction Polygons layer
+    const map = mapInstanceRef.current;
+    const layer = jurisLayerRef.current;
+    if (!map || !layer) return;
     if (showJurisdictions) {
-      L.geoJSON(POLICE_JURISDICTIONS_GEOJSON, {
-        style: (feature: any) => ({
-          color: feature.properties.color || "#6366f1",
-          weight: 2,
-          opacity: 0.85,
-          fillColor: feature.properties.color || "#6366f1",
-          fillOpacity: 0.12,
-        }),
-        onEachFeature: (feature: any, layer: any) => {
-          layer.bindPopup(`
-            <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem;">
-              <strong style="color: ${feature.properties.color || '#6366f1'}; font-size: 0.95rem;">
-                👮 ${feature.properties.name}
-              </strong><br/>
-              <span style="font-size: 0.8rem; color: #444;">
-                <b>Zonas Incluidas:</b> ${feature.properties.description || feature.properties.barrios}
-              </span><br/>
-              <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #ccc; font-size: 0.775rem; color: #666;">
-                👮 <i>Cuadrante Policial Oficial MGP (Subrubro 122)</i>
-              </div>
-            </div>
-          `);
-        },
-      }).addTo(map);
+      if (!map.hasLayer(layer)) map.addLayer(layer);
+    } else {
+      if (map.hasLayer(layer)) map.removeLayer(layer);
     }
+  }, [showJurisdictions]);
 
-    // Render RENABAP & Barrios Populares layer
+  // Toggle RENABAP Layer
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    const layer = renabapLayerRef.current;
+    if (!map || !layer) return;
     if (showRenabap) {
-      L.geoJSON(RENABAP_BARRIOS_GEOJSON, {
-        style: (feature: any) => ({
-          color: feature.properties.isRenabap ? "#f97316" : "#38bdf8",
-          weight: feature.properties.isRenabap ? 2.5 : 1.2,
-          dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
-          opacity: 0.9,
-          fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
-          fillOpacity: feature.properties.isRenabap ? 0.35 : 0.08,
-        }),
-        onEachFeature: (feature: any, layer: any) => {
-          const isR = feature.properties.isRenabap;
-          const fams = feature.properties.familias;
-          const idRen = feature.properties.idRenabap;
-          layer.bindPopup(`
-            <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem;">
-              <strong style="color: ${isR ? '#ea580c' : '#0284c7'}; font-size: 0.95rem;">
-                ${isR ? '🏡 RENABAP: ' : '📍 '}${feature.properties.name}
-              </strong><br/>
-              <span style="font-size: 0.8rem; color: #444;">
-                ${isR ? `<b>Categoría:</b> Registro Nacional de Barrios Populares 2023 (SISU)` : '<b>Categoría:</b> Barrio Oficial MGP'}
-              </span><br/>
-              ${idRen ? `<span style="font-size: 0.775rem; color: #64748b;"><b>ID RENABAP:</b> #${idRen}</span><br/>` : ''}
-              ${fams ? `<span style="font-size: 0.775rem; color: #64748b;"><b>Familias Registradas:</b> ${fams}</span><br/>` : ''}
-              <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #ccc; font-size: 0.775rem; color: #ea580c; font-weight: 700;">
-                SHP Oficial RENABAP 2023 Mar del Plata
-              </div>
-            </div>
-          `);
-        },
-      }).addTo(map);
+      if (!map.hasLayer(layer)) map.addLayer(layer);
+    } else {
+      if (map.hasLayer(layer)) map.removeLayer(layer);
     }
+  }, [showRenabap]);
 
-    // Determine which cases to draw: ALL 58 cases or single selected case
+  // Update Trajectories Layer
+  useEffect(() => {
+    const layerGroup = trajectoriesLayerRef.current;
+    const L = LRef.current;
+    if (!layerGroup || !L) return;
+
+    layerGroup.clearLayers();
+
     const casesToDraw = showAllTrajectories ? cases : (selectedCase ? [selectedCase] : cases.slice(0, 35));
 
     casesToDraw.forEach((c) => {
@@ -175,7 +229,7 @@ function TrajectoryMap({
           <b>Dirección:</b> ${c.Dirección_Robo}
         </div>
       `);
-      roboMarker.addTo(map);
+      roboMarker.addTo(layerGroup);
 
       // Green Marker: Punto de Hallazgo
       const hallazgoMarker = L.circleMarker([latHall, lngHall], {
@@ -196,7 +250,7 @@ function TrajectoryMap({
           <b>Tiempo Transcurrido:</b> ${c.Horas_Hasta_Hallazgo} hs
         </div>
       `);
-      hallazgoMarker.addTo(map);
+      hallazgoMarker.addTo(layerGroup);
 
       // Vector Polyline connecting Robo -> Hallazgo
       const polyline = L.polyline([[latRobo, lngRobo], [latHall, lngHall]], {
@@ -214,15 +268,11 @@ function TrajectoryMap({
           <i>Desde: ${c.Dirección_Robo} ➔ Hasta: ${c.Dirección_Hallazgo}</i>
         </div>
       `);
-      polyline.addTo(map);
+      polyline.addTo(layerGroup);
     });
+  }, [cases, selectedCase, showAllTrajectories]);
 
-    return () => {
-      map.remove();
-    };
-  }, [L, selectedCase, cases, showJurisdictions, showRenabap]);
-
-  return <div id="trajectory-map" style={{ width: "100%", height: "480px", borderRadius: "var(--radius-md)" }} />;
+  return <div ref={mapContainerRef} style={{ width: "100%", height: "480px", borderRadius: "var(--radius-md)" }} />;
 }
 
 export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecoveryTrackerProps) {

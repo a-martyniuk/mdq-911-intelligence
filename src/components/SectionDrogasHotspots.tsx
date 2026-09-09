@@ -13,12 +13,17 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<any>(null);
 
+  const [filterOrigen, setFilterOrigen] = useState<string>("todos");
   const [filterSustancia, setFilterSustancia] = useState<string>("todos");
   const [filterFranja, setFilterFranja] = useState<string>("todos");
   const [filterArmas, setFilterArmas] = useState<string>("todos");
 
   const filtered = useMemo(() => {
     return incidents.filter((inc) => {
+      if (filterOrigen !== "todos") {
+        const o = (inc.origen || inc.Origen_Dataset || "").toUpperCase();
+        if (o !== filterOrigen.toUpperCase()) return false;
+      }
       if (filterSustancia !== "todos") {
         const s = (inc.sustancia || "").toUpperCase();
         if (!s.includes(filterSustancia.toUpperCase())) return false;
@@ -33,7 +38,7 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
       }
       return true;
     });
-  }, [incidents, filterSustancia, filterFranja, filterArmas]);
+  }, [incidents, filterOrigen, filterSustancia, filterFranja, filterArmas]);
 
   useEffect(() => {
     let isMounted = true;
@@ -64,7 +69,7 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
       });
 
       const group = L.layerGroup();
-      const points = filtered.filter((r) => r.lat && r.lng).slice(0, 1500);
+      const points = filtered.filter((r) => r.lat && r.lng);
 
       points.forEach((inc) => {
         const isArmed = inc.tieneArmas;
@@ -151,7 +156,18 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
 
         {/* Filters */}
         <div style={{ background: "var(--bg-base)", padding: "1rem", borderRadius: "8px", border: "1px solid var(--border)", marginBottom: "1rem" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "0.75rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "0.75rem" }}>
+            <div>
+              <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", display: "block", marginBottom: "0.25rem" }}>
+                📑 Vertiente / Fuente 911:
+              </label>
+              <select value={filterOrigen} onChange={(e) => setFilterOrigen(e.target.value)} className="form-input" style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}>
+                <option value="todos">Todas las Fuentes</option>
+                <option value="DROGAS_ILICITAS_FORMAL">🔴 Despacho Formal Drogas</option>
+                <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Búsqueda Semántica Relatos</option>
+              </select>
+            </div>
+
             <div>
               <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", display: "block", marginBottom: "0.25rem" }}>
                 💊 Sustancia:
@@ -191,6 +207,7 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
             <div style={{ display: "flex", alignItems: "flex-end" }}>
               <button
                 onClick={() => {
+                  setFilterOrigen("todos");
                   setFilterSustancia("todos");
                   setFilterFranja("todos");
                   setFilterArmas("todos");
