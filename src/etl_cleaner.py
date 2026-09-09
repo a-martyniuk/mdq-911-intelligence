@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 # Configuración de rutas
-BASE_DIR = r"D:\Projects\Datos de Mar del Plata"
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 DATA_DIR = BASE_DIR
 PROCESSED_DIR = os.path.join(BASE_DIR, "data", "processed")
 os.makedirs(PROCESSED_DIR, exist_ok=True)

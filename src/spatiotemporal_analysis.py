@@ -8,7 +8,7 @@ import seaborn as sns
 import plotly.express as px
 from PIL import Image
 
-BASE_DIR = r"D:\Projects\Datos de Mar del Plata"
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 PROCESSED_DIR = os.path.join(BASE_DIR, "data", "processed")
 REPORTS_DIR = os.path.join(BASE_DIR, "reports")
 FIGURES_DIR = os.path.join(REPORTS_DIR, "figures")

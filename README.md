@@ -40,7 +40,7 @@ La aplicación cuenta con **autenticación obligatoria del lado servidor**:
 
 ### 1. Clonar / Ubicarse en el proyecto
 ```bash
-cd "D:\Projects\Datos de Mar del Plata"
+cd "D:\Projects\MSEG"
 ```
 
 ### 2. Configurar Variables de Entorno
@@ -68,7 +68,7 @@ Abrir [http://localhost:3000](http://localhost:3000) en el navegador.
 ## 🛠️ 4. Arquitectura y Tecnologías
 
 ```text
-D:\Projects\Datos de Mar del Plata\
+D:\Projects\MSEG\
 ├── src/
 │   ├── app/
 │   │   ├── api/

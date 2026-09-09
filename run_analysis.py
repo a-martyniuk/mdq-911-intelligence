@@ -20,7 +20,8 @@ def main():
     run_spatiotemporal_analysis()
     
     # 3. Generar Resumen Estadístico
-    rec_file = r"D:\Projects\Datos de Mar del Plata\data\processed\mdp_vehiculos_recuperados.csv"
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    rec_file = os.path.join(base_dir, "data", "processed", "mdp_vehiculos_recuperados.csv")
     df_rec = pd.read_csv(rec_file) if os.path.exists(rec_file) else pd.DataFrame()
     
     resumen_text = f"""======================================================
@@ -46,14 +47,14 @@ Total Incidentes 911 Procesados: {len(df_cons):,}
 - Tiempo Promedio de Recuperación: {df_rec['Dias_Hasta_Hallazgo'].mean():.1f} días ({df_rec['Horas_Hasta_Hallazgo'].mean():.1f} horas)
 
 ARCHIVOS PROCESADOS GENERADOS:
-- CSV Consolidado: D:\\Projects\\Datos de Mar del Plata\\data\\processed\\mdp_incidentes_consolidado.csv
-- Parquet Consolidado: D:\\Projects\\Datos de Mar del Plata\\data\\processed\\mdp_incidentes_consolidado.parquet
-- Vehículos Recuperados: D:\\Projects\\Datos de Mar del Plata\\data\\processed\\mdp_vehiculos_recuperados.csv
-- Gráficos y Mapas: D:\\Projects\\Datos de Mar del Plata\\reports\\figures\\
+- CSV Consolidado: {os.path.join(base_dir, "data", "processed", "mdp_incidentes_consolidado.csv")}
+- Parquet Consolidado: {os.path.join(base_dir, "data", "processed", "mdp_incidentes_consolidado.parquet")}
+- Vehículos Recuperados: {os.path.join(base_dir, "data", "processed", "mdp_vehiculos_recuperados.csv")}
+- Gráficos y Mapas: {os.path.join(base_dir, "reports", "figures")}\\
 ======================================================
 """
     
-    report_file = r"D:\Projects\Datos de Mar del Plata\reports\resumen_ejecutivo.txt"
+    report_file = os.path.join(base_dir, "reports", "resumen_ejecutivo.txt")
     os.makedirs(os.path.dirname(report_file), exist_ok=True)
     with open(report_file, 'w', encoding='utf-8') as f:
         f.write(resumen_text)
