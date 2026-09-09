@@ -1,17 +1,50 @@
 import React from "react";
 import MetricCard from "./MetricCard";
-import { CheckCircle2, AlertCircle, Database, MapPin } from "lucide-react";
+import { CheckCircle2, AlertCircle, Database, MapPin, Download } from "lucide-react";
+import { exportToCSV } from "@/lib/excelExport";
 
 export default function SectionQuality() {
   return (
     <div>
       <div className="card" style={{ marginBottom: "1.5rem" }}>
-        <div className="card-title">
-          <span>✅ Calidad y Transformación de Datos</span>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem" }}>
+          <div>
+            <div className="card-title">
+              <span>✅ Calidad y Transformación de Datos</span>
+            </div>
+            <p className="card-subtitle">
+              Métricas de integridad, completitud y tasa de recuperación geográfica tras el pipeline de limpieza.
+            </p>
+          </div>
+
+          <button
+            onClick={() => {
+              const exportData = [
+                { Dataset: "ROBO AUTO-MOTO", Filas_Totales: 4207, Coordenadas_Validas: 3942, Pct_Georreferenciado: "93,7%", Nulos_Direccion: 12, Estado: "ÓPTIMO" },
+                { Dataset: "HALLAZGO AUTOMOTOR", Filas_Totales: 2586, Coordenadas_Validas: 2421, Pct_Georreferenciado: "93,6%", Nulos_Direccion: 7, Estado: "ÓPTIMO" },
+                { Dataset: "DISPAROS PERSONAS", Filas_Totales: 954, Coordenadas_Validas: 882, Pct_Georreferenciado: "92,5%", Nulos_Direccion: 1, Estado: "ÓPTIMO" },
+                { Dataset: "ARMA DE FUEGO", Filas_Totales: 851, Coordenadas_Validas: 790, Pct_Georreferenciado: "92,8%", Nulos_Direccion: 1, Estado: "ÓPTIMO" },
+              ];
+              exportToCSV("auditoria_calidad_datos_mseg", exportData);
+            }}
+            className="btn-logout"
+            style={{
+              height: "36px",
+              padding: "0 0.9rem",
+              fontSize: "0.8rem",
+              fontWeight: 700,
+              background: "rgba(16, 185, 129, 0.15)",
+              color: "#10b981",
+              border: "1px solid rgba(16, 185, 129, 0.4)",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.4rem"
+            }}
+          >
+            <Download size={15} /> 📊 Exportar Matriz de Calidad (Excel)
+          </button>
         </div>
-        <p className="card-subtitle">
-          Métricas de integridad, completitud y tasa de recuperación geográfica tras el pipeline de limpieza.
-        </p>
 
         <div className="metric-grid">
           <MetricCard

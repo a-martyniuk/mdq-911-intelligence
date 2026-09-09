@@ -2,7 +2,9 @@
 
 import React from "react";
 import dynamic from "next/dynamic";
-import { Clock, Calendar, AlertTriangle } from "lucide-react";
+import { Clock, Calendar, AlertTriangle, Download, FileText } from "lucide-react";
+import { generateTemporalReportPDF } from "@/lib/pdfReport";
+import { exportToCSV } from "@/lib/excelExport";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -40,12 +42,77 @@ export default function SectionTemporal({ incidents = [] }: SectionTemporalProps
   return (
     <div>
       <div className="card" style={{ marginBottom: "1.5rem" }}>
-        <div className="card-title">
-          <span>⏰ Análisis de Patrones Temporales y Nocturnidad</span>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem" }}>
+          <div>
+            <div className="card-title">
+              <span>⏰ Análisis de Patrones Temporales y Nocturnidad</span>
+            </div>
+            <p className="card-subtitle">
+              Distribución cronológica de incidentes 911 por hora del día, día de la semana y matriz de correlación temporal.
+            </p>
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
+            <button
+              onClick={() => {
+                generateTemporalReportPDF({
+                  totalIncidents: safeIncidents.length,
+                  hourlyCounts,
+                  nightCases,
+                  nightPct,
+                  weekendCount,
+                  weekdayCount
+                });
+              }}
+              className="btn-logout"
+              style={{
+                height: "36px",
+                padding: "0 1rem",
+                fontSize: "0.8rem",
+                fontWeight: 800,
+                background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+                color: "#fff",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                boxShadow: "0 2px 8px rgba(245,158,11,0.3)"
+              }}
+            >
+              <FileText size={15} /> 📄 Descargar Informe Crono-Delictual (PDF)
+            </button>
+
+            <button
+              onClick={() => {
+                const exportData = hours.map((h) => ({
+                  Hora: `${h.toString().padStart(2, '0')}:00`,
+                  Incidentes: hourlyCounts[h],
+                  Porcentaje: safeIncidents.length > 0 ? `${((hourlyCounts[h] / safeIncidents.length) * 100).toFixed(1)}%` : "0%",
+                  Alerta_Nocturna: h >= 18 && h <= 23 ? "ALTA DENSIDAD NOCTURNA" : "Ordinario"
+                }));
+                exportToCSV("patrones_temporales_horarios_911", exportData);
+              }}
+              className="btn-logout"
+              style={{
+                height: "36px",
+                padding: "0 0.9rem",
+                fontSize: "0.8rem",
+                fontWeight: 700,
+                background: "rgba(16, 185, 129, 0.15)",
+                color: "#10b981",
+                border: "1px solid rgba(16, 185, 129, 0.4)",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem"
+              }}
+            >
+              <Download size={15} /> 📊 Exportar Horarios (Excel)
+            </button>
+          </div>
         </div>
-        <p className="card-subtitle">
-          Distribución cronológica de incidentes 911 por hora del día, día de la semana y matriz de correlación temporal.
-        </p>
 
         <div style={{
           display: "flex",

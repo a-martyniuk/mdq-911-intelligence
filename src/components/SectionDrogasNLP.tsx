@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Brain, UserCheck, Home, MessageSquare, Search, AlertTriangle, ShieldAlert, Sparkles, Filter, CheckCircle, Tag } from "lucide-react";
+import { Brain, UserCheck, Home, MessageSquare, Search, AlertTriangle, ShieldAlert, Sparkles, Filter, CheckCircle, Tag, Download, FileText } from "lucide-react";
+import { generateDrogasSuspectsPDF } from "@/lib/pdfReport";
+import { exportToCSV } from "@/lib/excelExport";
 
 interface SectionDrogasNLPProps {
   incidents: any[];
@@ -106,15 +108,76 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
             </div>
           </div>
 
-          {selectedSuspect && (
+          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
+            {selectedSuspect && (
+              <button
+                onClick={() => setSelectedSuspect(null)}
+                className="btn-logout"
+                style={{ height: "36px", padding: "0 0.85rem", fontSize: "0.75rem", fontWeight: 700, background: "rgba(239,68,68,0.15)", color: "#ef4444", border: "1px solid rgba(239,68,68,0.3)" }}
+              >
+                Quitar filtro: {selectedSuspect} ✕
+              </button>
+            )}
+
             <button
-              onClick={() => setSelectedSuspect(null)}
+              onClick={() => {
+                generateDrogasSuspectsPDF({
+                  suspects: aliasRanking,
+                  totalSuspects: aliasRanking.length,
+                  totalIncidents: incidents.length
+                });
+              }}
               className="btn-logout"
-              style={{ height: "34px", padding: "0 0.85rem", fontSize: "0.75rem", fontWeight: 700, background: "rgba(239,68,68,0.15)", color: "#ef4444", border: "1px solid rgba(239,68,68,0.3)" }}
+              style={{
+                height: "36px",
+                padding: "0 1rem",
+                fontSize: "0.8rem",
+                fontWeight: 800,
+                background: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)",
+                color: "#fff",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                boxShadow: "0 2px 8px rgba(139,92,246,0.3)"
+              }}
             >
-              Quitar filtro: {selectedSuspect} ✕
+              <FileText size={15} /> 📑 Descargar Dossier Judicial (PDF)
             </button>
-          )}
+
+            <button
+              onClick={() => {
+                const exportData = aliasRanking.map((s, idx) => ({
+                  Ranking: idx + 1,
+                  Identificacion: s.alias,
+                  Tipo: s.isFullName ? "Nombre Completo" : "Alias / Apodo",
+                  Menciones_911: s.count,
+                  Barrios_Operacion: s.barrios,
+                  Ultima_Fecha: s.lastDate,
+                  Muestra_Relato: s.sampleRelato
+                }));
+                exportToCSV("sospechosos_alias_jose_c_paz", exportData);
+              }}
+              className="btn-logout"
+              style={{
+                height: "36px",
+                padding: "0 0.9rem",
+                fontSize: "0.8rem",
+                fontWeight: 700,
+                background: "rgba(16, 185, 129, 0.15)",
+                color: "#10b981",
+                border: "1px solid rgba(16, 185, 129, 0.4)",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem"
+              }}
+            >
+              <Download size={14} /> 📊 Exportar Sospechosos (Excel)
+            </button>
+          </div>
         </div>
       </div>
 

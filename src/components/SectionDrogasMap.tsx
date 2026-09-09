@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { MapPin, Filter, Download, Skull, Crosshair, ShieldAlert, Layers, Home, Info, Eye } from "lucide-react";
+import { MapPin, Filter, Download, Skull, Crosshair, ShieldAlert, Layers, Home, Info, Eye, FileText } from "lucide-react";
 import { exportToCSV } from "@/lib/excelExport";
+import { generateDrogasJcpPDF } from "@/lib/pdfReport";
 import "leaflet/dist/leaflet.css";
 
 interface SectionDrogasMapProps {
@@ -12,6 +13,7 @@ interface SectionDrogasMapProps {
 export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapProps) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<any>(null);
+  const markersGroupRef = useRef<any>(null);
 
   // Filters State
   const [filterOrigen, setFilterOrigen] = useState<string>("todos");
@@ -57,7 +59,7 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
     return Array.from(setB).sort();
   }, [incidents]);
 
-  // Leaflet Map Initialization & Markers Rendering
+  // 1. Initialize Leaflet Map ONCE
   useEffect(() => {
     let isMounted = true;
 
@@ -76,36 +78,46 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
           maxZoom: 19,
         }).addTo(map);
 
+        markersGroupRef.current = L.layerGroup().addTo(map);
         mapInstanceRef.current = map;
       }
+    });
 
-      const map = mapInstanceRef.current;
+    return () => {
+      isMounted = false;
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+        markersGroupRef.current = null;
+      }
+    };
+  }, []);
 
-      // Clear existing layer groups
-      map.eachLayer((layer: any) => {
-        if (layer instanceof L.CircleMarker || layer instanceof L.LayerGroup) {
-          map.removeLayer(layer);
-        }
-      });
+  // 2. Dynamically update markers without destroying the map
+  useEffect(() => {
+    if (!mapInstanceRef.current || !markersGroupRef.current) return;
 
-      const markersGroup = L.layerGroup();
+    import("leaflet").then((L) => {
+      const markersGroup = markersGroupRef.current;
+      if (!markersGroup) return;
 
-      // Plot all georeferenced markers
+      markersGroup.clearLayers();
+
       const points = filteredIncidents.filter((r) => r.lat && r.lng);
 
       points.forEach((inc) => {
         const sust = (inc.sustancia || "").toUpperCase();
         const hasArmas = inc.tieneArmas;
-        
-        let color = "#3b82f6"; // default blue
+
+        let color = "#3b82f6";
         if (sust.includes("PACO")) {
-          color = "#ec4899"; // pink for paco
+          color = "#ec4899";
         } else if (sust.includes("COCAÍNA")) {
-          color = "#ef4444"; // red for cocaine
+          color = "#ef4444";
         } else if (sust.includes("MARIHUANA")) {
-          color = "#10b981"; // green for marihuana
+          color = "#10b981";
         } else if (hasArmas) {
-          color = "#f59e0b"; // amber for armed
+          color = "#f59e0b";
         }
 
         const radius = inc.tipoLugar?.includes("Búnker") ? 7.5 : inc.tipoLugar?.includes("Ventanita") ? 6.5 : 5;
@@ -141,17 +153,7 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
 
         marker.addTo(markersGroup);
       });
-
-      markersGroup.addTo(map);
     });
-
-    return () => {
-      isMounted = false;
-      if (mapInstanceRef.current) {
-        mapInstanceRef.current.remove();
-        mapInstanceRef.current = null;
-      }
-    };
   }, [filteredIncidents]);
 
   return (
@@ -169,43 +171,77 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
             </p>
           </div>
 
-          <button
-            onClick={() => {
-              const exportData = filteredIncidents.map((inc: any) => ({
-                ID_911: inc.id,
-                Fecha: inc.fecha,
-                Hora: inc.hora,
-                Franja: inc.franja,
-                Dia: inc.dia,
-                Direccion: inc.direccion,
-                Barrio: inc.barrio,
-                Latitud: inc.lat,
-                Longitud: inc.lng,
-                Sustancia: inc.sustancia,
-                Tipo_Lugar: inc.tipoLugar,
-                Tiene_Armas: inc.tieneArmas ? "SI" : "NO",
-                Alias: (inc.alias || []).join(" | "),
-                Relato: inc.relato,
-              }));
-              exportToCSV("puntos_venta_drogas_jose_c_paz", exportData);
-            }}
-            className="btn-logout"
-            style={{
-              height: "36px",
-              padding: "0 0.85rem",
-              fontSize: "0.8rem",
-              fontWeight: 800,
-              background: "rgba(16, 185, 129, 0.15)",
-              color: "#10b981",
-              border: "1px solid rgba(16, 185, 129, 0.4)",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.4rem"
-            }}
-          >
-            <Download size={15} /> 📊 Exportar Datos Filtrados
-          </button>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
+            <button
+              onClick={() => {
+                generateDrogasJcpPDF({
+                  totalIncidents: incidents.length,
+                  georeferencedCount: filteredIncidents.filter((r) => r.lat && r.lng).length,
+                  armasCount: filteredIncidents.filter((r) => r.tieneArmas).length,
+                  cocainaCount: filteredIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("COCAÍNA")).length,
+                  marihuanaCount: filteredIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("MARIHUANA")).length,
+                  pacoCount: filteredIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("PACO")).length,
+                  incidents: filteredIncidents,
+                });
+              }}
+              className="btn-logout"
+              style={{
+                height: "36px",
+                padding: "0 1rem",
+                fontSize: "0.8rem",
+                fontWeight: 800,
+                background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
+                color: "#fff",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                boxShadow: "0 2px 8px rgba(239,68,68,0.3)",
+              }}
+            >
+              <FileText size={15} /> 📄 Descargar Informe Táctico (PDF)
+            </button>
+
+            <button
+              onClick={() => {
+                const exportData = filteredIncidents.map((inc: any) => ({
+                  ID_911: inc.id,
+                  Fecha: inc.fecha,
+                  Hora: inc.hora,
+                  Franja: inc.franja,
+                  Dia: inc.dia,
+                  Direccion: inc.direccion,
+                  Barrio: inc.barrio,
+                  Latitud: inc.lat,
+                  Longitud: inc.lng,
+                  Sustancia: inc.sustancia,
+                  Tipo_Lugar: inc.tipoLugar,
+                  Tiene_Armas: inc.tieneArmas ? "SI" : "NO",
+                  Alias: (inc.alias || []).join(" | "),
+                  Relato: inc.relato,
+                }));
+                exportToCSV("puntos_venta_drogas_jose_c_paz", exportData);
+              }}
+              className="btn-logout"
+              style={{
+                height: "36px",
+                padding: "0 0.85rem",
+                fontSize: "0.8rem",
+                fontWeight: 800,
+                background: "rgba(16, 185, 129, 0.15)",
+                color: "#10b981",
+                border: "1px solid rgba(16, 185, 129, 0.4)",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
+              }}
+            >
+              <Download size={15} /> 📊 Exportar Datos Filtrados
+            </button>
+          </div>
         </div>
 
         {/* Filters Grid */}

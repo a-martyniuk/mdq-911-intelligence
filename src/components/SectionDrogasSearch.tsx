@@ -3,6 +3,7 @@
 import React, { useState, useMemo } from "react";
 import { Search, Filter, Download, AlertTriangle, Shield, MapPin, Eye, FileText } from "lucide-react";
 import { exportToCSV } from "@/lib/excelExport";
+import { generateDrogasJcpPDF } from "@/lib/pdfReport";
 
 interface SectionDrogasSearchProps {
   incidents: any[];
@@ -60,39 +61,73 @@ export default function SectionDrogasSearch({ incidents = [] }: SectionDrogasSea
             </p>
           </div>
 
-          <button
-            onClick={() => {
-              const exportData = filtered.map((inc) => ({
-                ID: inc.id,
-                Fecha: inc.fecha,
-                Origen: inc.origenLabel || inc.origen,
-                Direccion: inc.direccion,
-                Barrio: inc.barrio,
-                Sustancia: inc.sustancia,
-                Lugar: inc.tipoLugar,
-                Tiene_Armas: inc.tieneArmas ? "SI" : "NO",
-                Alias: (inc.alias || []).join(" | "),
-                Relato: inc.relato,
-              }));
-              exportToCSV("auditoria_911_jose_c_paz", exportData);
-            }}
-            className="btn-logout"
-            style={{
-              height: "36px",
-              padding: "0 0.85rem",
-              fontSize: "0.8rem",
-              fontWeight: 800,
-              background: "rgba(16, 185, 129, 0.15)",
-              color: "#10b981",
-              border: "1px solid rgba(16, 185, 129, 0.4)",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.4rem"
-            }}
-          >
-            <Download size={15} /> 📊 Exportar Resultados ({filtered.length.toLocaleString()})
-          </button>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
+            <button
+              onClick={() => {
+                generateDrogasJcpPDF({
+                  totalIncidents: incidents.length,
+                  georeferencedCount: filtered.filter((r) => r.lat && r.lng).length,
+                  armasCount: filtered.filter((r) => r.tieneArmas).length,
+                  cocainaCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("COCAÍNA")).length,
+                  marihuanaCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("MARIHUANA")).length,
+                  pacoCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("PACO")).length,
+                  incidents: filtered,
+                });
+              }}
+              className="btn-logout"
+              style={{
+                height: "36px",
+                padding: "0 1rem",
+                fontSize: "0.8rem",
+                fontWeight: 800,
+                background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
+                color: "#fff",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                boxShadow: "0 2px 8px rgba(239,68,68,0.3)",
+              }}
+            >
+              <FileText size={15} /> 📄 Descargar Informe Búsqueda (PDF)
+            </button>
+
+            <button
+              onClick={() => {
+                const exportData = filtered.map((inc) => ({
+                  ID: inc.id,
+                  Fecha: inc.fecha,
+                  Origen: inc.origenLabel || inc.origen,
+                  Direccion: inc.direccion,
+                  Barrio: inc.barrio,
+                  Sustancia: inc.sustancia,
+                  Lugar: inc.tipoLugar,
+                  Tiene_Armas: inc.tieneArmas ? "SI" : "NO",
+                  Alias: (inc.alias || []).join(" | "),
+                  Relato: inc.relato,
+                }));
+                exportToCSV("auditoria_911_jose_c_paz", exportData);
+              }}
+              className="btn-logout"
+              style={{
+                height: "36px",
+                padding: "0 0.85rem",
+                fontSize: "0.8rem",
+                fontWeight: 800,
+                background: "rgba(16, 185, 129, 0.15)",
+                color: "#10b981",
+                border: "1px solid rgba(16, 185, 129, 0.4)",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem"
+              }}
+            >
+              <Download size={15} /> 📊 Exportar Resultados ({filtered.length.toLocaleString()})
+            </button>
+          </div>
         </div>
 
         {/* Search & Filter Bar */}

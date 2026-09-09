@@ -1,6 +1,8 @@
 import React from "react";
 import MetricCard from "./MetricCard";
-import { Database, MapPin, CheckCircle, Car, Clock, ShieldAlert, Calendar } from "lucide-react";
+import { Database, MapPin, CheckCircle, Car, Clock, ShieldAlert, Calendar, Download, FileText } from "lucide-react";
+import { generateExecutiveDossierPDF } from "@/lib/pdfReport";
+import { exportToCSV } from "@/lib/excelExport";
 
 interface SectionOverviewProps {
   stats: {
@@ -17,9 +19,71 @@ interface SectionOverviewProps {
 export default function SectionOverview({ stats }: SectionOverviewProps) {
   return (
     <div>
-      <div style={{ marginBottom: "1.5rem" }}>
-        <h2 className="card-title" style={{ fontSize: "1.5rem" }}>Resumen Ejecutivo del Proyecto</h2>
-        <p className="card-subtitle">Indicadores clave consolidados del análisis de llamadas al 911 en Mar del Plata.</p>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1.5rem" }}>
+        <div>
+          <h2 className="card-title" style={{ fontSize: "1.5rem" }}>Resumen Ejecutivo del Proyecto</h2>
+          <p className="card-subtitle">Indicadores clave consolidados del análisis de llamadas al 911 en Mar del Plata.</p>
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
+          <button
+            onClick={() => {
+              generateExecutiveDossierPDF({
+                totalIncidents: stats.totalIncidents,
+                robosCount: 6524,
+                hallazgosCount: 1420,
+              });
+            }}
+            className="btn-logout"
+            style={{
+              height: "38px",
+              padding: "0 1rem",
+              fontSize: "0.825rem",
+              fontWeight: 800,
+              background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+              color: "#fff",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.4rem",
+              boxShadow: "0 2px 8px rgba(16,185,129,0.3)"
+            }}
+          >
+            <FileText size={16} /> 📄 Descargar Dossier Ejecutivo MDP (PDF)
+          </button>
+
+          <button
+            onClick={() => {
+              const data = [
+                { Indicador: "Total Incidentes 911", Valor: stats.totalIncidents, Detalle: "Llamados procesados en General Pueyrredón" },
+                { Indicador: "Coordenadas Normalizadas", Valor: stats.georeferencedCount, Detalle: `${stats.georeferencedPct.toFixed(1)}% georreferenciado` },
+                { Indicador: "Vehículos Recuperados", Valor: stats.recoveriesCount, Detalle: "Identificados por matching de patentes" },
+                { Indicador: "Mediana de Recuperación", Valor: `${stats.medianRecoveryHours.toFixed(1)} hs`, Detalle: "Tasa de abandono rápida" },
+                { Indicador: "Franja Horaria Crítica", Valor: "18:00 - 24:00", Detalle: `${stats.nightPct.toFixed(1)}% de incidentes nocturnos` },
+                { Indicador: "Día Pico", Valor: "Sábado", Detalle: "Mayor densidad semanal" },
+              ];
+              exportToCSV("resumen_ejecutivo_mdp", data);
+            }}
+            className="btn-logout"
+            style={{
+              height: "38px",
+              padding: "0 0.9rem",
+              fontSize: "0.8rem",
+              fontWeight: 700,
+              background: "rgba(16, 185, 129, 0.15)",
+              color: "#10b981",
+              border: "1px solid rgba(16, 185, 129, 0.4)",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.4rem"
+            }}
+          >
+            <Download size={15} /> 📊 Exportar Resumen (Excel)
+          </button>
+        </div>
       </div>
 
       <div className="metric-grid">

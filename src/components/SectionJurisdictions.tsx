@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { Building2, MapPin, ArrowRight, ShieldCheck, Download, Info, Layers, Eye, ShieldAlert, Home } from "lucide-react";
+import { Building2, MapPin, ArrowRight, ShieldCheck, Download, Info, Layers, Eye, ShieldAlert, Home, FileText } from "lucide-react";
 import { exportToCSV } from "@/lib/excelExport";
 import { POLICE_JURISDICTIONS_GEOJSON } from "@/lib/jurisdictionsGeoJSON";
 import { RENABAP_BARRIOS_GEOJSON } from "@/lib/renabapGeoJSON";
+import { generateJurisdictionsReportPDF } from "@/lib/pdfReport";
 import "leaflet/dist/leaflet.css";
 
 interface SectionJurisdictionsProps {
@@ -249,23 +250,62 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
             </div>
           </div>
 
-          <button
-            onClick={() => {
-              const exportData = jurisdictionStats.map((j) => ({
-                Comisaria: j.name,
-                Codigo: j.code,
-                Rol_Territorial: j.roleBadge,
-                Sustracciones_Robos: j.theftsCount,
-                Descartes_Hallazgos: j.dumpsCount,
-                Barrios_Cobertura: j.description,
-              }));
-              exportToCSV("matriz_cuantitativa_comisarias_mdp", exportData);
-            }}
-            className="btn-logout"
-            style={{ height: "36px", padding: "0 1rem", fontSize: "0.8rem", fontWeight: 700, background: "rgba(16, 185, 129, 0.15)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.4rem" }}
-          >
-            <Download size={15} /> Exportar Matriz Cuantitativa a Excel
-          </button>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
+            <button
+              onClick={() => {
+                generateJurisdictionsReportPDF({
+                  jurisdictionStats: jurisdictionStats.map((j) => ({
+                    code: j.code,
+                    name: j.name,
+                    theftsCount: j.theftsCount,
+                    dumpsCount: j.dumpsCount,
+                    netDiff: j.theftsCount - j.dumpsCount,
+                    roleBadge: j.roleBadge,
+                    dominantTheftSubtype: "Autos / Motos",
+                    dominantDumpSubtype: "Autos / Motos",
+                  })),
+                  totalThefts,
+                  totalRecoveries: totalDumps,
+                });
+              }}
+              className="btn-logout"
+              style={{
+                height: "36px",
+                padding: "0 1rem",
+                fontSize: "0.8rem",
+                fontWeight: 800,
+                background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)",
+                color: "#fff",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                boxShadow: "0 2px 8px rgba(37,99,235,0.3)",
+              }}
+            >
+              <FileText size={15} /> 📄 Descargar Informe Departamental (PDF)
+            </button>
+
+            <button
+              onClick={() => {
+                const exportData = jurisdictionStats.map((j) => ({
+                  Comisaria: j.name,
+                  Codigo: j.code,
+                  Rol_Territorial: j.roleBadge,
+                  Sustracciones_Robos: j.theftsCount,
+                  Descartes_Hallazgos: j.dumpsCount,
+                  Barrios_Cobertura: j.description,
+                }));
+                exportToCSV("matriz_cuantitativa_comisarias_mdp", exportData);
+              }}
+              className="btn-logout"
+              style={{ height: "36px", padding: "0 1rem", fontSize: "0.8rem", fontWeight: 700, background: "rgba(16, 185, 129, 0.15)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.4rem" }}
+            >
+              <Download size={15} /> Exportar Matriz Cuantitativa a Excel
+            </button>
+          </div>
         </div>
       </div>
 

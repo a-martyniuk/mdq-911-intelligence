@@ -1,16 +1,86 @@
 import React from "react";
-import { Search, Link, GitMerge, FileSearch, ShieldAlert, Cpu, CheckCircle2 } from "lucide-react";
+import { Search, Link, GitMerge, FileSearch, ShieldAlert, Cpu, CheckCircle2, Download, FileText } from "lucide-react";
+import { generateExecutiveDossierPDF } from "@/lib/pdfReport";
+import { exportToCSV } from "@/lib/excelExport";
 
 export default function SectionInvestigativeValue() {
   return (
     <div>
       <div className="card" style={{ marginBottom: "1.5rem" }}>
-        <div className="card-title">
-          <span>🔍 Investigación de Patrones Relacionales y Complejidad Delictiva</span>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem" }}>
+          <div>
+            <div className="card-title">
+              <span>🔍 Investigación de Patrones Relacionales y Complejidad Delictiva</span>
+            </div>
+            <p className="card-subtitle">
+              Análisis forense de datos e inteligencia relacional para descubrir vínculos ocultos entre denuncias, hallazgos y modus operandi en Mar del Plata.
+            </p>
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
+            <button
+              onClick={() => {
+                generateExecutiveDossierPDF({
+                  totalIncidents: 8598,
+                  robosCount: 6524,
+                  hallazgosCount: 1420,
+                  gangs: [
+                    { nombre: "Banda de la Moto Negra 110cc", hechosCount: 24, patron: "Conductor con visera y acompañante armado en moto 110cc", franja: "Noche (20 a 02 hs)", zona: "Comisaría 2da (Macrocentro)", explicacion: "Coincidencia de 24 despachos en 30 días." },
+                    { nombre: "Célula Fuga VW Gol Gris", hechosCount: 18, patron: "Auto de apoyo Gol Gris en robos de motovehículos", franja: "Madrugada (01 a 06 hs)", zona: "Comisaría 4ta (Pompeya)", explicacion: "Escape coordinado por avenidas principales." },
+                    { nombre: "Grupo Desguace Periferia West", hechosCount: 15, patron: "Sustracción en Centro ➔ Desguace en < 6 hs en Batán/Las Heras", franja: "Tarde/Noche", zona: "Comisaría 8va y 11ra", explicacion: "Recupero de chasis desguazados." }
+                  ]
+                });
+              }}
+              className="btn-logout"
+              style={{
+                height: "36px",
+                padding: "0 1rem",
+                fontSize: "0.8rem",
+                fontWeight: 800,
+                background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                color: "#fff",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                boxShadow: "0 2px 8px rgba(16,185,129,0.3)"
+              }}
+            >
+              <FileText size={15} /> 📄 Descargar Dossier Ejecutivo Forense (PDF)
+            </button>
+
+            <button
+              onClick={() => {
+                const exportData = [
+                  { Vinculo: "Robo ➔ Hallazgo Automotor", Patron: "Abandono promedio en 4.9 hs", Hipotesis: "Uso del auto robado como unidad de apoyo/fuga efímera", Evidencia: "58 patentes cruzadas en relatos 911" },
+                  { Vinculo: "Robo ➔ Motocicletas", Patron: "Baja tasa de hallazgo (19.7%)", Hipotesis: "Ingreso inmediato a redes de desguace y venta de repuestos", Evidencia: "400 robos concentrados en Honda" },
+                  { Vinculo: "Violencia ➔ Armas de Fuego", Patron: "67 IDs coincidentes en despacho", Hipotesis: "Escalada de violencia en áreas de disputa territorial", Evidencia: "Solapamiento entre Armas y Disparos" },
+                  { Vinculo: "Nocturnidad ➔ Concentración", Patron: "39.5% de incidentes entre 18 y 24 hs", Hipotesis: "Sincronización horaria de bandas dedicadas a sustracción", Evidencia: "Pico de 185 robos/hora a las 20:00 hs" },
+                  { Vinculo: "Descarte ➔ Asentamientos RENABAP", Patron: "82.7% de hallazgos a < 350m", Hipotesis: "Zonas de enfriamiento y transbordo periférico", Evidencia: "Cruce espacial con Polígonos SISU RENABAP" }
+                ];
+                exportToCSV("matriz_hipotesis_investigacion_forense", exportData);
+              }}
+              className="btn-logout"
+              style={{
+                height: "36px",
+                padding: "0 0.9rem",
+                fontSize: "0.8rem",
+                fontWeight: 700,
+                background: "rgba(16, 185, 129, 0.15)",
+                color: "#10b981",
+                border: "1px solid rgba(16, 185, 129, 0.4)",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem"
+              }}
+            >
+              <Download size={15} /> 📊 Exportar Hipótesis (Excel)
+            </button>
+          </div>
         </div>
-        <p className="card-subtitle">
-          Análisis forense de datos e inteligencia relacional para descubrir vínculos ocultos entre denuncias, hallazgos y modus operandi en Mar del Plata.
-        </p>
 
         {/* 4 Investigative Findings Pillars */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.25rem", marginBottom: "1.5rem" }}>

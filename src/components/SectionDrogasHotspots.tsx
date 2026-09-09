@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { Flame, Filter, Download, FileText, Info, ShieldAlert } from "lucide-react";
 import { exportToCSV } from "@/lib/excelExport";
+import { generateDrogasJcpPDF } from "@/lib/pdfReport";
 import "leaflet/dist/leaflet.css";
 
 interface SectionDrogasHotspotsProps {
@@ -12,6 +13,7 @@ interface SectionDrogasHotspotsProps {
 export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasHotspotsProps) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<any>(null);
+  const markersGroupRef = useRef<any>(null);
 
   const [filterOrigen, setFilterOrigen] = useState<string>("todos");
   const [filterSustancia, setFilterSustancia] = useState<string>("todos");
@@ -40,6 +42,7 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
     });
   }, [incidents, filterOrigen, filterSustancia, filterFranja, filterArmas]);
 
+  // 1. Initialize Map ONCE
   useEffect(() => {
     let isMounted = true;
 
@@ -57,18 +60,31 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
           maxZoom: 19,
         }).addTo(map);
 
+        markersGroupRef.current = L.layerGroup().addTo(map);
         mapInstanceRef.current = map;
       }
+    });
 
-      const map = mapInstanceRef.current;
+    return () => {
+      isMounted = false;
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+        markersGroupRef.current = null;
+      }
+    };
+  }, []);
 
-      map.eachLayer((layer: any) => {
-        if (layer instanceof L.CircleMarker || layer instanceof L.LayerGroup) {
-          map.removeLayer(layer);
-        }
-      });
+  // 2. Dynamically render markers
+  useEffect(() => {
+    if (!mapInstanceRef.current || !markersGroupRef.current) return;
 
-      const group = L.layerGroup();
+    import("leaflet").then((L) => {
+      const group = markersGroupRef.current;
+      if (!group) return;
+
+      group.clearLayers();
+
       const points = filtered.filter((r) => r.lat && r.lng);
 
       points.forEach((inc) => {
@@ -95,17 +111,7 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
 
         marker.addTo(group);
       });
-
-      group.addTo(map);
     });
-
-    return () => {
-      isMounted = false;
-      if (mapInstanceRef.current) {
-        mapInstanceRef.current.remove();
-        mapInstanceRef.current = null;
-      }
-    };
   }, [filtered]);
 
   return (
@@ -122,36 +128,70 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
             </p>
           </div>
 
-          <button
-            onClick={() => {
-              const exportData = filtered.map((inc: any) => ({
-                ID: inc.id,
-                Fecha: inc.fecha,
-                Direccion: inc.direccion,
-                Barrio: inc.barrio,
-                Sustancia: inc.sustancia,
-                Tiene_Armas: inc.tieneArmas ? "SI" : "NO",
-                Franja: inc.franja,
-              }));
-              exportToCSV("hotspots_drogas_jose_c_paz", exportData);
-            }}
-            className="btn-logout"
-            style={{
-              height: "36px",
-              padding: "0 0.85rem",
-              fontSize: "0.8rem",
-              fontWeight: 800,
-              background: "rgba(16, 185, 129, 0.15)",
-              color: "#10b981",
-              border: "1px solid rgba(16, 185, 129, 0.4)",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.4rem"
-            }}
-          >
-            <Download size={15} /> 📊 Exportar Muestra Excel
-          </button>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
+            <button
+              onClick={() => {
+                generateDrogasJcpPDF({
+                  totalIncidents: incidents.length,
+                  georeferencedCount: filtered.filter((r) => r.lat && r.lng).length,
+                  armasCount: filtered.filter((r) => r.tieneArmas).length,
+                  cocainaCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("COCAÍNA")).length,
+                  marihuanaCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("MARIHUANA")).length,
+                  pacoCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("PACO")).length,
+                  incidents: filtered,
+                });
+              }}
+              className="btn-logout"
+              style={{
+                height: "36px",
+                padding: "0 1rem",
+                fontSize: "0.8rem",
+                fontWeight: 800,
+                background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
+                color: "#fff",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                boxShadow: "0 2px 8px rgba(239,68,68,0.3)"
+              }}
+            >
+              <FileText size={15} /> 📄 Descargar Informe Hotspots (PDF)
+            </button>
+
+            <button
+              onClick={() => {
+                const exportData = filtered.map((inc: any) => ({
+                  ID: inc.id,
+                  Fecha: inc.fecha,
+                  Direccion: inc.direccion,
+                  Barrio: inc.barrio,
+                  Sustancia: inc.sustancia,
+                  Tiene_Armas: inc.tieneArmas ? "SI" : "NO",
+                  Franja: inc.franja,
+                }));
+                exportToCSV("hotspots_drogas_jose_c_paz", exportData);
+              }}
+              className="btn-logout"
+              style={{
+                height: "36px",
+                padding: "0 0.85rem",
+                fontSize: "0.8rem",
+                fontWeight: 800,
+                background: "rgba(16, 185, 129, 0.15)",
+                color: "#10b981",
+                border: "1px solid rgba(16, 185, 129, 0.4)",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem"
+              }}
+            >
+              <Download size={15} /> 📊 Exportar Muestra Excel
+            </button>
+          </div>
         </div>
 
         {/* Filters */}

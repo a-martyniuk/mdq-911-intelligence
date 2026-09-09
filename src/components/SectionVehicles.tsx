@@ -6,6 +6,7 @@ import MetricCard from "./MetricCard";
 import { Car, Bike, Clock, FileText, ChevronDown, ChevronUp, Eye, Wrench, Download } from "lucide-react";
 import { exportToCSV } from "@/lib/excelExport";
 import { formatTimeDifference } from "@/lib/formatters";
+import { generateVehiclesComparisonReportPDF } from "@/lib/pdfReport";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -193,29 +194,49 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
             <span>Visor de Relatos 911 en Paralelo ({filteredRecoveries.length} Casos Desduplicados)</span>
           </div>
 
-          <button
-            onClick={() => {
-              const exportData = filteredRecoveries.map((r) => ({
-                Patente: r.Patente_Principal,
-                Tipo_Vehiculo: checkIsMoto(r) ? "MOTO" : "AUTO",
-                Marca: r.Marca_Detectada || "NO ESPECIFICADA",
-                Fecha_Robo: r.Fecha_Robo,
-                Direccion_Robo: r.Dirección_Robo || "",
-                Fecha_Hallazgo: r.Fecha_Hallazgo,
-                Direccion_Hallazgo: r.Dirección_Hallazgo || "",
-                Horas_Hasta_Hallazgo: typeof r.Horas_Hasta_Hallazgo === "number" ? r.Horas_Hasta_Hallazgo.toFixed(1) : r.Horas_Hasta_Hallazgo,
-                ID_911_Robo: r.ID_Robo,
-                ID_911_Hallazgo: r.ID_Hallazgo,
-                Relato_Robo: r.Relato_Robo || "",
-                Relato_Hallazgo: r.Relato_Hallazgo || "",
-              }));
-              exportToCSV(`informe_vehiculos_recuperados_${selectedCategory}`, exportData);
-            }}
-            className="btn-logout"
-            style={{ height: "32px", padding: "0 0.75rem", fontSize: "0.775rem", fontWeight: 700, background: "rgba(16, 185, 129, 0.15)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
-          >
-            <Download size={14} /> Exportar Tabla a Excel
-          </button>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <button
+              onClick={() => {
+                generateVehiclesComparisonReportPDF({
+                  autosRecovered: 1678,
+                  motosRecovered: 510,
+                  medianAutosHours: 4.9,
+                  medianMotosHours: 7.0,
+                  meanAutosHours: 51.2,
+                  meanMotosHours: 75.7,
+                  sampleCases: filteredRecoveries
+                });
+              }}
+              className="btn-logout"
+              style={{ height: "32px", padding: "0 0.85rem", fontSize: "0.775rem", fontWeight: 800, background: "rgba(99,102,241,0.18)", color: "var(--accent-indigo)", border: "1px solid rgba(99,102,241,0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
+            >
+              <FileText size={14} /> 📄 Descargar Informe Pericial (PDF)
+            </button>
+
+            <button
+              onClick={() => {
+                const exportData = filteredRecoveries.map((r) => ({
+                  Patente: r.Patente_Principal,
+                  Tipo_Vehiculo: checkIsMoto(r) ? "MOTO" : "AUTO",
+                  Marca: r.Marca_Detectada || "NO ESPECIFICADA",
+                  Fecha_Robo: r.Fecha_Robo,
+                  Direccion_Robo: r.Dirección_Robo || "",
+                  Fecha_Hallazgo: r.Fecha_Hallazgo,
+                  Direccion_Hallazgo: r.Dirección_Hallazgo || "",
+                  Horas_Hasta_Hallazgo: typeof r.Horas_Hasta_Hallazgo === "number" ? r.Horas_Hasta_Hallazgo.toFixed(1) : r.Horas_Hasta_Hallazgo,
+                  ID_911_Robo: r.ID_Robo,
+                  ID_911_Hallazgo: r.ID_Hallazgo,
+                  Relato_Robo: r.Relato_Robo || "",
+                  Relato_Hallazgo: r.Relato_Hallazgo || "",
+                }));
+                exportToCSV(`informe_vehiculos_recuperados_${selectedCategory}`, exportData);
+              }}
+              className="btn-logout"
+              style={{ height: "32px", padding: "0 0.75rem", fontSize: "0.775rem", fontWeight: 700, background: "rgba(16, 185, 129, 0.15)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
+            >
+              <Download size={14} /> Exportar Tabla a Excel
+            </button>
+          </div>
         </div>
         <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginBottom: "1rem" }}>
           Haz clic en cualquier caso para desplegar los relatos policiales originales de la denuncia de robo y la planilla de hallazgo automotor.

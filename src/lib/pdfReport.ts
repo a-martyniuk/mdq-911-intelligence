@@ -1147,7 +1147,7 @@ export function generateDrogasJcpPDF(data: {
   cocainaCount: number;
   marihuanaCount: number;
   pacoCount: number;
-  incidents: any[];
+  incidents?: any[];
 }) {
   const win = window.open("", "_blank");
   if (!win) {
@@ -1276,5 +1276,466 @@ export function generateDrogasJcpPDF(data: {
   win.document.write(html);
   win.document.close();
 }
+
+/**
+ * Generates an official judicial dossier on drug suspects, aliases, and operative networks
+ */
+export function generateDrogasSuspectsPDF(data: {
+  suspects: Array<{
+    alias: string;
+    count: number;
+    lastDate: string;
+    barrios: string;
+    sampleRelato: string;
+    isFullName: boolean;
+  }>;
+  totalSuspects: number;
+  totalIncidents: number;
+}) {
+  const win = window.open("", "_blank");
+  if (!win) {
+    alert("Por favor habilita las ventanas emergentes (popups) para descargar el informe PDF.");
+    return;
+  }
+
+  const { suspects, totalSuspects, totalIncidents } = data;
+
+  const html = `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <title>Informe Pericial de Inteligencia - Sospechosos & Alias 911</title>
+      <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #0f172a; padding: 2.5rem; margin: 0; line-height: 1.5; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #8b5cf6; padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
+        .title { font-size: 1.35rem; font-weight: 900; color: #0f172a; text-transform: uppercase; letter-spacing: 0.02em; }
+        .subtitle { font-size: 0.85rem; color: #64748b; font-weight: 600; text-transform: uppercase; margin-top: 0.2rem; }
+        .badge { background: #8b5cf6; color: #fff; padding: 0.35rem 0.75rem; border-radius: 4px; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .info-box { background: #f5f3ff; border-left: 4px solid #8b5cf6; padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem; font-size: 0.85rem; color: #5b21b6; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; border-top: 3px solid #8b5cf6; }
+        .stat-val { font-size: 1.4rem; font-weight: 900; color: #0f172a; margin: 0.2rem 0; }
+        .stat-lbl { font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-bottom: 1.5rem; }
+        th { background: #0f172a; color: #fff; text-align: left; padding: 0.6rem; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; }
+        td { padding: 0.55rem 0.6rem; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+        tr:nth-child(even) { background: #f8fafc; }
+        .tag-name { background: #e0e7ff; color: #3730a3; padding: 2px 6px; border-radius: 3px; font-size: 0.68rem; font-weight: 700; }
+        .tag-alias { background: #fef3c7; color: #92400e; padding: 2px 6px; border-radius: 3px; font-size: 0.68rem; font-weight: 700; }
+        .footer { border-top: 1px solid #cbd5e1; padding-top: 1rem; margin-top: 2rem; font-size: 0.7rem; color: #94a3b8; text-align: center; }
+        @media print { body { padding: 1rem; } .no-print { display: none; } }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div>
+          <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
+          <div class="subtitle">Informe Pericial de NLP · Sospechosos, Alias & Redes de Narcomenudeo (José C. Paz)</div>
+        </div>
+        <div class="badge">Uso Judicial / Fiscal</div>
+      </div>
+
+      <div class="info-box">
+        <strong>ALCANCE DE INTELIGENCIA:</strong> Extracción algorítmica y depuración sintáctica de identidades y apodos mencionados de manera reiterada en denuncias ciudadanas al 911. Este documento individualiza objetivos de interés para fundamentación de pedidos de allanamiento e investigación criminal.
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-lbl">Sospechosos Individualizados</div>
+          <div class="stat-val">${totalSuspects}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Universo de Denuncias 911</div>
+          <div class="stat-val">${totalIncidents.toLocaleString()}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Jurisdicción Analizada</div>
+          <div class="stat-val">José C. Paz</div>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 25px;">#</th>
+            <th>Sospechoso / Alias</th>
+            <th>Tipo Identificación</th>
+            <th>Reiteraciones 911</th>
+            <th>Zonas / Barrios de Operación</th>
+            <th>Muestra del Relato Policial</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${suspects.map((s, idx) => `
+            <tr>
+              <td>${idx + 1}</td>
+              <td><strong>${s.alias}</strong></td>
+              <td>${s.isFullName ? '<span class="tag-name">Nombre Identificado</span>' : '<span class="tag-alias">Alias / Apodo</span>'}</td>
+              <td><strong style="color: #ef4444; font-size: 0.95rem;">${s.count}</strong> llamadas</td>
+              <td>${s.barrios || "José C. Paz"}</td>
+              <td style="font-size: 0.72rem; color: #475569; max-width: 280px;">${s.sampleRelato.slice(0, 160)}...</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+
+      <div class="footer">
+        Documento confidencial emitido por la Plataforma MSEG Intelligence · Reserva de Sumario · ${new Date().toLocaleString("es-AR")}
+      </div>
+
+      <script>
+        window.onload = function() { setTimeout(() => { window.print(); }, 800); };
+      </script>
+    </body>
+    </html>
+  `;
+
+  win.document.write(html);
+  win.document.close();
+}
+
+/**
+ * Generates an official report on Inter-precinct Jurisdictions (Comisarías 1ra - 16ta)
+ */
+export function generateJurisdictionsReportPDF(data: {
+  jurisdictionStats: Array<{
+    code: string;
+    name: string;
+    theftsCount: number;
+    dumpsCount: number;
+    netDiff: number;
+    roleBadge: string;
+    dominantTheftSubtype: string;
+    dominantDumpSubtype: string;
+  }>;
+  totalThefts: number;
+  totalRecoveries: number;
+}) {
+  const win = window.open("", "_blank");
+  if (!win) {
+    alert("Por favor habilita las ventanas emergentes (popups) para descargar el informe PDF.");
+    return;
+  }
+
+  const { jurisdictionStats, totalThefts, totalRecoveries } = data;
+
+  const html = `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <title>Informe Departamental de Jurisdicciones Policiales - Mar del Plata</title>
+      <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #0f172a; padding: 2.5rem; margin: 0; line-height: 1.5; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #2563eb; padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
+        .title { font-size: 1.35rem; font-weight: 900; color: #0f172a; text-transform: uppercase; }
+        .subtitle { font-size: 0.85rem; color: #64748b; font-weight: 600; text-transform: uppercase; margin-top: 0.2rem; }
+        .badge { background: #2563eb; color: #fff; padding: 0.35rem 0.75rem; border-radius: 4px; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; border-top: 3px solid #2563eb; }
+        .stat-val { font-size: 1.4rem; font-weight: 900; color: #0f172a; margin: 0.2rem 0; }
+        .stat-lbl { font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-bottom: 1.5rem; }
+        th { background: #0f172a; color: #fff; text-align: left; padding: 0.6rem; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; }
+        td { padding: 0.55rem 0.6rem; border-bottom: 1px solid #e2e8f0; }
+        tr:nth-child(even) { background: #f8fafc; }
+        .footer { border-top: 1px solid #cbd5e1; padding-top: 1rem; margin-top: 2rem; font-size: 0.7rem; color: #94a3b8; text-align: center; }
+        @media print { body { padding: 1rem; } .no-print { display: none; } }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div>
+          <div class="title">Jefatura Departamental General Pueyrredón · Ministerio de Seguridad</div>
+          <div class="subtitle">Informe Táctico de Movilidad Delictual Inter-Jurisdiccional (Comisarías 1ra a 16ta)</div>
+        </div>
+        <div class="badge">Uso Operacional</div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-lbl">Sustracciones Analizadas</div>
+          <div class="stat-val">${totalThefts.toLocaleString()}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Vehículos Recuperados / Descartados</div>
+          <div class="stat-val">${totalRecoveries.toLocaleString()}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Comisarías Auditadas</div>
+          <div class="stat-val">16 Jurisdicciones</div>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Comisaría</th>
+            <th>Robos Registrados</th>
+            <th>Hallazgos / Descartes</th>
+            <th>Diferencial Neto</th>
+            <th>Rol Operacional Identificado</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${jurisdictionStats.map((j) => `
+            <tr>
+              <td><strong>${j.name}</strong></td>
+              <td style="color: #ef4444; font-weight: 700;">${j.theftsCount}</td>
+              <td style="color: #10b981; font-weight: 700;">${j.dumpsCount}</td>
+              <td>${j.netDiff > 0 ? `+${j.netDiff}` : j.netDiff}</td>
+              <td><strong>${j.roleBadge}</strong></td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+
+      <div class="footer">
+        Documento oficial emitido por la Plataforma MSEG Intelligence · ${new Date().toLocaleString("es-AR")}
+      </div>
+
+      <script>
+        window.onload = function() { setTimeout(() => { window.print(); }, 800); };
+      </script>
+    </body>
+    </html>
+  `;
+
+  win.document.write(html);
+  win.document.close();
+}
+
+/**
+ * Generates an executive comparative report on Stolen vs Recovered Vehicles (Autos vs Motos)
+ */
+export function generateVehiclesComparisonReportPDF(data: {
+  autosRecovered: number;
+  motosRecovered: number;
+  medianAutosHours: number;
+  medianMotosHours: number;
+  meanAutosHours: number;
+  meanMotosHours: number;
+  sampleCases: any[];
+}) {
+  const win = window.open("", "_blank");
+  if (!win) {
+    alert("Por favor habilita las ventanas emergentes (popups) para descargar el informe PDF.");
+    return;
+  }
+
+  const { autosRecovered, motosRecovered, medianAutosHours, medianMotosHours, meanAutosHours, meanMotosHours, sampleCases } = data;
+
+  const html = `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <title>Informe Pericial de Sustracción y Recupero: Autos vs Motos</title>
+      <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #0f172a; padding: 2.5rem; margin: 0; line-height: 1.5; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #10b981; padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
+        .title { font-size: 1.35rem; font-weight: 900; color: #0f172a; text-transform: uppercase; }
+        .subtitle { font-size: 0.85rem; color: #64748b; font-weight: 600; text-transform: uppercase; margin-top: 0.2rem; }
+        .badge { background: #10b981; color: #fff; padding: 0.35rem 0.75rem; border-radius: 4px; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; }
+        .box { background: #f0fdf4; border-left: 4px solid #10b981; padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem; font-size: 0.85rem; color: #166534; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; border-top: 3px solid #10b981; }
+        .stat-val { font-size: 1.3rem; font-weight: 900; color: #0f172a; margin: 0.2rem 0; }
+        .stat-lbl { font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-bottom: 1.5rem; }
+        th { background: #0f172a; color: #fff; text-align: left; padding: 0.6rem; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; }
+        td { padding: 0.55rem 0.6rem; border-bottom: 1px solid #e2e8f0; }
+        tr:nth-child(even) { background: #f8fafc; }
+        .footer { border-top: 1px solid #cbd5e1; padding-top: 1rem; margin-top: 2rem; font-size: 0.7rem; color: #94a3b8; text-align: center; }
+        @media print { body { padding: 1rem; } .no-print { display: none; } }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div>
+          <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
+          <div class="subtitle">Informe Forense: Análisis Comparativo de Recupero de Automotores vs Motovehículos</div>
+        </div>
+        <div class="badge">Uso Pericial</div>
+      </div>
+
+      <div class="box">
+        <strong>HALLAZGO TÁCTICO CENTRAL:</strong> Los automóviles son sustraídos fundamentalmente para ser utilizados como <strong>vehículos de apoyo o escape</strong> en otros ilícitos, registrando una <strong>mediana de abandono de apenas ${medianAutosHours} horas</strong> en vía pública. Por el contrario, los motovehículos presentan una tasa de recupero marcadamente inferior (${((motosRecovered / (autosRecovered + motosRecovered)) * 100).toFixed(1)}%), evidenciando un rápido ingreso a circuitos clandestinos de despiece y venta fraccionada de repuestos.
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-lbl">Autos Recuperados</div>
+          <div class="stat-val">${autosRecovered}</div>
+          <div class="stat-lbl" style="color:#10b981;">Mediana: ${medianAutosHours} hs</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Motos Recuperadas</div>
+          <div class="stat-val">${motosRecovered}</div>
+          <div class="stat-lbl" style="color:#f59e0b;">Mediana: ${medianMotosHours} hs</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Promedio Horas Autos</div>
+          <div class="stat-val">${meanAutosHours.toFixed(1)} hs</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Promedio Horas Motos</div>
+          <div class="stat-val">${meanMotosHours.toFixed(1)} hs</div>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Patente</th>
+            <th>Tipo</th>
+            <th>Marca</th>
+            <th>Lugar Robo</th>
+            <th>Lugar Hallazgo</th>
+            <th>Tiempo Hasta Hallazgo</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${(sampleCases || []).slice(0, 35).map((c) => `
+            <tr>
+              <td><strong>${c.Patente_Principal}</strong></td>
+              <td>${c.SubTipo}</td>
+              <td>${c.Marca_Detectada}</td>
+              <td>${c.Dirección_Robo}</td>
+              <td>${c.Dirección_Hallazgo}</td>
+              <td><strong>${typeof c.Horas_Hasta_Hallazgo === "number" ? c.Horas_Hasta_Hallazgo.toFixed(1) : c.Horas_Hasta_Hallazgo} hs</strong></td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+
+      <div class="footer">
+        Documento oficial emitido por la Plataforma MSEG Intelligence · ${new Date().toLocaleString("es-AR")}
+      </div>
+
+      <script>
+        window.onload = function() { setTimeout(() => { window.print(); }, 800); };
+      </script>
+    </body>
+    </html>
+  `;
+
+  win.document.write(html);
+  win.document.close();
+}
+
+/**
+ * Generates an executive chronometric dossier on temporal patterns & nocturnity
+ */
+export function generateTemporalReportPDF(data: {
+  totalIncidents: number;
+  hourlyCounts: number[];
+  nightCases: number;
+  nightPct: number;
+  weekendCount: number;
+  weekdayCount: number;
+}) {
+  const win = window.open("", "_blank");
+  if (!win) {
+    alert("Por favor habilita las ventanas emergentes (popups) para descargar el informe PDF.");
+    return;
+  }
+
+  const { totalIncidents, hourlyCounts, nightCases, nightPct, weekendCount, weekdayCount } = data;
+
+  const html = `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <title>Informe Crono-Delictual de Nocturnidad - 911</title>
+      <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #0f172a; padding: 2.5rem; margin: 0; line-height: 1.5; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #f59e0b; padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
+        .title { font-size: 1.35rem; font-weight: 900; color: #0f172a; text-transform: uppercase; }
+        .subtitle { font-size: 0.85rem; color: #64748b; font-weight: 600; text-transform: uppercase; margin-top: 0.2rem; }
+        .badge { background: #f59e0b; color: #fff; padding: 0.35rem 0.75rem; border-radius: 4px; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; }
+        .box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem; font-size: 0.85rem; color: #92400e; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; border-top: 3px solid #f59e0b; }
+        .stat-val { font-size: 1.4rem; font-weight: 900; color: #0f172a; margin: 0.2rem 0; }
+        .stat-lbl { font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-bottom: 1.5rem; }
+        th { background: #0f172a; color: #fff; text-align: left; padding: 0.6rem; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; }
+        td { padding: 0.55rem 0.6rem; border-bottom: 1px solid #e2e8f0; }
+        tr:nth-child(even) { background: #f8fafc; }
+        .footer { border-top: 1px solid #cbd5e1; padding-top: 1rem; margin-top: 2rem; font-size: 0.7rem; color: #94a3b8; text-align: center; }
+        @media print { body { padding: 1rem; } .no-print { display: none; } }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div>
+          <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
+          <div class="subtitle">Informe Táctico de Cronometría Delictual & Patrones de Nocturnidad (911)</div>
+        </div>
+        <div class="badge">Planificación Táctica</div>
+      </div>
+
+      <div class="box">
+        <strong>EVALUACIÓN DE RECURSOS OPERACIONALES:</strong> La franja horaria comprendida entre las <strong>18:00 y las 24:00 horas concentra el ${nightPct.toFixed(1)}% del total delictual</strong> (${nightCases.toLocaleString()} incidentes). Se recomienda direccionar el refuerzo de cuadrículas de patrullaje preventivo y cámaras en dicha ventana.
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-lbl">Despachos Totales</div>
+          <div class="stat-val">${totalIncidents.toLocaleString()}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Incidentes Nocturnos (18-24 hs)</div>
+          <div class="stat-val">${nightCases.toLocaleString()} (${nightPct.toFixed(1)}%)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Fin de Semana vs Días Hábiles</div>
+          <div class="stat-val">${weekendCount.toLocaleString()} vs ${weekdayCount.toLocaleString()}</div>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Hora del Día</th>
+            <th>Incidentes 911</th>
+            <th>Porcentaje del Total</th>
+            <th>Nivel de Alerta Operacional</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${hourlyCounts.map((count, hour) => {
+            const pct = totalIncidents > 0 ? ((count / totalIncidents) * 100).toFixed(1) : "0";
+            const isHigh = hour >= 18 && hour <= 23;
+            return `
+              <tr style="${isHigh ? 'background:#fef2f2; font-weight:700;' : ''}">
+                <td>${hour.toString().padStart(2, '0')}:00 hs</td>
+                <td>${count.toLocaleString()}</td>
+                <td>${pct}%</td>
+                <td>${isHigh ? '<span style="color:#ef4444;">🔴 ALTA DENSIDAD NOCTURNA</span>' : '<span style="color:#64748b;">Ordinario</span>'}</td>
+              </tr>
+            `;
+          }).join("")}
+        </tbody>
+      </table>
+
+      <div class="footer">
+        Documento oficial emitido por la Plataforma MSEG Intelligence · ${new Date().toLocaleString("es-AR")}
+      </div>
+
+      <script>
+        window.onload = function() { setTimeout(() => { window.print(); }, 800); };
+      </script>
+    </body>
+    </html>
+  `;
+
+  win.document.write(html);
+  win.document.close();
+}
+
 
 

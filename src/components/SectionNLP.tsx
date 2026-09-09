@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import MetricCard from "./MetricCard";
 import { FileText, Cpu, Search, Sparkles } from "lucide-react";
+import { generateExecutiveDossierPDF } from "@/lib/pdfReport";
 
 export default function SectionNLP() {
   const [sampleText, setSampleText] = useState(
@@ -18,12 +19,44 @@ export default function SectionNLP() {
   return (
     <div>
       <div className="card" style={{ marginBottom: "1.5rem" }}>
-        <div className="card-title">
-          <span>📝 Procesamiento de Lenguaje Natural (NLP) sobre Relatos 911</span>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem" }}>
+          <div>
+            <div className="card-title">
+              <span>📝 Procesamiento de Lenguaje Natural (NLP) sobre Relatos 911</span>
+            </div>
+            <p className="card-subtitle">
+              Transformación de relatos telefónicos no estructurados en variables analíticas estructuradas (patentes, marcas vehiculares y entidades de seguridad).
+            </p>
+          </div>
+
+          <button
+            onClick={() => {
+              generateExecutiveDossierPDF({
+                totalIncidents: 8598,
+                robosCount: 6524,
+                hallazgosCount: 1420,
+              });
+            }}
+            className="btn-logout"
+            style={{
+              height: "36px",
+              padding: "0 1rem",
+              fontSize: "0.8rem",
+              fontWeight: 800,
+              background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
+              color: "#fff",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.4rem",
+              boxShadow: "0 2px 8px rgba(99,102,241,0.3)"
+            }}
+          >
+            <FileText size={15} /> 📄 Descargar Dossier de Inteligencia (PDF)
+          </button>
         </div>
-        <p className="card-subtitle">
-          Transformación de relatos telefónicos no estructurados en variables analíticas estructuradas (patentes, marcas vehiculares y entidades de seguridad).
-        </p>
 
         {/* NLP Flowchart */}
         <div style={{

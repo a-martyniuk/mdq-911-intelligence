@@ -110,6 +110,7 @@ export async function GET(req: NextRequest) {
     const rawJcp = loadJcpData();
     let filtered: any[] = rawJcp || [];
 
+    const origen = searchParams.get("origen");
     const sustancia = searchParams.get("sustancia") || searchParams.get("subtipo");
     const tipoLugar = searchParams.get("tipoLugar");
     const tieneArmas = searchParams.get("tieneArmas");
@@ -118,6 +119,10 @@ export async function GET(req: NextRequest) {
     const diaSemana = searchParams.get("diaSemana");
     const qSearch = searchParams.get("q");
 
+    if (origen && origen !== "todos") {
+      const q = origen.toUpperCase();
+      filtered = filtered.filter((r: any) => (r.origen || r.Origen_Dataset || "").toUpperCase().includes(q));
+    }
     if (sustancia && sustancia !== "todos") {
       const q = sustancia.toUpperCase();
       filtered = filtered.filter((r: any) => (r.sustancia || r.SubTipo || "").toUpperCase().includes(q));
