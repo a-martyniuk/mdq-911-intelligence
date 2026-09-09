@@ -223,9 +223,11 @@
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
+      "Jesus",
       "El Mono"
     ],
     "Alias_Identificados": [
+      "Jesus",
       "El Mono"
     ],
     "barrio": "José C. Paz (Centro / General)",
@@ -265,12 +267,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Peter Y La Quisieron",
-      "Santiago Y"
+      "Santiago"
     ],
     "Alias_Identificados": [
-      "Peter Y La Quisieron",
-      "Santiago Y"
+      "Santiago"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -423,10 +423,10 @@
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
     "alias": [
-      "Fabian Tienen"
+      "Sonia"
     ],
     "Alias_Identificados": [
-      "Fabian Tienen"
+      "Sonia"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -545,10 +545,12 @@
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
-      "Dani Mou"
+      "Dani Mou",
+      "Daniel Le Dicen *Dani Mou"
     ],
     "Alias_Identificados": [
-      "Dani Mou"
+      "Dani Mou",
+      "Daniel Le Dicen *Dani Mou"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -586,8 +588,14 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Palomero",
+      "Banfi"
+    ],
+    "Alias_Identificados": [
+      "Palomero",
+      "Banfi"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -667,10 +675,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Braian Y"
+      "Braian"
     ],
     "Alias_Identificados": [
-      "Braian Y"
+      "Braian"
     ],
     "barrio": "Barrio La Paz",
     "Barrio_Detectado": "Barrio La Paz"
@@ -708,12 +716,8 @@
     "Tiene_Armas": false,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [
-      "Agustin Chamorro"
-    ],
-    "Alias_Identificados": [
-      "Agustin Chamorro"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -1062,8 +1066,14 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Maximiliano",
+      "Los  Hijos"
+    ],
+    "Alias_Identificados": [
+      "Maximiliano",
+      "Los  Hijos"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -1100,12 +1110,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [
-      "La Persona"
-    ],
-    "Alias_Identificados": [
-      "La Persona"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -1143,10 +1149,12 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "La Motoneta"
+      "La Motoneta",
+      "Agustin"
     ],
     "Alias_Identificados": [
-      "La Motoneta"
+      "La Motoneta",
+      "Agustin"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -1299,11 +1307,11 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Renzo Ezequiel",
+      "Renso Ezequiel Vera Licera",
       "Romina Elvin"
     ],
     "Alias_Identificados": [
-      "Renzo Ezequiel",
+      "Renso Ezequiel Vera Licera",
       "Romina Elvin"
     ],
     "barrio": "José C. Paz (Centro / General)",
@@ -1343,10 +1351,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "El Otro"
+      "Fede"
     ],
     "Alias_Identificados": [
-      "El Otro"
+      "Fede"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -1385,12 +1393,12 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Quique Y Otro",
-      "Fabian Gustavo"
+      "Quique",
+      "Fabian Gustavo Yodra"
     ],
     "Alias_Identificados": [
-      "Quique Y Otro",
-      "Fabian Gustavo"
+      "Quique",
+      "Fabian Gustavo Yodra"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -1542,12 +1550,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [
-      "Las Personas"
-    ],
-    "Alias_Identificados": [
-      "Las Personas"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -1585,11 +1589,9 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Yonathan Porta",
       "Luciano Berni"
     ],
     "Alias_Identificados": [
-      "Yonathan Porta",
       "Luciano Berni"
     ],
     "barrio": "San Atilio",
@@ -1709,10 +1711,12 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "La Gorda Ivana"
+      "La Gorda Ivana",
+      "Johana Acuña"
     ],
     "Alias_Identificados": [
-      "La Gorda Ivana"
+      "La Gorda Ivana",
+      "Johana Acuña"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -2066,8 +2070,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Gabriela"
+    ],
+    "Alias_Identificados": [
+      "Gabriela"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -2104,8 +2112,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Gabriela"
+    ],
+    "Alias_Identificados": [
+      "Gabriela"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -2180,8 +2192,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Toga"
+    ],
+    "Alias_Identificados": [
+      "Toga"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -2218,8 +2234,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Carlos"
+    ],
+    "Alias_Identificados": [
+      "Carlos"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -2256,12 +2276,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [
-      "Agustin Chamorro"
-    ],
-    "Alias_Identificados": [
-      "Agustin Chamorro"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -2412,8 +2428,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Gonzalo Martin Godoy"
+    ],
+    "Alias_Identificados": [
+      "Gonzalo Martin Godoy"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -2452,13 +2472,15 @@
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
     "alias": [
       "Toto",
-      "Polaco",
-      "Ponio"
+      "Polaco *Que",
+      "Ponio",
+      "Joaquin Fretes"
     ],
     "Alias_Identificados": [
       "Toto",
-      "Polaco",
-      "Ponio"
+      "Polaco *Que",
+      "Ponio",
+      "Joaquin Fretes"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -2535,10 +2557,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Brandon No"
+      "Brandon"
     ],
     "Alias_Identificados": [
-      "Brandon No"
+      "Brandon"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -2577,10 +2599,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Gonzalez Ariel"
+      "Gonzalez Ariel Gaston"
     ],
     "Alias_Identificados": [
-      "Gonzalez Ariel"
+      "Gonzalez Ariel Gaston"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -2619,10 +2641,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Ariel Gaston"
+      "Ariel Gaston Gonzales"
     ],
     "Alias_Identificados": [
-      "Ariel Gaston"
+      "Ariel Gaston Gonzales"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -2661,12 +2683,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Masi  De Aprox  35",
-      "El Boli  De Aprox 50"
+      "Masi"
     ],
     "Alias_Identificados": [
-      "Masi  De Aprox  35",
-      "El Boli  De Aprox 50"
+      "Masi"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -2818,8 +2838,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Taison"
+    ],
+    "Alias_Identificados": [
+      "Taison"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -2974,8 +2998,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Luis Jimenez"
+    ],
+    "Alias_Identificados": [
+      "Luis Jimenez"
+    ],
     "barrio": "Frino",
     "Barrio_Detectado": "Frino"
   },
@@ -3401,10 +3429,12 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Braian Y"
+      "Braian",
+      "Fabian Lincera"
     ],
     "Alias_Identificados": [
-      "Braian Y"
+      "Braian",
+      "Fabian Lincera"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -3598,8 +3628,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Milagros"
+    ],
+    "Alias_Identificados": [
+      "Milagros"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -3713,14 +3747,12 @@
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
     "alias": [
-      "Toba De Unos 40 Años",
-      "Karna Que Es La",
-      "Macu"
+      "Toba",
+      "Karna"
     ],
     "Alias_Identificados": [
-      "Toba De Unos 40 Años",
-      "Karna Que Es La",
-      "Macu"
+      "Toba",
+      "Karna"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -3758,8 +3790,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Cachi"
+    ],
+    "Alias_Identificados": [
+      "Cachi"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -4033,10 +4069,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Pichi Vende Drogas"
+      "Pichi"
     ],
     "Alias_Identificados": [
-      "Pichi Vende Drogas"
+      "Pichi"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -4228,11 +4264,17 @@
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
       "Lucho",
-      "Roberto Fabian"
+      "Luciano Berni",
+      "Jonatan Porta",
+      "Marisa",
+      "Roberto Fabian Porta"
     ],
     "Alias_Identificados": [
       "Lucho",
-      "Roberto Fabian"
+      "Luciano Berni",
+      "Jonatan Porta",
+      "Marisa",
+      "Roberto Fabian Porta"
     ],
     "barrio": "San Atilio",
     "Barrio_Detectado": "San Atilio"
@@ -4308,8 +4350,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Ignora"
+    ],
+    "Alias_Identificados": [
+      "Ignora"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -4347,10 +4393,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "El Tuerto De"
+      "El Tuerto"
     ],
     "Alias_Identificados": [
-      "El Tuerto De"
+      "El Tuerto"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -4550,8 +4596,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Ana"
+    ],
+    "Alias_Identificados": [
+      "Ana"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -4589,10 +4639,12 @@
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
     "alias": [
-      "Tulli"
+      "Tulli",
+      "Florencia"
     ],
     "Alias_Identificados": [
-      "Tulli"
+      "Tulli",
+      "Florencia"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -4630,12 +4682,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
-    "alias": [
-      "Los Que"
-    ],
-    "Alias_Identificados": [
-      "Los Que"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -4753,10 +4801,10 @@
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
     "alias": [
-      "Miguel De"
+      "Miguel"
     ],
     "Alias_Identificados": [
-      "Miguel De"
+      "Miguel"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -4795,11 +4843,11 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Luis Adrian",
+      "Luis Adrian  Verni",
       "Jonatan Porta"
     ],
     "Alias_Identificados": [
-      "Luis Adrian",
+      "Luis Adrian  Verni",
       "Jonatan Porta"
     ],
     "barrio": "José C. Paz (Centro / General)",
@@ -5201,10 +5249,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "El Puro Que Se"
+      "El Puro"
     ],
     "Alias_Identificados": [
-      "El Puro Que Se"
+      "El Puro"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -5281,10 +5329,12 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Agustin Tambien"
+      "Ulises",
+      "Agustin Tambien Este"
     ],
     "Alias_Identificados": [
-      "Agustin Tambien"
+      "Ulises",
+      "Agustin Tambien Este"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -5360,8 +5410,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Leon"
+    ],
+    "Alias_Identificados": [
+      "Leon"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -5399,10 +5453,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Maria Laura"
+      "Maria Laura Villalba"
     ],
     "Alias_Identificados": [
-      "Maria Laura"
+      "Maria Laura Villalba"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -5516,8 +5570,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Marcos"
+    ],
+    "Alias_Identificados": [
+      "Marcos"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -5674,11 +5732,13 @@
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
       "Ninja",
-      "Tulli"
+      "Tulli",
+      "Nicolas Le Dicen *Ninja"
     ],
     "Alias_Identificados": [
       "Ninja",
-      "Tulli"
+      "Tulli",
+      "Nicolas Le Dicen *Ninja"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -5717,12 +5777,12 @@
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
-      "Pachuli Que Anda Con",
-      "Pachuli Y Otros Mas"
+      "Pachuli",
+      "Otros Mas"
     ],
     "Alias_Identificados": [
-      "Pachuli Que Anda Con",
-      "Pachuli Y Otros Mas"
+      "Pachuli",
+      "Otros Mas"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -5883,14 +5943,14 @@
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
     "alias": [
-      "Toto Y Vive Arriba",
-      "Polaco Que Es Amigo",
-      "Ponio  Que Es El"
+      "Toto Y",
+      "Polaco",
+      "Ponio"
     ],
     "Alias_Identificados": [
-      "Toto Y Vive Arriba",
-      "Polaco Que Es Amigo",
-      "Ponio  Que Es El"
+      "Toto Y",
+      "Polaco",
+      "Ponio"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -6243,12 +6303,12 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Silvina Y La Mujer",
-      "Osvaldo Le"
+      "Silvina",
+      "La Mujer Veronica"
     ],
     "Alias_Identificados": [
-      "Silvina Y La Mujer",
-      "Osvaldo Le"
+      "Silvina",
+      "La Mujer Veronica"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -6286,8 +6346,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Del Otro Sujeto"
+    ],
+    "Alias_Identificados": [
+      "Del Otro Sujeto"
+    ],
     "barrio": "Barrio La Paz",
     "Barrio_Detectado": "Barrio La Paz"
   },
@@ -6400,8 +6464,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Riqui"
+    ],
+    "Alias_Identificados": [
+      "Riqui"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -6590,8 +6658,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Acosta"
+    ],
+    "Alias_Identificados": [
+      "Acosta"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -6864,8 +6936,14 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Morena Acosta",
+      "Marilin Roldan"
+    ],
+    "Alias_Identificados": [
+      "Morena Acosta",
+      "Marilin Roldan"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -7337,10 +7415,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Mara En Alvarado"
+      "Enrique"
     ],
     "Alias_Identificados": [
-      "Mara En Alvarado"
+      "Enrique"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -7462,8 +7540,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Ivana"
+    ],
+    "Alias_Identificados": [
+      "Ivana"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -7652,12 +7734,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [
-      "El Que"
-    ],
-    "Alias_Identificados": [
-      "El Que"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -7851,10 +7929,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Omar De"
+      "Omar"
     ],
     "Alias_Identificados": [
-      "Omar De"
+      "Omar"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -7893,10 +7971,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Daniel Padilla"
+      "Sergio Lencina"
     ],
     "Alias_Identificados": [
-      "Daniel Padilla"
+      "Sergio Lencina"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -7934,12 +8012,8 @@
     "Tiene_Armas": false,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [
-      "Las Personas"
-    ],
-    "Alias_Identificados": [
-      "Las Personas"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -7976,8 +8050,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "El Pibuey"
+    ],
+    "Alias_Identificados": [
+      "El Pibuey"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -8057,10 +8135,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Fernando Ezequiel"
+      "Fernando Ezequiel Villareal"
     ],
     "Alias_Identificados": [
-      "Fernando Ezequiel"
+      "Fernando Ezequiel Villareal"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -8099,10 +8177,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "El Chaqueño Y Otro"
+      "El Chaqueño"
     ],
     "Alias_Identificados": [
-      "El Chaqueño Y Otro"
+      "El Chaqueño"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -8142,13 +8220,11 @@
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
       "El Titi",
-      "El Flaco",
-      "Hernan Rodriguez"
+      "El Flaco"
     ],
     "Alias_Identificados": [
       "El Titi",
-      "El Flaco",
-      "Hernan Rodriguez"
+      "El Flaco"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -8342,8 +8418,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Nancy"
+    ],
+    "Alias_Identificados": [
+      "Nancy"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -8499,12 +8579,12 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "La Persona",
-      "Ricardo Y"
+      "Ricardo",
+      "La Femenina"
     ],
     "Alias_Identificados": [
-      "La Persona",
-      "Ricardo Y"
+      "Ricardo",
+      "La Femenina"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -8542,8 +8622,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Fiorela Mansilla"
+    ],
+    "Alias_Identificados": [
+      "Fiorela Mansilla"
+    ],
     "barrio": "Frino",
     "Barrio_Detectado": "Frino"
   },
@@ -8660,8 +8744,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Nancy"
+    ],
+    "Alias_Identificados": [
+      "Nancy"
+    ],
     "barrio": "Frino",
     "Barrio_Detectado": "Frino"
   },
@@ -8934,8 +9022,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "S Del Masculino Ni L"
+    ],
+    "Alias_Identificados": [
+      "S Del Masculino Ni L"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -9090,8 +9182,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Diego Quiroga"
+    ],
+    "Alias_Identificados": [
+      "Diego Quiroga"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -9209,10 +9305,12 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "La Estacion Sol Y"
+      "La Estacion Sol",
+      "Verde Dos"
     ],
     "Alias_Identificados": [
-      "La Estacion Sol Y"
+      "La Estacion Sol",
+      "Verde Dos"
     ],
     "barrio": "Sol Y Verde",
     "Barrio_Detectado": "Sol Y Verde"
@@ -9403,9 +9501,11 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
+      "Cuchi[",
       "Nelson Diana"
     ],
     "Alias_Identificados": [
+      "Cuchi[",
       "Nelson Diana"
     ],
     "barrio": "Sol Y Verde",
@@ -9446,12 +9546,10 @@
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
       "El Ceibo",
-      "La Persona",
       "Este Hombre"
     ],
     "Alias_Identificados": [
       "El Ceibo",
-      "La Persona",
       "Este Hombre"
     ],
     "barrio": "José C. Paz (Centro / General)",
@@ -9694,8 +9792,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Gustavo"
+    ],
+    "Alias_Identificados": [
+      "Gustavo"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -9964,12 +10066,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [
-      "El Que"
-    ],
-    "Alias_Identificados": [
-      "El Que"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -10127,13 +10225,13 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Peluche Y Oro Hombre",
-      "El Poelusa Venden",
+      "Peluche",
+      "Oro Hombre",
       "Juanjo Bataraso"
     ],
     "Alias_Identificados": [
-      "Peluche Y Oro Hombre",
-      "El Poelusa Venden",
+      "Peluche",
+      "Oro Hombre",
       "Juanjo Bataraso"
     ],
     "barrio": "José C. Paz (Centro / General)",
@@ -10172,12 +10270,8 @@
     "Tiene_Armas": false,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [
-      "Ezequiel Otro"
-    ],
-    "Alias_Identificados": [
-      "Ezequiel Otro"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -10370,8 +10464,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Fabian"
+    ],
+    "Alias_Identificados": [
+      "Fabian"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -10760,12 +10858,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [
-      "Liliana Gonzalez"
-    ],
-    "Alias_Identificados": [
-      "Liliana Gonzalez"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -10926,12 +11020,8 @@
     "Tiene_Armas": false,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [
-      "Alejo Viene   En Una"
-    ],
-    "Alias_Identificados": [
-      "Alejo Viene   En Una"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -11007,10 +11097,10 @@
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
     "alias": [
-      "Karen Es"
+      "Karen"
     ],
     "Alias_Identificados": [
-      "Karen Es"
+      "Karen"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -11086,8 +11176,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Ezequiel"
+    ],
+    "Alias_Identificados": [
+      "Ezequiel"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -11239,10 +11333,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Jazmin Alejandra"
+      "Jazmin Alejandra Gonzales"
     ],
     "Alias_Identificados": [
-      "Jazmin Alejandra"
+      "Jazmin Alejandra Gonzales"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -11555,10 +11649,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Que Es Cocaina"
+      "Que"
     ],
     "Alias_Identificados": [
-      "Que Es Cocaina"
+      "Que"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -11794,8 +11888,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Sonia"
+    ],
+    "Alias_Identificados": [
+      "Sonia"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -12023,10 +12121,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Joel Paz"
+      "Joel Paz En El Lugar"
     ],
     "Alias_Identificados": [
-      "Joel Paz"
+      "Joel Paz En El Lugar"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -12064,8 +12162,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Daiana"
+    ],
+    "Alias_Identificados": [
+      "Daiana"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -12104,11 +12206,11 @@
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
       "El Mocoto",
-      "Tiziano Y"
+      "Tiziano"
     ],
     "Alias_Identificados": [
       "El Mocoto",
-      "Tiziano Y"
+      "Tiziano"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -12148,11 +12250,11 @@
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
     "alias": [
       "Erik Acosta",
-      "Garciela Noemi"
+      "Garciela Noemi Roldan"
     ],
     "Alias_Identificados": [
       "Erik Acosta",
-      "Garciela Noemi"
+      "Garciela Noemi Roldan"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -12267,10 +12369,12 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "El Tuerto"
+      "El Tuerto",
+      "Carlitos"
     ],
     "Alias_Identificados": [
-      "El Tuerto"
+      "El Tuerto",
+      "Carlitos"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -12347,10 +12451,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Cristian Bustos"
+      "Cristian Bustos -"
     ],
     "Alias_Identificados": [
-      "Cristian Bustos"
+      "Cristian Bustos -"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -12389,10 +12493,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Graciela Noemi"
+      "Graciela Noemi Roldan"
     ],
     "Alias_Identificados": [
-      "Graciela Noemi"
+      "Graciela Noemi Roldan"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -13233,10 +13337,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Maria No"
+      "Maria"
     ],
     "Alias_Identificados": [
-      "Maria No"
+      "Maria"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -13312,8 +13416,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Ramiro"
+    ],
+    "Alias_Identificados": [
+      "Ramiro"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -13541,10 +13649,12 @@
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
-      "El Tito"
+      "El Tito",
+      "Trabaja"
     ],
     "Alias_Identificados": [
-      "El Tito"
+      "El Tito",
+      "Trabaja"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -13814,8 +13924,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Silvana"
+    ],
+    "Alias_Identificados": [
+      "Silvana"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -13891,10 +14005,12 @@
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
-      "El Chori Tevez"
+      "El Chori Tevez",
+      "Totil Castillo"
     ],
     "Alias_Identificados": [
-      "El Chori Tevez"
+      "El Chori Tevez",
+      "Totil Castillo"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -14161,10 +14277,12 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Cuchi Y Carlos"
+      "Cuchi",
+      "Carlos"
     ],
     "Alias_Identificados": [
-      "Cuchi Y Carlos"
+      "Cuchi",
+      "Carlos"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -14557,10 +14675,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Titito Vende Droga"
+      "Titito"
     ],
     "Alias_Identificados": [
-      "Titito Vende Droga"
+      "Titito"
     ],
     "barrio": "Barrio La Paz",
     "Barrio_Detectado": "Barrio La Paz"
@@ -14903,10 +15021,10 @@
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
-      "Corbata Y Tiene La"
+      "Corbata Y"
     ],
     "Alias_Identificados": [
-      "Corbata Y Tiene La"
+      "Corbata Y"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -15252,8 +15370,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Gabriela"
+    ],
+    "Alias_Identificados": [
+      "Gabriela"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -15290,8 +15412,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Martin"
+    ],
+    "Alias_Identificados": [
+      "Martin"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -15594,12 +15720,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [
-      "Agustin Ibarra"
-    ],
-    "Alias_Identificados": [
-      "Agustin Ibarra"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -15717,10 +15839,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Angel Raul"
+      "Angel Raul Medina"
     ],
     "Alias_Identificados": [
-      "Angel Raul"
+      "Angel Raul Medina"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -15876,12 +15998,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [
-      "Gabriela Y"
-    ],
-    "Alias_Identificados": [
-      "Gabriela Y"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "Frino",
     "Barrio_Detectado": "Frino"
   },
@@ -15957,10 +16075,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Que Escucharon Que"
+      "Que Escucharon"
     ],
     "Alias_Identificados": [
-      "Que Escucharon Que"
+      "Que Escucharon"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -16340,8 +16458,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Dylan"
+    ],
+    "Alias_Identificados": [
+      "Dylan"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -16378,8 +16500,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Emilse Martinez"
+    ],
+    "Alias_Identificados": [
+      "Emilse Martinez"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -16416,8 +16542,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Jamaica"
+    ],
+    "Alias_Identificados": [
+      "Jamaica"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -16690,8 +16820,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Ulises"
+    ],
+    "Alias_Identificados": [
+      "Ulises"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -16766,8 +16900,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Cuchi"
+    ],
+    "Alias_Identificados": [
+      "Cuchi"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -16842,8 +16980,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Aldo"
+    ],
+    "Alias_Identificados": [
+      "Aldo"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -16922,8 +17064,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Aldo"
+    ],
+    "Alias_Identificados": [
+      "Aldo"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -17036,8 +17182,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Ulises"
+    ],
+    "Alias_Identificados": [
+      "Ulises"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -17075,10 +17225,12 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "El Mota"
+      "El Mota",
+      "También Consume"
     ],
     "Alias_Identificados": [
-      "El Mota"
+      "El Mota",
+      "También Consume"
     ],
     "barrio": "Barrio La Paz",
     "Barrio_Detectado": "Barrio La Paz"
@@ -17349,11 +17501,13 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "El Boche Y El Toto",
+      "El Boche",
+      "El Toto",
       "Ariel Pujol"
     ],
     "Alias_Identificados": [
-      "El Boche Y El Toto",
+      "El Boche",
+      "El Toto",
       "Ariel Pujol"
     ],
     "barrio": "Vucetich",
@@ -17590,8 +17744,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Marcelo Y"
+    ],
+    "Alias_Identificados": [
+      "Marcelo Y"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -17628,8 +17786,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Flavia"
+    ],
+    "Alias_Identificados": [
+      "Flavia"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -17667,10 +17829,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "El Carpi  Vende"
+      "El Carpi"
     ],
     "Alias_Identificados": [
-      "El Carpi  Vende"
+      "El Carpi"
     ],
     "barrio": "Frino",
     "Barrio_Detectado": "Frino"
@@ -18139,10 +18301,12 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Mafia Que Venden"
+      "Mafia",
+      "Jose Remero"
     ],
     "Alias_Identificados": [
-      "Mafia Que Venden"
+      "Mafia",
+      "Jose Remero"
     ],
     "barrio": "Sol Y Verde",
     "Barrio_Detectado": "Sol Y Verde"
@@ -18408,12 +18572,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [
-      "Cesar Martinez"
-    ],
-    "Alias_Identificados": [
-      "Cesar Martinez"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -18564,12 +18724,8 @@
     "Tiene_Armas": false,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [
-      "Cesar Martines"
-    ],
-    "Alias_Identificados": [
-      "Cesar Martines"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -18879,10 +19035,10 @@
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
     "alias": [
-      "Graciela Noemi"
+      "Graciela Noemi Roldan"
     ],
     "Alias_Identificados": [
-      "Graciela Noemi"
+      "Graciela Noemi Roldan"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -18920,8 +19076,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Leon"
+    ],
+    "Alias_Identificados": [
+      "Leon"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -18959,10 +19119,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Jorge Gomez"
+      "Jorge Gomez -"
     ],
     "Alias_Identificados": [
-      "Jorge Gomez"
+      "Jorge Gomez -"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -19002,11 +19162,11 @@
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
       "El Panza",
-      "Que  No Pueden Hacer"
+      "Que  No Pueden Hacer Nada"
     ],
     "Alias_Identificados": [
       "El Panza",
-      "Que  No Pueden Hacer"
+      "Que  No Pueden Hacer Nada"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -19044,8 +19204,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Cristian"
+    ],
+    "Alias_Identificados": [
+      "Cristian"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -19082,8 +19246,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Gonzalez Benjamin"
+    ],
+    "Alias_Identificados": [
+      "Gonzalez Benjamin"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -19120,8 +19288,14 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Hernan",
+      "Lili"
+    ],
+    "Alias_Identificados": [
+      "Hernan",
+      "Lili"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -19235,10 +19409,12 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Alejandra Y"
+      "Alejandra",
+      "Vivi Arce"
     ],
     "Alias_Identificados": [
-      "Alejandra Y"
+      "Alejandra",
+      "Vivi Arce"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -19277,10 +19453,10 @@
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
     "alias": [
-      "Nazareno Juan"
+      "De Nazareno Juan Abdala"
     ],
     "Alias_Identificados": [
-      "Nazareno Juan"
+      "De Nazareno Juan Abdala"
     ],
     "barrio": "Santa Paula",
     "Barrio_Detectado": "Santa Paula"
@@ -19399,10 +19575,10 @@
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
-      "Chiquito Vende"
+      "Chiquito"
     ],
     "Alias_Identificados": [
-      "Chiquito Vende"
+      "Chiquito"
     ],
     "barrio": "Vucetich",
     "Barrio_Detectado": "Vucetich"
@@ -19479,10 +19655,14 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Jesus Ángel"
+      "Jesus Ángel Pini",
+      "Luciano",
+      "Lucas"
     ],
     "Alias_Identificados": [
-      "Jesus Ángel"
+      "Jesus Ángel Pini",
+      "Luciano",
+      "Lucas"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -19521,10 +19701,12 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "El Equeco"
+      "El Equeco",
+      "Ariel"
     ],
     "Alias_Identificados": [
-      "El Equeco"
+      "El Equeco",
+      "Ariel"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -19562,8 +19744,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Antonio"
+    ],
+    "Alias_Identificados": [
+      "Antonio"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -19601,10 +19787,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Antonio No"
+      "Antonio"
     ],
     "Alias_Identificados": [
-      "Antonio No"
+      "Antonio"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -19680,8 +19866,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Fernanda Enriquez"
+    ],
+    "Alias_Identificados": [
+      "Fernanda Enriquez"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -19718,8 +19908,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Nancy Venden Droga"
+    ],
+    "Alias_Identificados": [
+      "Nancy Venden Droga"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -19871,10 +20065,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Pablo La"
+      "Pablo La Fuente"
     ],
     "Alias_Identificados": [
-      "Pablo La"
+      "Pablo La Fuente"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -19912,12 +20106,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [
-      "El Que"
-    ],
-    "Alias_Identificados": [
-      "El Que"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -20030,8 +20220,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Alan"
+    ],
+    "Alias_Identificados": [
+      "Alan"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -20107,10 +20301,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Hernan De"
+      "Hernan"
     ],
     "Alias_Identificados": [
-      "Hernan De"
+      "Hernan"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -20148,8 +20342,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Hernan"
+    ],
+    "Alias_Identificados": [
+      "Hernan"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -20187,10 +20385,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Es Un"
+      "Es Un Paraguayo El"
     ],
     "Alias_Identificados": [
-      "Es Un"
+      "Es Un Paraguayo El"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -20229,10 +20427,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Alan No"
+      "Alan"
     ],
     "Alias_Identificados": [
-      "Alan No"
+      "Alan"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -20385,10 +20583,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "El Viejo Y A Otro El"
+      "El Viejo"
     ],
     "Alias_Identificados": [
-      "El Viejo Y A Otro El"
+      "El Viejo"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -20508,8 +20706,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Adrian"
+    ],
+    "Alias_Identificados": [
+      "Adrian"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -20859,10 +21061,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Braian De"
+      "Braian"
     ],
     "Alias_Identificados": [
-      "Braian De"
+      "Braian"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -21094,12 +21296,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [
-      "Los Bolis Entre"
-    ],
-    "Alias_Identificados": [
-      "Los Bolis Entre"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -21213,10 +21411,12 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Dilen Romero"
+      "Dilen Romero",
+      "Juan"
     ],
     "Alias_Identificados": [
-      "Dilen Romero"
+      "Dilen Romero",
+      "Juan"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -21879,10 +22079,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Candela No"
+      "Candela"
     ],
     "Alias_Identificados": [
-      "Candela No"
+      "Candela"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -21958,8 +22158,14 @@
     "Tiene_Armas": true,
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Walter",
+      "Vanesa"
+    ],
+    "Alias_Identificados": [
+      "Walter",
+      "Vanesa"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -21997,10 +22203,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Franco Vende"
+      "Franco"
     ],
     "Alias_Identificados": [
-      "Franco Vende"
+      "Franco"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -22154,11 +22360,11 @@
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
       "Chipi",
-      "A Otro"
+      "A Otro Le Dicen Chipi"
     ],
     "Alias_Identificados": [
       "Chipi",
-      "A Otro"
+      "A Otro Le Dicen Chipi"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -22196,8 +22402,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Osvaldo Viera"
+    ],
+    "Alias_Identificados": [
+      "Osvaldo Viera"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -22386,8 +22596,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Walter Que"
+    ],
+    "Alias_Identificados": [
+      "Walter Que"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -22467,11 +22681,11 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Alizon Magali",
+      "Alizon Magali Ilva Gomez",
       "Mariana Silva"
     ],
     "Alias_Identificados": [
-      "Alizon Magali",
+      "Alizon Magali Ilva Gomez",
       "Mariana Silva"
     ],
     "barrio": "Frino",
@@ -22548,8 +22762,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Flor"
+    ],
+    "Alias_Identificados": [
+      "Flor"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -22586,8 +22804,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Gabriela"
+    ],
+    "Alias_Identificados": [
+      "Gabriela"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -22700,8 +22922,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Lorena"
+    ],
+    "Alias_Identificados": [
+      "Lorena"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -22822,12 +23048,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [
-      "Cesar Martínez"
-    ],
-    "Alias_Identificados": [
-      "Cesar Martínez"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -22865,10 +23087,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Huguito  No Sabe"
+      "Huguito"
     ],
     "Alias_Identificados": [
-      "Huguito  No Sabe"
+      "Huguito"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -23062,8 +23284,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Ninguno"
+    ],
+    "Alias_Identificados": [
+      "Ninguno"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -23214,12 +23440,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
-    "alias": [
-      "El Que"
-    ],
-    "Alias_Identificados": [
-      "El Que"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -23256,8 +23478,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "El Viejo"
+    ],
+    "Alias_Identificados": [
+      "El Viejo"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -23370,8 +23596,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Carlos *El Tuerto"
+    ],
+    "Alias_Identificados": [
+      "Carlos *El Tuerto"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -23565,10 +23795,10 @@
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
-      "Tore Desconoce"
+      "Tore Desconoce El Apellido"
     ],
     "Alias_Identificados": [
-      "Tore Desconoce"
+      "Tore Desconoce El Apellido"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -23682,14 +23912,8 @@
     "Tiene_Armas": false,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [
-      "Osvaldo Viera",
-      "Veronica Borda"
-    ],
-    "Alias_Identificados": [
-      "Osvaldo Viera",
-      "Veronica Borda"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -23727,10 +23951,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Alan Mide"
+      "Alan Mide 1"
     ],
     "Alias_Identificados": [
-      "Alan Mide"
+      "Alan Mide 1"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -23768,12 +23992,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [
-      "La Persona"
-    ],
-    "Alias_Identificados": [
-      "La Persona"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -23810,8 +24030,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "No Sabe Si"
+    ],
+    "Alias_Identificados": [
+      "No Sabe Si"
+    ],
     "barrio": "Sol Y Verde",
     "Barrio_Detectado": "Sol Y Verde"
   },
@@ -24038,12 +24262,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [
-      "La Persona"
-    ],
-    "Alias_Identificados": [
-      "La Persona"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -24351,12 +24571,12 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Melli",
-      "Johana Y"
+      "Melli* Cuyo Hermano",
+      "Johana"
     ],
     "Alias_Identificados": [
-      "Melli",
-      "Johana Y"
+      "Melli* Cuyo Hermano",
+      "Johana"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -24551,10 +24771,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Tore De 25 Años Es"
+      "Tore"
     ],
     "Alias_Identificados": [
-      "Tore De 25 Años Es"
+      "Tore"
     ],
     "barrio": "Frino",
     "Barrio_Detectado": "Frino"
@@ -24896,8 +25116,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Brian"
+    ],
+    "Alias_Identificados": [
+      "Brian"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -24935,10 +25159,12 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "El Corredor"
+      "El Corredor",
+      "Lourdes Maria Del Curto"
     ],
     "Alias_Identificados": [
-      "El Corredor"
+      "El Corredor",
+      "Lourdes Maria Del Curto"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -25059,10 +25285,12 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "La Flaca Y Julian"
+      "La Flaca",
+      "Julian"
     ],
     "Alias_Identificados": [
-      "La Flaca Y Julian"
+      "La Flaca",
+      "Julian"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -25261,10 +25489,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Lolo Vende"
+      "Lolo"
     ],
     "Alias_Identificados": [
-      "Lolo Vende"
+      "Lolo"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -25302,8 +25530,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Marcela"
+    ],
+    "Alias_Identificados": [
+      "Marcela"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -25341,10 +25573,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Carlitos Tiene"
+      "Carlitos"
     ],
     "Alias_Identificados": [
-      "Carlitos Tiene"
+      "Carlitos"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -25383,10 +25615,12 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "El Tuerto Y Se Mueve"
+      "El Tuerto Y",
+      "Carlos"
     ],
     "Alias_Identificados": [
-      "El Tuerto Y Se Mueve"
+      "El Tuerto Y",
+      "Carlos"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -25694,8 +25928,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Terri"
+    ],
+    "Alias_Identificados": [
+      "Terri"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -25732,12 +25970,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [
-      "Facundo Acuña"
-    ],
-    "Alias_Identificados": [
-      "Facundo Acuña"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -25774,8 +26008,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Papu"
+    ],
+    "Alias_Identificados": [
+      "Papu"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -25892,8 +26130,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Liliana Gonzalez"
+    ],
+    "Alias_Identificados": [
+      "Liliana Gonzalez"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -25930,12 +26172,8 @@
     "Tiene_Armas": false,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [
-      "La Persona"
-    ],
-    "Alias_Identificados": [
-      "La Persona"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "Piñero",
     "Barrio_Detectado": "Piñero"
   },
@@ -26162,8 +26400,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Kevin Campos"
+    ],
+    "Alias_Identificados": [
+      "Kevin Campos"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -26201,10 +26443,12 @@
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
     "alias": [
-      "Pili"
+      "Pili",
+      "Damian"
     ],
     "Alias_Identificados": [
-      "Pili"
+      "Pili",
+      "Damian"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -26318,8 +26562,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Mariela"
+    ],
+    "Alias_Identificados": [
+      "Mariela"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -26433,10 +26681,10 @@
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
-      "Aldo Rivero"
+      "Mariana Duarte Villalba"
     ],
     "Alias_Identificados": [
-      "Aldo Rivero"
+      "Mariana Duarte Villalba"
     ],
     "barrio": "San Atilio",
     "Barrio_Detectado": "San Atilio"
@@ -26703,10 +26951,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Dami El"
+      "Dami El Masculino"
     ],
     "Alias_Identificados": [
-      "Dami El"
+      "Dami El Masculino"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -26897,10 +27145,10 @@
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
     "alias": [
-      "El Nico Es El Hijo"
+      "El Nico"
     ],
     "Alias_Identificados": [
-      "El Nico Es El Hijo"
+      "El Nico"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -27128,8 +27376,14 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Alicia",
+      "Loren"
+    ],
+    "Alias_Identificados": [
+      "Alicia",
+      "Loren"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -27284,8 +27538,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Nicolas Palomero"
+    ],
+    "Alias_Identificados": [
+      "Nicolas Palomero"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -27322,8 +27580,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Gianina"
+    ],
+    "Alias_Identificados": [
+      "Gianina"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -27604,8 +27866,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Chinino"
+    ],
+    "Alias_Identificados": [
+      "Chinino"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -27643,10 +27909,12 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Pedro Gallo"
+      "Pedro Gallo",
+      "Julieta Angeloni"
     ],
     "Alias_Identificados": [
-      "Pedro Gallo"
+      "Pedro Gallo",
+      "Julieta Angeloni"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -27685,10 +27953,12 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "El Bala No Sabe El"
+      "El Bala",
+      "Hernan"
     ],
     "Alias_Identificados": [
-      "El Bala No Sabe El"
+      "El Bala",
+      "Hernan"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -27805,12 +28075,14 @@
     "alias": [
       "Nicolas Sosa",
       "Cristian Enriquez",
-      "Fabian Pucheta"
+      "Fabian Pucheta Y",
+      "Segundo"
     ],
     "Alias_Identificados": [
       "Nicolas Sosa",
       "Cristian Enriquez",
-      "Fabian Pucheta"
+      "Fabian Pucheta Y",
+      "Segundo"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -28008,8 +28280,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Puchi Bigote"
+    ],
+    "Alias_Identificados": [
+      "Puchi Bigote"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -28047,10 +28323,12 @@
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
     "alias": [
-      "Alejandro Y"
+      "Marcela",
+      "Damina Le Refirio"
     ],
     "Alias_Identificados": [
-      "Alejandro Y"
+      "Marcela",
+      "Damina Le Refirio"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -28283,10 +28561,12 @@
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
     "alias": [
-      "El Villita"
+      "El Villita",
+      "Marcela"
     ],
     "Alias_Identificados": [
-      "El Villita"
+      "El Villita",
+      "Marcela"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -28754,8 +29034,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Matias"
+    ],
+    "Alias_Identificados": [
+      "Matias"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -28831,12 +29115,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "El Polaco",
-      "Oscar Olivera"
+      "El Polaco - Desconoce Si"
     ],
     "Alias_Identificados": [
-      "El Polaco",
-      "Oscar Olivera"
+      "El Polaco - Desconoce Si"
     ],
     "barrio": "Sol Y Verde",
     "Barrio_Detectado": "Sol Y Verde"
@@ -28950,8 +29232,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Tomas"
+    ],
+    "Alias_Identificados": [
+      "Tomas"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -29178,8 +29464,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Sonia - Estan"
+    ],
+    "Alias_Identificados": [
+      "Sonia - Estan"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -29377,10 +29667,10 @@
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
     "alias": [
-      "Cuchi A La Que Vende"
+      "Cuchi A La"
     ],
     "Alias_Identificados": [
-      "Cuchi A La Que Vende"
+      "Cuchi A La"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -29494,12 +29784,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [
-      "Alan Armoa"
-    ],
-    "Alias_Identificados": [
-      "Alan Armoa"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -29536,8 +29822,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Ezequiel"
+    ],
+    "Alias_Identificados": [
+      "Ezequiel"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -29612,8 +29902,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Marcela"
+    ],
+    "Alias_Identificados": [
+      "Marcela"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -29765,10 +30059,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Guerrillita  Tiene"
+      "Guerrillita"
     ],
     "Alias_Identificados": [
-      "Guerrillita  Tiene"
+      "Guerrillita"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -29924,12 +30218,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [
-      "Las Personas"
-    ],
-    "Alias_Identificados": [
-      "Las Personas"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -29966,8 +30256,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Toyi/Toye"
+    ],
+    "Alias_Identificados": [
+      "Toyi/Toye"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -30195,10 +30489,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Andrea Aguirre"
+      "Andrea Aguirre Basilio"
     ],
     "Alias_Identificados": [
-      "Andrea Aguirre"
+      "Andrea Aguirre Basilio"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -30506,8 +30800,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Daniel"
+    ],
+    "Alias_Identificados": [
+      "Daniel"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -30735,12 +31033,10 @@
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
     "alias": [
-      "Cesar Martinez",
-      "Liliana Gonzales"
+      "Cesar Martinez"
     ],
     "Alias_Identificados": [
-      "Cesar Martinez",
-      "Liliana Gonzales"
+      "Cesar Martinez"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -30862,8 +31158,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Graciela"
+    ],
+    "Alias_Identificados": [
+      "Graciela"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -30942,8 +31242,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Cristian"
+    ],
+    "Alias_Identificados": [
+      "Cristian"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -31019,10 +31323,12 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Gustavo Y"
+      "Gustavo",
+      "Salió"
     ],
     "Alias_Identificados": [
-      "Gustavo Y"
+      "Gustavo",
+      "Salió"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -31060,8 +31366,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Brian Lopez"
+    ],
+    "Alias_Identificados": [
+      "Brian Lopez"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -31136,12 +31446,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [
-      "Liliana Gonzales"
-    ],
-    "Alias_Identificados": [
-      "Liliana Gonzales"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -31406,12 +31712,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [
-      "Quien Vende"
-    ],
-    "Alias_Identificados": [
-      "Quien Vende"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -32103,9 +32405,11 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
+      "La Tia",
       "La Yani"
     ],
     "Alias_Identificados": [
+      "La Tia",
       "La Yani"
     ],
     "barrio": "José C. Paz (Centro / General)",
@@ -32144,8 +32448,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Selia"
+    ],
+    "Alias_Identificados": [
+      "Selia"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -32450,10 +32758,12 @@
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
       "Nico",
+      "Dylan",
       "Felipe Veron"
     ],
     "Alias_Identificados": [
       "Nico",
+      "Dylan",
       "Felipe Veron"
     ],
     "barrio": "José C. Paz (Centro / General)",
@@ -32531,10 +32841,12 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Melani Guadalupe"
+      "Melani Guadalupe Barranco",
+      "Ezequiel *Toledo O Gallardo"
     ],
     "Alias_Identificados": [
-      "Melani Guadalupe"
+      "Melani Guadalupe Barranco",
+      "Ezequiel *Toledo O Gallardo"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -32611,10 +32923,12 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Papu Y Pao"
+      "Papu",
+      "Pao"
     ],
     "Alias_Identificados": [
-      "Papu Y Pao"
+      "Papu",
+      "Pao"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -32849,10 +33163,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Rodolfo Y"
+      "Rodolfo"
     ],
     "Alias_Identificados": [
-      "Rodolfo Y"
+      "Rodolfo"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -33046,12 +33360,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [
-      "Piro Alejandro"
-    ],
-    "Alias_Identificados": [
-      "Piro Alejandro"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -33241,12 +33551,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Angie",
-      "Angela Hilda"
+      "Angie"
     ],
     "Alias_Identificados": [
-      "Angie",
-      "Angela Hilda"
+      "Angie"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -33329,10 +33637,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Marcelo Vende"
+      "Marcelo"
     ],
     "Alias_Identificados": [
-      "Marcelo Vende"
+      "Marcelo"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -33370,8 +33678,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Damian"
+    ],
+    "Alias_Identificados": [
+      "Damian"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -33446,8 +33758,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Marcela"
+    ],
+    "Alias_Identificados": [
+      "Marcela"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -33522,12 +33838,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [
-      "Fabian Y"
-    ],
-    "Alias_Identificados": [
-      "Fabian Y"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -33606,8 +33918,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Leandro Villa"
+    ],
+    "Alias_Identificados": [
+      "Leandro Villa"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -33724,8 +34040,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Juan Ytoledo"
+    ],
+    "Alias_Identificados": [
+      "Juan Ytoledo"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -33877,10 +34197,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Jose El"
+      "Jose El Chapu"
     ],
     "Alias_Identificados": [
-      "Jose El"
+      "Jose El Chapu"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -33918,8 +34238,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Hernan El Masc"
+    ],
+    "Alias_Identificados": [
+      "Hernan El Masc"
+    ],
     "barrio": "Vucetich",
     "Barrio_Detectado": "Vucetich"
   },
@@ -34108,8 +34432,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Brisa"
+    ],
+    "Alias_Identificados": [
+      "Brisa"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -34184,8 +34512,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Martin"
+    ],
+    "Alias_Identificados": [
+      "Martin"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -34260,8 +34592,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "David"
+    ],
+    "Alias_Identificados": [
+      "David"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -34298,12 +34634,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [
-      "Pitu"
-    ],
-    "Alias_Identificados": [
-      "Pitu"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -34463,10 +34795,12 @@
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
     "alias": [
-      "Chichon"
+      "Chichon",
+      "Yanina"
     ],
     "Alias_Identificados": [
-      "Chichon"
+      "Chichon",
+      "Yanina"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -34542,8 +34876,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Vanesa"
+    ],
+    "Alias_Identificados": [
+      "Vanesa"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -34580,8 +34918,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Juan"
+    ],
+    "Alias_Identificados": [
+      "Juan"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -34619,10 +34961,12 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Chilino"
+      "Chilino",
+      "Osvaldo"
     ],
     "Alias_Identificados": [
-      "Chilino"
+      "Chilino",
+      "Osvaldo"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -34930,14 +35274,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [
-      "Motoneta  A Otro",
-      "Flaco Con Remre Adel"
-    ],
-    "Alias_Identificados": [
-      "Motoneta  A Otro",
-      "Flaco Con Remre Adel"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -35017,10 +35355,12 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Papo Y Papu"
+      "Papo",
+      "Papu"
     ],
     "Alias_Identificados": [
-      "Papo Y Papu"
+      "Papo",
+      "Papu"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -35560,8 +35900,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Hernan"
+    ],
+    "Alias_Identificados": [
+      "Hernan"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -35598,8 +35942,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Cuchi"
+    ],
+    "Alias_Identificados": [
+      "Cuchi"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -35789,10 +36137,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Luis Fernando"
+      "Luis Fernando Teseira"
     ],
     "Alias_Identificados": [
-      "Luis Fernando"
+      "Luis Fernando Teseira"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -36100,8 +36448,14 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Gustavo",
+      "Juan Toledo-"
+    ],
+    "Alias_Identificados": [
+      "Gustavo",
+      "Juan Toledo-"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -36177,10 +36531,12 @@
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
-      "Aron Chaparro"
+      "Aron Chaparro- Llte",
+      "Maia"
     ],
     "Alias_Identificados": [
-      "Aron Chaparro"
+      "Aron Chaparro- Llte",
+      "Maia"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -36295,10 +36651,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Dias Nelson"
+      "Dias Nelson Damian Ordoñez"
     ],
     "Alias_Identificados": [
-      "Dias Nelson"
+      "Dias Nelson Damian Ordoñez"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -36412,8 +36768,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Thiago"
+    ],
+    "Alias_Identificados": [
+      "Thiago"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -36526,8 +36886,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Marcos"
+    ],
+    "Alias_Identificados": [
+      "Marcos"
+    ],
     "barrio": "Sol Y Verde",
     "Barrio_Detectado": "Sol Y Verde"
   },
@@ -36640,8 +37004,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Alan Otro Cristian"
+    ],
+    "Alias_Identificados": [
+      "Alan Otro Cristian"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -36717,10 +37085,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Aron Lambierto"
+      "Aron Lambierto/ No"
     ],
     "Alias_Identificados": [
-      "Aron Lambierto"
+      "Aron Lambierto/ No"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -36986,14 +37354,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
-    "alias": [
-      "Un Bunker",
-      "Una Calle"
-    ],
-    "Alias_Identificados": [
-      "Un Bunker",
-      "Una Calle"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -37183,10 +37545,14 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Ricardo Y"
+      "Ricardo",
+      "La Mujer",
+      "Agustina"
     ],
     "Alias_Identificados": [
-      "Ricardo Y"
+      "Ricardo",
+      "La Mujer",
+      "Agustina"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -37690,12 +38056,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [
-      "Liliana Gonzalez"
-    ],
-    "Alias_Identificados": [
-      "Liliana Gonzalez"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -37813,11 +38175,11 @@
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
     "alias": [
-      "Moroco Petizo De",
+      "Moroco Petizo",
       "David Vascover"
     ],
     "Alias_Identificados": [
-      "Moroco Petizo De",
+      "Moroco Petizo",
       "David Vascover"
     ],
     "barrio": "José C. Paz (Centro / General)",
@@ -37932,8 +38294,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Rodrigo"
+    ],
+    "Alias_Identificados": [
+      "Rodrigo"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -38046,8 +38412,14 @@
     "Tiene_Armas": true,
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Maria",
+      "Veronica"
+    ],
+    "Alias_Identificados": [
+      "Maria",
+      "Veronica"
+    ],
     "barrio": "Sol Y Verde",
     "Barrio_Detectado": "Sol Y Verde"
   },
@@ -38085,10 +38457,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Cuchi Es Un"
+      "Cuchi"
     ],
     "Alias_Identificados": [
-      "Cuchi Es Un"
+      "Cuchi"
     ],
     "barrio": "Sol Y Verde",
     "Barrio_Detectado": "Sol Y Verde"
@@ -38168,8 +38540,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Rodrigo"
+    ],
+    "Alias_Identificados": [
+      "Rodrigo"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -38207,10 +38583,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Franco Y"
+      "Franco"
     ],
     "Alias_Identificados": [
-      "Franco Y"
+      "Franco"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -38249,10 +38625,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Laura Yamila"
+      "Laura Yamila Gomez"
     ],
     "Alias_Identificados": [
-      "Laura Yamila"
+      "Laura Yamila Gomez"
     ],
     "barrio": "Frino",
     "Barrio_Detectado": "Frino"
@@ -38408,8 +38784,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Fernando Hugo Suarez"
+    ],
+    "Alias_Identificados": [
+      "Fernando Hugo Suarez"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -38792,12 +39172,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [
-      "Nicol Romero"
-    ],
-    "Alias_Identificados": [
-      "Nicol Romero"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -38995,10 +39371,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Braian Y"
+      "Braian"
     ],
     "Alias_Identificados": [
-      "Braian Y"
+      "Braian"
     ],
     "barrio": "Barrio La Paz",
     "Barrio_Detectado": "Barrio La Paz"
@@ -39036,12 +39412,8 @@
     "Tiene_Armas": false,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [
-      "Agustin Chamorro"
-    ],
-    "Alias_Identificados": [
-      "Agustin Chamorro"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -39314,12 +39686,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [
-      "La Persona"
-    ],
-    "Alias_Identificados": [
-      "La Persona"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -39357,10 +39725,12 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "La Motoneta"
+      "La Motoneta",
+      "Agustin"
     ],
     "Alias_Identificados": [
-      "La Motoneta"
+      "La Motoneta",
+      "Agustin"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -39399,11 +39769,11 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Renzo Ezequiel",
+      "Renso Ezequiel Vera Licera",
       "Romina Elvin"
     ],
     "Alias_Identificados": [
-      "Renzo Ezequiel",
+      "Renso Ezequiel Vera Licera",
       "Romina Elvin"
     ],
     "barrio": "José C. Paz (Centro / General)",
@@ -39443,10 +39813,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "El Otro"
+      "Fede"
     ],
     "Alias_Identificados": [
-      "El Otro"
+      "Fede"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -39485,12 +39855,12 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Quique Y Otro",
-      "Fabian Gustavo"
+      "Quique",
+      "Fabian Gustavo Yodra"
     ],
     "Alias_Identificados": [
-      "Quique Y Otro",
-      "Fabian Gustavo"
+      "Quique",
+      "Fabian Gustavo Yodra"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -39642,12 +40012,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [
-      "Las Personas"
-    ],
-    "Alias_Identificados": [
-      "Las Personas"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -39685,11 +40051,9 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Yonathan Porta",
       "Luciano Berni"
     ],
     "Alias_Identificados": [
-      "Yonathan Porta",
       "Luciano Berni"
     ],
     "barrio": "San Atilio",
@@ -39926,8 +40290,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Gabriela"
+    ],
+    "Alias_Identificados": [
+      "Gabriela"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -40002,8 +40370,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Gabriela"
+    ],
+    "Alias_Identificados": [
+      "Gabriela"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -40040,8 +40412,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Toga"
+    ],
+    "Alias_Identificados": [
+      "Toga"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -40078,12 +40454,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [
-      "Agustin Chamorro"
-    ],
-    "Alias_Identificados": [
-      "Agustin Chamorro"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -40197,10 +40569,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Brandon No"
+      "Brandon"
     ],
     "Alias_Identificados": [
-      "Brandon No"
+      "Brandon"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -40239,12 +40611,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Masi  De Aprox  35",
-      "El Boli  De Aprox 50"
+      "Masi"
     ],
     "Alias_Identificados": [
-      "Masi  De Aprox  35",
-      "El Boli  De Aprox 50"
+      "Masi"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -40358,8 +40728,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Taison"
+    ],
+    "Alias_Identificados": [
+      "Taison"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -40476,8 +40850,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Luis Jimenez"
+    ],
+    "Alias_Identificados": [
+      "Luis Jimenez"
+    ],
     "barrio": "Frino",
     "Barrio_Detectado": "Frino"
   },
@@ -40827,10 +41205,12 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Braian Y"
+      "Braian",
+      "Fabian Lincera"
     ],
     "Alias_Identificados": [
-      "Braian Y"
+      "Braian",
+      "Fabian Lincera"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -41025,14 +41405,12 @@
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
     "alias": [
-      "Toba De Unos 40 Años",
-      "Karna Que Es La",
-      "Macu"
+      "Toba",
+      "Karna"
     ],
     "Alias_Identificados": [
-      "Toba De Unos 40 Años",
-      "Karna Que Es La",
-      "Macu"
+      "Toba",
+      "Karna"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -41353,10 +41731,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Pichi Vende Drogas"
+      "Pichi"
     ],
     "Alias_Identificados": [
-      "Pichi Vende Drogas"
+      "Pichi"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -41472,11 +41850,17 @@
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
       "Lucho",
-      "Roberto Fabian"
+      "Luciano Berni",
+      "Jonatan Porta",
+      "Marisa",
+      "Roberto Fabian Porta"
     ],
     "Alias_Identificados": [
       "Lucho",
-      "Roberto Fabian"
+      "Luciano Berni",
+      "Jonatan Porta",
+      "Marisa",
+      "Roberto Fabian Porta"
     ],
     "barrio": "San Atilio",
     "Barrio_Detectado": "San Atilio"
@@ -41515,10 +41899,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "El Tuerto De"
+      "El Tuerto"
     ],
     "Alias_Identificados": [
-      "El Tuerto De"
+      "El Tuerto"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -41636,12 +42020,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
-    "alias": [
-      "Los Que"
-    ],
-    "Alias_Identificados": [
-      "Los Que"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -41717,10 +42097,10 @@
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
     "alias": [
-      "Miguel De"
+      "Miguel"
     ],
     "Alias_Identificados": [
-      "Miguel De"
+      "Miguel"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -41759,11 +42139,11 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Luis Adrian",
+      "Luis Adrian  Verni",
       "Jonatan Porta"
     ],
     "Alias_Identificados": [
-      "Luis Adrian",
+      "Luis Adrian  Verni",
       "Jonatan Porta"
     ],
     "barrio": "José C. Paz (Centro / General)",
@@ -41959,10 +42339,12 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Agustin Tambien"
+      "Ulises",
+      "Agustin Tambien Este"
     ],
     "Alias_Identificados": [
-      "Agustin Tambien"
+      "Ulises",
+      "Agustin Tambien Este"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -42001,10 +42383,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Maria Laura"
+      "Maria Laura Villalba"
     ],
     "Alias_Identificados": [
-      "Maria Laura"
+      "Maria Laura Villalba"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -42162,11 +42544,13 @@
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
       "Ninja",
-      "Tulli"
+      "Tulli",
+      "Nicolas Le Dicen *Ninja"
     ],
     "Alias_Identificados": [
       "Ninja",
-      "Tulli"
+      "Tulli",
+      "Nicolas Le Dicen *Ninja"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -42205,12 +42589,12 @@
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
-      "Pachuli Que Anda Con",
-      "Pachuli Y Otros Mas"
+      "Pachuli",
+      "Otros Mas"
     ],
     "Alias_Identificados": [
-      "Pachuli Que Anda Con",
-      "Pachuli Y Otros Mas"
+      "Pachuli",
+      "Otros Mas"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -42446,8 +42830,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Del Otro Sujeto"
+    ],
+    "Alias_Identificados": [
+      "Del Otro Sujeto"
+    ],
     "barrio": "Barrio La Paz",
     "Barrio_Detectado": "Barrio La Paz"
   },
@@ -42560,8 +42948,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Riqui"
+    ],
+    "Alias_Identificados": [
+      "Riqui"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -42712,8 +43104,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Acosta"
+    ],
+    "Alias_Identificados": [
+      "Acosta"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -42868,8 +43264,14 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Morena Acosta",
+      "Marilin Roldan"
+    ],
+    "Alias_Identificados": [
+      "Morena Acosta",
+      "Marilin Roldan"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -43181,10 +43583,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Mara En Alvarado"
+      "Enrique"
     ],
     "Alias_Identificados": [
-      "Mara En Alvarado"
+      "Enrique"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -43306,8 +43708,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Ivana"
+    ],
+    "Alias_Identificados": [
+      "Ivana"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -43420,12 +43826,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [
-      "El Que"
-    ],
-    "Alias_Identificados": [
-      "El Que"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -43501,10 +43903,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Daniel Padilla"
+      "Sergio Lencina"
     ],
     "Alias_Identificados": [
-      "Daniel Padilla"
+      "Sergio Lencina"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -43542,12 +43944,8 @@
     "Tiene_Armas": false,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [
-      "Las Personas"
-    ],
-    "Alias_Identificados": [
-      "Las Personas"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -43584,8 +43982,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "El Pibuey"
+    ],
+    "Alias_Identificados": [
+      "El Pibuey"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -43665,10 +44067,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Fernando Ezequiel"
+      "Fernando Ezequiel Villareal"
     ],
     "Alias_Identificados": [
-      "Fernando Ezequiel"
+      "Fernando Ezequiel Villareal"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -43708,13 +44110,11 @@
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
       "El Titi",
-      "El Flaco",
-      "Hernan Rodriguez"
+      "El Flaco"
     ],
     "Alias_Identificados": [
       "El Titi",
-      "El Flaco",
-      "Hernan Rodriguez"
+      "El Flaco"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -43828,8 +44228,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Nancy"
+    ],
+    "Alias_Identificados": [
+      "Nancy"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -44136,8 +44540,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "S Del Masculino Ni L"
+    ],
+    "Alias_Identificados": [
+      "S Del Masculino Ni L"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -44250,8 +44658,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Diego Quiroga"
+    ],
+    "Alias_Identificados": [
+      "Diego Quiroga"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -44327,10 +44739,12 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "La Estacion Sol Y"
+      "La Estacion Sol",
+      "Verde Dos"
     ],
     "Alias_Identificados": [
-      "La Estacion Sol Y"
+      "La Estacion Sol",
+      "Verde Dos"
     ],
     "barrio": "Sol Y Verde",
     "Barrio_Detectado": "Sol Y Verde"
@@ -44724,8 +45138,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Gustavo"
+    ],
+    "Alias_Identificados": [
+      "Gustavo"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -44918,12 +45336,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [
-      "El Que"
-    ],
-    "Alias_Identificados": [
-      "El Que"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -45005,13 +45419,13 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Peluche Y Oro Hombre",
-      "El Poelusa Venden",
+      "Peluche",
+      "Oro Hombre",
       "Juanjo Bataraso"
     ],
     "Alias_Identificados": [
-      "Peluche Y Oro Hombre",
-      "El Poelusa Venden",
+      "Peluche",
+      "Oro Hombre",
       "Juanjo Bataraso"
     ],
     "barrio": "José C. Paz (Centro / General)",
@@ -45402,12 +45816,8 @@
     "Tiene_Armas": false,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [
-      "Alejo Viene   En Una"
-    ],
-    "Alias_Identificados": [
-      "Alejo Viene   En Una"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -45483,10 +45893,10 @@
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
     "alias": [
-      "Karen Es"
+      "Karen"
     ],
     "Alias_Identificados": [
-      "Karen Es"
+      "Karen"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -45954,8 +46364,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Sonia"
+    ],
+    "Alias_Identificados": [
+      "Sonia"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -46069,10 +46483,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Joel Paz"
+      "Joel Paz En El Lugar"
     ],
     "Alias_Identificados": [
-      "Joel Paz"
+      "Joel Paz En El Lugar"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -46110,8 +46524,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Daiana"
+    ],
+    "Alias_Identificados": [
+      "Daiana"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -46150,11 +46568,11 @@
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
       "El Mocoto",
-      "Tiziano Y"
+      "Tiziano"
     ],
     "Alias_Identificados": [
       "El Mocoto",
-      "Tiziano Y"
+      "Tiziano"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -46194,11 +46612,11 @@
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
     "alias": [
       "Erik Acosta",
-      "Garciela Noemi"
+      "Garciela Noemi Roldan"
     ],
     "Alias_Identificados": [
       "Erik Acosta",
-      "Garciela Noemi"
+      "Garciela Noemi Roldan"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -46275,10 +46693,12 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "El Tuerto"
+      "El Tuerto",
+      "Carlitos"
     ],
     "Alias_Identificados": [
-      "El Tuerto"
+      "El Tuerto",
+      "Carlitos"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -46355,10 +46775,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Cristian Bustos"
+      "Cristian Bustos -"
     ],
     "Alias_Identificados": [
-      "Cristian Bustos"
+      "Cristian Bustos -"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -46397,10 +46817,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Graciela Noemi"
+      "Graciela Noemi Roldan"
     ],
     "Alias_Identificados": [
-      "Graciela Noemi"
+      "Graciela Noemi Roldan"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -47054,8 +47474,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Ramiro"
+    ],
+    "Alias_Identificados": [
+      "Ramiro"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -47135,10 +47559,12 @@
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
-      "El Tito"
+      "El Tito",
+      "Trabaja"
     ],
     "Alias_Identificados": [
-      "El Tito"
+      "El Tito",
+      "Trabaja"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -47252,8 +47678,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Silvana"
+    ],
+    "Alias_Identificados": [
+      "Silvana"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -47329,10 +47759,12 @@
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
-      "El Chori Tevez"
+      "El Chori Tevez",
+      "Totil Castillo"
     ],
     "Alias_Identificados": [
-      "El Chori Tevez"
+      "El Chori Tevez",
+      "Totil Castillo"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -47560,8 +47992,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Belen"
+    ],
+    "Alias_Identificados": [
+      "Belen"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -47717,10 +48153,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Titito Vende Droga"
+      "Titito"
     ],
     "Alias_Identificados": [
-      "Titito Vende Droga"
+      "Titito"
     ],
     "barrio": "Barrio La Paz",
     "Barrio_Detectado": "Barrio La Paz"
@@ -48180,8 +48616,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Gabriela"
+    ],
+    "Alias_Identificados": [
+      "Gabriela"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -48218,8 +48658,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Martin"
+    ],
+    "Alias_Identificados": [
+      "Martin"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -48408,12 +48852,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [
-      "Agustin Ibarra"
-    ],
-    "Alias_Identificados": [
-      "Agustin Ibarra"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -48493,10 +48933,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Angel Raul"
+      "Angel Raul Medina"
     ],
     "Alias_Identificados": [
-      "Angel Raul"
+      "Angel Raul Medina"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -48610,12 +49050,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [
-      "Gabriela Y"
-    ],
-    "Alias_Identificados": [
-      "Gabriela Y"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "Frino",
     "Barrio_Detectado": "Frino"
   },
@@ -48691,10 +49127,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Que Escucharon Que"
+      "Que Escucharon"
     ],
     "Alias_Identificados": [
-      "Que Escucharon Que"
+      "Que Escucharon"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -48884,8 +49320,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Dylan"
+    ],
+    "Alias_Identificados": [
+      "Dylan"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -48922,8 +49362,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Emilse Martinez"
+    ],
+    "Alias_Identificados": [
+      "Emilse Martinez"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -49120,8 +49564,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Ulises"
+    ],
+    "Alias_Identificados": [
+      "Ulises"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -49276,8 +49724,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Ulises"
+    ],
+    "Alias_Identificados": [
+      "Ulises"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -49315,10 +49767,12 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "El Mota"
+      "El Mota",
+      "También Consume"
     ],
     "Alias_Identificados": [
-      "El Mota"
+      "El Mota",
+      "También Consume"
     ],
     "barrio": "Barrio La Paz",
     "Barrio_Detectado": "Barrio La Paz"
@@ -49546,8 +50000,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Marcelo Y"
+    ],
+    "Alias_Identificados": [
+      "Marcelo Y"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -49584,8 +50042,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Flavia"
+    ],
+    "Alias_Identificados": [
+      "Flavia"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -49665,10 +50127,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "El Carpi  Vende"
+      "El Carpi"
     ],
     "Alias_Identificados": [
-      "El Carpi  Vende"
+      "El Carpi"
     ],
     "barrio": "Frino",
     "Barrio_Detectado": "Frino"
@@ -50057,10 +50519,12 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Mafia Que Venden"
+      "Mafia",
+      "Jose Remero"
     ],
     "Alias_Identificados": [
-      "Mafia Que Venden"
+      "Mafia",
+      "Jose Remero"
     ],
     "barrio": "Sol Y Verde",
     "Barrio_Detectado": "Sol Y Verde"
@@ -50484,8 +50948,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Leon"
+    ],
+    "Alias_Identificados": [
+      "Leon"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -50523,10 +50991,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Jorge Gomez"
+      "Jorge Gomez -"
     ],
     "Alias_Identificados": [
-      "Jorge Gomez"
+      "Jorge Gomez -"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -50566,11 +51034,11 @@
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
       "El Panza",
-      "Que  No Pueden Hacer"
+      "Que  No Pueden Hacer Nada"
     ],
     "Alias_Identificados": [
       "El Panza",
-      "Que  No Pueden Hacer"
+      "Que  No Pueden Hacer Nada"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -50608,8 +51076,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Cristian"
+    ],
+    "Alias_Identificados": [
+      "Cristian"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -50646,8 +51118,14 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Hernan",
+      "Lili"
+    ],
+    "Alias_Identificados": [
+      "Hernan",
+      "Lili"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -50761,10 +51239,12 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Alejandra Y"
+      "Alejandra",
+      "Vivi Arce"
     ],
     "Alias_Identificados": [
-      "Alejandra Y"
+      "Alejandra",
+      "Vivi Arce"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -50841,10 +51321,10 @@
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
-      "Chiquito Vende"
+      "Chiquito"
     ],
     "Alias_Identificados": [
-      "Chiquito Vende"
+      "Chiquito"
     ],
     "barrio": "Vucetich",
     "Barrio_Detectado": "Vucetich"
@@ -50921,10 +51401,14 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Jesus Ángel"
+      "Jesus Ángel Pini",
+      "Luciano",
+      "Lucas"
     ],
     "Alias_Identificados": [
-      "Jesus Ángel"
+      "Jesus Ángel Pini",
+      "Luciano",
+      "Lucas"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -51000,8 +51484,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Nancy Venden Droga"
+    ],
+    "Alias_Identificados": [
+      "Nancy Venden Droga"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -51115,10 +51603,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Pablo La"
+      "Pablo La Fuente"
     ],
     "Alias_Identificados": [
-      "Pablo La"
+      "Pablo La Fuente"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -51156,12 +51644,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [
-      "El Que"
-    ],
-    "Alias_Identificados": [
-      "El Que"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -51275,10 +51759,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Hernan De"
+      "Hernan"
     ],
     "Alias_Identificados": [
-      "Hernan De"
+      "Hernan"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -51317,10 +51801,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Alan No"
+      "Alan"
     ],
     "Alias_Identificados": [
-      "Alan No"
+      "Alan"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -51595,10 +52079,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Braian De"
+      "Braian"
     ],
     "Alias_Identificados": [
-      "Braian De"
+      "Braian"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -51712,12 +52196,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [
-      "Los Bolis Entre"
-    ],
-    "Alias_Identificados": [
-      "Los Bolis Entre"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -51869,10 +52349,12 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Dilen Romero"
+      "Dilen Romero",
+      "Juan"
     ],
     "Alias_Identificados": [
-      "Dilen Romero"
+      "Dilen Romero",
+      "Juan"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -52340,8 +52822,14 @@
     "Tiene_Armas": true,
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Walter",
+      "Vanesa"
+    ],
+    "Alias_Identificados": [
+      "Walter",
+      "Vanesa"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -52417,10 +52905,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Franco Vende"
+      "Franco"
     ],
     "Alias_Identificados": [
-      "Franco Vende"
+      "Franco"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -52498,11 +52986,11 @@
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
       "Chipi",
-      "A Otro"
+      "A Otro Le Dicen Chipi"
     ],
     "Alias_Identificados": [
       "Chipi",
-      "A Otro"
+      "A Otro Le Dicen Chipi"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -52616,8 +53104,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Walter Que"
+    ],
+    "Alias_Identificados": [
+      "Walter Que"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -52697,11 +53189,11 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Alizon Magali",
+      "Alizon Magali Ilva Gomez",
       "Mariana Silva"
     ],
     "Alias_Identificados": [
-      "Alizon Magali",
+      "Alizon Magali Ilva Gomez",
       "Mariana Silva"
     ],
     "barrio": "Frino",
@@ -52896,12 +53388,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
-    "alias": [
-      "El Que"
-    ],
-    "Alias_Identificados": [
-      "El Que"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -52976,8 +53464,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "El Viejo"
+    ],
+    "Alias_Identificados": [
+      "El Viejo"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -53091,10 +53583,10 @@
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
-      "Tore Desconoce"
+      "Tore Desconoce El Apellido"
     ],
     "Alias_Identificados": [
-      "Tore Desconoce"
+      "Tore Desconoce El Apellido"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -53132,12 +53624,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [
-      "La Persona"
-    ],
-    "Alias_Identificados": [
-      "La Persona"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -53174,8 +53662,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "No Sabe Si"
+    ],
+    "Alias_Identificados": [
+      "No Sabe Si"
+    ],
     "barrio": "Sol Y Verde",
     "Barrio_Detectado": "Sol Y Verde"
   },
@@ -53365,12 +53857,12 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Melli",
-      "Johana Y"
+      "Melli* Cuyo Hermano",
+      "Johana"
     ],
     "Alias_Identificados": [
-      "Melli",
-      "Johana Y"
+      "Melli* Cuyo Hermano",
+      "Johana"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -53485,10 +53977,12 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "La Flaca Y Julian"
+      "La Flaca",
+      "Julian"
     ],
     "Alias_Identificados": [
-      "La Flaca Y Julian"
+      "La Flaca",
+      "Julian"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -53762,8 +54256,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Terri"
+    ],
+    "Alias_Identificados": [
+      "Terri"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -53880,8 +54378,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Liliana Gonzalez"
+    ],
+    "Alias_Identificados": [
+      "Liliana Gonzalez"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -53918,12 +54420,8 @@
     "Tiene_Armas": false,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [
-      "La Persona"
-    ],
-    "Alias_Identificados": [
-      "La Persona"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "Piñero",
     "Barrio_Detectado": "Piñero"
   },
@@ -54037,10 +54535,12 @@
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
     "alias": [
-      "Pili"
+      "Pili",
+      "Damian"
     ],
     "Alias_Identificados": [
-      "Pili"
+      "Pili",
+      "Damian"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -54193,10 +54693,10 @@
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
-      "Aldo Rivero"
+      "Mariana Duarte Villalba"
     ],
     "Alias_Identificados": [
-      "Aldo Rivero"
+      "Mariana Duarte Villalba"
     ],
     "barrio": "San Atilio",
     "Barrio_Detectado": "San Atilio"
@@ -54425,10 +54925,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Dami El"
+      "Dami El Masculino"
     ],
     "Alias_Identificados": [
-      "Dami El"
+      "Dami El Masculino"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -54619,10 +55119,10 @@
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
     "alias": [
-      "El Nico Es El Hijo"
+      "El Nico"
     ],
     "Alias_Identificados": [
-      "El Nico Es El Hijo"
+      "El Nico"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -54850,8 +55350,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Nicolas Palomero"
+    ],
+    "Alias_Identificados": [
+      "Nicolas Palomero"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -54888,8 +55392,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Gianina"
+    ],
+    "Alias_Identificados": [
+      "Gianina"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -55045,10 +55553,12 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Pedro Gallo"
+      "Pedro Gallo",
+      "Julieta Angeloni"
     ],
     "Alias_Identificados": [
-      "Pedro Gallo"
+      "Pedro Gallo",
+      "Julieta Angeloni"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -55087,10 +55597,12 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "El Bala No Sabe El"
+      "El Bala",
+      "Hernan"
     ],
     "Alias_Identificados": [
-      "El Bala No Sabe El"
+      "El Bala",
+      "Hernan"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -55407,10 +55919,12 @@
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
     "alias": [
-      "Alejandro Y"
+      "Marcela",
+      "Damina Le Refirio"
     ],
     "Alias_Identificados": [
-      "Alejandro Y"
+      "Marcela",
+      "Damina Le Refirio"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -55605,10 +56119,12 @@
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
     "alias": [
-      "El Villita"
+      "El Villita",
+      "Marcela"
     ],
     "Alias_Identificados": [
-      "El Villita"
+      "El Villita",
+      "Marcela"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -55883,12 +56399,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "El Polaco",
-      "Oscar Olivera"
+      "El Polaco - Desconoce Si"
     ],
     "Alias_Identificados": [
-      "El Polaco",
-      "Oscar Olivera"
+      "El Polaco - Desconoce Si"
     ],
     "barrio": "Sol Y Verde",
     "Barrio_Detectado": "Sol Y Verde"
@@ -56002,8 +56516,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Tomas"
+    ],
+    "Alias_Identificados": [
+      "Tomas"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -56154,8 +56672,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Sonia - Estan"
+    ],
+    "Alias_Identificados": [
+      "Sonia - Estan"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -56428,8 +56950,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Ezequiel"
+    ],
+    "Alias_Identificados": [
+      "Ezequiel"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -56466,8 +56992,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Marcela"
+    ],
+    "Alias_Identificados": [
+      "Marcela"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -56504,8 +57034,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Marcela"
+    ],
+    "Alias_Identificados": [
+      "Marcela"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -56657,10 +57191,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Guerrillita  Tiene"
+      "Guerrillita"
     ],
     "Alias_Identificados": [
-      "Guerrillita  Tiene"
+      "Guerrillita"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -56698,8 +57232,14 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Jonathan",
+      "La Ardilla"
+    ],
+    "Alias_Identificados": [
+      "Jonathan",
+      "La Ardilla"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -56889,10 +57429,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Andrea Aguirre"
+      "Andrea Aguirre Basilio"
     ],
     "Alias_Identificados": [
-      "Andrea Aguirre"
+      "Andrea Aguirre Basilio"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -57082,8 +57622,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Caro"
+    ],
+    "Alias_Identificados": [
+      "Caro"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -57196,8 +57740,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Daniel"
+    ],
+    "Alias_Identificados": [
+      "Daniel"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -57425,12 +57973,10 @@
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
     "alias": [
-      "Cesar Martinez",
-      "Liliana Gonzales"
+      "Cesar Martinez"
     ],
     "Alias_Identificados": [
-      "Cesar Martinez",
-      "Liliana Gonzales"
+      "Cesar Martinez"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -57590,8 +58136,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Graciela"
+    ],
+    "Alias_Identificados": [
+      "Graciela"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -57628,8 +58178,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Cristian"
+    ],
+    "Alias_Identificados": [
+      "Cristian"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -57705,10 +58259,12 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Gustavo Y"
+      "Gustavo",
+      "Salió"
     ],
     "Alias_Identificados": [
-      "Gustavo Y"
+      "Gustavo",
+      "Salió"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -57746,12 +58302,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [
-      "Liliana Gonzales"
-    ],
-    "Alias_Identificados": [
-      "Liliana Gonzales"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -57789,10 +58341,12 @@
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
-      "El Mono"
+      "El Mono",
+      "Lucas"
     ],
     "Alias_Identificados": [
-      "El Mono"
+      "El Mono",
+      "Lucas"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -58481,10 +59035,12 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Melani Guadalupe"
+      "Melani Guadalupe Barranco",
+      "Ezequiel *Toledo O Gallardo"
     ],
     "Alias_Identificados": [
-      "Melani Guadalupe"
+      "Melani Guadalupe Barranco",
+      "Ezequiel *Toledo O Gallardo"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -58561,10 +59117,12 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Papu Y Pao"
+      "Papu",
+      "Pao"
     ],
     "Alias_Identificados": [
-      "Papu Y Pao"
+      "Papu",
+      "Pao"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -58717,10 +59275,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Ni Como"
+      "Ni Como Le Dicen"
     ],
     "Alias_Identificados": [
-      "Ni Como"
+      "Ni Como Le Dicen"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -58841,10 +59399,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Rodolfo Y"
+      "Rodolfo"
     ],
     "Alias_Identificados": [
-      "Rodolfo Y"
+      "Rodolfo"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -59239,10 +59797,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Marcelo Vende"
+      "Marcelo"
     ],
     "Alias_Identificados": [
-      "Marcelo Vende"
+      "Marcelo"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -59280,8 +59838,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Damian"
+    ],
+    "Alias_Identificados": [
+      "Damian"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -59394,8 +59956,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Marcela"
+    ],
+    "Alias_Identificados": [
+      "Marcela"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -59508,12 +60074,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [
-      "Fabian Y"
-    ],
-    "Alias_Identificados": [
-      "Fabian Y"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -59707,10 +60269,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Jose El"
+      "Jose El Chapu"
     ],
     "Alias_Identificados": [
-      "Jose El"
+      "Jose El Chapu"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -59748,8 +60310,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Hernan El Masc"
+    ],
+    "Alias_Identificados": [
+      "Hernan El Masc"
+    ],
     "barrio": "Vucetich",
     "Barrio_Detectado": "Vucetich"
   },
@@ -60014,8 +60580,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Brisa"
+    ],
+    "Alias_Identificados": [
+      "Brisa"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -60090,12 +60660,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [
-      "Pitu"
-    ],
-    "Alias_Identificados": [
-      "Pitu"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -60213,10 +60779,12 @@
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
     "alias": [
-      "Chichon"
+      "Chichon",
+      "Yanina"
     ],
     "Alias_Identificados": [
-      "Chichon"
+      "Chichon",
+      "Yanina"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -60292,8 +60860,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Vanesa"
+    ],
+    "Alias_Identificados": [
+      "Vanesa"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -60330,8 +60902,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Joel"
+    ],
+    "Alias_Identificados": [
+      "Joel"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -60368,8 +60944,14 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Juan",
+      "Macarena Galvez"
+    ],
+    "Alias_Identificados": [
+      "Juan",
+      "Macarena Galvez"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -60635,10 +61217,12 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Papo Y Papu"
+      "Papo",
+      "Papu"
     ],
     "Alias_Identificados": [
-      "Papo Y Papu"
+      "Papo",
+      "Papu"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -61335,10 +61919,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Luis Fernando"
+      "Luis Fernando Teseira"
     ],
     "Alias_Identificados": [
-      "Luis Fernando"
+      "Luis Fernando Teseira"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -61613,10 +62197,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Dias Nelson"
+      "Dias Nelson Damian Ordoñez"
     ],
     "Alias_Identificados": [
-      "Dias Nelson"
+      "Dias Nelson Damian Ordoñez"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -61730,8 +62314,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Thiago"
+    ],
+    "Alias_Identificados": [
+      "Thiago"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -61806,8 +62394,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Marcos"
+    ],
+    "Alias_Identificados": [
+      "Marcos"
+    ],
     "barrio": "Sol Y Verde",
     "Barrio_Detectado": "Sol Y Verde"
   },
@@ -61920,8 +62512,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Alan Otro Cristian"
+    ],
+    "Alias_Identificados": [
+      "Alan Otro Cristian"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -61997,10 +62593,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Aron Lambierto"
+      "Aron Lambierto/ No"
     ],
     "Alias_Identificados": [
-      "Aron Lambierto"
+      "Aron Lambierto/ No"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -62038,8 +62634,14 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "La * Flaca ",
+      "Daiana -"
+    ],
+    "Alias_Identificados": [
+      "La * Flaca ",
+      "Daiana -"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -62116,11 +62718,11 @@
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
       "Terry",
-      "Fernando Le"
+      "Fernando Le Dicen Terry"
     ],
     "Alias_Identificados": [
       "Terry",
-      "Fernando Le"
+      "Fernando Le Dicen Terry"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -62159,10 +62761,12 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Maxi Y"
+      "Maxi",
+      "La  Madre"
     ],
     "Alias_Identificados": [
-      "Maxi Y"
+      "Maxi",
+      "La  Madre"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -62200,8 +62804,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Carlos"
+    ],
+    "Alias_Identificados": [
+      "Carlos"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -62239,10 +62847,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Andres De"
+      "Andres"
     ],
     "Alias_Identificados": [
-      "Andres De"
+      "Andres"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -62281,10 +62889,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Andres Que"
+      "Andres"
     ],
     "Alias_Identificados": [
-      "Andres Que"
+      "Andres"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -62360,8 +62968,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Rocio"
+    ],
+    "Alias_Identificados": [
+      "Rocio"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -62598,8 +63210,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Maxi"
+    ],
+    "Alias_Identificados": [
+      "Maxi"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -62717,10 +63333,12 @@
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
-      "Segundo No"
+      "Segundo",
+      "Brian"
     ],
     "Alias_Identificados": [
-      "Segundo No"
+      "Segundo",
+      "Brian"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -62759,12 +63377,10 @@
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
-      "Vio Como",
-      "Segundo   Tiene"
+      "Segundo"
     ],
     "Alias_Identificados": [
-      "Vio Como",
-      "Segundo   Tiene"
+      "Segundo"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -62803,10 +63419,12 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Francisco Quien"
+      "Francisco",
+      "Florencia"
     ],
     "Alias_Identificados": [
-      "Francisco Quien"
+      "Francisco",
+      "Florencia"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -62882,8 +63500,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Valeria"
+    ],
+    "Alias_Identificados": [
+      "Valeria"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -62920,8 +63542,14 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Dilan",
+      "Flores Horacio"
+    ],
+    "Alias_Identificados": [
+      "Dilan",
+      "Flores Horacio"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -62958,12 +63586,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [
-      "Pepe Y Venden Drogas"
-    ],
-    "Alias_Identificados": [
-      "Pepe Y Venden Drogas"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -63232,12 +63856,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [
-      "Las Personas"
-    ],
-    "Alias_Identificados": [
-      "Las Personas"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -63355,12 +63975,12 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Que En El Pozo",
+      "Que En El Pozo -",
       "Sebastian  Orue",
       "Este Masc"
     ],
     "Alias_Identificados": [
-      "Que En El Pozo",
+      "Que En El Pozo -",
       "Sebastian  Orue",
       "Este Masc"
     ],
@@ -64130,8 +64750,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Beba Gomez"
+    ],
+    "Alias_Identificados": [
+      "Beba Gomez"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -64169,10 +64793,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Walter De"
+      "Walter"
     ],
     "Alias_Identificados": [
-      "Walter De"
+      "Walter"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -64210,12 +64834,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [
-      "Monica Y"
-    ],
-    "Alias_Identificados": [
-      "Monica Y"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -64329,10 +64949,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Derly Vende Droga En"
+      "Derly"
     ],
     "Alias_Identificados": [
-      "Derly Vende Droga En"
+      "Derly"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -64408,8 +65028,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Nicolas"
+    ],
+    "Alias_Identificados": [
+      "Nicolas"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -64797,10 +65421,14 @@
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
     "alias": [
-      "Ismnael Tejera"
+      "Fari",
+      "Aguello Crstian",
+      "Diego"
     ],
     "Alias_Identificados": [
-      "Ismnael Tejera"
+      "Fari",
+      "Aguello Crstian",
+      "Diego"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -64838,8 +65466,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Ariel"
+    ],
+    "Alias_Identificados": [
+      "Ariel"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -64914,8 +65546,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Diego"
+    ],
+    "Alias_Identificados": [
+      "Diego"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -64991,9 +65627,11 @@
     "tipoLugar": "Pasillo de Asentamiento",
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
     "alias": [
+      "Beba",
       "Que Tambien"
     ],
     "Alias_Identificados": [
+      "Beba",
       "Que Tambien"
     ],
     "barrio": "José C. Paz (Centro / General)",
@@ -65034,11 +65672,11 @@
     "Tipo_Punto_Venta": "Pasillo de Asentamiento",
     "alias": [
       "La Hija Del Gallegos",
-      "El Gaston El"
+      "El Gaston El Chatarrero"
     ],
     "Alias_Identificados": [
       "La Hija Del Gallegos",
-      "El Gaston El"
+      "El Gaston El Chatarrero"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -65158,12 +65796,12 @@
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
       "El Toto",
-      "El Gordo Tiene Una",
+      "El Gordo",
       "Esta Persona"
     ],
     "Alias_Identificados": [
       "El Toto",
-      "El Gordo Tiene Una",
+      "El Gordo",
       "Esta Persona"
     ],
     "barrio": "José C. Paz (Centro / General)",
@@ -65240,8 +65878,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Tiago"
+    ],
+    "Alias_Identificados": [
+      "Tiago"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -65278,8 +65920,12 @@
     "Tiene_Armas": false,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Nombre Nancy Leguizamon"
+    ],
+    "Alias_Identificados": [
+      "Nombre Nancy Leguizamon"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -65393,12 +66039,14 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Claudia Y",
-      "Narela Que"
+      "Ariel",
+      "Claudia",
+      "Hay Una Femenina"
     ],
     "Alias_Identificados": [
-      "Claudia Y",
-      "Narela Que"
+      "Ariel",
+      "Claudia",
+      "Hay Una Femenina"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -65512,12 +66160,8 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [
-      "Hernan Pajon"
-    ],
-    "Alias_Identificados": [
-      "Hernan Pajon"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -65669,10 +66313,10 @@
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
     "alias": [
-      "Diego  De"
+      "Diego"
     ],
     "Alias_Identificados": [
-      "Diego  De"
+      "Diego"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -65825,10 +66469,12 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Jamon Jacinto"
+      "Jamon Jacinto",
+      "Poroto"
     ],
     "Alias_Identificados": [
-      "Jamon Jacinto"
+      "Jamon Jacinto",
+      "Poroto"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -66182,8 +66828,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Gabriela"
+    ],
+    "Alias_Identificados": [
+      "Gabriela"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -66221,10 +66871,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Lo Describe"
+      "Lo Describe Como Masculino 1"
     ],
     "Alias_Identificados": [
-      "Lo Describe"
+      "Lo Describe Como Masculino 1"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -66494,12 +67144,8 @@
     "Tiene_Armas": false,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [
-      "Que Estan Yendo A Su"
-    ],
-    "Alias_Identificados": [
-      "Que Estan Yendo A Su"
-    ],
+    "alias": [],
+    "Alias_Identificados": [],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -67121,10 +67767,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Esteban Otro"
+      "Esteban Otro Armadndo"
     ],
     "Alias_Identificados": [
-      "Esteban Otro"
+      "Esteban Otro Armadndo"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -67162,8 +67808,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Natalia"
+    ],
+    "Alias_Identificados": [
+      "Natalia"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -67276,8 +67926,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Mario Benitez"
+    ],
+    "Alias_Identificados": [
+      "Mario Benitez"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -67394,8 +68048,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "S Ni"
+    ],
+    "Alias_Identificados": [
+      "S Ni"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -67474,8 +68132,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Marcelo"
+    ],
+    "Alias_Identificados": [
+      "Marcelo"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -67669,10 +68331,10 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Kechu"
+      "Kechu* Otro *Motoneta"
     ],
     "Alias_Identificados": [
-      "Kechu"
+      "Kechu* Otro *Motoneta"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -68094,8 +68756,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Del O Los Vendedores"
+    ],
+    "Alias_Identificados": [
+      "Del O Los Vendedores"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -68209,14 +68875,14 @@
     "tipoLugar": "Lugar No Especificado",
     "Tipo_Punto_Venta": "Lugar No Especificado",
     "alias": [
-      "Chami Y",
-      "Tuli Cree Que La",
-      "Eduardo  Otro"
+      "Chami",
+      "Mocoto- No",
+      "Tuli Cree"
     ],
     "Alias_Identificados": [
-      "Chami Y",
-      "Tuli Cree Que La",
-      "Eduardo  Otro"
+      "Chami",
+      "Mocoto- No",
+      "Tuli Cree"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -68254,8 +68920,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Búnker / Casilla / Baldío",
     "Tipo_Punto_Venta": "Búnker / Casilla / Baldío",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Eduardo"
+    ],
+    "Alias_Identificados": [
+      "Eduardo"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -68562,8 +69232,14 @@
     "Tiene_Armas": true,
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Palomero",
+      "Banfi"
+    ],
+    "Alias_Identificados": [
+      "Palomero",
+      "Banfi"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -68600,8 +69276,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Gonzalo Martin Godoy"
+    ],
+    "Alias_Identificados": [
+      "Gonzalo Martin Godoy"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -68639,10 +69319,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Gonzalez Ariel"
+      "Gonzalez Ariel Gaston"
     ],
     "Alias_Identificados": [
-      "Gonzalez Ariel"
+      "Gonzalez Ariel Gaston"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -68681,10 +69361,10 @@
     "tipoLugar": "Ventanita / Kiosco",
     "Tipo_Punto_Venta": "Ventanita / Kiosco",
     "alias": [
-      "Fabian Tienen"
+      "Sonia"
     ],
     "Alias_Identificados": [
-      "Fabian Tienen"
+      "Sonia"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
@@ -68804,8 +69484,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Finca / Vivienda",
     "Tipo_Punto_Venta": "Finca / Vivienda",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Cuchi"
+    ],
+    "Alias_Identificados": [
+      "Cuchi"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -68842,8 +69526,12 @@
     "Tiene_Armas": true,
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
-    "alias": [],
-    "Alias_Identificados": [],
+    "alias": [
+      "Aldo"
+    ],
+    "Alias_Identificados": [
+      "Aldo"
+    ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"
   },
@@ -69379,12 +70067,10 @@
     "tipoLugar": "Vía Pública / Esquina",
     "Tipo_Punto_Venta": "Vía Pública / Esquina",
     "alias": [
-      "Peter Y La Quisieron",
-      "Santiago Y"
+      "Santiago"
     ],
     "Alias_Identificados": [
-      "Peter Y La Quisieron",
-      "Santiago Y"
+      "Santiago"
     ],
     "barrio": "José C. Paz (Centro / General)",
     "Barrio_Detectado": "José C. Paz (Centro / General)"

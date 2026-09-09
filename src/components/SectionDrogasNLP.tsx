@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Brain, UserCheck, Home, MessageSquare, Search, AlertTriangle, ShieldAlert, Sparkles, Filter } from "lucide-react";
+import { Brain, UserCheck, Home, MessageSquare, Search, AlertTriangle, ShieldAlert, Sparkles, Filter, CheckCircle, Tag } from "lucide-react";
 
 interface SectionDrogasNLPProps {
   incidents: any[];
@@ -9,10 +9,11 @@ interface SectionDrogasNLPProps {
 
 export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPProps) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedSuspect, setSelectedSuspect] = useState<string | null>(null);
 
   // Extract Top Aliases and occurrences
   const aliasRanking = useMemo(() => {
-    const counts: { [alias: string]: { count: number; lastDate: string; barrios: Set<string>; sampleRelato: string } } = {};
+    const counts: { [alias: string]: { count: number; lastDate: string; barrios: Set<string>; sampleRelato: string; isFullName: boolean } } = {};
 
     incidents.forEach((inc) => {
       const aliases = inc.alias || [];
@@ -20,10 +21,14 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
         const clean = a.trim();
         if (!clean) return;
         if (!counts[clean]) {
-          counts[clean] = { count: 0, lastDate: inc.fecha, barrios: new Set(), sampleRelato: inc.relato };
+          const parts = clean.split(" ");
+          const isFullName = parts.length >= 2 && !clean.toLowerCase().startsWith("el ") && !clean.toLowerCase().startsWith("la ");
+          counts[clean] = { count: 0, lastDate: inc.fecha, barrios: new Set(), sampleRelato: inc.relato, isFullName };
         }
         counts[clean].count += 1;
-        if (inc.barrio) counts[clean].barrios.add(inc.barrio);
+        if (inc.barrio && inc.barrio !== "José C. Paz (Centro / General)") {
+          counts[clean].barrios.add(inc.barrio);
+        }
       });
     });
 
@@ -32,11 +37,12 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
         alias,
         count: data.count,
         lastDate: data.lastDate,
-        barrios: Array.from(data.barrios).join(", "),
+        barrios: Array.from(data.barrios).join(", ") || "José C. Paz",
         sampleRelato: data.sampleRelato,
+        isFullName: data.isFullName,
       }))
       .sort((a, b) => b.count - a.count)
-      .slice(0, 15);
+      .slice(0, 25);
   }, [incidents]);
 
   // Points of sale distribution
@@ -51,83 +57,125 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
 
   // Filtered incidents with alias or search keyword
   const filteredIncidents = useMemo(() => {
-    if (!searchTerm.trim()) {
-      return incidents.filter((r) => (r.alias && r.alias.length > 0) || r.tieneArmas).slice(0, 25);
+    let list = incidents;
+
+    if (selectedSuspect) {
+      list = list.filter((r) => (r.alias || []).some((a: string) => a.toLowerCase() === selectedSuspect.toLowerCase()));
+      return list;
     }
-    const q = searchTerm.toLowerCase();
-    return incidents.filter((r) =>
-      (r.relato || "").toLowerCase().includes(q) ||
-      (r.direccion || "").toLowerCase().includes(q) ||
-      (r.comentario || "").toLowerCase().includes(q) ||
-      (r.alias || []).some((a: string) => a.toLowerCase().includes(q))
-    ).slice(0, 30);
-  }, [incidents, searchTerm]);
+
+    if (searchTerm.trim() !== "") {
+      const q = searchTerm.toLowerCase();
+      return list.filter((r) =>
+        (r.relato || "").toLowerCase().includes(q) ||
+        (r.direccion || "").toLowerCase().includes(q) ||
+        (r.comentario || "").toLowerCase().includes(q) ||
+        (r.alias || []).some((a: string) => a.toLowerCase().includes(q))
+      ).slice(0, 35);
+    }
+
+    return list.filter((r) => (r.alias && r.alias.length > 0) || r.tieneArmas).slice(0, 30);
+  }, [incidents, searchTerm, selectedSuspect]);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
       {/* Header Banner */}
       <div className="card" style={{ background: "linear-gradient(135deg, rgba(239,68,68,0.08) 0%, rgba(139,92,246,0.05) 100%)", border: "1px solid rgba(239,68,68,0.25)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <div style={{ padding: "0.75rem", borderRadius: "10px", background: "linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)", color: "#fff" }}>
-            <Brain size={24} />
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            <div style={{ padding: "0.75rem", borderRadius: "10px", background: "linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)", color: "#fff" }}>
+              <Brain size={24} />
+            </div>
+            <div>
+              <h2 style={{ fontSize: "1.25rem", fontWeight: 700, margin: 0, color: "var(--text-primary)" }}>
+                🧬 Inteligencia de Redes, Alias & Modus Operandi Narcocriminal (NLP)
+              </h2>
+              <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", margin: "0.2rem 0 0" }}>
+                Extracción algorítmica de apodos de transas, estructura de búnkers y léxico delictual en 1.770 despachos de José C. Paz.
+              </p>
+            </div>
           </div>
-          <div>
-            <h2 style={{ fontSize: "1.25rem", fontWeight: 700, margin: 0, color: "var(--text-primary)" }}>
-              🧬 Inteligencia de Redes, Alias & Modus Operandi Narcocriminal (NLP)
-            </h2>
-            <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", margin: "0.2rem 0 0" }}>
-              Extracción algorítmica de apodos de transas, estructura de búnkers y léxico delictual en 1.770 despachos de José C. Paz.
-            </p>
-          </div>
+
+          {selectedSuspect && (
+            <button
+              onClick={() => setSelectedSuspect(null)}
+              className="btn-logout"
+              style={{ height: "34px", padding: "0 0.85rem", fontSize: "0.75rem", fontWeight: 700, background: "rgba(239,68,68,0.15)", color: "#ef4444", border: "1px solid rgba(239,68,68,0.3)" }}
+            >
+              Quitar filtro: {selectedSuspect} ✕
+            </button>
+          )}
         </div>
       </div>
 
       {/* Grid: Aliases + Puntos de Venta */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(420px, 1fr))", gap: "1.5rem" }}>
-        {/* Left Column: Top Aliases Identified */}
+        {/* Left Column: Top Aliases Identified with Filter trigger */}
         <div className="card">
-          <div className="card-title" style={{ gap: "0.5rem" }}>
-            <UserCheck size={18} color="var(--accent-indigo)" />
-            <span>Alias y Nombres de Investigados Extraídos por NLP</span>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
+            <div className="card-title" style={{ gap: "0.5rem", margin: 0 }}>
+              <UserCheck size={18} color="var(--accent-indigo)" />
+              <span>Alias y Nombres de Investigados Extraídos por NLP</span>
+            </div>
+            <span style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>
+              Hacé clic para auditar despachos
+            </span>
           </div>
           <p className="card-subtitle" style={{ marginBottom: "1rem" }}>
-            Individuos mencionados reiteradamente en llamadas vecinales al 911 como encargados de la venta:
+            Individuos señalados reiteradamente en denuncias vecinales al 911 como responsables de comercialización:
           </p>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-            {aliasRanking.map((item, idx) => (
-              <div
-                key={idx}
-                style={{
-                  background: "var(--bg-base)",
-                  padding: "0.75rem 1rem",
-                  borderRadius: "6px",
-                  border: "1px solid var(--border)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: "0.75rem"
-                }}
-              >
-                <div>
-                  <div style={{ fontSize: "0.9rem", fontWeight: 700, color: "var(--text-primary)" }}>
-                    🏷️ {item.alias}
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.55rem", maxHeight: "490px", overflowY: "auto", paddingRight: "0.3rem" }}>
+            {aliasRanking.map((item, idx) => {
+              const isSelected = selectedSuspect?.toLowerCase() === item.alias.toLowerCase();
+              return (
+                <div
+                  key={idx}
+                  onClick={() => setSelectedSuspect(isSelected ? null : item.alias)}
+                  style={{
+                    background: isSelected ? "rgba(239,68,68,0.15)" : "var(--bg-base)",
+                    border: isSelected ? "1.5px solid #ef4444" : "1px solid var(--border)",
+                    padding: "0.75rem 1rem",
+                    borderRadius: "6px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: "0.75rem",
+                    cursor: "pointer",
+                    transition: "all 0.15s ease"
+                  }}
+                >
+                  <div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                      <span style={{ fontSize: "0.9rem", fontWeight: 700, color: "var(--text-primary)" }}>
+                        {item.alias}
+                      </span>
+                      {item.isFullName ? (
+                        <span style={{ fontSize: "0.65rem", fontWeight: 700, background: "rgba(99,102,241,0.2)", color: "#a5b4fc", padding: "1px 5px", borderRadius: "3px" }}>
+                          Nombre Identificado
+                        </span>
+                      ) : (
+                        <span style={{ fontSize: "0.65rem", fontWeight: 700, background: "rgba(245,158,11,0.2)", color: "#fbbf24", padding: "1px 5px", borderRadius: "3px" }}>
+                          Alias / Apodo
+                        </span>
+                      )}
+                    </div>
+                    <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "0.2rem" }}>
+                      📍 {item.barrios}
+                    </div>
                   </div>
-                  <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
-                    {item.barrios ? `📍 ${item.barrios}` : "📍 José C. Paz"}
-                  </div>
-                </div>
 
-                <div style={{ textAlign: "right" }}>
-                  <span style={{ fontSize: "0.75rem", fontWeight: 800, padding: "0.2rem 0.6rem", borderRadius: "4px", background: "rgba(239,68,68,0.15)", color: "#ef4444" }}>
-                    {item.count} denuncias
-                  </span>
-                  <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "0.2rem" }}>
-                    Último reporte: {item.lastDate?.split(" ")[0]}
+                  <div style={{ textAlign: "right" }}>
+                    <span style={{ fontSize: "0.75rem", fontWeight: 800, padding: "0.2rem 0.6rem", borderRadius: "4px", background: "rgba(239,68,68,0.15)", color: "#ef4444" }}>
+                      {item.count} denuncias
+                    </span>
+                    <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "0.2rem" }}>
+                      Último: {item.lastDate?.split(" ")[0]}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -176,23 +224,27 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
           <div>
             <div className="card-title" style={{ gap: "0.5rem" }}>
               <MessageSquare size={18} color="var(--accent-indigo)" />
-              <span>Auditoría de Relatos Policiales 911 (NLP en Vivo)</span>
+              <span>
+                {selectedSuspect ? `Despachos Correlacionados con "${selectedSuspect}" (${filteredIncidents.length} Casos)` : "Auditoría de Relatos Policiales 911 (NLP en Vivo)"}
+              </span>
             </div>
             <p className="card-subtitle" style={{ margin: "0.2rem 0 0" }}>
-              Explorador de declaraciones textuales con detección de narcocriminalidad, armas y alias.
+              {selectedSuspect ? `Llamadas donde se menciona directamente a ${selectedSuspect} como involucrado:` : "Explorador de declaraciones textuales con detección de narcocriminalidad, armas y alias."}
             </p>
           </div>
 
-          <div style={{ width: "320px" }}>
-            <input
-              type="text"
-              placeholder="Buscar por alias, búnker, cocaína, calle..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="form-input"
-              style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}
-            />
-          </div>
+          {!selectedSuspect && (
+            <div style={{ width: "320px" }}>
+              <input
+                type="text"
+                placeholder="Buscar por alias, búnker, cocaína, calle..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="form-input"
+                style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}
+              />
+            </div>
+          )}
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", maxHeight: "480px", overflowY: "auto", paddingRight: "0.5rem" }}>

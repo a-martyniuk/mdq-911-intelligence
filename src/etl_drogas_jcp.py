@@ -11,6 +11,75 @@ PUBLIC_OUTPUT_DIR = os.path.join(BASE_DIR, "public", "data", "processed")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(PUBLIC_OUTPUT_DIR, exist_ok=True)
 
+STOPWORDS_BLACKLIST = {
+    "LA PERSONA", "LAS PERSONAS", "UNA PERSONA", "EL QUE", "LOS QUE", "LA QUE", "LAS QUE",
+    "EL OTRO", "LOS OTROS", "LA OTRA", "ELLOS", "ELLAS", "UN MASCULINO", "UNA FEMENINA",
+    "DOS MASCULINOS", "VARIOS MASCULINOS", "TRES MASCULINOS", "CUATRO MASCULINOS",
+    "EL CHICO", "LOS CHICOS", "EL TRANZA", "LOS TRANZAS", "UN TRANZA", "LOS TRANSAS", "EL TRANSA",
+    "EL LUGAR", "LA CASA", "LA CASILLA", "LA FINCA", "LA PROPIEDAD", "LA POLICIA", "EL MOVIL",
+    "EL PATRULLERO", "UN SUJETO", "LOS SUJETOS", "ESTA GENTE", "UN HOMBRE", "UNA MUJER",
+    "EL VECINO", "LA VECINA", "EL DUEÑO", "LA DUEÑA", "EL HERMANO", "LA HERMANA", "EL HIJO",
+    "LA HIJA", "EL MARIDO", "LA PAREJA", "LA MADRE", "EL PADRE", "DESCONOCE", "NO SABE",
+    "NO RECUERDA", "SIN DATOS", "DROGA", "DROGAS", "COCAINA", "MARIHUANA", "PACO",
+    "UNA MOTO", "UN AUTO", "UNA CASILLA", "ALGUIEN", "NADIE", "CUALQUIERA",
+    "UN PIBE", "LOS PIBES", "EL MENOR", "LOS MENORES", "EL GRUPO", "LOS JEFES",
+    "EL", "LA", "LOS", "LAS", "DE", "DEL", "DE LOS", "DE LAS", "A LOS", "A LAS", "EN EL", "EN LA",
+    "UNO", "UNA", "UN", "OTRO", "OTRA", "ESTE", "ESE", "AQUEL"
+}
+
+CUTOFF_WORDS = [
+    r'\s+(?:Y\s+(?:A\s+OTRO|EL\s+OTRO|OTRO|OTRA|LA\s+OTRA))\b',
+    r'\s+(?:ES\s+|TIENE\s+|VIVE\s+|ANDA\s+|VENDE\s+|ESTA\s+|ESTÁN\s+|QUE\s+|CON\s+|FUE\s+|HABIA\s+|HACE\s+|SE\s+|POR\s+|DE\s+|PARA\s+)\b',
+    r'\s+(?:LA\s+CUAL|EL\s+CUAL|QUIEN|QUIENES|NO\s+SABE|NO\s+SE|PERO|DICE|REF|REFIERE)\b'
+]
+
+def clean_extracted_name(raw):
+    s = raw.strip().strip('*\"\'_.,;:!?()[]{}')
+    s = re.sub(r'^(?:UN\s+TAL\s+ALIAS|UN\s+TAL|UNA\s+TAL|ALIAS\s+EL|ALIAS\s+LA|ALIAS|EL\s+LLAMADO|LA\s+LLAMADA|AL\s+CUAL\s+LE\s+DICEN|LE\s+DICEN)\s+', '', s, flags=re.IGNORECASE)
+    s = s.strip().strip('*\"\'_.,;:!?')
+    
+    for cw in CUTOFF_WORDS:
+        s = re.split(cw, s, flags=re.IGNORECASE)[0]
+    s = s.strip().strip('*\"\'_.,;:!?')
+    
+    if len(s) < 3 or len(s) > 28:
+        return []
+        
+    s_upper = s.upper()
+    if s_upper in STOPWORDS_BLACKLIST:
+        return []
+    for sw in STOPWORDS_BLACKLIST:
+        if s_upper == sw:
+            return []
+            
+    if " Y " in s_upper or " E " in s_upper:
+        parts = re.split(r'\s+[YE]\s+', s, flags=re.IGNORECASE)
+        res = []
+        for p in parts:
+            res.extend(clean_extracted_name(p))
+        return res
+        
+    clean_name = s.title()
+    if clean_name.upper() in STOPWORDS_BLACKLIST:
+        return []
+    return [clean_name]
+
+def extract_smart_aliases(text):
+    patterns = [
+        r'(?:ALIAS|APODADO|APODADA|CONOCIDO COMO|CONOCIDA COMO|LE DICEN|LE APODAN)\s+[:\-\*\"\'\“]?\s*([^\,\.\;\_\(\)\n]+)',
+        r'(?:SE LLAMA|DE NOMBRE|NOMBRE DE)\s+[:\-\*\"\'\“]?\s*([^\,\.\;\_\(\)\n]+)',
+        r'APODO\s*[:\-\*\"\'\“]?\s*([A-ZÁÉÍÓÚÑa-záéíóúñ0-9\s]{2,20})'
+    ]
+    results = []
+    for pat in patterns:
+        matches = re.findall(pat, str(text), re.IGNORECASE)
+        for m in matches:
+            cleaned_list = clean_extracted_name(m)
+            for c in cleaned_list:
+                if c and c not in results:
+                    results.append(c)
+    return results
+
 def fix_coord(val, coord_type='lat'):
     if pd.isnull(val):
         return np.nan
@@ -20,8 +89,6 @@ def fix_coord(val, coord_type='lat'):
             return np.nan
         while abs(f) > 100:
             f = f / 10.0
-        
-        # Bounds for José C. Paz / GBA
         if coord_type == 'lat':
             if -35.0 <= f <= -34.0:
                 return f
@@ -43,7 +110,6 @@ def extract_sustancias(text):
         sustancias.append("MARIHUANA")
     if "PASTILLA" in text_u or "EXTASIS" in text_u or "ACIDO" in text_u:
         sustancias.append("SINTÉTICAS / PASTILLAS")
-    
     if not sustancias:
         return "NO ESPECIFICADA / POLIRUBRO"
     return " / ".join(sustancias)
@@ -66,21 +132,6 @@ def extract_tipo_lugar(text, comment=""):
     if "CASA" in combined or "FINCA" in combined or "PROPIEDAD" in combined or "DEPARTAMENTO" in combined:
         return "Finca / Vivienda"
     return "Lugar No Especificado"
-
-def extract_alias(text):
-    text_s = str(text)
-    patterns = [
-        r'(?:ALIAS|AL CUAL LE DICEN|LE DICEN|APODADO|CONOCIDO COMO)\s+[\*\"\'\“]?([A-ZÁÉÍÓÚÑa-záéíóúñ0-9\s]{2,20})[\*\"\'\”\.\,\_\s]',
-        r'(?:SE LLAMA|SE TRATA DE|NOMBRE DE)\s+([A-ZÁÉÍÓÚÑa-záéíóúñ]+\s+[A-ZÁÉÍÓÚÑa-záéíóúñ]+)',
-    ]
-    found = []
-    for pat in patterns:
-        matches = re.findall(pat, text_s, re.IGNORECASE)
-        for m in matches:
-            cleaned = m.strip().strip('*\"\'_')
-            if len(cleaned) > 2 and cleaned.upper() not in ["UNA FEMENINA", "UN MASCULINO", "DROGA", "DROGAS", "LA POLICIA"]:
-                found.append(cleaned.title())
-    return list(dict.fromkeys(found))[:3]
 
 def extract_barrio(comment, addr=""):
     combined = (str(comment) + " " + str(addr)).upper()
@@ -105,7 +156,7 @@ def get_franja(h):
         return "Noche (18-24 hs)"
 
 def run_etl_jcp():
-    print("--- INICIANDO ETL DROGAS JOSÉ C. PAZ ---")
+    print("--- INICIANDO ETL DROGAS JOSÉ C. PAZ CON NLP INTELIGENTE ---")
     files = [
         ("DROGAS ILICITAS JOSE C PAZ.xlsx", "DROGAS_ILICITAS_FORMAL", "Despacho Formal Drogas 911"),
         ("INFORMACION.xlsx", "INTELIGENCIA_RELATO_KEYWORDS", "Alerta Vecinal por Relato (Búnker/Venta)")
@@ -120,17 +171,9 @@ def run_etl_jcp():
             df['Origen_Dataset'] = orig_code
             df['Origen_Label'] = orig_label
             dfs.append(df)
-        else:
-            print(f"ADVERTENCIA: No se encontró {fpath}")
             
-    if not dfs:
-        raise FileNotFoundError("No se encontraron archivos en " + INPUT_DIR)
-        
     df_raw = pd.concat(dfs, ignore_index=True)
-    print(f"Total registros leídos: {len(df_raw)}")
-    
     df_clean = df_raw.drop_duplicates(subset=['ID']).copy()
-    print(f"Registros únicos tras deduplicar ID: {len(df_clean)}")
     
     df_clean['Fecha_DT'] = pd.to_datetime(df_clean['Fecha'], errors='coerce')
     df_clean['Fecha'] = df_clean['Fecha_DT'].dt.strftime('%Y-%m-%d %H:%M')
@@ -144,14 +187,11 @@ def run_etl_jcp():
     df_clean['Latitud_Clean'] = df_clean['Latitud'].apply(lambda v: fix_coord(v, 'lat'))
     df_clean['Longitud_Clean'] = df_clean['Longitud'].apply(lambda v: fix_coord(v, 'lon'))
     
-    valid_coords = df_clean['Latitud_Clean'].notnull().sum()
-    print(f"Coordenadas normalizadas: {valid_coords} ({valid_coords/len(df_clean)*100:.1f}%)")
-    
-    print("Ejecutando procesamiento NLP sobre relatos...")
+    print("Ejecutando procesamiento NLP inteligente sobre relatos...")
     df_clean['Sustancia_Detectada'] = df_clean['Relato'].apply(extract_sustancias)
     df_clean['Tiene_Armas'] = df_clean['Relato'].apply(check_armas)
     df_clean['Tipo_Punto_Venta'] = df_clean.apply(lambda r: extract_tipo_lugar(r['Relato'], r.get('comentario', '')), axis=1)
-    df_clean['Alias_Identificados'] = df_clean['Relato'].apply(extract_alias)
+    df_clean['Alias_Identificados'] = df_clean['Relato'].apply(extract_smart_aliases)
     df_clean['Barrio_Detectado'] = df_clean.apply(lambda r: extract_barrio(r.get('comentario', ''), r.get('Dirección', '')), axis=1)
     
     df_clean['Tipo'] = "NARCOCRIMINALIDAD"
@@ -207,15 +247,11 @@ def run_etl_jcp():
     with open(json_out, 'w', encoding='utf-8') as f:
         json.dump(records, f, ensure_ascii=False, indent=2)
 
-    # Copiar a public para acceso estático
     with open(os.path.join(PUBLIC_OUTPUT_DIR, "jcp_drogas_consolidado.json"), 'w', encoding='utf-8') as f:
         json.dump(records, f, ensure_ascii=False, indent=2)
     df_clean.to_csv(os.path.join(PUBLIC_OUTPUT_DIR, "jcp_drogas_consolidado.csv"), index=False, encoding='utf-8')
         
-    print(f"\n[ÉXITO] Archivos generados y replicados en public:")
-    print(f"  - Total registros: {len(records):,}")
-    print(f"  - Despachos Formales Drogas: {len(df_clean[df_clean['Origen_Dataset']=='DROGAS_ILICITAS_FORMAL']):,}")
-    print(f"  - Alertas por Palabras Clave en Relato: {len(df_clean[df_clean['Origen_Dataset']=='INTELIGENCIA_RELATO_KEYWORDS']):,}")
+    print(f"\n[ÉXITO] Archivos consolidados y guardados exitosamente ({len(records)} registros).")
 
 if __name__ == "__main__":
     run_etl_jcp()
