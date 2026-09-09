@@ -14,11 +14,17 @@ import {
   Filter,
   RotateCcw,
   ShieldAlert,
-  Building2
+  Building2,
+  Skull,
+  Crosshair,
+  Brain,
+  Database
 } from "lucide-react";
 import { FilterState } from "@/lib/types";
 
 interface SidebarProps {
+  currentProject: "mdp" | "jcp";
+  setCurrentProject: (proj: "mdp" | "jcp") => void;
   activeSection: string;
   setActiveSection: (sec: string) => void;
   filters: FilterState;
@@ -28,6 +34,8 @@ interface SidebarProps {
 }
 
 export default function Sidebar({
+  currentProject,
+  setCurrentProject,
   activeSection,
   setActiveSection,
   filters,
@@ -35,7 +43,8 @@ export default function Sidebar({
   availableTipos,
   availableSubtipos,
 }: SidebarProps) {
-  const sections = [
+  // Sections for Mar del Plata (Vehicular & General 911)
+  const mdpSections = [
     { id: "overview", label: "Dashboard / Resumen Investigativo", icon: <LayoutDashboard size={18} /> },
     { id: "map", label: "Mapeo & Geointeligencia", icon: <MapPin size={18} /> },
     { id: "recovery-tracker", label: "Trazabilidad Robo ➔ Hallazgo", icon: <Car size={18} /> },
@@ -52,6 +61,16 @@ export default function Sidebar({
     { id: "dictionary", label: "Diccionario de Datos", icon: <BookOpen size={18} /> },
   ];
 
+  // Sections for José C. Paz (Narcocriminalidad & Drogas)
+  const jcpSections = [
+    { id: "drogas-overview", label: "Resumen Ejecutivo Narcocriminalidad", icon: <LayoutDashboard size={18} /> },
+    { id: "drogas-map", label: "Mapa Táctico de Puntos & Búnkers", icon: <MapPin size={18} /> },
+    { id: "drogas-nlp", label: "Inteligencia de Alias & Redes (NLP)", icon: <Brain size={18} /> },
+    { id: "drogas-hotspots", label: "Hotspots de Narcomenudeo", icon: <Flame size={18} /> },
+    { id: "drogas-search", label: "Buscador Universal de Denuncias 911", icon: <Search size={18} /> },
+    { id: "drogas-etl", label: "Metodología & Integración ETL", icon: <Database size={18} /> },
+  ];
+
   const resetFilters = () => {
     setFilters({
       tipo: "todos",
@@ -62,10 +81,77 @@ export default function Sidebar({
     });
   };
 
+  const sectionsToRender = currentProject === "mdp" ? mdpSections : jcpSections;
+
   return (
     <aside className="app-sidebar">
-      <div className="nav-section-label">Inteligencia e Investigación 911</div>
-      {sections.map((sec) => (
+      {/* Project Switcher Selector */}
+      <div style={{ marginBottom: "1.25rem", paddingBottom: "1rem", borderBottom: "1px solid var(--border)" }}>
+        <div style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: "0.5rem" }}>
+          Jurisdicción / Proyecto Activo
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+          <button
+            onClick={() => {
+              setCurrentProject("mdp");
+              setActiveSection("overview");
+            }}
+            style={{
+              padding: "0.6rem 0.75rem",
+              borderRadius: "6px",
+              border: currentProject === "mdp" ? "1.5px solid var(--accent-indigo)" : "1px solid var(--border)",
+              background: currentProject === "mdp" ? "rgba(99,102,241,0.15)" : "var(--bg-base)",
+              color: currentProject === "mdp" ? "var(--accent-indigo)" : "var(--text-primary)",
+              fontWeight: 700,
+              fontSize: "0.8rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              cursor: "pointer",
+              textAlign: "left"
+            }}
+          >
+            <Car size={16} />
+            <div>
+              <div>Mar del Plata</div>
+              <span style={{ fontSize: "0.68rem", fontWeight: 500, color: "var(--text-muted)" }}>Automotores & 911 (8.598)</span>
+            </div>
+          </button>
+
+          <button
+            onClick={() => {
+              setCurrentProject("jcp");
+              setActiveSection("drogas-overview");
+            }}
+            style={{
+              padding: "0.6rem 0.75rem",
+              borderRadius: "6px",
+              border: currentProject === "jcp" ? "1.5px solid #ef4444" : "1px solid var(--border)",
+              background: currentProject === "jcp" ? "rgba(239,68,68,0.15)" : "var(--bg-base)",
+              color: currentProject === "jcp" ? "#ef4444" : "var(--text-primary)",
+              fontWeight: 700,
+              fontSize: "0.8rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              cursor: "pointer",
+              textAlign: "left"
+            }}
+          >
+            <Skull size={16} />
+            <div>
+              <div>José C. Paz</div>
+              <span style={{ fontSize: "0.68rem", fontWeight: 500, color: "var(--text-muted)" }}>Drogas & Búnkers (1.770)</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <div className="nav-section-label">
+        {currentProject === "mdp" ? "Inteligencia Mar del Plata" : "Inteligencia Narcocriminal JCP"}
+      </div>
+
+      {sectionsToRender.map((sec) => (
         <button
           key={sec.id}
           className={`nav-item ${activeSection === sec.id ? "active" : ""}`}
@@ -76,98 +162,120 @@ export default function Sidebar({
         </button>
       ))}
 
-      <div style={{ marginTop: "2rem", paddingTop: "1.25rem", borderTop: "1px solid var(--border)" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
-          <span style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-muted)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-            <Filter size={14} /> Filtros Investigativos
-          </span>
-          <button
-            onClick={resetFilters}
-            style={{ background: "none", border: "none", color: "var(--accent-indigo)", cursor: "pointer", fontSize: "0.75rem", display: "flex", alignItems: "center", gap: "0.2rem" }}
-            title="Resetear filtros"
-          >
-            <RotateCcw size={12} /> Limpiar
-          </button>
+      {/* MDP Specific Filters */}
+      {currentProject === "mdp" && (
+        <div style={{ marginTop: "2rem", paddingTop: "1.25rem", borderTop: "1px solid var(--border)" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
+            <span style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-muted)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+              <Filter size={14} /> Filtros MDP
+            </span>
+            <button
+              onClick={resetFilters}
+              style={{ background: "none", border: "none", color: "var(--accent-indigo)", cursor: "pointer", fontSize: "0.75rem", display: "flex", alignItems: "center", gap: "0.2rem" }}
+              title="Resetear filtros"
+            >
+              <RotateCcw size={12} /> Limpiar
+            </button>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <div>
+              <label className="form-label">Origen Dataset</label>
+              <select
+                className="form-select"
+                value={filters.origenDataset}
+                onChange={(e) => setFilters((f) => ({ ...f, origenDataset: e.target.value }))}
+              >
+                <option value="todos">Todos los Orígenes</option>
+                <option value="ROBO_AUTO_MOTO">Robo Auto-Moto</option>
+                <option value="HALLAZGO_AUTOMOTOR">Hallazgo Automotor</option>
+                <option value="DISPAROS_PERSONAS">Disparos a Personas</option>
+                <option value="ARMA_FUEGO">Armas de Fuego</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="form-label">Tipo de Incidente</label>
+              <select
+                className="form-select"
+                value={filters.tipo}
+                onChange={(e) => setFilters((f) => ({ ...f, tipo: e.target.value }))}
+              >
+                <option value="todos">Todos los Tipos</option>
+                {availableTipos.map((t) => (
+                  <option key={t} value={t}>{t}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="form-label">Subtipo</label>
+              <select
+                className="form-select"
+                value={filters.subtipo}
+                onChange={(e) => setFilters((f) => ({ ...f, subtipo: e.target.value }))}
+              >
+                <option value="todos">Todos los Subtipos</option>
+                {availableSubtipos.map((st) => (
+                  <option key={st} value={st}>{st}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="form-label">Franja Horaria</label>
+              <select
+                className="form-select"
+                value={filters.franjaHoraria}
+                onChange={(e) => setFilters((f) => ({ ...f, franjaHoraria: e.target.value }))}
+              >
+                <option value="todos">Todas las Franjas</option>
+                <option value="Madrugada">Madrugada (00:00 - 06:00)</option>
+                <option value="Mañana">Mañana (06:00 - 12:00)</option>
+                <option value="Tarde">Tarde (12:00 - 18:00)</option>
+                <option value="Noche">Noche (18:00 - 24:00)</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="form-label">Día de la Semana</label>
+              <select
+                className="form-select"
+                value={filters.diaSemana}
+                onChange={(e) => setFilters((f) => ({ ...f, diaSemana: e.target.value }))}
+              >
+                <option value="todos">Todos los Días</option>
+                <option value="Lunes">Lunes</option>
+                <option value="Martes">Martes</option>
+                <option value="Miércoles">Miércoles</option>
+                <option value="Jueves">Jueves</option>
+                <option value="Viernes">Viernes</option>
+                <option value="Sábado">Sábado</option>
+                <option value="Domingo">Domingo</option>
+              </select>
+            </div>
+          </div>
         </div>
+      )}
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <div>
-            <label className="form-label">Origen Dataset</label>
-            <select
-              className="form-select"
-              value={filters.origenDataset}
-              onChange={(e) => setFilters((f) => ({ ...f, origenDataset: e.target.value }))}
-            >
-              <option value="todos">Todos los Orígenes</option>
-              <option value="ROBO_AUTO_MOTO">Robo Auto-Moto</option>
-              <option value="HALLAZGO_AUTOMOTOR">Hallazgo Automotor</option>
-              <option value="DISPAROS_PERSONAS">Disparos a Personas</option>
-              <option value="ARMA_FUEGO">Armas de Fuego</option>
-            </select>
+      {/* JCP Specific Source Distinction Box */}
+      {currentProject === "jcp" && (
+        <div style={{ marginTop: "2rem", paddingTop: "1.25rem", borderTop: "1px solid var(--border)", fontSize: "0.75rem", color: "var(--text-secondary)" }}>
+          <div style={{ fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "0.5rem" }}>
+            Fuentes Integradas JCP
           </div>
-
-          <div>
-            <label className="form-label">Tipo de Incidente</label>
-            <select
-              className="form-select"
-              value={filters.tipo}
-              onChange={(e) => setFilters((f) => ({ ...f, tipo: e.target.value }))}
-            >
-              <option value="todos">Todos los Tipos</option>
-              {availableTipos.map((t) => (
-                <option key={t} value={t}>{t}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="form-label">Subtipo</label>
-            <select
-              className="form-select"
-              value={filters.subtipo}
-              onChange={(e) => setFilters((f) => ({ ...f, subtipo: e.target.value }))}
-            >
-              <option value="todos">Todos los Subtipos</option>
-              {availableSubtipos.map((st) => (
-                <option key={st} value={st}>{st}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="form-label">Franja Horaria</label>
-            <select
-              className="form-select"
-              value={filters.franjaHoraria}
-              onChange={(e) => setFilters((f) => ({ ...f, franjaHoraria: e.target.value }))}
-            >
-              <option value="todos">Todas las Franjas</option>
-              <option value="Madrugada (00-06)">Madrugada (00-06 hs)</option>
-              <option value="Mañana (06-12)">Mañana (06-12 hs)</option>
-              <option value="Tarde (12-18)">Tarde (12-18 hs)</option>
-              <option value="Noche (18-24)">Noche (18-24 hs) [Pico]</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="form-label">Día de la Semana</label>
-            <select
-              className="form-select"
-              value={filters.diaSemana}
-              onChange={(e) => setFilters((f) => ({ ...f, diaSemana: e.target.value }))}
-            >
-              <option value="todos">Todos los Días</option>
-              <option value="Lunes">Lunes</option>
-              <option value="Martes">Martes</option>
-              <option value="Miércoles">Miércoles</option>
-              <option value="Jueves">Jueves</option>
-              <option value="Viernes">Viernes</option>
-              <option value="Sábado">Sábado [Pico]</option>
-              <option value="Domingo">Domingo</option>
-            </select>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+            <div style={{ background: "rgba(239,68,68,0.1)", padding: "0.5rem", borderRadius: "4px", border: "1px solid rgba(239,68,68,0.25)" }}>
+              <strong style={{ color: "#ef4444", display: "block" }}>DROGAS ILÍCITAS:</strong>
+              989 hechos con tipificación formal 911.
+            </div>
+            <div style={{ background: "rgba(16,185,129,0.1)", padding: "0.5rem", borderRadius: "4px", border: "1px solid rgba(16,185,129,0.25)" }}>
+              <strong style={{ color: "#10b981", display: "block" }}>INFORMACIÓN VECINAL:</strong>
+              781 hechos rescatados por búsqueda de términos (cocaína, búnker, venta).
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </aside>
   );
 }
