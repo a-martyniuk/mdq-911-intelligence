@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import { Flame, Filter, Download, FileText, Info, ShieldAlert, Clock, MapPin, ChevronRight, X, AlertOctagon, Target, Layers, Building2, Home, Route, CheckSquare, Square } from "lucide-react";
 import { exportToCSV } from "@/lib/excelExport";
 import { generateDrogasJcpPDF, generateDrogasTacticalDeploymentPDF, generateDrogasChronicHotspotPDF } from "@/lib/pdfReport";
-import { JURISDICTIONS_JCP_GEOJSON } from "@/lib/jurisdictionsJcpGeoJSON";
+import { JURISDICTIONS_JCP_GEOJSON, JCP_MUNICIPAL_BOUNDARY_GEOJSON, POLICE_STATIONS_JCP } from "@/lib/jurisdictionsJcpGeoJSON";
 import { RENABAP_JCP_GEOJSON } from "@/lib/renabapJcpGeoJSON";
 import { CORRIDORS_JCP_GEOJSON } from "@/lib/corridorsJcpGeoJSON";
 import "leaflet/dist/leaflet.css";
@@ -18,7 +18,9 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
   const mapInstanceRef = useRef<any>(null);
   const markersGroupRef = useRef<any>(null);
   const jurisLayerRef = useRef<any>(null);
+  const stationsLayerRef = useRef<any>(null);
   const renabapLayerRef = useRef<any>(null);
+  const renabapLabelsRef = useRef<any>(null);
   const corridorsLayerRef = useRef<any>(null);
 
   const [activeTab, setActiveTab] = useState<"map" | "chronic">("map");
@@ -29,9 +31,9 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
   const [mapReady, setMapReady] = useState<boolean>(false);
 
   // Layer Toggles (Replicated from Mar del Plata)
-  const [showJurisdictions, setShowJurisdictions] = useState<boolean>(true);
+  const [showJurisdictions, setShowJurisdictions] = useState<boolean>(false);
   const [showRenabap, setShowRenabap] = useState<boolean>(true);
-  const [showCorridors, setShowCorridors] = useState<boolean>(true);
+  const [showCorridors, setShowCorridors] = useState<boolean>(false);
 
   // Selected corner for chronic dossier modal
   const [selectedCorner, setSelectedCorner] = useState<any | null>(null);
@@ -130,19 +132,32 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
             zoom: 13,
           });
 
-          L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
-            attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap',
+          L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
             maxZoom: 19,
+          }).addTo(map);
+
+          // Municipal Boundary Base
+          L.geoJSON(JCP_MUNICIPAL_BOUNDARY_GEOJSON as any, {
+            style: {
+              color: "#475569",
+              weight: 2,
+              dashArray: "5, 5",
+              fillColor: "#0f172a",
+              fillOpacity: 0.03,
+            },
+            interactive: false,
           }).addTo(map);
 
           // A. Jurisdictions Layer
           const jurisLayer = L.geoJSON(JURISDICTIONS_JCP_GEOJSON as any, {
             style: (feature: any) => ({
               color: feature.properties.color || "#2563eb",
-              weight: 2,
-              opacity: 0.85,
+              weight: 1.5,
+              dashArray: "4, 4",
+              opacity: 0.7,
               fillColor: feature.properties.color || "#2563eb",
-              fillOpacity: 0.08,
+              fillOpacity: 0.05,
             }),
             onEachFeature: (feature: any, layer: any) => {
               layer.bindPopup(`
@@ -159,20 +174,44 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
           jurisLayerRef.current = jurisLayer;
           if (showJurisdictions) jurisLayer.addTo(map);
 
+          // A2. Police Stations Permanent Badges
+          const stationsGroup = L.layerGroup();
+          POLICE_STATIONS_JCP.forEach((st: any) => {
+            const icon = L.divIcon({
+              className: "police-badge-icon",
+              html: `<div style="background:#1e3a8a; color:#fff; border:1.5px solid #60a5fa; border-radius:12px; padding:2px 8px; font-size:10px; font-weight:800; white-space:nowrap; box-shadow:0 2px 6px rgba(0,0,0,0.6); pointer-events:auto; transform:translate(-50%, -50%); cursor:pointer;">
+                <span>👮</span> <span>${st.name}</span>
+              </div>`,
+              iconSize: [0, 0],
+            });
+            const m = L.marker([st.center[0], st.center[1]], { icon });
+            m.bindPopup(`
+              <div style="font-family:sans-serif; font-size:0.85rem; color:#111; padding:0.2rem; max-width:260px;">
+                <strong style="color:#1d4ed8; font-size:0.95rem;">🏛️ ${st.name}</strong><br/>
+                <div style="margin-top:4px;">📍 <b>Dirección:</b> ${st.sede}</div>
+                <div>📞 <b>Teléfono:</b> ${st.phone}</div>
+                <div style="margin-top:4px; font-size:0.75rem; color:#64748b;">${st.description}</div>
+              </div>
+            `);
+            stationsGroup.addLayer(m);
+          });
+          stationsLayerRef.current = stationsGroup;
+          if (showJurisdictions) stationsGroup.addTo(map);
+
           // B. RENABAP Settlements Layer
           const renabapLayer = L.geoJSON(RENABAP_JCP_GEOJSON as any, {
             style: (feature: any) => ({
               color: feature.properties.color || "#ea580c",
-              weight: 2,
-              dashArray: "6, 4",
+              weight: 1.5,
+              dashArray: "5, 4",
               fillColor: feature.properties.color || "#ea580c",
-              fillOpacity: 0.22,
+              fillOpacity: 0.18,
             }),
             onEachFeature: (feature: any, layer: any) => {
               layer.bindPopup(`
                 <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem; max-width: 260px;">
                   <strong style="color: ${feature.properties.color || '#ea580c'}; font-size: 0.95rem;">
-                    🏘️ ${feature.properties.name}
+                    🏚️ ${feature.properties.name}
                   </strong><br/>
                   <span style="font-size: 0.8rem; color: #334155;"><b>ID RENABAP:</b> #${feature.properties.idRenabap} · <b>Familias:</b> ${feature.properties.familias}</span><br/>
                   <span style="font-size: 0.78rem; color: #64748b;">${feature.properties.description}</span>
@@ -183,12 +222,31 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
           renabapLayerRef.current = renabapLayer;
           if (showRenabap) renabapLayer.addTo(map);
 
+          // B2. RENABAP Key Barrio Labels
+          const renabapLabelsGroup = L.layerGroup();
+          (RENABAP_JCP_GEOJSON as any).features
+            .filter((f: any) => parseInt(f.properties.familias || "0") >= 150)
+            .forEach((f: any) => {
+              const icon = L.divIcon({
+                className: "renabap-badge-icon",
+                html: `<div style="background:rgba(124, 45, 18, 0.92); color:#ffedd5; border:1px solid #fb923c; border-radius:10px; padding:1px 6px; font-size:9px; font-weight:700; white-space:nowrap; box-shadow:0 1px 4px rgba(0,0,0,0.5); pointer-events:none; transform:translate(-50%, -50%);">
+                  🏚️ ${f.properties.name.replace("B° ", "")} (${f.properties.familias})
+                </div>`,
+                iconSize: [0, 0]
+              });
+              const m = L.marker([f.properties.center[0], f.properties.center[1]], { icon });
+              renabapLabelsGroup.addLayer(m);
+            });
+          renabapLabelsRef.current = renabapLabelsGroup;
+          if (showRenabap) renabapLabelsGroup.addTo(map);
+
           // C. Corridors Layer
           const corridorsLayer = L.geoJSON(CORRIDORS_JCP_GEOJSON as any, {
             style: (feature: any) => ({
               color: feature.properties.color || "#d97706",
-              weight: feature.properties.weight || 3.5,
-              opacity: 0.85,
+              weight: 2.5,
+              dashArray: "4, 3",
+              opacity: 0.7,
             }),
             onEachFeature: (feature: any, layer: any) => {
               layer.bindPopup(`

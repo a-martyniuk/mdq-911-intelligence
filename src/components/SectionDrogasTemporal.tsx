@@ -66,6 +66,7 @@ export default function SectionDrogasTemporal({ incidents = [] }: SectionDrogasT
   const [filterArmas, setFilterArmas] = useState<string>("todos");
   const [filterBarrio, setFilterBarrio] = useState<string>("todos");
   const [selectedHour, setSelectedHour] = useState<number | null>(null);
+  const [excludeCentro, setExcludeCentro] = useState<boolean>(true);
 
   // Filtered dataset
   const filtered = useMemo(() => {
@@ -159,12 +160,21 @@ export default function SectionDrogasTemporal({ incidents = [] }: SectionDrogasT
         return filtered.filter((inc) => getDay(inc) === day && getSlot(getHour(inc)) === slot).length;
       });
     });
-    return { z, x: daysOrder, y: slots.map(s => s + " ") };
+    const text = z.map((row) => row.map((v) => (v > 0 ? String(v) : "-")));
+    return { z, text, x: daysOrder, y: slots.map(s => s + " ") };
   }, [filtered]);
 
   // Top 8 Barrios x Slot Matrix
   const heatmapBarrioSlot = useMemo(() => {
-    const topBarrios = barriosList
+    const candidateBarrios = barriosList.filter((b) => {
+      if (excludeCentro) {
+        const u = b.toUpperCase();
+        if (u.includes("CENTRO") || u.includes("GENERAL") || u.includes("DESCONOCIDO")) return false;
+      }
+      return true;
+    });
+
+    const topBarrios = candidateBarrios
       .map((b) => ({
         barrio: b,
         count: filtered.filter((i) => (i.barrio || "").toUpperCase() === b.toUpperCase()).length,
@@ -179,8 +189,9 @@ export default function SectionDrogasTemporal({ incidents = [] }: SectionDrogasT
         return filtered.filter((inc) => (inc.barrio || "").toUpperCase() === barrio.toUpperCase() && getSlot(getHour(inc)) === slot).length;
       });
     });
-    return { z, x: slots, y: topBarrios };
-  }, [filtered, barriosList]);
+    const text = z.map((row) => row.map((v) => (v > 0 ? String(v) : "-")));
+    return { z, text, x: slots, y: topBarrios };
+  }, [filtered, barriosList, excludeCentro]);
 
   // Key Aggregates
   const totalCount = filtered.length;
@@ -486,6 +497,9 @@ export default function SectionDrogasTemporal({ incidents = [] }: SectionDrogasT
                 z: heatmapDaySlot.z,
                 x: heatmapDaySlot.x,
                 y: heatmapDaySlot.y,
+                text: (heatmapDaySlot as any).text,
+                texttemplate: "<b>%{text}</b>",
+                textfont: { color: "#ffffff", size: 11 },
                 type: "heatmap",
                 colorscale: "YlOrRd",
                 hoverongaps: false,
@@ -506,9 +520,30 @@ export default function SectionDrogasTemporal({ incidents = [] }: SectionDrogasT
 
         {/* Heatmap: Top Barrios x Slot */}
         <div className="card">
-          <div className="card-title" style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>
-            <MapPin size={18} color="#10b981" />
-            <span>Matriz 2D: Top 8 Barrios vs Franja Horaria</span>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem", flexWrap: "wrap", gap: "0.4rem" }}>
+            <div className="card-title" style={{ fontSize: "1rem", margin: 0 }}>
+              <MapPin size={18} color="#10b981" />
+              <span>Matriz 2D: Top 8 Barrios vs Franja Horaria</span>
+            </div>
+            <button
+              onClick={() => setExcludeCentro(!excludeCentro)}
+              title={excludeCentro ? "Click para incluir José C. Paz (Centro / General)" : "Click para excluir genérico Centro"}
+              style={{
+                background: excludeCentro ? "rgba(16, 185, 129, 0.15)" : "rgba(255, 255, 255, 0.06)",
+                border: `1px solid ${excludeCentro ? "#10b981" : "#4b5563"}`,
+                color: excludeCentro ? "#34d399" : "#9ca3af",
+                borderRadius: "4px",
+                padding: "2px 8px",
+                fontSize: "0.72rem",
+                cursor: "pointer",
+                fontWeight: 700,
+                display: "flex",
+                alignItems: "center",
+                gap: "4px"
+              }}
+            >
+              {excludeCentro ? "✓ Excluyendo genérico Centro (1.605)" : "Incluir genérico Centro"}
+            </button>
           </div>
           <Plot
             data={[
@@ -516,6 +551,9 @@ export default function SectionDrogasTemporal({ incidents = [] }: SectionDrogasT
                 z: heatmapBarrioSlot.z,
                 x: heatmapBarrioSlot.x,
                 y: heatmapBarrioSlot.y,
+                text: (heatmapBarrioSlot as any).text,
+                texttemplate: "<b>%{text}</b>",
+                textfont: { color: "#ffffff", size: 11 },
                 type: "heatmap",
                 colorscale: "Reds",
                 hoverongaps: false,

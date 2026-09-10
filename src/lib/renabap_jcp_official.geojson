@@ -1,29 +1,21 @@
-// Capa Oficial RENABAP (Registro Nacional de Barrios Populares - Decreto 573/2023)
-// Fuente: CONICET / ODSA-UCA / Secretaría de Integración Socio Urbana (SISU)
-// 53 Barrios Populares oficiales georreferenciados en José C. Paz
-
-export const RENABAP_JCP_GEOJSON = {
+{
   "type": "FeatureCollection",
   "features": [
     {
       "type": "Feature",
+      "id": "4417",
       "properties": {
-        "name": "B° Alvear III",
-        "fullName": "Barrio Popular Alvear III",
-        "idRenabap": "4417",
-        "familias": "55",
+        "id": "4417",
+        "nombre": "Alvear III",
+        "familias": 55,
         "tipo": "Asentamiento",
-        "decada": "Década 2010",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 2010",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#fb923c",
-        "center": [
-          -34.491645,
-          -58.780913
-        ],
-        "description": "Asentamiento con 55 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.0269558526519",
+        "lat": -34.491645,
+        "lon": -58.780913
       },
       "geometry": {
         "type": "Polygon",
@@ -60,6 +52,10 @@ export const RENABAP_JCP_GEOJSON = {
             [
               -58.782135843875,
               -34.48914858425
+            ],
+            [
+              -58.781986448286,
+              -34.489657806293
             ],
             [
               -58.781878079345,
@@ -151,23 +147,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "651",
       "properties": {
-        "name": "B° Lido",
-        "fullName": "Barrio Popular Lido",
-        "idRenabap": "651",
-        "familias": "176",
+        "id": "651",
+        "nombre": "Lido",
+        "familias": 176,
         "tipo": "Asentamiento",
-        "decada": "Década 1980",
-        "electricidad": "Conexión formal a la red con medidor domiciliario con factura",
+        "decada": "D\u00e9cada 1980",
+        "electricidad": "Conexi\u00f3n formal a la red con medidor domiciliario con factura",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#f97316",
-        "center": [
-          -34.501806,
-          -58.755826
-        ],
-        "description": "Asentamiento con 176 familias estimadas (RENABAP oficial). Electricidad: Conexión formal a la red con medidor domiciliario con factura."
+        "superficie_km2": "0.03667332597342",
+        "lat": -34.501806,
+        "lon": -58.755826
       },
       "geometry": {
         "type": "Polygon",
@@ -218,6 +210,18 @@ export const RENABAP_JCP_GEOJSON = {
               -34.501621270372
             ],
             [
+              -58.754957267228,
+              -34.50102030043
+            ],
+            [
+              -58.75498140455,
+              -34.500979313751
+            ],
+            [
+              -58.755043161429,
+              -34.50087444651
+            ],
+            [
               -58.755410856326,
               -34.500417103565
             ],
@@ -247,23 +251,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1382",
       "properties": {
-        "name": "B° Provincias Unidas",
-        "fullName": "Barrio Popular Provincias Unidas",
-        "idRenabap": "1382",
-        "familias": "88",
+        "id": "1382",
+        "nombre": "Provincias Unidas",
+        "familias": 88,
         "tipo": "Villa",
-        "decada": "Década 2000",
-        "electricidad": "Conexión formal a la red con medidor domiciliario con factura",
+        "decada": "D\u00e9cada 2000",
+        "electricidad": "Conexi\u00f3n formal a la red con medidor domiciliario con factura",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#fb923c",
-        "center": [
-          -34.500682,
-          -58.754654
-        ],
-        "description": "Villa con 88 familias estimadas (RENABAP oficial). Electricidad: Conexión formal a la red con medidor domiciliario con factura."
+        "superficie_km2": "0.02777937968054",
+        "lat": -34.500682,
+        "lon": -58.754654
       },
       "geometry": {
         "type": "Polygon",
@@ -286,6 +286,10 @@ export const RENABAP_JCP_GEOJSON = {
               -34.501143203096
             ],
             [
+              -58.753886361167,
+              -34.501023908926
+            ],
+            [
               -58.75413212544,
               -34.50059959943
             ],
@@ -298,6 +302,14 @@ export const RENABAP_JCP_GEOJSON = {
               -34.499701590333
             ],
             [
+              -58.755043161429,
+              -34.50087444651
+            ],
+            [
+              -58.754957267228,
+              -34.50102030043
+            ],
+            [
               -58.753982953931,
               -34.502202420808
             ]
@@ -307,23 +319,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1539",
       "properties": {
-        "name": "B° Aguas Claras",
-        "fullName": "Barrio Popular Aguas Claras",
-        "idRenabap": "1539",
-        "familias": "88",
+        "id": "1539",
+        "nombre": "Aguas Claras",
+        "familias": 88,
         "tipo": "Asentamiento",
-        "decada": "Década 1980",
-        "electricidad": "Conexión a la red con medidor comunitario",
+        "decada": "D\u00e9cada 1980",
+        "electricidad": "Conexi\u00f3n a la red con medidor comunitario",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo comunitaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#fb923c",
-        "center": [
-          -34.506417,
-          -58.745316
-        ],
-        "description": "Asentamiento con 88 familias estimadas (RENABAP oficial). Electricidad: Conexión a la red con medidor comunitario."
+        "superficie_km2": "0.02046046038241",
+        "lat": -34.506417,
+        "lon": -58.745316
       },
       "geometry": {
         "type": "Polygon",
@@ -371,23 +379,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "4544",
       "properties": {
-        "name": "B° Potosí y Florencio Ballesteros",
-        "fullName": "Barrio Popular Potosí y Florencio Ballesteros",
-        "idRenabap": "4544",
-        "familias": "17",
+        "id": "4544",
+        "nombre": "Potos\u00ed y Florencio Ballesteros",
+        "familias": 17,
         "tipo": "Villa",
-        "decada": "Década 2000",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 2000",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#fb923c",
-        "center": [
-          -34.527411,
-          -58.77866
-        ],
-        "description": "Villa con 17 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.00401377435039",
+        "lat": -34.527411,
+        "lon": -58.77866
       },
       "geometry": {
         "type": "Polygon",
@@ -406,8 +410,16 @@ export const RENABAP_JCP_GEOJSON = {
               -34.527962151544
             ],
             [
+              -58.778126858623,
+              -34.528380029498
+            ],
+            [
               -58.778104018488,
               -34.528369735353
+            ],
+            [
+              -58.778126215239,
+              -34.52828545204
             ],
             [
               -58.778834902793,
@@ -423,23 +435,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "67",
       "properties": {
-        "name": "B° 11 de Septiembre y Bruguetti",
-        "fullName": "Barrio Popular 11 de Septiembre y Bruguetti",
-        "idRenabap": "67",
-        "familias": "51",
+        "id": "67",
+        "nombre": "11 de Septiembre y Bruguetti",
+        "familias": 51,
         "tipo": "Asentamiento",
-        "decada": "Década 2010",
-        "electricidad": "Conexión regular a la red con medidor prepago",
+        "decada": "D\u00e9cada 2010",
+        "electricidad": "Conexi\u00f3n regular a la red con medidor prepago",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#fb923c",
-        "center": [
-          -34.509919,
-          -58.773067
-        ],
-        "description": "Asentamiento con 51 familias estimadas (RENABAP oficial). Electricidad: Conexión regular a la red con medidor prepago."
+        "superficie_km2": "0.0091888738702",
+        "lat": -34.509919,
+        "lon": -58.773067
       },
       "geometry": {
         "type": "Polygon",
@@ -448,6 +456,10 @@ export const RENABAP_JCP_GEOJSON = {
             [
               -58.773101266065,
               -34.509263895801
+            ],
+            [
+              -58.773737251002,
+              -34.509602893479
             ],
             [
               -58.773746150744,
@@ -471,23 +483,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "386",
       "properties": {
-        "name": "B° Alberdi",
-        "fullName": "Barrio Popular Alberdi",
-        "idRenabap": "386",
-        "familias": "193",
+        "id": "386",
+        "nombre": "Alberdi",
+        "familias": 193,
         "tipo": "Asentamiento",
-        "decada": "Década 1990",
-        "electricidad": "Conexión formal a la red con medidor domiciliario con factura",
+        "decada": "D\u00e9cada 1990",
+        "electricidad": "Conexi\u00f3n formal a la red con medidor domiciliario con factura",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#f97316",
-        "center": [
-          -34.508957,
-          -58.769987
-        ],
-        "description": "Asentamiento con 193 familias estimadas (RENABAP oficial). Electricidad: Conexión formal a la red con medidor domiciliario con factura."
+        "superficie_km2": "0.04613978812724",
+        "lat": -34.508957,
+        "lon": -58.769987
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -501,6 +509,10 @@ export const RENABAP_JCP_GEOJSON = {
               [
                 -58.770008313086,
                 -34.508918397798
+              ],
+              [
+                -58.769850867257,
+                -34.508879441625
               ],
               [
                 -58.768494009867,
@@ -527,6 +539,10 @@ export const RENABAP_JCP_GEOJSON = {
                 -34.51079000841
               ],
               [
+                -58.769223125734,
+                -34.510032716543
+              ],
+              [
                 -58.769145692925,
                 -34.509937050468
               ],
@@ -539,6 +555,10 @@ export const RENABAP_JCP_GEOJSON = {
                 -34.50898065193
               ],
               [
+                -58.770278120567,
+                -34.509104414868
+              ],
+              [
                 -58.771512746767,
                 -34.509736579255
               ]
@@ -549,23 +569,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1564",
       "properties": {
-        "name": "B° Sol y Verde II",
-        "fullName": "Barrio Popular Sol y Verde II",
-        "idRenabap": "1564",
-        "familias": "1210",
+        "id": "1564",
+        "nombre": "Sol y Verde II",
+        "familias": 1210,
         "tipo": "Asentamiento",
-        "decada": "Década 1930",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 1930",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#ea580c",
-        "center": [
-          -34.491006,
-          -58.81115
-        ],
-        "description": "Asentamiento con 1210 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.79880951416996",
+        "lat": -34.491006,
+        "lon": -58.81115
       },
       "geometry": {
         "type": "Polygon",
@@ -576,8 +592,16 @@ export const RENABAP_JCP_GEOJSON = {
               -34.498168992831
             ],
             [
+              -58.813824991798,
+              -34.496984559156
+            ],
+            [
               -58.812523866388,
               -34.496081538033
+            ],
+            [
+              -58.813048075057,
+              -34.495546300064
             ],
             [
               -58.813857095796,
@@ -620,6 +644,14 @@ export const RENABAP_JCP_GEOJSON = {
               -34.492186438363
             ],
             [
+              -58.808795214,
+              -34.485423429
+            ],
+            [
+              -58.811209202,
+              -34.482876474
+            ],
+            [
               -58.812253679473,
               -34.48184039008
             ],
@@ -628,12 +660,28 @@ export const RENABAP_JCP_GEOJSON = {
               -34.482095795216
             ],
             [
+              -58.81244795662,
+              -34.482398762446
+            ],
+            [
+              -58.812397077329,
+              -34.482939060219
+            ],
+            [
+              -58.81242704106,
+              -34.483097439941
+            ],
+            [
               -58.812379955197,
               -34.483439882581
             ],
             [
               -58.812238697607,
               -34.483785178911
+            ],
+            [
+              -58.812076037353,
+              -34.483912168057
             ],
             [
               -58.811870571769,
@@ -664,12 +712,24 @@ export const RENABAP_JCP_GEOJSON = {
               -34.48608810567
             ],
             [
+              -58.811361188341,
+              -34.486156594198
+            ],
+            [
               -58.811633715609,
               -34.486255046457
             ],
             [
+              -58.81183490066,
+              -34.486526146881
+            ],
+            [
               -58.812031805179,
               -34.486845760012
+            ],
+            [
+              -58.812056061532,
+              -34.487081189328
             ],
             [
               -58.812128774,
@@ -680,8 +740,16 @@ export const RENABAP_JCP_GEOJSON = {
               -34.48777606252
             ],
             [
+              -58.812475553767,
+              -34.488020052901
+            ],
+            [
               -58.812613957668,
               -34.488535143707
+            ],
+            [
+              -58.812847960139,
+              -34.488866171593
             ],
             [
               -58.813110546429,
@@ -690,6 +758,14 @@ export const RENABAP_JCP_GEOJSON = {
             [
               -58.813374465699,
               -34.490210258957
+            ],
+            [
+              -58.813440100539,
+              -34.490341528636
+            ],
+            [
+              -58.813546850895,
+              -34.490458046334
             ],
             [
               -58.813582784972,
@@ -704,8 +780,16 @@ export const RENABAP_JCP_GEOJSON = {
               -34.490996450187
             ],
             [
+              -58.81367410301,
+              -34.491277538521
+            ],
+            [
               -58.813909921,
               -34.491607715
+            ],
+            [
+              -58.81411499791,
+              -34.49173127502
             ],
             [
               -58.814246267589,
@@ -714,6 +798,10 @@ export const RENABAP_JCP_GEOJSON = {
             [
               -58.81437182989,
               -34.492117949835
+            ],
+            [
+              -58.814444598951,
+              -34.492397611325
             ],
             [
               -58.814428903664,
@@ -728,12 +816,28 @@ export const RENABAP_JCP_GEOJSON = {
               -34.493061093942
             ],
             [
+              -58.815065276238,
+              -34.493049679187
+            ],
+            [
+              -58.815182277473,
+              -34.49297833697
+            ],
+            [
               -58.815349218261,
               -34.49290271422
             ],
             [
+              -58.81545959033,
+              -34.492930792023
+            ],
+            [
               -58.815594635487,
               -34.492995459102
+            ],
+            [
+              -58.81568452668,
+              -34.493135289847
             ],
             [
               -58.815864309066,
@@ -750,6 +854,14 @@ export const RENABAP_JCP_GEOJSON = {
             [
               -58.815874296977,
               -34.494111251373
+            ],
+            [
+              -58.816022688788,
+              -34.494119812439
+            ],
+            [
+              -58.816370838806,
+              -34.494114105062
             ],
             [
               -58.816496401107,
@@ -772,12 +884,24 @@ export const RENABAP_JCP_GEOJSON = {
               -34.496028930161
             ],
             [
+              -58.81947850577,
+              -34.496255798411
+            ],
+            [
               -58.819589799628,
               -34.496409897599
             ],
             [
               -58.819600500961,
               -34.496516910924
+            ],
+            [
+              -58.819538433232,
+              -34.496598241051
+            ],
+            [
+              -58.819410017242,
+              -34.496685991978
             ],
             [
               -58.819356510579,
@@ -797,23 +921,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "50",
       "properties": {
-        "name": "B° Urquiza",
-        "fullName": "Barrio Popular Urquiza",
-        "idRenabap": "50",
-        "familias": "112",
+        "id": "50",
+        "nombre": "Urquiza",
+        "familias": 112,
         "tipo": "Asentamiento",
-        "decada": "Década 1990",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 1990",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#f97316",
-        "center": [
-          -34.503977,
-          -58.80958
-        ],
-        "description": "Asentamiento con 112 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.07545721511287",
+        "lat": -34.503977,
+        "lon": -58.80958
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -829,8 +949,16 @@ export const RENABAP_JCP_GEOJSON = {
                 -34.502924542223
               ],
               [
+                -58.8155186,
+                -34.5029296
+              ],
+              [
                 -58.815053500932,
                 -34.503108871499
+              ],
+              [
+                -58.814906308382,
+                -34.503276665845
               ],
               [
                 -58.813898736267,
@@ -841,8 +969,20 @@ export const RENABAP_JCP_GEOJSON = {
                 -34.504459768924
               ],
               [
+                -58.813109459018,
+                -34.503905141668
+              ],
+              [
+                -58.813013675055,
+                -34.503682971748
+              ],
+              [
                 -58.812979348813,
                 -34.503498374077
+              ],
+              [
+                -58.814411310541,
+                -34.503097547127
               ],
               [
                 -58.815502961911,
@@ -863,6 +1003,10 @@ export const RENABAP_JCP_GEOJSON = {
               [
                 -58.80876192803,
                 -34.502396557355
+              ],
+              [
+                -58.808821061155,
+                -34.502438527163
               ],
               [
                 -58.8094424,
@@ -887,23 +1031,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "621",
       "properties": {
-        "name": "B° Nestor Kirchner",
-        "fullName": "Barrio Popular Nestor Kirchner",
-        "idRenabap": "621",
-        "familias": "50",
+        "id": "621",
+        "nombre": "Nestor Kirchner",
+        "familias": 50,
         "tipo": "Villa",
-        "decada": "Década 2000",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 2000",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#fb923c",
-        "center": [
-          -34.500417,
-          -58.810269
-        ],
-        "description": "Villa con 50 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.01256342822172",
+        "lat": -34.500417,
+        "lon": -58.810269
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -931,6 +1071,10 @@ export const RENABAP_JCP_GEOJSON = {
                 -34.500589853304
               ],
               [
+                -58.808758831341,
+                -34.500637933475
+              ],
+              [
                 -58.808757663271,
                 -34.50069808149
               ]
@@ -951,8 +1095,24 @@ export const RENABAP_JCP_GEOJSON = {
                 -34.499714500315
               ],
               [
+                -58.811471790958,
+                -34.499844598591
+              ],
+              [
                 -58.811103249242,
                 -34.500195397711
+              ],
+              [
+                -58.811258311188,
+                -34.500586441536
+              ],
+              [
+                -58.811260620809,
+                -34.500604425687
+              ],
+              [
+                -58.811252496382,
+                -34.500620291724
               ],
               [
                 -58.811236542911,
@@ -965,6 +1125,10 @@ export const RENABAP_JCP_GEOJSON = {
               [
                 -58.810687416361,
                 -34.500550054951
+              ],
+              [
+                -58.810630871757,
+                -34.500608422203
               ],
               [
                 -58.810381190837,
@@ -989,23 +1153,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1373",
       "properties": {
-        "name": "B° San Atilio",
-        "fullName": "Barrio Popular San Atilio",
-        "idRenabap": "1373",
-        "familias": "374",
+        "id": "1373",
+        "nombre": "San Atilio",
+        "familias": 374,
         "tipo": "Asentamiento",
-        "decada": "Década 2000",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 2000",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#ea580c",
-        "center": [
-          -34.503905,
-          -58.817422
-        ],
-        "description": "Asentamiento con 374 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.13848316146508",
+        "lat": -34.503905,
+        "lon": -58.817422
       },
       "geometry": {
         "type": "Polygon",
@@ -1016,6 +1176,10 @@ export const RENABAP_JCP_GEOJSON = {
               -34.501924878801
             ],
             [
+              -58.819524347516,
+              -34.502214059617
+            ],
+            [
               -58.819841638966,
               -34.502536896281
             ],
@@ -1024,12 +1188,24 @@ export const RENABAP_JCP_GEOJSON = {
               -34.502987068455
             ],
             [
+              -58.819985582895,
+              -34.503212689564
+            ],
+            [
               -58.820138515348,
               -34.503565676196
             ],
             [
               -58.819638091718,
               -34.503808770242
+            ],
+            [
+              -58.819529715836,
+              -34.503912788822
+            ],
+            [
+              -58.819168251282,
+              -34.504336028794
             ],
             [
               -58.818801335715,
@@ -1052,12 +1228,28 @@ export const RENABAP_JCP_GEOJSON = {
               -34.506337733821
             ],
             [
+              -58.817219425186,
+              -34.50596257026
+            ],
+            [
               -58.814296924923,
               -34.504010285327
             ],
             [
+              -58.815023947622,
+              -34.503220139786
+            ],
+            [
               -58.815109,
               -34.503092
+            ],
+            [
+              -58.8155186,
+              -34.5029296
+            ],
+            [
+              -58.816114598094,
+              -34.502828058035
             ],
             [
               -58.819239022172,
@@ -1069,23 +1261,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "259",
       "properties": {
-        "name": "B° Nuestra Señora de Caacupé",
-        "fullName": "Barrio Popular Nuestra Señora de Caacupé",
-        "idRenabap": "259",
-        "familias": "138",
+        "id": "259",
+        "nombre": "Nuestra Se\u00f1ora de Caacup\u00e9",
+        "familias": 138,
         "tipo": "Asentamiento",
-        "decada": "Década 2010",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 2010",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#f97316",
-        "center": [
-          -34.51515,
-          -58.784692
-        ],
-        "description": "Asentamiento con 138 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.06729217772797",
+        "lat": -34.51515,
+        "lon": -58.784692
       },
       "geometry": {
         "type": "Polygon",
@@ -1104,12 +1292,32 @@ export const RENABAP_JCP_GEOJSON = {
               -34.51351712615
             ],
             [
+              -58.784391401066,
+              -34.513548013846
+            ],
+            [
+              -58.785160709923,
+              -34.514047165618
+            ],
+            [
               -58.785779017943,
               -34.514448564939
             ],
             [
+              -58.7857872433,
+              -34.514500421074
+            ],
+            [
               -58.786599033836,
               -34.51506986443
+            ],
+            [
+              -58.786238947009,
+              -34.515547789987
+            ],
+            [
+              -58.786201249396,
+              -34.515619607002
             ],
             [
               -58.78574419147,
@@ -1125,23 +1333,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "661",
       "properties": {
-        "name": "B° 11 de Septiembre y Fernández Moreno",
-        "fullName": "Barrio Popular 11 de Septiembre y Fernández Moreno",
-        "idRenabap": "661",
-        "familias": "303",
+        "id": "661",
+        "nombre": "11 de Septiembre y Fern\u00e1ndez Moreno",
+        "familias": 303,
         "tipo": "Asentamiento",
-        "decada": "Década 2000",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 2000",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#ea580c",
-        "center": [
-          -34.516631,
-          -58.786559
-        ],
-        "description": "Asentamiento con 303 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.15157161175095",
+        "lat": -34.516631,
+        "lon": -58.786559
       },
       "geometry": {
         "type": "Polygon",
@@ -1160,12 +1364,24 @@ export const RENABAP_JCP_GEOJSON = {
               -34.517417298302
             ],
             [
+              -58.785057470855,
+              -34.518451783558
+            ],
+            [
+              -58.783495283591,
+              -34.520049924049
+            ],
+            [
               -58.783423566403,
               -34.520123291785
             ],
             [
               -58.782702684,
               -34.519636179
+            ],
+            [
+              -58.782750546206,
+              -34.519561124929
             ],
             [
               -58.782868981,
@@ -1176,12 +1392,24 @@ export const RENABAP_JCP_GEOJSON = {
               -34.518872329025
             ],
             [
+              -58.783313667613,
+              -34.518453951578
+            ],
+            [
               -58.783550842614,
               -34.518178727427
             ],
             [
               -58.783614635,
               -34.518009634
+            ],
+            [
+              -58.783869066131,
+              -34.517788862693
+            ],
+            [
+              -58.784158174056,
+              -34.517451219966
             ],
             [
               -58.784531231354,
@@ -1192,12 +1420,52 @@ export const RENABAP_JCP_GEOJSON = {
               -34.516827901187
             ],
             [
+              -58.785234813036,
+              -34.516743491719
+            ],
+            [
+              -58.785716380207,
+              -34.516287068693
+            ],
+            [
               -58.785809899236,
               -34.516217132478
             ],
             [
+              -58.786191610754,
+              -34.515689334295
+            ],
+            [
+              -58.786224837106,
+              -34.515624425727
+            ],
+            [
+              -58.786613217426,
+              -34.515089644771
+            ],
+            [
+              -58.786646420355,
+              -34.515055763073
+            ],
+            [
+              -58.787051250215,
+              -34.514517098585
+            ],
+            [
+              -58.787099296503,
+              -34.514460393876
+            ],
+            [
               -58.787699675799,
               -34.513682805617
+            ],
+            [
+              -58.788134649095,
+              -34.513794054452
+            ],
+            [
+              -58.788158419076,
+              -34.513808996688
             ],
             [
               -58.788238952204,
@@ -1213,31 +1481,27 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1384",
       "properties": {
-        "name": "B° La Cava",
-        "fullName": "Barrio Popular La Cava",
-        "idRenabap": "1384",
-        "familias": "308",
+        "id": "1384",
+        "nombre": "La Cava",
+        "familias": 308,
         "tipo": "Villa",
-        "decada": "Década 1990",
-        "electricidad": "Conexión formal a la red con medidor domiciliario con factura",
+        "decada": "D\u00e9cada 1990",
+        "electricidad": "Conexi\u00f3n formal a la red con medidor domiciliario con factura",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#ea580c",
-        "center": [
-          -34.512517,
-          -58.7872
-        ],
-        "description": "Villa con 308 familias estimadas (RENABAP oficial). Electricidad: Conexión formal a la red con medidor domiciliario con factura."
+        "superficie_km2": "0.13935333108786",
+        "lat": -34.512517,
+        "lon": -58.7872
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              -58.784377987554,
-              -34.513507577213
+              -58.785041571,
+              -34.512696622
             ],
             [
               -58.78557429,
@@ -1268,12 +1532,32 @@ export const RENABAP_JCP_GEOJSON = {
               -34.513559638067
             ],
             [
+              -58.786972685441,
+              -34.51447798617
+            ],
+            [
               -58.786568695589,
               -34.51497360255
             ],
             [
+              -58.78602151568,
+              -34.514596934101
+            ],
+            [
+              -58.785228699445,
+              -34.514051174222
+            ],
+            [
+              -58.785160978696,
+              -34.514015688773
+            ],
+            [
               -58.784377987554,
               -34.513507577213
+            ],
+            [
+              -58.785041571,
+              -34.512696622
             ]
           ]
         ]
@@ -1281,23 +1565,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1079",
       "properties": {
-        "name": "B° Terminal 391",
-        "fullName": "Barrio Popular Terminal 391",
-        "idRenabap": "1079",
-        "familias": "110",
+        "id": "1079",
+        "nombre": "Terminal 391",
+        "familias": 110,
         "tipo": "Asentamiento",
-        "decada": "Década 2000",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 2000",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#f97316",
-        "center": [
-          -34.516219,
-          -58.790195
-        ],
-        "description": "Asentamiento con 110 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.02461066021916",
+        "lat": -34.516219,
+        "lon": -58.790195
       },
       "geometry": {
         "type": "Polygon",
@@ -1316,12 +1596,24 @@ export const RENABAP_JCP_GEOJSON = {
               -34.516229489599
             ],
             [
+              -58.789732365756,
+              -34.516605657125
+            ],
+            [
               -58.789428826579,
               -34.516896835121
             ],
             [
+              -58.788807896867,
+              -34.516466868351
+            ],
+            [
               -58.788763277283,
               -34.516396230989
+            ],
+            [
+              -58.789123005934,
+              -34.515952778266
             ],
             [
               -58.790012503674,
@@ -1345,35 +1637,39 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1385",
       "properties": {
-        "name": "B° El Ceibo",
-        "fullName": "Barrio Popular El Ceibo",
-        "idRenabap": "1385",
-        "familias": "605",
+        "id": "1385",
+        "nombre": "El Ceibo",
+        "familias": 605,
         "tipo": "Asentamiento",
-        "decada": "Década 1980",
-        "electricidad": "Conexión formal a la red con medidor domiciliario con factura",
+        "decada": "D\u00e9cada 1980",
+        "electricidad": "Conexi\u00f3n formal a la red con medidor domiciliario con factura",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#ea580c",
-        "center": [
-          -34.520787,
-          -58.78173
-        ],
-        "description": "Asentamiento con 605 familias estimadas (RENABAP oficial). Electricidad: Conexión formal a la red con medidor domiciliario con factura."
+        "superficie_km2": "0.12638816885116",
+        "lat": -34.520787,
+        "lon": -58.78173
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              -58.780834513718,
-              -34.518475287029
+              -58.782773418422,
+              -34.51972377952
+            ],
+            [
+              -58.783277476605,
+              -34.520063847754
             ],
             [
               -58.784582035556,
               -34.520907577152
+            ],
+            [
+              -58.783760727,
+              -34.52173777
             ],
             [
               -58.783532569278,
@@ -1400,8 +1696,24 @@ export const RENABAP_JCP_GEOJSON = {
               -34.520990631817
             ],
             [
+              -58.780363798,
+              -34.519189766
+            ],
+            [
               -58.780834513718,
               -34.518475287029
+            ],
+            [
+              -58.781809667395,
+              -34.519134862964
+            ],
+            [
+              -58.782317747097,
+              -34.519435827174
+            ],
+            [
+              -58.782773418422,
+              -34.51972377952
             ]
           ]
         ]
@@ -1409,23 +1721,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1563",
       "properties": {
-        "name": "B° Mirador de Altube",
-        "fullName": "Barrio Popular Mirador de Altube",
-        "idRenabap": "1563",
-        "familias": "1231",
+        "id": "1563",
+        "nombre": "Mirador de Altube",
+        "familias": 1231,
         "tipo": "Villa",
-        "decada": "Década 1980",
-        "electricidad": "Conexión regular a la red con medidor prepago",
+        "decada": "D\u00e9cada 1980",
+        "electricidad": "Conexi\u00f3n regular a la red con medidor prepago",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#ea580c",
-        "center": [
-          -34.541012,
-          -58.786352
-        ],
-        "description": "Villa con 1231 familias estimadas (RENABAP oficial). Electricidad: Conexión regular a la red con medidor prepago."
+        "superficie_km2": "0.45044120849911",
+        "lat": -34.541012,
+        "lon": -58.786352
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -1445,6 +1753,10 @@ export const RENABAP_JCP_GEOJSON = {
                 -34.540128748143
               ],
               [
+                -58.787403357279,
+                -34.540933412047
+              ],
+              [
                 -58.788089230633,
                 -34.541403010141
               ],
@@ -1457,12 +1769,24 @@ export const RENABAP_JCP_GEOJSON = {
                 -34.539880562593
               ],
               [
+                -58.791734422667,
+                -34.539315619015
+              ],
+              [
                 -58.792475313285,
                 -34.538574266389
               ],
               [
                 -58.793459776041,
                 -34.539211925827
+              ],
+              [
+                -58.791173547507,
+                -34.541572554919
+              ],
+              [
+                -58.790579275767,
+                -34.542154108338
               ],
               [
                 -58.789769326602,
@@ -1479,6 +1803,18 @@ export const RENABAP_JCP_GEOJSON = {
               [
                 -58.787533969679,
                 -34.541974438919
+              ],
+              [
+                -58.78681688599,
+                -34.542712401456
+              ],
+              [
+                -58.786712480097,
+                -34.542803027937
+              ],
+              [
+                -58.786370724229,
+                -34.543155735749
               ],
               [
                 -58.786311452611,
@@ -1533,6 +1869,10 @@ export const RENABAP_JCP_GEOJSON = {
                 -34.542898340805
               ],
               [
+                -58.78127941449,
+                -34.541498072551
+              ],
+              [
                 -58.781583323611,
                 -34.541248102818
               ],
@@ -1547,6 +1887,10 @@ export const RENABAP_JCP_GEOJSON = {
               [
                 -58.782748999021,
                 -34.542398934314
+              ],
+              [
+                -58.784109119041,
+                -34.541021962893
               ],
               [
                 -58.785014912608,
@@ -1569,6 +1913,10 @@ export const RENABAP_JCP_GEOJSON = {
                 -34.536526660989
               ],
               [
+                -58.786215772229,
+                -34.536549978993
+              ],
+              [
                 -58.787224283229,
                 -34.537205390326
               ],
@@ -1583,6 +1931,10 @@ export const RENABAP_JCP_GEOJSON = {
               [
                 -58.790105244461,
                 -34.535408643794
+              ],
+              [
+                -58.790064383764,
+                -34.535385953899
               ],
               [
                 -58.790165949208,
@@ -1613,6 +1965,14 @@ export const RENABAP_JCP_GEOJSON = {
                 -34.539310353738
               ],
               [
+                -58.786953037731,
+                -34.539280195253
+              ],
+              [
+                -58.785954929876,
+                -34.538561219025
+              ],
+              [
                 -58.785128621089,
                 -34.537965997333
               ],
@@ -1633,6 +1993,10 @@ export const RENABAP_JCP_GEOJSON = {
                 -34.537660540801
               ],
               [
+                -58.79167658041,
+                -34.537707159858
+              ],
+              [
                 -58.791396867871,
                 -34.538011735054
               ],
@@ -1645,6 +2009,10 @@ export const RENABAP_JCP_GEOJSON = {
                 -34.537564195531
               ],
               [
+                -58.790916183222,
+                -34.537289908173
+              ],
+              [
                 -58.790999055462,
                 -34.537234756779
               ]
@@ -1655,31 +2023,27 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "732",
       "properties": {
-        "name": "B° Papelitos",
-        "fullName": "Barrio Popular Papelitos",
-        "idRenabap": "732",
-        "familias": "220",
+        "id": "732",
+        "nombre": "Papelitos",
+        "familias": 220,
         "tipo": "Villa",
-        "decada": "Década 1980",
-        "electricidad": "Conexión formal a la red con medidor domiciliario con factura",
+        "decada": "D\u00e9cada 1980",
+        "electricidad": "Conexi\u00f3n formal a la red con medidor domiciliario con factura",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#f97316",
-        "center": [
-          -34.537452,
-          -58.782933
-        ],
-        "description": "Villa con 220 familias estimadas (RENABAP oficial). Electricidad: Conexión formal a la red con medidor domiciliario con factura."
+        "superficie_km2": "0.04669521279392",
+        "lat": -34.537452,
+        "lon": -58.782933
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              -58.784445,
-              -34.536306
+              -58.783047322706,
+              -34.537693035658
             ],
             [
               -58.782859626463,
@@ -1694,16 +2058,36 @@ export const RENABAP_JCP_GEOJSON = {
               -34.539267
             ],
             [
+              -58.782599,
+              -34.538715
+            ],
+            [
               -58.781295,
               -34.537866
+            ],
+            [
+              -58.781633,
+              -34.53753
+            ],
+            [
+              -58.782293,
+              -34.53689
             ],
             [
               -58.783452,
               -34.535675
             ],
             [
+              -58.784021,
+              -34.536037
+            ],
+            [
               -58.784445,
               -34.536306
+            ],
+            [
+              -58.783047322706,
+              -34.537693035658
             ]
           ]
         ]
@@ -1711,23 +2095,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1386",
       "properties": {
-        "name": "B° Mirador de Altube II",
-        "fullName": "Barrio Popular Mirador de Altube II",
-        "idRenabap": "1386",
-        "familias": "165",
+        "id": "1386",
+        "nombre": "Mirador de Altube II",
+        "familias": 165,
         "tipo": "Villa",
-        "decada": "Década 1960",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 1960",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#f97316",
-        "center": [
-          -34.543071,
-          -58.778314
-        ],
-        "description": "Villa con 165 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.05802698188204",
+        "lat": -34.543071,
+        "lon": -58.778314
       },
       "geometry": {
         "type": "Polygon",
@@ -1736,6 +2116,18 @@ export const RENABAP_JCP_GEOJSON = {
             [
               -58.779250927487,
               -34.544780288559
+            ],
+            [
+              -58.778782602279,
+              -34.544448926383
+            ],
+            [
+              -58.778353655554,
+              -34.544159748815
+            ],
+            [
+              -58.777013799492,
+              -34.543272937609
             ],
             [
               -58.776409278891,
@@ -1775,23 +2167,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "178",
       "properties": {
-        "name": "B° Concejal Alfonzo II",
-        "fullName": "Barrio Popular Concejal Alfonzo II",
-        "idRenabap": "178",
-        "familias": "39",
+        "id": "178",
+        "nombre": "Concejal Alfonzo II",
+        "familias": 39,
         "tipo": "Asentamiento",
-        "decada": "Década 2010",
-        "electricidad": "Conexión regular a la red con medidor prepago",
+        "decada": "D\u00e9cada 2010",
+        "electricidad": "Conexi\u00f3n regular a la red con medidor prepago",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#fb923c",
-        "center": [
-          -34.535939,
-          -58.765679
-        ],
-        "description": "Asentamiento con 39 familias estimadas (RENABAP oficial). Electricidad: Conexión regular a la red con medidor prepago."
+        "superficie_km2": "0.01716005363354",
+        "lat": -34.535939,
+        "lon": -58.765679
       },
       "geometry": {
         "type": "Polygon",
@@ -1823,23 +2211,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1379",
       "properties": {
-        "name": "B° Pueyrredón",
-        "fullName": "Barrio Popular Pueyrredón",
-        "idRenabap": "1379",
-        "familias": "160",
+        "id": "1379",
+        "nombre": "Pueyrred\u00f3n",
+        "familias": 160,
         "tipo": "Asentamiento",
-        "decada": "Década 2010",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 2010",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#f97316",
-        "center": [
-          -34.534231,
-          -58.76253
-        ],
-        "description": "Asentamiento con 160 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.04779837627027",
+        "lat": -34.534231,
+        "lon": -58.76253
       },
       "geometry": {
         "type": "Polygon",
@@ -1879,23 +2263,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "648",
       "properties": {
-        "name": "B° Las Acacias",
-        "fullName": "Barrio Popular Las Acacias",
-        "idRenabap": "648",
-        "familias": "440",
+        "id": "648",
+        "nombre": "Las Acacias",
+        "familias": 440,
         "tipo": "Asentamiento",
-        "decada": "Década 1930",
-        "electricidad": "No tiene conexión eléctrica",
+        "decada": "D\u00e9cada 1930",
+        "electricidad": "No tiene conexi\u00f3n el\u00e9ctrica",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#ea580c",
-        "center": [
-          -34.537125,
-          -58.762609
-        ],
-        "description": "Asentamiento con 440 familias estimadas (RENABAP oficial). Electricidad: No tiene conexión eléctrica."
+        "superficie_km2": "0.13426337043281",
+        "lat": -34.537125,
+        "lon": -58.762609
       },
       "geometry": {
         "type": "Polygon",
@@ -1906,8 +2286,20 @@ export const RENABAP_JCP_GEOJSON = {
               -34.535763758
             ],
             [
+              -58.760405671,
+              -34.535452712
+            ],
+            [
               -58.761156982,
               -34.534571334
+            ],
+            [
+              -58.763095,
+              -34.535566
+            ],
+            [
+              -58.764668,
+              -34.536444
             ],
             [
               -58.765459,
@@ -1959,23 +2351,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "387",
       "properties": {
-        "name": "B° Las Acacias",
-        "fullName": "Barrio Popular Las Acacias",
-        "idRenabap": "387",
-        "familias": "53",
+        "id": "387",
+        "nombre": "Las Acacias",
+        "familias": 53,
         "tipo": "Asentamiento",
-        "decada": "Década 1990",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 1990",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#fb923c",
-        "center": [
-          -34.535903,
-          -58.758074
-        ],
-        "description": "Asentamiento con 53 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.00708023599217",
+        "lat": -34.535903,
+        "lon": -58.758074
       },
       "geometry": {
         "type": "Polygon",
@@ -1994,8 +2382,24 @@ export const RENABAP_JCP_GEOJSON = {
               -34.5354173796
             ],
             [
+              -58.757871493369,
+              -34.535422826643
+            ],
+            [
               -58.75873776247,
               -34.535838719341
+            ],
+            [
+              -58.758716084796,
+              -34.53588082292
+            ],
+            [
+              -58.758670923378,
+              -34.535969032908
+            ],
+            [
+              -58.7586277941,
+              -34.535960885729
             ],
             [
               -58.75831340029,
@@ -2007,23 +2411,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "4737",
       "properties": {
-        "name": "B° La Esperanza",
-        "fullName": "Barrio Popular La Esperanza",
-        "idRenabap": "4737",
-        "familias": "17",
+        "id": "4737",
+        "nombre": "La Esperanza",
+        "familias": 17,
         "tipo": "Asentamiento",
-        "decada": "Década 1980",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 1980",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#fb923c",
-        "center": [
-          -34.495797,
-          -58.779989
-        ],
-        "description": "Asentamiento con 17 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.00558613908131",
+        "lat": -34.495797,
+        "lon": -58.779989
       },
       "geometry": {
         "type": "Polygon",
@@ -2055,23 +2455,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "993",
       "properties": {
-        "name": "B° Frino",
-        "fullName": "Barrio Popular Frino",
-        "idRenabap": "993",
-        "familias": "99",
+        "id": "993",
+        "nombre": "Frino",
+        "familias": 99,
         "tipo": "Asentamiento",
-        "decada": "Década 1990",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 1990",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#fb923c",
-        "center": [
-          -34.503448,
-          -58.780998
-        ],
-        "description": "Asentamiento con 99 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.07106903891437",
+        "lat": -34.503448,
+        "lon": -58.780998
       },
       "geometry": {
         "type": "Polygon",
@@ -2080,6 +2476,10 @@ export const RENABAP_JCP_GEOJSON = {
             [
               -58.781592708195,
               -34.505031257767
+            ],
+            [
+              -58.779252714725,
+              -34.503791319191
             ],
             [
               -58.778578498761,
@@ -2098,6 +2498,14 @@ export const RENABAP_JCP_GEOJSON = {
               -34.502024964081
             ],
             [
+              -58.781701852458,
+              -34.502207931151
+            ],
+            [
+              -58.781771418133,
+              -34.502214845716
+            ],
+            [
               -58.7831567623,
               -34.502955907624
             ],
@@ -2111,23 +2519,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1383",
       "properties": {
-        "name": "B° Viena",
-        "fullName": "Barrio Popular Viena",
-        "idRenabap": "1383",
-        "familias": "495",
+        "id": "1383",
+        "nombre": "Viena",
+        "familias": 495,
         "tipo": "Villa",
-        "decada": "Década 1980",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 1980",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#ea580c",
-        "center": [
-          -34.501086,
-          -58.77424
-        ],
-        "description": "Villa con 495 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.26250983047263",
+        "lat": -34.501086,
+        "lon": -58.77424
       },
       "geometry": {
         "type": "Polygon",
@@ -2146,6 +2550,10 @@ export const RENABAP_JCP_GEOJSON = {
               -34.50443682679
             ],
             [
+              -58.774880740738,
+              -34.502915086202
+            ],
+            [
               -58.769152590485,
               -34.499901748032
             ],
@@ -2159,23 +2567,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "6331",
       "properties": {
-        "name": "B° León",
-        "fullName": "Barrio Popular León",
-        "idRenabap": "6331",
-        "familias": "88",
+        "id": "6331",
+        "nombre": "Le\u00f3n",
+        "familias": 88,
         "tipo": "Asentamiento",
-        "decada": "Década 2010",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 2010",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo comunitaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#fb923c",
-        "center": [
-          -34.496607,
-          -58.775676
-        ],
-        "description": "Asentamiento con 88 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.02936007037941",
+        "lat": -34.496607,
+        "lon": -58.775676
       },
       "geometry": {
         "type": "Polygon",
@@ -2207,23 +2611,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "6328",
       "properties": {
-        "name": "B° Frino",
-        "fullName": "Barrio Popular Frino",
-        "idRenabap": "6328",
-        "familias": "55",
+        "id": "6328",
+        "nombre": "Frino",
+        "familias": 55,
         "tipo": "Asentamiento",
-        "decada": "Década 1990",
-        "electricidad": "Conexión formal a la red con medidor domiciliario con factura",
+        "decada": "D\u00e9cada 1990",
+        "electricidad": "Conexi\u00f3n formal a la red con medidor domiciliario con factura",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#fb923c",
-        "center": [
-          -34.505756,
-          -58.7735
-        ],
-        "description": "Asentamiento con 55 familias estimadas (RENABAP oficial). Electricidad: Conexión formal a la red con medidor domiciliario con factura."
+        "superficie_km2": "0.02353382383467",
+        "lat": -34.505756,
+        "lon": -58.7735
       },
       "geometry": {
         "type": "Polygon",
@@ -2255,23 +2655,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1521",
       "properties": {
-        "name": "B° Providencia",
-        "fullName": "Barrio Popular Providencia",
-        "idRenabap": "1521",
-        "familias": "385",
+        "id": "1521",
+        "nombre": "Providencia",
+        "familias": 385,
         "tipo": "Asentamiento",
-        "decada": "Década 1990",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 1990",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo comunitaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#ea580c",
-        "center": [
-          -34.530979,
-          -58.736929
-        ],
-        "description": "Asentamiento con 385 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.0794495171862",
+        "lat": -34.530979,
+        "lon": -58.736929
       },
       "geometry": {
         "type": "Polygon",
@@ -2282,8 +2678,24 @@ export const RENABAP_JCP_GEOJSON = {
               -34.532079665438
             ],
             [
+              -58.736223801805,
+              -34.5320589931
+            ],
+            [
+              -58.736137845788,
+              -34.532037970845
+            ],
+            [
               -58.735998054917,
               -34.531964569083
+            ],
+            [
+              -58.735814528944,
+              -34.531763048358
+            ],
+            [
+              -58.735190202,
+              -34.531206715
             ],
             [
               -58.734666019022,
@@ -2292,6 +2704,18 @@ export const RENABAP_JCP_GEOJSON = {
             [
               -58.735091263388,
               -34.530507675233
+            ],
+            [
+              -58.735200553244,
+              -34.530514249059
+            ],
+            [
+              -58.735296695448,
+              -34.530552870287
+            ],
+            [
+              -58.73545939764,
+              -34.530662981871
             ],
             [
               -58.735586168942,
@@ -2310,12 +2734,32 @@ export const RENABAP_JCP_GEOJSON = {
               -34.528723859739
             ],
             [
+              -58.737655877232,
+              -34.53013050197
+            ],
+            [
               -58.739125949057,
               -34.531497857765
             ],
             [
               -58.73828881341,
               -34.53211744086
+            ],
+            [
+              -58.738269159529,
+              -34.532098349502
+            ],
+            [
+              -58.73779228412,
+              -34.532432573641
+            ],
+            [
+              -58.737755306349,
+              -34.532396006734
+            ],
+            [
+              -58.737382194737,
+              -34.532663007539
             ],
             [
               -58.737212143981,
@@ -2331,23 +2775,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1557",
       "properties": {
-        "name": "B° La Triangulito",
-        "fullName": "Barrio Popular La Triangulito",
-        "idRenabap": "1557",
-        "familias": "39",
+        "id": "1557",
+        "nombre": "La Triangulito",
+        "familias": 39,
         "tipo": "Asentamiento",
-        "decada": "Década 1970",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 1970",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo comunitaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#fb923c",
-        "center": [
-          -34.52213,
-          -58.770674
-        ],
-        "description": "Asentamiento con 39 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.00386155464349",
+        "lat": -34.52213,
+        "lon": -58.770674
       },
       "geometry": {
         "type": "Polygon",
@@ -2364,6 +2804,10 @@ export const RENABAP_JCP_GEOJSON = {
             [
               -58.770535812519,
               -34.522617326438
+            ],
+            [
+              -58.770492750746,
+              -34.522527795302
             ],
             [
               -58.770398739226,
@@ -2391,31 +2835,27 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1537",
       "properties": {
-        "name": "B° Estación Piñero",
-        "fullName": "Barrio Popular Estación Piñero",
-        "idRenabap": "1537",
-        "familias": "220",
+        "id": "1537",
+        "nombre": "Estaci\u00f3n Pi\u00f1ero",
+        "familias": 220,
         "tipo": "Villa",
-        "decada": "Década 1980",
-        "electricidad": "Conexión formal a la red con medidor domiciliario con factura",
+        "decada": "D\u00e9cada 1980",
+        "electricidad": "Conexi\u00f3n formal a la red con medidor domiciliario con factura",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo comunitaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#f97316",
-        "center": [
-          -34.515545,
-          -58.770694
-        ],
-        "description": "Villa con 220 familias estimadas (RENABAP oficial). Electricidad: Conexión formal a la red con medidor domiciliario con factura."
+        "superficie_km2": "0.05169570045843",
+        "lat": -34.515545,
+        "lon": -58.770694
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              -58.772107959,
-              -34.514407255
+              -58.772365451,
+              -34.515079121
             ],
             [
               -58.772639036,
@@ -2426,12 +2866,28 @@ export const RENABAP_JCP_GEOJSON = {
               -34.516707122038
             ],
             [
+              -58.769116766699,
+              -34.516178110076
+            ],
+            [
+              -58.768887759182,
+              -34.515661789225
+            ],
+            [
               -58.768762563479,
               -34.515324986703
             ],
             [
+              -58.770396709,
+              -34.514858113
+            ],
+            [
               -58.772107959,
               -34.514407255
+            ],
+            [
+              -58.772365451,
+              -34.515079121
             ]
           ]
         ]
@@ -2439,23 +2895,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "6334",
       "properties": {
-        "name": "B° Sol y Verde",
-        "fullName": "Barrio Popular Sol y Verde",
-        "idRenabap": "6334",
-        "familias": "616",
+        "id": "6334",
+        "nombre": "Sol y Verde",
+        "familias": 616,
         "tipo": "Asentamiento",
-        "decada": "Década 1980",
-        "electricidad": "Conexión regular a la red con medidor domiciliario pero sin factura",
+        "decada": "D\u00e9cada 1980",
+        "electricidad": "Conexi\u00f3n regular a la red con medidor domiciliario pero sin factura",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#ea580c",
-        "center": [
-          -34.50173,
-          -58.801895
-        ],
-        "description": "Asentamiento con 616 familias estimadas (RENABAP oficial). Electricidad: Conexión regular a la red con medidor domiciliario pero sin factura."
+        "superficie_km2": "0.26468305436408",
+        "lat": -34.50173,
+        "lon": -58.801895
       },
       "geometry": {
         "type": "Polygon",
@@ -2574,6 +3026,10 @@ export const RENABAP_JCP_GEOJSON = {
               -34.499492262926
             ],
             [
+              -58.808248466288,
+              -34.500529094169
+            ],
+            [
               -58.798401583258,
               -34.503520015633
             ]
@@ -2583,23 +3039,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1082",
       "properties": {
-        "name": "B° Estación Sol y Verde",
-        "fullName": "Barrio Popular Estación Sol y Verde",
-        "idRenabap": "1082",
-        "familias": "50",
+        "id": "1082",
+        "nombre": "Estaci\u00f3n Sol y Verde",
+        "familias": 50,
         "tipo": "Villa",
-        "decada": "Década 2010",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 2010",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#fb923c",
-        "center": [
-          -34.504596,
-          -58.79773
-        ],
-        "description": "Villa con 50 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.01233327608286",
+        "lat": -34.504596,
+        "lon": -58.79773
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -2609,6 +3061,10 @@ export const RENABAP_JCP_GEOJSON = {
               [
                 -58.796609057629,
                 -34.505275371926
+              ],
+              [
+                -58.79655926368,
+                -34.505236539618
               ],
               [
                 -58.796366786345,
@@ -2621,6 +3077,10 @@ export const RENABAP_JCP_GEOJSON = {
               [
                 -58.798141771073,
                 -34.504823274948
+              ],
+              [
+                -58.796810680916,
+                -34.505224981421
               ],
               [
                 -58.796609057629,
@@ -2657,23 +3117,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "919",
       "properties": {
-        "name": "B° Vucetich II",
-        "fullName": "Barrio Popular Vucetich II",
-        "idRenabap": "919",
-        "familias": "39",
+        "id": "919",
+        "nombre": "Vucetich II",
+        "familias": 39,
         "tipo": "Asentamiento",
-        "decada": "Década 1990",
-        "electricidad": "Conexión formal a la red con medidor domiciliario con factura",
+        "decada": "D\u00e9cada 1990",
+        "electricidad": "Conexi\u00f3n formal a la red con medidor domiciliario con factura",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#fb923c",
-        "center": [
-          -34.506447,
-          -58.79418
-        ],
-        "description": "Asentamiento con 39 familias estimadas (RENABAP oficial). Electricidad: Conexión formal a la red con medidor domiciliario con factura."
+        "superficie_km2": "0.00331110868801",
+        "lat": -34.506447,
+        "lon": -58.79418
       },
       "geometry": {
         "type": "Polygon",
@@ -2684,12 +3140,32 @@ export const RENABAP_JCP_GEOJSON = {
               -34.506076743547
             ],
             [
+              -58.794427147895,
+              -34.506204214353
+            ],
+            [
+              -58.794445850196,
+              -34.506418609131
+            ],
+            [
+              -58.794446435654,
+              -34.50645571336
+            ],
+            [
               -58.794467061606,
               -34.506706694358
             ],
             [
               -58.794032598226,
               -34.50680676552
+            ],
+            [
+              -58.793916314986,
+              -34.506527483756
+            ],
+            [
+              -58.79387419254,
+              -34.506432018023
             ],
             [
               -58.793807609434,
@@ -2705,23 +3181,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "653",
       "properties": {
-        "name": "B° Sagrada Familia",
-        "fullName": "Barrio Popular Sagrada Familia",
-        "idRenabap": "653",
-        "familias": "935",
+        "id": "653",
+        "nombre": "Sagrada Familia",
+        "familias": 935,
         "tipo": "Villa",
-        "decada": "Década 1990",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 1990",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#ea580c",
-        "center": [
-          -34.508421,
-          -58.789518
-        ],
-        "description": "Villa con 935 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.28470171635536",
+        "lat": -34.508421,
+        "lon": -58.789518
       },
       "geometry": {
         "type": "Polygon",
@@ -2740,6 +3212,10 @@ export const RENABAP_JCP_GEOJSON = {
               -34.511105835352
             ],
             [
+              -58.785285290813,
+              -34.510268358169
+            ],
+            [
               -58.784493,
               -34.508424401172
             ],
@@ -2753,23 +3229,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1368",
       "properties": {
-        "name": "B° Saavedra Lamas II",
-        "fullName": "Barrio Popular Saavedra Lamas II",
-        "idRenabap": "1368",
-        "familias": "341",
+        "id": "1368",
+        "nombre": "Saavedra Lamas II",
+        "familias": 341,
         "tipo": "Asentamiento",
-        "decada": "Década 2000",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 2000",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#ea580c",
-        "center": [
-          -34.511824,
-          -58.808108
-        ],
-        "description": "Asentamiento con 341 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.12263634945582",
+        "lat": -34.511824,
+        "lon": -58.808108
       },
       "geometry": {
         "type": "Polygon",
@@ -2812,6 +3284,14 @@ export const RENABAP_JCP_GEOJSON = {
               -34.513413568404
             ],
             [
+              -58.807769243196,
+              -34.510681664641
+            ],
+            [
+              -58.808265146577,
+              -34.510199632683
+            ],
+            [
               -58.809315906888,
               -34.509138468804
             ],
@@ -2825,23 +3305,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1374",
       "properties": {
-        "name": "B° San Pantaleón II",
-        "fullName": "Barrio Popular San Pantaleón II",
-        "idRenabap": "1374",
-        "familias": "94",
+        "id": "1374",
+        "nombre": "San Pantale\u00f3n II",
+        "familias": 94,
         "tipo": "Asentamiento",
-        "decada": "Década 2010",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 2010",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#fb923c",
-        "center": [
-          -34.515204,
-          -58.80467
-        ],
-        "description": "Asentamiento con 94 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.04773499097277",
+        "lat": -34.515204,
+        "lon": -58.80467
       },
       "geometry": {
         "type": "Polygon",
@@ -2884,6 +3360,22 @@ export const RENABAP_JCP_GEOJSON = {
               -34.51614099464
             ],
             [
+              -58.803753832499,
+              -34.515850725206
+            ],
+            [
+              -58.803793555549,
+              -34.515883963172
+            ],
+            [
+              -58.804029817913,
+              -34.515673448218
+            ],
+            [
+              -58.804055799112,
+              -34.515692874049
+            ],
+            [
               -58.804324640723,
               -34.515440444994
             ],
@@ -2909,23 +3401,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "5342",
       "properties": {
-        "name": "B° La Bistrica",
-        "fullName": "Barrio Popular La Bistrica",
-        "idRenabap": "5342",
-        "familias": "209",
+        "id": "5342",
+        "nombre": "La Bistrica",
+        "familias": 209,
         "tipo": "Asentamiento",
-        "decada": "Década 2010",
-        "electricidad": "Conexión irregular a la red",
-        "agua": "Conexión irregular a la red de agua",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#f97316",
-        "center": [
-          -34.516018,
-          -58.807233
-        ],
-        "description": "Asentamiento con 209 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "decada": "D\u00e9cada 2010",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
+        "agua": "Conexi\u00f3n irregular a la red de agua",
+        "superficie_km2": "0.07507727245911",
+        "lat": -34.516018,
+        "lon": -58.807233
       },
       "geometry": {
         "type": "Polygon",
@@ -2952,6 +3440,10 @@ export const RENABAP_JCP_GEOJSON = {
               -34.516404114968
             ],
             [
+              -58.809369211927,
+              -34.516613864324
+            ],
+            [
               -58.809410164828,
               -34.516638950657
             ],
@@ -2968,6 +3460,14 @@ export const RENABAP_JCP_GEOJSON = {
               -34.517845297387
             ],
             [
+              -58.807802528152,
+              -34.517543945257
+            ],
+            [
+              -58.805291538349,
+              -34.515764350516
+            ],
+            [
               -58.804944611518,
               -34.515521394279
             ],
@@ -2981,23 +3481,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "5343",
       "properties": {
-        "name": "B° La Esperanza de Lamas",
-        "fullName": "Barrio Popular La Esperanza de Lamas",
-        "idRenabap": "5343",
-        "familias": "220",
+        "id": "5343",
+        "nombre": "La Esperanza de Lamas",
+        "familias": 220,
         "tipo": "Asentamiento",
-        "decada": "Década 2010",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 2010",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#f97316",
-        "center": [
-          -34.515625,
-          -58.810541
-        ],
-        "description": "Asentamiento con 220 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.10998044587743",
+        "lat": -34.515625,
+        "lon": -58.810541
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -3089,6 +3585,14 @@ export const RENABAP_JCP_GEOJSON = {
                 -34.51704548529
               ],
               [
+                -58.811354373555,
+                -34.517601824452
+              ],
+              [
+                -58.811415797409,
+                -34.517636010185
+              ],
+              [
                 -58.812749270854,
                 -34.518501374329
               ],
@@ -3103,6 +3607,10 @@ export const RENABAP_JCP_GEOJSON = {
               [
                 -58.813044666249,
                 -34.519008664009
+              ],
+              [
+                -58.809987578144,
+                -34.516916472283
               ],
               [
                 -58.809440223369,
@@ -3157,23 +3665,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "6332",
       "properties": {
-        "name": "B° Las Casitas de Lamas",
-        "fullName": "Barrio Popular Las Casitas de Lamas",
-        "idRenabap": "6332",
-        "familias": "532",
+        "id": "6332",
+        "nombre": "Las Casitas de Lamas",
+        "familias": 532,
         "tipo": "Conjunto habitacional degradado",
-        "decada": "Década 2010",
-        "electricidad": "Conexión regular a la red con medidor domiciliario pero sin factura",
+        "decada": "D\u00e9cada 2010",
+        "electricidad": "Conexi\u00f3n regular a la red con medidor domiciliario pero sin factura",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#ea580c",
-        "center": [
-          -34.515625,
-          -58.811536
-        ],
-        "description": "Conjunto habitacional degradado con 532 familias estimadas (RENABAP oficial). Electricidad: Conexión regular a la red con medidor domiciliario pero sin factura."
+        "superficie_km2": "0.15070386924456",
+        "lat": -34.515625,
+        "lon": -58.811536
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -3231,6 +3735,10 @@ export const RENABAP_JCP_GEOJSON = {
               [
                 -58.808580740047,
                 -34.513543843766
+              ],
+              [
+                -58.809468383079,
+                -34.512632938364
               ],
               [
                 -58.80954720769,
@@ -3293,23 +3801,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1073",
       "properties": {
-        "name": "B° Vucetich I",
-        "fullName": "Barrio Popular Vucetich I",
-        "idRenabap": "1073",
-        "familias": "165",
+        "id": "1073",
+        "nombre": "Vucetich I",
+        "familias": 165,
         "tipo": "Asentamiento",
-        "decada": "Década 1910",
-        "electricidad": "Conexión a la red con medidor comunitario",
+        "decada": "D\u00e9cada 1910",
+        "electricidad": "Conexi\u00f3n a la red con medidor comunitario",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#f97316",
-        "center": [
-          -34.507316,
-          -58.799347
-        ],
-        "description": "Asentamiento con 165 familias estimadas (RENABAP oficial). Electricidad: Conexión a la red con medidor comunitario."
+        "superficie_km2": "0.04315203535181",
+        "lat": -34.507316,
+        "lon": -58.799347
       },
       "geometry": {
         "type": "Polygon",
@@ -3344,6 +3848,10 @@ export const RENABAP_JCP_GEOJSON = {
               -34.507510561463
             ],
             [
+              -58.797737431837,
+              -34.507940246745
+            ],
+            [
               -58.795458753019,
               -34.508645391671
             ],
@@ -3369,23 +3877,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "721",
       "properties": {
-        "name": "B° Comunidad Guaraní",
-        "fullName": "Barrio Popular Comunidad Guaraní",
-        "idRenabap": "721",
-        "familias": "572",
+        "id": "721",
+        "nombre": "Comunidad Guaran\u00ed",
+        "familias": 572,
         "tipo": "Asentamiento",
-        "decada": "Década 1980",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 1980",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#ea580c",
-        "center": [
-          -34.511485,
-          -58.792015
-        ],
-        "description": "Asentamiento con 572 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.10752496920807",
+        "lat": -34.511485,
+        "lon": -58.792015
       },
       "geometry": {
         "type": "Polygon",
@@ -3408,6 +3912,14 @@ export const RENABAP_JCP_GEOJSON = {
               -34.512817031488
             ],
             [
+              -58.795191269396,
+              -34.512947967247
+            ],
+            [
+              -58.795117840513,
+              -34.512894229041
+            ],
+            [
               -58.795041841033,
               -34.512979289759
             ],
@@ -3418,6 +3930,14 @@ export const RENABAP_JCP_GEOJSON = {
             [
               -58.794534059438,
               -34.512928041836
+            ],
+            [
+              -58.794467659547,
+              -34.512876333528
+            ],
+            [
+              -58.794402446789,
+              -34.512940026881
             ],
             [
               -58.794302136076,
@@ -3436,6 +3956,10 @@ export const RENABAP_JCP_GEOJSON = {
               -34.513915979539
             ],
             [
+              -58.793709300355,
+              -34.512977752056
+            ],
+            [
               -58.79242256444,
               -34.5121323835
             ],
@@ -3444,8 +3968,20 @@ export const RENABAP_JCP_GEOJSON = {
               -34.512763969858
             ],
             [
+              -58.790229724209,
+              -34.511677340182
+            ],
+            [
               -58.788472678181,
               -34.510495476645
+            ],
+            [
+              -58.788533847917,
+              -34.51048380721
+            ],
+            [
+              -58.788727578987,
+              -34.510376773469
             ],
             [
               -58.791204633105,
@@ -3458,6 +3994,14 @@ export const RENABAP_JCP_GEOJSON = {
             [
               -58.791405185576,
               -34.509963426484
+            ],
+            [
+              -58.792463299795,
+              -34.510612066096
+            ],
+            [
+              -58.794676491263,
+              -34.511966783963
             ],
             [
               -58.795155641231,
@@ -3473,23 +4017,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1370",
       "properties": {
-        "name": "B° Roosevelt I",
-        "fullName": "Barrio Popular Roosevelt I",
-        "idRenabap": "1370",
-        "familias": "88",
+        "id": "1370",
+        "nombre": "Roosevelt I",
+        "familias": 88,
         "tipo": "Villa",
-        "decada": "Década 1980",
-        "electricidad": "Conexión formal a la red con medidor domiciliario con factura",
+        "decada": "D\u00e9cada 1980",
+        "electricidad": "Conexi\u00f3n formal a la red con medidor domiciliario con factura",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#fb923c",
-        "center": [
-          -34.516005,
-          -58.799103
-        ],
-        "description": "Villa con 88 familias estimadas (RENABAP oficial). Electricidad: Conexión formal a la red con medidor domiciliario con factura."
+        "superficie_km2": "0.03383008690917",
+        "lat": -34.516005,
+        "lon": -58.799103
       },
       "geometry": {
         "type": "Polygon",
@@ -3502,6 +4042,10 @@ export const RENABAP_JCP_GEOJSON = {
             [
               -58.799141546906,
               -34.51717324197
+            ],
+            [
+              -58.798166603071,
+              -34.516542519196
             ],
             [
               -58.797716603538,
@@ -3525,23 +4069,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "5344",
       "properties": {
-        "name": "B° Bolívar",
-        "fullName": "Barrio Popular Bolívar",
-        "idRenabap": "5344",
-        "familias": "66",
+        "id": "5344",
+        "nombre": "Bol\u00edvar",
+        "familias": 66,
         "tipo": "Asentamiento",
-        "decada": "Década 2010",
-        "electricidad": "Conexión regular a la red con medidor domiciliario pero sin factura",
+        "decada": "D\u00e9cada 2010",
+        "electricidad": "Conexi\u00f3n regular a la red con medidor domiciliario pero sin factura",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#fb923c",
-        "center": [
-          -34.517047,
-          -58.800601
-        ],
-        "description": "Asentamiento con 66 familias estimadas (RENABAP oficial). Electricidad: Conexión regular a la red con medidor domiciliario pero sin factura."
+        "superficie_km2": "0.02745332701192",
+        "lat": -34.517047,
+        "lon": -58.800601
       },
       "geometry": {
         "type": "Polygon",
@@ -3558,6 +4098,10 @@ export const RENABAP_JCP_GEOJSON = {
             [
               -58.799253971283,
               -34.517260590699
+            ],
+            [
+              -58.79927048036,
+              -34.51708621357
             ],
             [
               -58.799337479303,
@@ -3584,6 +4128,14 @@ export const RENABAP_JCP_GEOJSON = {
               -34.516239772588
             ],
             [
+              -58.800160164856,
+              -34.516232384726
+            ],
+            [
+              -58.800286820434,
+              -34.51618259954
+            ],
+            [
               -58.800341506753,
               -34.516135135942
             ],
@@ -3604,6 +4156,38 @@ export const RENABAP_JCP_GEOJSON = {
               -34.516222066553
             ],
             [
+              -58.80151932624,
+              -34.516389736869
+            ],
+            [
+              -58.80148837172,
+              -34.516426882293
+            ],
+            [
+              -58.801623281836,
+              -34.51651897199
+            ],
+            [
+              -58.801637727279,
+              -34.516499109507
+            ],
+            [
+              -58.801661974986,
+              -34.516515489607
+            ],
+            [
+              -58.801681708493,
+              -34.516491370877
+            ],
+            [
+              -58.801759094793,
+              -34.516544380492
+            ],
+            [
+              -58.801730719816,
+              -34.51658410546
+            ],
+            [
               -58.801936567374,
               -34.516736298516
             ]
@@ -3613,23 +4197,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1371",
       "properties": {
-        "name": "B° San Pantaleón III",
-        "fullName": "Barrio Popular San Pantaleón III",
-        "idRenabap": "1371",
-        "familias": "220",
+        "id": "1371",
+        "nombre": "San Pantale\u00f3n III",
+        "familias": 220,
         "tipo": "Villa",
-        "decada": "Década 1980",
-        "electricidad": "Conexión formal a la red con medidor domiciliario con factura",
-        "agua": "Conexión irregular a la red de agua",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#f97316",
-        "center": [
-          -34.518985,
-          -58.801335
-        ],
-        "description": "Villa con 220 familias estimadas (RENABAP oficial). Electricidad: Conexión formal a la red con medidor domiciliario con factura."
+        "decada": "D\u00e9cada 1980",
+        "electricidad": "Conexi\u00f3n formal a la red con medidor domiciliario con factura",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
+        "agua": "Conexi\u00f3n irregular a la red de agua",
+        "superficie_km2": "0.06999253766004",
+        "lat": -34.518985,
+        "lon": -58.801335
       },
       "geometry": {
         "type": "Polygon",
@@ -3701,23 +4281,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "442",
       "properties": {
-        "name": "B° Muñiz",
-        "fullName": "Barrio Popular Muñiz",
-        "idRenabap": "442",
-        "familias": "451",
+        "id": "442",
+        "nombre": "Mu\u00f1iz",
+        "familias": 451,
         "tipo": "Asentamiento",
-        "decada": "Década 1980",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 1980",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#ea580c",
-        "center": [
-          -34.520115,
-          -58.794879
-        ],
-        "description": "Asentamiento con 451 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.17465162130329",
+        "lat": -34.520115,
+        "lon": -58.794879
       },
       "geometry": {
         "type": "Polygon",
@@ -3760,8 +4336,16 @@ export const RENABAP_JCP_GEOJSON = {
               -34.518453009778
             ],
             [
+              -58.793627466188,
+              -34.517698477624
+            ],
+            [
               -58.793803577889,
               -34.517498156459
+            ],
+            [
+              -58.794918700907,
+              -34.518248776498
             ],
             [
               -58.798262568618,
@@ -3773,23 +4357,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "441",
       "properties": {
-        "name": "B° Comunidad Pueblo Guaraní",
-        "fullName": "Barrio Popular Comunidad Pueblo Guaraní",
-        "idRenabap": "441",
-        "familias": "55",
+        "id": "441",
+        "nombre": "Comunidad Pueblo Guaran\u00ed",
+        "familias": 55,
         "tipo": "Asentamiento",
-        "decada": "Década 2010",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 2010",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#fb923c",
-        "center": [
-          -34.517966,
-          -58.792421
-        ],
-        "description": "Asentamiento con 55 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.02475998165473",
+        "lat": -34.517966,
+        "lon": -58.792421
       },
       "geometry": {
         "type": "Polygon",
@@ -3861,23 +4441,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1372",
       "properties": {
-        "name": "B° San Agustín",
-        "fullName": "Barrio Popular San Agustín",
-        "idRenabap": "1372",
-        "familias": "132",
+        "id": "1372",
+        "nombre": "San Agust\u00edn",
+        "familias": 132,
         "tipo": "Asentamiento",
-        "decada": "Década 2000",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 2000",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#f97316",
-        "center": [
-          -34.526484,
-          -58.798482
-        ],
-        "description": "Asentamiento con 132 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.04734187490867",
+        "lat": -34.526484,
+        "lon": -58.798482
       },
       "geometry": {
         "type": "Polygon",
@@ -3925,23 +4501,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1562",
       "properties": {
-        "name": "B° Sarmiento",
-        "fullName": "Barrio Popular Sarmiento",
-        "idRenabap": "1562",
-        "familias": "275",
+        "id": "1562",
+        "nombre": "Sarmiento",
+        "familias": 275,
         "tipo": "Asentamiento",
-        "decada": "Década 1970",
-        "electricidad": "Conexión formal a la red con medidor domiciliario con factura",
+        "decada": "D\u00e9cada 1970",
+        "electricidad": "Conexi\u00f3n formal a la red con medidor domiciliario con factura",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#f97316",
-        "center": [
-          -34.545669,
-          -58.772311
-        ],
-        "description": "Asentamiento con 275 familias estimadas (RENABAP oficial). Electricidad: Conexión formal a la red con medidor domiciliario con factura."
+        "superficie_km2": "0.1003862504055",
+        "lat": -34.545669,
+        "lon": -58.772311
       },
       "geometry": {
         "type": "Polygon",
@@ -3989,23 +4561,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "1556",
       "properties": {
-        "name": "B° Unión Néstor Kirchner",
-        "fullName": "Barrio Popular Unión Néstor Kirchner",
-        "idRenabap": "1556",
-        "familias": "2750",
+        "id": "1556",
+        "nombre": "Uni\u00f3n N\u00e9stor Kirchner",
+        "familias": 2750,
         "tipo": "Asentamiento",
-        "decada": "Década 2010",
-        "electricidad": "Conexión irregular a la red",
+        "decada": "D\u00e9cada 2010",
+        "electricidad": "Conexi\u00f3n irregular a la red",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#ea580c",
-        "center": [
-          -34.549746,
-          -58.774957
-        ],
-        "description": "Asentamiento con 2750 familias estimadas (RENABAP oficial). Electricidad: Conexión irregular a la red."
+        "superficie_km2": "0.73543323497006",
+        "lat": -34.549746,
+        "lon": -58.774957
       },
       "geometry": {
         "type": "Polygon",
@@ -4024,6 +4592,10 @@ export const RENABAP_JCP_GEOJSON = {
               -34.549093
             ],
             [
+              -58.777505913929,
+              -34.553996965885
+            ],
+            [
               -58.777666154047,
               -34.554631557213
             ],
@@ -4036,12 +4608,56 @@ export const RENABAP_JCP_GEOJSON = {
               -34.55714
             ],
             [
+              -58.775442,
+              -34.556638
+            ],
+            [
+              -58.774215,
+              -34.555503
+            ],
+            [
+              -58.773746,
+              -34.555084
+            ],
+            [
               -58.768909,
               -34.550577
             ],
             [
+              -58.772059,
+              -34.547338
+            ],
+            [
+              -58.772196,
+              -34.547233
+            ],
+            [
+              -58.77462,
+              -34.54475
+            ],
+            [
+              -58.77484,
+              -34.54456
+            ],
+            [
               -58.77639,
               -34.54291
+            ],
+            [
+              -58.778556,
+              -34.544332
+            ],
+            [
+              -58.779206,
+              -34.544765
+            ],
+            [
+              -58.779303,
+              -34.544851
+            ],
+            [
+              -58.781629,
+              -34.546372
             ],
             [
               -58.78236603445,
@@ -4081,23 +4697,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "793",
       "properties": {
-        "name": "B° Parque Jardín",
-        "fullName": "Barrio Popular Parque Jardín",
-        "idRenabap": "793",
-        "familias": "44",
+        "id": "793",
+        "nombre": "Parque Jard\u00edn",
+        "familias": 44,
         "tipo": "Asentamiento",
-        "decada": "Década 1960",
-        "electricidad": "Conexión regular a la red con medidor prepago",
+        "decada": "D\u00e9cada 1960",
+        "electricidad": "Conexi\u00f3n regular a la red con medidor prepago",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#fb923c",
-        "center": [
-          -34.545311,
-          -58.749995
-        ],
-        "description": "Asentamiento con 44 familias estimadas (RENABAP oficial). Electricidad: Conexión regular a la red con medidor prepago."
+        "superficie_km2": "0.00488479273925",
+        "lat": -34.545311,
+        "lon": -58.749995
       },
       "geometry": {
         "type": "Polygon",
@@ -4129,23 +4741,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "766",
       "properties": {
-        "name": "B° Parque Jardín II",
-        "fullName": "Barrio Popular Parque Jardín II",
-        "idRenabap": "766",
-        "familias": "88",
+        "id": "766",
+        "nombre": "Parque Jard\u00edn II",
+        "familias": 88,
         "tipo": "Villa",
-        "decada": "Década 1960",
-        "electricidad": "Conexión formal a la red con medidor domiciliario con factura",
+        "decada": "D\u00e9cada 1960",
+        "electricidad": "Conexi\u00f3n formal a la red con medidor domiciliario con factura",
+        "cloacas": "Desag\u00fce a c\u00e1mara s\u00e9ptica y pozo ciego",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe a cámara séptica y pozo ciego",
-        "isRenabap": true,
-        "color": "#fb923c",
-        "center": [
-          -34.548059,
-          -58.752902
-        ],
-        "description": "Villa con 88 familias estimadas (RENABAP oficial). Electricidad: Conexión formal a la red con medidor domiciliario con factura."
+        "superficie_km2": "0.0088438115634",
+        "lat": -34.548059,
+        "lon": -58.752902
       },
       "geometry": {
         "type": "Polygon",
@@ -4177,23 +4785,19 @@ export const RENABAP_JCP_GEOJSON = {
     },
     {
       "type": "Feature",
+      "id": "737",
       "properties": {
-        "name": "B° Ferrari",
-        "fullName": "Barrio Popular Ferrari",
-        "idRenabap": "737",
-        "familias": "473",
+        "id": "737",
+        "nombre": "Ferrari",
+        "familias": 473,
         "tipo": "Asentamiento",
-        "decada": "Década 1990",
-        "electricidad": "Conexión formal a la red con medidor domiciliario con factura",
+        "decada": "D\u00e9cada 1990",
+        "electricidad": "Conexi\u00f3n formal a la red con medidor domiciliario con factura",
+        "cloacas": "Desag\u00fce s\u00f3lo a pozo negro/ciego u hoyo",
         "agua": "Bomba de agua de pozo domiciliaria",
-        "cloacas": "Desagüe sólo a pozo negro/ciego u hoyo",
-        "isRenabap": true,
-        "color": "#ea580c",
-        "center": [
-          -34.547848,
-          -58.757522
-        ],
-        "description": "Asentamiento con 473 familias estimadas (RENABAP oficial). Electricidad: Conexión formal a la red con medidor domiciliario con factura."
+        "superficie_km2": "0.15826314060864",
+        "lat": -34.547848,
+        "lon": -58.757522
       },
       "geometry": {
         "type": "Polygon",
@@ -4224,4 +4828,4 @@ export const RENABAP_JCP_GEOJSON = {
       }
     }
   ]
-};
+}

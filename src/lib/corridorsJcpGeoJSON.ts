@@ -4,11 +4,15 @@ export const CORRIDORS_JCP_GEOJSON = {
     {
       "type": "Feature",
       "properties": {
-        "name": "Corredor Ruta Provincial 24 (Ex 197)",
+        "name": "Ruta 24 (Ex 197)",
         "code": "RP24",
         "color": "#d97706",
-        "weight": 4,
-        "description": "Arteria troncal de circulación transversal que conecta Moreno con Tigre"
+        "weight": 3.5,
+        "center": [
+          -34.52,
+          -58.775
+        ],
+        "description": "Av. Hipólito Yrigoyen / RP24: arteria troncal transversal"
       },
       "geometry": {
         "type": "LineString",
@@ -35,11 +39,15 @@ export const CORRIDORS_JCP_GEOJSON = {
     {
       "type": "Feature",
       "properties": {
-        "name": "Corredor Ruta Nacional 8 (Acceso Norte)",
+        "name": "Ruta 8 (Acceso Norte)",
         "code": "RN8",
         "color": "#059669",
-        "weight": 4,
-        "description": "Límite norte del partido con Pilar y Tortuguitas, vía rápida de escape hacia zona norte"
+        "weight": 3.5,
+        "center": [
+          -34.468,
+          -58.775
+        ],
+        "description": "Límite norte de escape hacia Pilar y Panamericana"
       },
       "geometry": {
         "type": "LineString",
@@ -62,11 +70,15 @@ export const CORRIDORS_JCP_GEOJSON = {
     {
       "type": "Feature",
       "properties": {
-        "name": "Traza Ferroviaria FFCC San Martín",
+        "name": "FFCC San Martín",
         "code": "FFCC_SM",
         "color": "#7c3aed",
-        "weight": 3,
-        "description": "Línea férrea y estaciones (José C. Paz y Sol y Verde), eje de fractura urbana"
+        "weight": 3.5,
+        "center": [
+          -34.51,
+          -58.785
+        ],
+        "description": "Vías férreas y Estaciones JCP y Sol y Verde (corredor de soldaditos)"
       },
       "geometry": {
         "type": "LineString",
@@ -86,33 +98,6 @@ export const CORRIDORS_JCP_GEOJSON = {
           [
             -58.73,
             -34.521
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Corredor Av. Gaspar Campos",
-        "code": "GASPAR_CAMPOS",
-        "color": "#0284c7",
-        "weight": 3,
-        "description": "Conexión sur-este con el Partido de San Miguel"
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -58.76,
-            -34.51
-          ],
-          [
-            -58.755,
-            -34.53
-          ],
-          [
-            -58.75,
-            -34.55
           ]
         ]
       }
