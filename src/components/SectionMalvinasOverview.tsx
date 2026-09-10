@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import MetricCard from "./MetricCard";
@@ -71,19 +71,20 @@ export default function SectionMalvinasOverview({ stats, incidents = [] }: Secti
           <div className="card-title">⚖️ Utilidad Operativa para Investigaciones</div>
           <div style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6 }}>
             <p style={{ marginBottom: "0.8rem" }}>Este módulo permite cruzar llamadas anónimas repetitivas sobre una misma ubicación, identificando la <strong>reincidencia espacial y temporal</strong> de puntos de venta activos en las seis localidades.</p>
-            <p>La georeferenciación del <strong>93.9% de los hechos</strong> garantiza validez cartográfica para presentaciones judiciales y planes de saturación perimetral con las 4 comisarías del partido.</p>
+            <p>La georeferenciación del <strong>98.6% de los hechos</strong> (1.451 de 1.471) garantiza validez cartográfica para presentaciones judiciales y planes de saturación perimetral con las 4 comisarías del partido.</p>
           </div>
         </div>
         <div className="card">
           <div className="card-title">🏙️ Distribución por Localidad</div>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             {[
-              { loc: "Grand Bourg", pct: 33.5, color: "#ef4444" },
-              { loc: "Pablo Nogués / Sourdeaux", pct: 19.4, color: "#f59e0b" },
-              { loc: "Tortuguitas", pct: 15.8, color: "#8b5cf6" },
-              { loc: "Los Polvorines", pct: 14.7, color: "#3b82f6" },
-              { loc: "Villa de Mayo", pct: 5.4, color: "#10b981" },
-              { loc: "Sin Localidad Asignada", pct: 11.2, color: "#64748b" },
+              { loc: "Grand Bourg", pct: 33.4, color: "#ef4444" },
+              { loc: "Pablo Nogués", pct: 14.0, color: "#f59e0b" },
+              { loc: "Tortuguitas", pct: 11.3, color: "#8b5cf6" },
+              { loc: "Los Polvorines", pct: 10.5, color: "#3b82f6" },
+              { loc: "Villa de Mayo", pct: 3.9, color: "#10b981" },
+              { loc: "Adolfo Sourdeaux", pct: 3.5, color: "#06b6d4" },
+              { loc: "Sin Localidad Asignada", pct: 23.4, color: "#64748b" },
             ].map((item) => (
               <div key={item.loc}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", marginBottom: "2px" }}>
@@ -105,7 +106,7 @@ export default function SectionMalvinasOverview({ stats, incidents = [] }: Secti
               { label: "Drogas Ilícitas Formales", value: "802 hechos" },
               { label: "Info Vecinal (Relato)", value: "669 alertas" },
               { label: "Duplicados Eliminados", value: "0 (IDs únicos)" },
-              { label: "Cobertura Geo", value: "93.9%" },
+              { label: "Cobertura Geo", value: "98.6%" },
               { label: "Con Armas Reportadas", value: "72.0%" },
             ].map((item) => (
               <div key={item.label} style={{ background: "var(--bg-base)", padding: "0.5rem 0.75rem", borderRadius: "6px" }}>
