@@ -21,6 +21,7 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
   const [filterLugar, setFilterLugar] = useState<string>("todos");
   const [filterArmas, setFilterArmas] = useState<string>("todos");
   const [filterBarrio, setFilterBarrio] = useState<string>("todos");
+  const [mapReady, setMapReady] = useState<boolean>(false);
 
   // Filtered dataset
   const filteredIncidents = useMemo(() => {
@@ -87,6 +88,11 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
 
         markersGroupRef.current = L.layerGroup().addTo(map);
         mapInstanceRef.current = map;
+        setMapReady(true);
+
+        setTimeout(() => {
+          map.invalidateSize();
+        }, 200);
       }
     });
 
@@ -96,17 +102,19 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
         markersGroupRef.current = null;
+        setMapReady(false);
       }
     };
   }, []);
 
   // 2. Dynamically update markers without destroying the map
   useEffect(() => {
-    if (!mapInstanceRef.current || !markersGroupRef.current) return;
+    if (!mapReady || !mapInstanceRef.current || !markersGroupRef.current) return;
 
     import("leaflet").then((L) => {
       const markersGroup = markersGroupRef.current;
-      if (!markersGroup) return;
+      const map = mapInstanceRef.current;
+      if (!markersGroup || !map) return;
 
       markersGroup.clearLayers();
 

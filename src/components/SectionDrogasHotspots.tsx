@@ -19,6 +19,7 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
   const [filterSustancia, setFilterSustancia] = useState<string>("todos");
   const [filterFranja, setFilterFranja] = useState<string>("todos");
   const [filterArmas, setFilterArmas] = useState<string>("todos");
+  const [mapReady, setMapReady] = useState<boolean>(false);
 
   const filtered = useMemo(() => {
     return incidents.filter((inc) => {
@@ -69,6 +70,11 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
 
         markersGroupRef.current = L.layerGroup().addTo(map);
         mapInstanceRef.current = map;
+        setMapReady(true);
+
+        setTimeout(() => {
+          map.invalidateSize();
+        }, 200);
       }
     });
 
@@ -78,17 +84,19 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
         markersGroupRef.current = null;
+        setMapReady(false);
       }
     };
   }, []);
 
   // 2. Dynamically render markers
   useEffect(() => {
-    if (!mapInstanceRef.current || !markersGroupRef.current) return;
+    if (!mapReady || !mapInstanceRef.current || !markersGroupRef.current) return;
 
     import("leaflet").then((L) => {
       const group = markersGroupRef.current;
-      if (!group) return;
+      const map = mapInstanceRef.current;
+      if (!group || !map) return;
 
       group.clearLayers();
 
@@ -119,7 +127,7 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
         marker.addTo(group);
       });
     });
-  }, [filtered]);
+  }, [filtered, mapReady]);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>

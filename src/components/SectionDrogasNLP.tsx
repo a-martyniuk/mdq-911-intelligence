@@ -13,6 +13,7 @@ interface SectionDrogasNLPProps {
 export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSuspect, setSelectedSuspect] = useState<string | null>(null);
+  const [mapReady, setMapReady] = useState<boolean>(false);
 
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<any>(null);
@@ -135,6 +136,7 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
 
         markersGroupRef.current = L.layerGroup().addTo(map);
         mapInstanceRef.current = map;
+        setMapReady(true);
 
         setTimeout(() => {
           map.invalidateSize();
@@ -149,13 +151,14 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
         mapInstanceRef.current = null;
         markersGroupRef.current = null;
         markerMapRef.current.clear();
+        setMapReady(false);
       }
     };
   }, []);
 
   // 2. Render markers dynamically when suspect or search filter changes
   useEffect(() => {
-    if (!mapInstanceRef.current || !markersGroupRef.current) return;
+    if (!mapReady || !mapInstanceRef.current || !markersGroupRef.current) return;
 
     import("leaflet").then((L) => {
       const group = markersGroupRef.current;
@@ -231,7 +234,7 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
         map.setView([-34.520, -58.775], 13);
       }
     });
-  }, [filteredIncidents, selectedSuspect, searchTerm]);
+  }, [filteredIncidents, selectedSuspect, searchTerm, mapReady]);
 
   const panToIncident = (inc: any) => {
     if (!mapInstanceRef.current || !inc.lat || !inc.lng) return;
