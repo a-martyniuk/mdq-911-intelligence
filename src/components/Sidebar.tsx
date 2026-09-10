@@ -18,7 +18,8 @@ import {
   Skull,
   Crosshair,
   Brain,
-  Database
+  Database,
+  Share2
 } from "lucide-react";
 import { FilterState } from "@/lib/types";
 
@@ -66,6 +67,7 @@ export default function Sidebar({
     { id: "drogas-overview", label: "Resumen Ejecutivo Narcocriminalidad", icon: <LayoutDashboard size={18} /> },
     { id: "drogas-map", label: "Mapa Táctico de Puntos & Búnkers", icon: <MapPin size={18} /> },
     { id: "drogas-nlp", label: "Inteligencia de Alias & Redes (NLP)", icon: <Brain size={18} /> },
+    { id: "drogas-graph", label: "Grafo Relacional & Redes de Bandas", icon: <Share2 size={18} /> },
     { id: "drogas-hotspots", label: "Hotspots de Narcomenudeo", icon: <Flame size={18} /> },
     { id: "drogas-search", label: "Buscador Universal de Denuncias 911", icon: <Search size={18} /> },
     { id: "drogas-etl", label: "Metodología & Integración ETL", icon: <Database size={18} /> },

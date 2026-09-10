@@ -26,6 +26,7 @@ import SectionDrogasMap from "./SectionDrogasMap";
 import SectionDrogasNLP from "./SectionDrogasNLP";
 import SectionDrogasHotspots from "./SectionDrogasHotspots";
 import SectionDrogasSearch from "./SectionDrogasSearch";
+import SectionDrogasGraph from "./SectionDrogasGraph";
 import SectionDrogasETL from "./SectionDrogasETL";
 
 import { FilterState } from "@/lib/types";
@@ -296,6 +297,7 @@ export default function Dashboard() {
             {activeSection === "drogas-overview" && <SectionDrogasOverview stats={jcpStats} />}
             {activeSection === "drogas-map" && <SectionDrogasMap incidents={data?.incidents || data?.geoPoints || []} />}
             {activeSection === "drogas-nlp" && <SectionDrogasNLP incidents={data?.incidents || data?.geoPoints || []} />}
+            {activeSection === "drogas-graph" && <SectionDrogasGraph incidents={data?.incidents || data?.geoPoints || []} />}
             {activeSection === "drogas-hotspots" && <SectionDrogasHotspots incidents={data?.incidents || data?.geoPoints || []} />}
             {activeSection === "drogas-search" && <SectionDrogasSearch incidents={data?.incidents || []} />}
             {activeSection === "drogas-etl" && <SectionDrogasETL />}

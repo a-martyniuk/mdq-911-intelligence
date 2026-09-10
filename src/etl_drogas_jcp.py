@@ -159,7 +159,7 @@ def run_etl_jcp():
     print("--- INICIANDO ETL DROGAS JOSÉ C. PAZ CON NLP INTELIGENTE ---")
     files = [
         ("DROGAS ILICITAS JOSE C PAZ.xlsx", "DROGAS_ILICITAS_FORMAL", "Despacho Formal Drogas 911"),
-        ("INFORMACION.xlsx", "INTELIGENCIA_RELATO_KEYWORDS", "Alerta Vecinal por Relato (Búnker/Venta)")
+        ("INFORMACION.xlsx", "INFORMACION_VECINAL_KEYWORDS", "Alerta Vecinal por Relato (Búnker/Venta)")
     ]
     
     dfs = []
@@ -186,7 +186,218 @@ def run_etl_jcp():
     
     df_clean['Latitud_Clean'] = df_clean['Latitud'].apply(lambda v: fix_coord(v, 'lat'))
     df_clean['Longitud_Clean'] = df_clean['Longitud'].apply(lambda v: fix_coord(v, 'lon'))
-    
+
+    def norm_street(s):
+        if not s or pd.isnull(s): return ''
+        s = str(s).strip().upper()
+        s = re.sub(r'^(?:AV\.?|AVDA\.?|CALLE|PASAJE|PJE\.?|PJE|DIAGONAL|BV\.?|BOULEVARD|RUTA)\s+', '', s)
+        s = re.sub(r'^(?:PRES\.?|PRESIDENTE|GRAL\.?|GENERAL|TNTE\.?|TENIENTE|DR\.?|DOCTOR|MONSEÑOR|PBTRO\.?)\s+', '', s)
+        s = re.sub(r'\s+', ' ', s).strip()
+        return s
+
+    # Construcción de base de referencia de calles a partir de registros ya georreferenciados
+    geocoded_initial = df_clean[df_clean['Latitud_Clean'].notnull() & df_clean['Longitud_Clean'].notnull()]
+    street_db = {}
+    for _, r in geocoded_initial.iterrows():
+        c = norm_street(r.get('calle'))
+        if c and len(c) > 2:
+            if c not in street_db: street_db[c] = []
+            street_db[c].append((r['Latitud_Clean'], r['Longitud_Clean']))
+
+    street_centroids = {k: (sum(p[0] for p in v)/len(v), sum(p[1] for p in v)/len(v)) for k, v in street_db.items()}
+
+    # Catálogo suplementario de arterias y esquinas clave de José C. Paz
+    extra_streets = {
+        'ANTONIO MARCHENA': (-34.5042, -58.7315),
+        'MARCHENA': (-34.5042, -58.7315),
+        'LAMAS': (-34.5028, -58.7482),
+        'JOSE LAMAS': (-34.5028, -58.7482),
+        '12 DE OCTUBRE': (-34.5165, -58.7580),
+        'CASACUBERTA': (-34.5245, -58.7660),
+        'QUIROZ': (-34.5285, -58.7725),
+        'NORUEGA': (-34.5360, -58.7890),
+        'P.FIGARI': (-34.4890, -58.7280),
+        'FIGARI': (-34.4890, -58.7280),
+        'PEDRO FIGARI': (-34.4890, -58.7280),
+        'FABRICA DE CERAMICA ALBERDI': (-34.5050, -58.7500),
+        'SAN LUIS': (-34.5135, -58.7640),
+        'RENE FAVALORO': (-34.5065, -58.7750),
+        'CASTELLI': (-34.5190, -58.7520),
+        'JUAN JOSE CASTELLI': (-34.5190, -58.7520),
+        'DAVAINE': (-34.5410, -58.7745),
+        'PANAMA': (-34.5295, -58.7650),
+        'CANAL DE PANAMA': (-34.5295, -58.7650),
+        'PRIMER PASAJE': (-34.5180, -58.7600),
+        'DORREGO': (-34.5140, -58.7560),
+        'ISLAS CANARIAS': (-34.5210, -58.7780),
+        'CHESSI': (-34.5150, -58.7510),
+        'BALESTEROS': (-34.5175, -58.7620),
+        'FLORENCIO BALLESTEROS': (-34.5175, -58.7620),
+        'CEIBO': (-34.5290, -58.7560),
+        'SANTA FE': (-34.5120, -58.7600),
+        'CRUZ VARELA': (-34.5275, -58.7730),
+        'JUAN CRUZ VARELA': (-34.5275, -58.7730),
+        'ARAGON': (-34.5055, -58.7305),
+        'FOURNIER': (-34.5300, -58.7660),
+        'CRAMER': (-34.4885, -58.7275),
+        'CARRIO': (-34.5415, -58.7740),
+        'SANTA MARTA': (-34.5185, -58.7515),
+        'HUACHI': (-34.5200, -58.7530),
+        'TEGUCIGALPA': (-34.5220, -58.7490),
+        '197': (-34.5170, -58.7590),
+        'RUTA 197': (-34.5170, -58.7590),
+        'HIPOLITO YRIGOYEN': (-34.5170, -58.7590),
+        'AV HIPOLITO YRIGOYEN': (-34.5170, -58.7590),
+        'RUTA 8': (-34.4920, -58.7310),
+        'ILLIA': (-34.4920, -58.7310),
+        'PRES ARTURO UMBERTO ILLIA': (-34.4920, -58.7310),
+        'ARTURO ILLIA': (-34.4920, -58.7310),
+        'POLONIA': (-34.5320, -58.7910),
+        'PIÑERO': (-34.5325, -58.7905),
+        'CANNING': (-34.5160, -58.7610),
+        'FELIX DE AZARA': (-34.5165, -58.7620),
+        'CORBETA URUGUAY': (-34.5220, -58.7470),
+        'SAN BLAS': (-34.5215, -58.7475),
+        'VIENA': (-34.5255, -58.7540),
+        'BOYACA': (-34.5195, -58.7585),
+        'COMBATE DE LOS POZOS': (-34.5230, -58.7615),
+        'CURUPAYTI': (-34.5235, -58.7620),
+        'JUAN DIAZ DE SOLIS': (-34.5145, -58.7530),
+        'JORGE NEWBERY': (-34.5280, -58.7690),
+        'MATEO BOOTZ': (-34.5270, -58.7680),
+        'RODRIGO DE TRIANA': (-34.5310, -58.7750),
+        'FRAY BUTLER': (-34.5160, -58.7440),
+        'JUAN PABLO ECHAGUE': (-34.5140, -58.7460),
+        'JOSE ANTONIO PAEZ': (-34.5110, -58.7480),
+        'JUANA MANUELA GORRITI': (-34.5200, -58.7790),
+        'GRANADEROS': (-34.5150, -58.7550),
+        'AV CROACIA': (-34.5340, -58.7820),
+        'CROACIA': (-34.5340, -58.7820),
+        'AV SAAVEDRA LAMAS': (-34.5028, -58.7482),
+        'SAAVEDRA LAMAS': (-34.5028, -58.7482),
+        'BOLIVAR': (-34.5175, -58.7595),
+        'PRES RIVADAVIA': (-34.5130, -58.7630),
+        'RIVADAVIA': (-34.5130, -58.7630)
+    }
+    for k, v in extra_streets.items():
+        if k not in street_centroids:
+            street_centroids[k] = v
+
+    # Centroides barriales y asentamientos de José C. Paz
+    known_barrios = {
+        'BARRIO LAMAS': (-34.5025, -58.7485),
+        'CASITAS DE LAMAS': (-34.5030, -58.7490),
+        'SAAVEDRA LAMAS': (-34.5028, -58.7482),
+        'NESTOR KIRCHNER': (-34.5385, -58.7845),
+        'KIRCHNER': (-34.5385, -58.7845),
+        'SOL Y VERDE': (-34.5320, -58.7910),
+        'FAVALORO': (-34.5065, -58.7750),
+        'RENE FAVALORO': (-34.5065, -58.7750),
+        'EL CEIBO': (-34.5290, -58.7560),
+        'LA SONIA': (-34.5010, -58.7350),
+        'FRINO': (-34.5070, -58.7610),
+        'FRINOS': (-34.5070, -58.7610),
+        'BARRIO LEON': (-34.5120, -58.7420),
+        'BARRIO DE LEON': (-34.5120, -58.7420),
+        'LEON': (-34.5120, -58.7420),
+        'CONSEJAL ALFONFO': (-34.5120, -58.7420),
+        'CONCEJAL ALFONSO': (-34.5120, -58.7420),
+        'SAN ATILIO': (-34.5240, -58.7820),
+        'VUCETICH': (-34.5420, -58.7720),
+        'YAPEYU': (-34.5180, -58.7710),
+        'ALBERDI': (-34.5050, -58.7500),
+        'LA ESPERANZA': (-34.5040, -58.7310),
+        'ESPERANZA': (-34.5040, -58.7310),
+        'BARRIO LA PAZ': (-34.5210, -58.7650),
+        'PLAZA DE LA PAZ': (-34.5210, -58.7650),
+        'SANTA PAULA': (-34.5350, -58.7700),
+        'PRIMAVERA': (-34.5150, -58.7450),
+        'EL CORREDOR': (-34.5250, -58.7600),
+        'RUTA 8': (-34.4920, -58.7310),
+        'PUMA': (-34.4920, -58.7310)
+    }
+
+    # Geocodificación en cascada de los registros que no tenían coordenadas iniciales
+    recovered_count = 0
+    precisions = []
+
+    for idx, r in df_clean.iterrows():
+        orig_lat = r['Latitud_Clean']
+        orig_lng = r['Longitud_Clean']
+        
+        if pd.notnull(orig_lat) and pd.notnull(orig_lng):
+            precisions.append("EXACTA_DESPACHO")
+            continue
+            
+        c = norm_street(r.get('calle'))
+        cs = norm_street(r.get('calleSuperior'))
+        ci = norm_street(r.get('calleInferior'))
+        comb = (str(r.get('comentario', '')) + ' ' + str(r.get('Dirección', '')) + ' ' + str(r.get('Relato', ''))).upper()
+        
+        # 1. Intersección calle + calleSuperior / calleInferior
+        if c in street_centroids and cs in street_centroids and c not in ['OTRA', 'OTRO', 'OTRAS', 'INDEFINIDO', '.', '....', ':', 'NAN', 'INDEF']:
+            p1 = street_centroids[c]
+            p2 = street_centroids[cs]
+            df_clean.at[idx, 'Latitud_Clean'] = round((p1[0] + p2[0]) / 2, 6)
+            df_clean.at[idx, 'Longitud_Clean'] = round((p1[1] + p2[1]) / 2, 6)
+            precisions.append("INTERSECCION_ESQUINA")
+            recovered_count += 1
+            continue
+            
+        if c in street_centroids and ci in street_centroids and c not in ['OTRA', 'OTRO', 'OTRAS', 'INDEFINIDO', '.', '....', ':', 'NAN', 'INDEF']:
+            p1 = street_centroids[c]
+            p2 = street_centroids[ci]
+            df_clean.at[idx, 'Latitud_Clean'] = round((p1[0] + p2[0]) / 2, 6)
+            df_clean.at[idx, 'Longitud_Clean'] = round((p1[1] + p2[1]) / 2, 6)
+            precisions.append("INTERSECCION_ESQUINA")
+            recovered_count += 1
+            continue
+
+        # 2. Centroide de calle principal
+        if c in street_centroids and c not in ['OTRA', 'OTRO', 'OTRAS', 'INDEFINIDO', '.', '....', ':', 'NAN', 'INDEF']:
+            p = street_centroids[c]
+            df_clean.at[idx, 'Latitud_Clean'] = round(p[0], 6)
+            df_clean.at[idx, 'Longitud_Clean'] = round(p[1], 6)
+            precisions.append("CENTROIDE_CALLE")
+            recovered_count += 1
+            continue
+
+        # 3. Centroide de calle transversal si la principal fue genérica
+        if cs in street_centroids and cs not in ['OTRA', 'OTRO', 'OTRAS', 'INDEFINIDO', '.', '....', ':', 'NAN', 'INDEF']:
+            p = street_centroids[cs]
+            df_clean.at[idx, 'Latitud_Clean'] = round(p[0], 6)
+            df_clean.at[idx, 'Longitud_Clean'] = round(p[1], 6)
+            precisions.append("TRANSVERSAL_ESQUINA")
+            recovered_count += 1
+            continue
+
+        if ci in street_centroids and ci not in ['OTRA', 'OTRO', 'OTRAS', 'INDEFINIDO', '.', '....', ':', 'NAN', 'INDEF']:
+            p = street_centroids[ci]
+            df_clean.at[idx, 'Latitud_Clean'] = round(p[0], 6)
+            df_clean.at[idx, 'Longitud_Clean'] = round(p[1], 6)
+            precisions.append("TRANSVERSAL_ESQUINA")
+            recovered_count += 1
+            continue
+
+        # 4. Centroide Barrial / Asentamiento
+        found_barrio = False
+        for b_name, b_pt in known_barrios.items():
+            if b_name in comb:
+                df_clean.at[idx, 'Latitud_Clean'] = round(b_pt[0], 6)
+                df_clean.at[idx, 'Longitud_Clean'] = round(b_pt[1], 6)
+                precisions.append("CENTROIDE_BARRIO")
+                recovered_count += 1
+                found_barrio = True
+                break
+        if found_barrio:
+            continue
+
+        # Sin datos suficientes para geocodificar fehacientemente
+        precisions.append("SIN_LOCALIZACION")
+
+    df_clean['Precision_Geo'] = precisions
+    print(f"Geocodificación automática completada: {recovered_count} registros recuperados exitosamente.")
+
     print("Ejecutando procesamiento NLP inteligente sobre relatos...")
     df_clean['Sustancia_Detectada'] = df_clean['Relato'].apply(extract_sustancias)
     df_clean['Tiene_Armas'] = df_clean['Relato'].apply(check_armas)
@@ -216,10 +427,16 @@ def run_etl_jcp():
             "Dia_Semana": str(r['Dia_Semana']),
             "direccion": str(r['Dirección']) if pd.notnull(r['Dirección']) else "José C. Paz",
             "Dirección": str(r['Dirección']) if pd.notnull(r['Dirección']) else "José C. Paz",
+            "calle": str(r['calle']).strip() if pd.notnull(r.get('calle')) else "",
+            "altura": int(r['Altura']) if pd.notnull(r.get('Altura')) and str(r.get('Altura')).isdigit() else 0,
+            "calleSuperior": str(r['calleSuperior']).strip() if pd.notnull(r.get('calleSuperior')) else "",
+            "calleInferior": str(r['calleInferior']).strip() if pd.notnull(r.get('calleInferior')) else "",
             "lat": float(r['Latitud_Clean']) if pd.notnull(r['Latitud_Clean']) else None,
             "Latitud_Clean": float(r['Latitud_Clean']) if pd.notnull(r['Latitud_Clean']) else None,
             "lng": float(r['Longitud_Clean']) if pd.notnull(r['Longitud_Clean']) else None,
             "Longitud_Clean": float(r['Longitud_Clean']) if pd.notnull(r['Longitud_Clean']) else None,
+            "precision_geo": str(r['Precision_Geo']),
+            "Precision_Geo": str(r['Precision_Geo']),
             "relato": str(r['Relato']) if pd.notnull(r['Relato']) else "",
             "Relato": str(r['Relato']) if pd.notnull(r['Relato']) else "",
             "comentario": str(r['comentario']) if pd.notnull(r.get('comentario')) else "",
@@ -251,7 +468,9 @@ def run_etl_jcp():
         json.dump(records, f, ensure_ascii=False, indent=2)
     df_clean.to_csv(os.path.join(PUBLIC_OUTPUT_DIR, "jcp_drogas_consolidado.csv"), index=False, encoding='utf-8')
         
+    geocoded_total = sum(1 for r in records if r['lat'] is not None and r['lng'] is not None)
     print(f"\n[ÉXITO] Archivos consolidados y guardados exitosamente ({len(records)} registros).")
+    print(f"[COBERTURA GEOGRÁFICA] {geocoded_total} / {len(records)} georreferenciados ({geocoded_total/len(records)*100:.2f}%).")
 
 if __name__ == "__main__":
     run_etl_jcp()

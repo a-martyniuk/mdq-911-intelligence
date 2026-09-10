@@ -1623,6 +1623,212 @@ export function generateDrogasSuspectsPDF(data: {
 }
 
 /**
+ * Generates an official judicial report on Relational Network & Gang Cliques for José C. Paz
+ */
+export function generateDrogasGraphPDF(data: {
+  cliqueName: string;
+  nodes: Array<{
+    id: string;
+    label: string;
+    category: string;
+    count: number;
+    degree: number;
+    address?: string;
+    barrio?: string;
+    dominantSubstance?: string;
+    isArmed?: boolean;
+    description?: string;
+  }>;
+  edges: Array<{
+    source: string;
+    target: string;
+    weight: number;
+    label: string;
+  }>;
+  dispatches: any[];
+  metrics: {
+    totalNodes: number;
+    totalEdges: number;
+    suspectsCount: number;
+    bunkersCount: number;
+    armedRate: number;
+  };
+}) {
+  const win = window.open("", "_blank");
+  if (!win) {
+    alert("Por favor habilita las ventanas emergentes (popups) para descargar el informe PDF.");
+    return;
+  }
+
+  const { cliqueName, nodes, edges, dispatches, metrics } = data;
+
+  const escapeHtml = (str: string) => {
+    if (!str) return "";
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  };
+
+  const html = `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <title>Expediente de Inteligencia de Redes Narcocriminales - José C. Paz</title>
+      <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #0f172a; padding: 2.5rem; margin: 0; line-height: 1.5; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #6366f1; padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
+        .title { font-size: 1.35rem; font-weight: 900; color: #1e1b4b; text-transform: uppercase; }
+        .subtitle { font-size: 0.85rem; color: #64748b; font-weight: 600; text-transform: uppercase; margin-top: 0.2rem; }
+        .badge { background: #6366f1; color: #fff; padding: 0.35rem 0.75rem; border-radius: 4px; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; }
+        .box { background: #f5f3ff; border-left: 4px solid #6366f1; padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem; font-size: 0.85rem; color: #3730a3; }
+        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
+        .stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.85rem; border-top: 3px solid #6366f1; text-align: center; }
+        .stat-val { font-size: 1.4rem; font-weight: 900; color: #0f172a; margin: 0.2rem 0; }
+        .stat-lbl { font-size: 0.7rem; font-weight: 700; color: #64748b; text-transform: uppercase; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-bottom: 1.5rem; }
+        th { background: #0f172a; color: #fff; text-align: left; padding: 0.6rem; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; }
+        td { padding: 0.55rem 0.6rem; border-bottom: 1px solid #e2e8f0; }
+        tr:nth-child(even) { background: #f8fafc; }
+        .dispatch-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.85rem; margin-bottom: 0.75rem; }
+        .dispatch-relato { background: #ffffff; border: 1px solid #cbd5e1; border-radius: 4px; padding: 0.75rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.76rem; color: #0f172a; white-space: pre-wrap; word-break: break-word; line-height: 1.5; }
+        .footer { border-top: 1px solid #cbd5e1; padding-top: 1rem; margin-top: 2rem; font-size: 0.7rem; color: #94a3b8; text-align: center; }
+        .btn-print { background: #4f46e5; color: white; border: none; padding: 0.6rem 1.25rem; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.85rem; margin-bottom: 1.5rem; }
+        @media print { body { padding: 1rem; } .btn-print { display: none; } }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div>
+          <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
+          <div class="subtitle">Dirección de Inteligencia Criminal · Grafo Relacional de Narcotráfico & Bandas (911)</div>
+        </div>
+        <div class="badge">Uso Judicial Reservado</div>
+      </div>
+
+      <button class="btn-print" onclick="window.print()">🖨️ Imprimir / Guardar como PDF</button>
+
+      <div class="box">
+        <strong>OBJETO DEL INFORME PERICIAL:</strong> Análisis relacional de estructuras criminales, puntos de comercialización (búnkers/kioscos), actores identificados y nivel de conflictividad armada para el clúster: <strong>${escapeHtml(cliqueName)}</strong> en el partido de José C. Paz. La red integra ${metrics.totalNodes} nodos y ${metrics.totalEdges} aristas de co-ocurrencia verificada en el sistema 911.
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-lbl">Nodos Activos</div>
+          <div class="stat-val">${metrics.totalNodes}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Vínculos 911</div>
+          <div class="stat-val">${metrics.totalEdges}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Sospechosos / Alias</div>
+          <div class="stat-val" style="color: #8b5cf6;">${metrics.suspectsCount}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Búnkers / Puntos</div>
+          <div class="stat-val" style="color: #f59e0b;">${metrics.bunkersCount}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Tasa de Armas</div>
+          <div class="stat-val" style="color: #ef4444;">${metrics.armedRate.toFixed(1)}%</div>
+        </div>
+      </div>
+
+      <h3 style="font-size: 0.95rem; text-transform: uppercase; color: #1e1b4b; margin-top: 1.5rem; margin-bottom: 0.5rem;">
+        1. Entidades Clave de la Estructura (Nodos del Grafo)
+      </h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Entidad / Identificador</th>
+            <th>Categoría</th>
+            <th>Despachos 911</th>
+            <th>Conexiones (Grado)</th>
+            <th>Ubicación / Detalle Forense</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${nodes.slice(0, 30).map((n) => `
+            <tr>
+              <td><strong>${escapeHtml(n.label)}</strong></td>
+              <td><span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: ${n.category === 'suspect' ? '#7c3aed' : n.category === 'bunker' ? '#d97706' : n.category === 'weapon' ? '#dc2626' : '#059669'};">${escapeHtml(n.category)}</span></td>
+              <td style="font-weight: 700;">${n.count}</td>
+              <td>${n.degree}</td>
+              <td>${escapeHtml(n.address || n.barrio || n.description || 'José C. Paz')}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+
+      <h3 style="font-size: 0.95rem; text-transform: uppercase; color: #1e1b4b; margin-top: 1.5rem; margin-bottom: 0.5rem;">
+        2. Vínculos de Co-ocurrencia Narcocriminal (Aristas de la Red)
+      </h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Origen (Entidad A)</th>
+            <th>Destino (Entidad B)</th>
+            <th>Fuerza de Asociación</th>
+            <th>Tipología del Nexo</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${edges.slice(0, 25).map((e) => `
+            <tr>
+              <td><strong>${escapeHtml(e.source)}</strong></td>
+              <td><strong>${escapeHtml(e.target)}</strong></td>
+              <td style="font-weight: 700; color: #4f46e5;">${e.weight} llamados</td>
+              <td>${escapeHtml(e.label)}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+
+      ${dispatches && dispatches.length > 0 ? `
+        <h3 style="font-size: 0.95rem; text-transform: uppercase; color: #1e1b4b; margin-top: 1.5rem; margin-bottom: 0.5rem;">
+          3. Despachos Policiales del 911 Vinculados (${dispatches.length} Registros Íntegros - Sin Truncar)
+        </h3>
+        ${dispatches.slice(0, 20).map((d: any, idx: number) => `
+          <div class="dispatch-card" style="border-left: 4px solid ${d.tieneArmas ? '#ef4444' : '#6366f1'};">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; flex-wrap: wrap;">
+              <div>
+                <strong>Llamada #${idx + 1} · ID 911 #${d.id || d.ID}</strong>
+                <span style="color: #64748b; font-size: 0.75rem; margin-left: 8px;">🕒 ${d.fecha || d.Fecha || ''} (${d.franja || d.Franja_Horaria || 'N/D'})</span>
+              </div>
+              <div>
+                <span style="background: ${d.tieneArmas ? '#fee2e2' : '#f1f5f9'}; color: ${d.tieneArmas ? '#dc2626' : '#475569'}; font-weight: 800; font-size: 0.7rem; padding: 2px 7px; border-radius: 3px;">
+                  ${d.tieneArmas ? '⚠️ ARMAS / TIROS' : 'SIN ARMAS'}
+                </span>
+                <span style="background: #ede9fe; color: #6d28d9; font-weight: 700; font-size: 0.7rem; padding: 2px 7px; border-radius: 3px; margin-left: 4px;">
+                  💊 ${d.sustancia || d.SubTipo || 'Drogas'}
+                </span>
+              </div>
+            </div>
+            <div style="font-size: 0.8rem; color: #334155; margin-bottom: 6px;">
+              📍 <strong>${escapeHtml(d.direccion || d.Dirección || 'José C. Paz')}</strong> ${d.comentario ? `(${escapeHtml(d.comentario)})` : ''}
+              <span style="color: #64748b;">— Barrio: ${escapeHtml(d.barrio || d.Barrio_Detectado || 'Centro')}</span>
+            </div>
+            <div class="dispatch-relato">${escapeHtml(d.relato || d.Relato || '(Sin relato textual)')}</div>
+          </div>
+        `).join("")}
+      ` : ''}
+
+      <div class="footer">
+        Documento judicial reservado emitido por la Plataforma MSEG Intelligence · Reserva de Sumario · ${new Date().toLocaleString("es-AR")}
+      </div>
+    </body>
+    </html>
+  `;
+
+  win.document.write(html);
+  win.document.close();
+}
+
+/**
  * Generates an official report on Inter-precinct Jurisdictions (Comisarías 1ra - 16ta)
  */
 export function generateJurisdictionsReportPDF(data: {
