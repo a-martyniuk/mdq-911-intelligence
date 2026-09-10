@@ -290,7 +290,9 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
                 generateDrogasSuspectsPDF({
                   suspects: aliasRanking,
                   totalSuspects: aliasRanking.length,
-                  totalIncidents: incidents.length
+                  totalIncidents: incidents.length,
+                  allIncidents: incidents,
+                  selectedSuspect: selectedSuspect,
                 });
               }}
               className="btn-logout"
@@ -299,7 +301,7 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
                 padding: "0 1rem",
                 fontSize: "0.8rem",
                 fontWeight: 800,
-                background: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)",
+                background: selectedSuspect ? "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)" : "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)",
                 color: "#fff",
                 border: "none",
                 borderRadius: "6px",
@@ -307,11 +309,43 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
                 display: "flex",
                 alignItems: "center",
                 gap: "0.4rem",
-                boxShadow: "0 2px 8px rgba(139,92,246,0.3)"
+                boxShadow: selectedSuspect ? "0 2px 8px rgba(239,68,68,0.3)" : "0 2px 8px rgba(139,92,246,0.3)"
               }}
+              title={selectedSuspect ? `Descargar dossier con todos los llamados de ${selectedSuspect} sin truncar y con mapa` : "Descargar dossier judicial completo de sospechosos"}
             >
-              <FileText size={15} /> 📑 Descargar Dossier Judicial (PDF)
+              <FileText size={15} /> {selectedSuspect ? `📑 Dossier Judicial: ${selectedSuspect} (PDF)` : "📑 Descargar Dossier Judicial (PDF)"}
             </button>
+
+            {selectedSuspect && (
+              <button
+                onClick={() => {
+                  generateDrogasSuspectsPDF({
+                    suspects: aliasRanking,
+                    totalSuspects: aliasRanking.length,
+                    totalIncidents: incidents.length,
+                    allIncidents: incidents,
+                    selectedSuspect: null,
+                  });
+                }}
+                className="btn-logout"
+                style={{
+                  height: "36px",
+                  padding: "0 0.85rem",
+                  fontSize: "0.78rem",
+                  fontWeight: 700,
+                  background: "rgba(139,92,246,0.15)",
+                  color: "#8b5cf6",
+                  border: "1px solid rgba(139,92,246,0.35)",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.35rem"
+                }}
+                title="Descargar dossier general con todos los sospechosos agrupados y mapas"
+              >
+                <FileText size={14} /> Dossier General (Todos)
+              </button>
+            )}
 
             <button
               onClick={() => {

@@ -1278,7 +1278,8 @@ export function generateDrogasJcpPDF(data: {
 }
 
 /**
- * Generates an official judicial dossier on drug suspects, aliases, and operative networks
+ * Generates an official judicial dossier on drug suspects, aliases, and operative networks.
+ * Aggregates all dispatches per suspect without truncating narratives and renders individual location maps.
  */
 export function generateDrogasSuspectsPDF(data: {
   suspects: Array<{
@@ -1286,11 +1287,13 @@ export function generateDrogasSuspectsPDF(data: {
     count: number;
     lastDate: string;
     barrios: string;
-    sampleRelato: string;
+    sampleRelato?: string;
     isFullName: boolean;
   }>;
   totalSuspects: number;
   totalIncidents: number;
+  allIncidents?: any[];
+  selectedSuspect?: string | null;
 }) {
   const win = window.open("", "_blank");
   if (!win) {
@@ -1298,94 +1301,318 @@ export function generateDrogasSuspectsPDF(data: {
     return;
   }
 
-  const { suspects, totalSuspects, totalIncidents } = data;
+  const { suspects, totalSuspects, totalIncidents, allIncidents = [], selectedSuspect = null } = data;
+
+  const escapeHtml = (str: string) => {
+    if (!str) return "";
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  };
+
+  const targetSuspects = selectedSuspect
+    ? suspects.filter((s) => s.alias.toLowerCase() === selectedSuspect.toLowerCase())
+    : suspects.slice(0, 20);
+
+  const suspectProfiles = targetSuspects.map((s, idx) => {
+    let related: any[] = [];
+    if (allIncidents && allIncidents.length > 0) {
+      related = allIncidents.filter((inc) =>
+        (inc.alias || []).some((a: string) => a.trim().toLowerCase() === s.alias.trim().toLowerCase())
+      );
+    }
+    if (related.length === 0 && allIncidents && allIncidents.length > 0) {
+      const q = s.alias.trim().toLowerCase();
+      related = allIncidents.filter((inc) => (inc.relato || "").toLowerCase().includes(q));
+    }
+
+    related.sort((a, b) => (b.fecha || "").localeCompare(a.fecha || ""));
+
+    const points = related
+      .filter((r) => r.lat && r.lng)
+      .map((r) => ({
+        id: r.id,
+        lat: Number(r.lat),
+        lng: Number(r.lng),
+        direccion: r.direccion || "José C. Paz",
+        barrio: r.barrio || "Centro",
+        tieneArmas: Boolean(r.tieneArmas),
+        sustancia: r.sustancia || "Estupefacientes",
+        fecha: r.fecha || "",
+      }));
+
+    const armedCount = related.filter((r) => r.tieneArmas).length;
+
+    return {
+      idx,
+      alias: s.alias,
+      isFullName: s.isFullName,
+      count: related.length || s.count,
+      lastDate: s.lastDate || (related[0]?.fecha || "N/D"),
+      barrios: s.barrios || "José C. Paz",
+      points,
+      dispatches: related,
+      armedCount,
+      armedPct: related.length > 0 ? ((armedCount / related.length) * 100).toFixed(0) : "0",
+    };
+  });
+
+  const isIndividual = Boolean(selectedSuspect && suspectProfiles.length === 1);
+  const docTitle = isIndividual
+    ? `Dossier Judicial Individual: ${selectedSuspect} · MSEG`
+    : "Dossier Pericial de Inteligencia · Redes & Sospechosos 911 (José C. Paz)";
 
   const html = `
     <!DOCTYPE html>
     <html lang="es">
     <head>
       <meta charset="UTF-8">
-      <title>Informe Pericial de Inteligencia - Sospechosos & Alias 911</title>
+      <title>${docTitle}</title>
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
       <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #0f172a; padding: 2.5rem; margin: 0; line-height: 1.5; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif; background: #f8fafc; color: #0f172a; margin: 0; padding: 0; line-height: 1.5; }
+        .page-wrap { max-width: 960px; margin: 0 auto; background: #ffffff; padding: 2.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+        .top-bar { position: sticky; top: 0; background: #0f172a; color: #fff; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #8b5cf6; padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
-        .title { font-size: 1.35rem; font-weight: 900; color: #0f172a; text-transform: uppercase; letter-spacing: 0.02em; }
+        .title { font-size: 1.3rem; font-weight: 900; color: #0f172a; text-transform: uppercase; letter-spacing: 0.02em; }
         .subtitle { font-size: 0.85rem; color: #64748b; font-weight: 600; text-transform: uppercase; margin-top: 0.2rem; }
         .badge { background: #8b5cf6; color: #fff; padding: 0.35rem 0.75rem; border-radius: 4px; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
         .info-box { background: #f5f3ff; border-left: 4px solid #8b5cf6; padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem; font-size: 0.85rem; color: #5b21b6; }
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
-        .stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; border-top: 3px solid #8b5cf6; }
-        .stat-val { font-size: 1.4rem; font-weight: 900; color: #0f172a; margin: 0.2rem 0; }
-        .stat-lbl { font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-bottom: 1.5rem; }
-        th { background: #0f172a; color: #fff; text-align: left; padding: 0.6rem; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; }
-        td { padding: 0.55rem 0.6rem; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
-        tr:nth-child(even) { background: #f8fafc; }
-        .tag-name { background: #e0e7ff; color: #3730a3; padding: 2px 6px; border-radius: 3px; font-size: 0.68rem; font-weight: 700; }
-        .tag-alias { background: #fef3c7; color: #92400e; padding: 2px 6px; border-radius: 3px; font-size: 0.68rem; font-weight: 700; }
-        .footer { border-top: 1px solid #cbd5e1; padding-top: 1rem; margin-top: 2rem; font-size: 0.7rem; color: #94a3b8; text-align: center; }
-        @media print { body { padding: 1rem; } .no-print { display: none; } }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
+        .stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.85rem; border-top: 3px solid #8b5cf6; }
+        .stat-val { font-size: 1.3rem; font-weight: 900; color: #0f172a; margin: 0.2rem 0; }
+        .stat-lbl { font-size: 0.7rem; font-weight: 700; color: #64748b; text-transform: uppercase; }
+        .suspect-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 2px dashed #cbd5e1; }
+        .suspect-header { margin-bottom: 1rem; }
+        .tag-name { background: #e0e7ff; color: #3730a3; padding: 2px 7px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; }
+        .tag-alias { background: #fef3c7; color: #92400e; padding: 2px 7px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; }
+        .suspect-map { height: 260px; width: 100%; border: 1px solid #cbd5e1; border-radius: 6px; margin: 8px 0 14px; background: #e2e8f0; }
+        .dispatch-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin-bottom: 12px; }
+        .dispatch-relato { background: #ffffff; border: 1px solid #cbd5e1; border-radius: 4px; padding: 10px 12px; font-size: 0.78rem; color: #0f172a; line-height: 1.5; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; white-space: pre-wrap; word-break: break-word; margin-top: 6px; }
+        .footer { border-top: 1px solid #cbd5e1; padding-top: 1rem; margin-top: 2rem; font-size: 0.72rem; color: #94a3b8; text-align: center; }
+        @media print {
+          .no-print { display: none !important; }
+          body { background: #ffffff; }
+          .page-wrap { padding: 0; box-shadow: none; max-width: 100%; }
+          .suspect-section { page-break-after: always; margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+          .suspect-map { break-inside: avoid; height: 230px !important; }
+          .dispatch-card { break-inside: avoid; }
+        }
       </style>
     </head>
     <body>
-      <div class="header">
+      <div class="top-bar no-print">
         <div>
-          <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
-          <div class="subtitle">Informe Pericial de NLP · Sospechosos, Alias & Redes de Narcomenudeo (José C. Paz)</div>
+          <strong>${isIndividual ? `Dossier Judicial: ${selectedSuspect}` : "Dossier Judicial Completo de Sospechosos"}</strong>
+          <span style="color: #94a3b8; font-size: 0.8rem; margin-left: 10px;">
+            ${isIndividual ? "Individualización pericial con llamados completos" : `${suspectProfiles.length} sospechosos agrupados con todos sus despachos sin truncar`}
+          </span>
         </div>
-        <div class="badge">Uso Judicial / Fiscal</div>
-      </div>
-
-      <div class="info-box">
-        <strong>ALCANCE DE INTELIGENCIA:</strong> Extracción algorítmica y depuración sintáctica de identidades y apodos mencionados de manera reiterada en denuncias ciudadanas al 911. Este documento individualiza objetivos de interés para fundamentación de pedidos de allanamiento e investigación criminal.
-      </div>
-
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-lbl">Sospechosos Individualizados</div>
-          <div class="stat-val">${totalSuspects}</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-lbl">Universo de Denuncias 911</div>
-          <div class="stat-val">${totalIncidents.toLocaleString()}</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-lbl">Jurisdicción Analizada</div>
-          <div class="stat-val">José C. Paz</div>
+        <div style="display: flex; gap: 10px;">
+          <button onclick="window.print()" style="background: #8b5cf6; color: #fff; border: none; padding: 8px 18px; border-radius: 6px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem;">
+            🖨️ Imprimir / Guardar como PDF
+          </button>
+          <button onclick="window.close()" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3); padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">
+            Cerrar
+          </button>
         </div>
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th style="width: 25px;">#</th>
-            <th>Sospechoso / Alias</th>
-            <th>Tipo Identificación</th>
-            <th>Reiteraciones 911</th>
-            <th>Zonas / Barrios de Operación</th>
-            <th>Muestra del Relato Policial</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${suspects.map((s, idx) => `
-            <tr>
-              <td>${idx + 1}</td>
-              <td><strong>${s.alias}</strong></td>
-              <td>${s.isFullName ? '<span class="tag-name">Nombre Identificado</span>' : '<span class="tag-alias">Alias / Apodo</span>'}</td>
-              <td><strong style="color: #ef4444; font-size: 0.95rem;">${s.count}</strong> llamadas</td>
-              <td>${s.barrios || "José C. Paz"}</td>
-              <td style="font-size: 0.72rem; color: #475569; max-width: 280px;">${s.sampleRelato.slice(0, 160)}...</td>
-            </tr>
-          `).join("")}
-        </tbody>
-      </table>
+      <div class="page-wrap">
+        <div class="header">
+          <div>
+            <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
+            <div class="subtitle">Dossier Judicial Pericial · Redes, Sospechosos & Despachos 911 (José C. Paz)</div>
+          </div>
+          <div class="badge">Uso Judicial / Sumario</div>
+        </div>
 
-      <div class="footer">
-        Documento confidencial emitido por la Plataforma MSEG Intelligence · Reserva de Sumario · ${new Date().toLocaleString("es-AR")}
+        <div class="info-box">
+          <strong>VALOR PROBATORIO & INTELIGENCIA RELACIONAL:</strong> Este expediente reúne las denuncias vecinales al 911 agrupadas por investigado, exponiendo el <strong>texto íntegro y sin truncar</strong> de los llamados ciudadanos para fundamentar solicitudes de medidas de prueba, allanamientos y desbaratamiento de búnkers ante la fiscalía interviniente.
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-lbl">Sospechosos Auditados</div>
+            <div class="stat-val">${suspectProfiles.length}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-lbl">Despachos Detallados</div>
+            <div class="stat-val">${suspectProfiles.reduce((acc, p) => acc + p.dispatches.length, 0)}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-lbl">Puntos Geolocalizados</div>
+            <div class="stat-val">${suspectProfiles.reduce((acc, p) => acc + p.points.length, 0)}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-lbl">Jurisdicción</div>
+            <div class="stat-val">José C. Paz</div>
+          </div>
+        </div>
+
+        <!-- Suspects Aggregated Sections -->
+        ${suspectProfiles.map((prof) => `
+          <div class="suspect-section">
+            <div class="suspect-header">
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #8b5cf6; padding-bottom: 8px; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                <div>
+                  <span style="font-size: 1.3rem; font-weight: 900; color: #0f172a;">${prof.alias}</span>
+                  <span class="${prof.isFullName ? 'tag-name' : 'tag-alias'}" style="margin-left: 8px;">
+                    ${prof.isFullName ? 'Nombre Identificado' : 'Alias / Apodo Delictivo'}
+                  </span>
+                </div>
+                <div>
+                  <span style="font-size: 0.85rem; font-weight: 800; color: #ef4444; background: #fee2e2; padding: 3px 10px; border-radius: 4px;">
+                    ${prof.count} Denuncias 911
+                  </span>
+                  <span style="font-size: 0.8rem; font-weight: 700; color: #059669; background: #d1fae5; padding: 3px 10px; border-radius: 4px; margin-left: 6px;">
+                    📍 ${prof.points.length} en Mapa
+                  </span>
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; font-size: 0.78rem;">
+                <div style="background: #f8fafc; padding: 8px 10px; border-radius: 4px; border: 1px solid #e2e8f0;">
+                  <span style="color: #64748b; font-size: 0.7rem; text-transform: uppercase;">Peligrosidad Armada</span><br/>
+                  <strong style="color: ${prof.armedCount > 0 ? '#dc2626' : '#16a34a'};">${prof.armedCount} hechos con armas (${prof.armedPct}%)</strong>
+                </div>
+                <div style="background: #f8fafc; padding: 8px 10px; border-radius: 4px; border: 1px solid #e2e8f0;">
+                  <span style="color: #64748b; font-size: 0.7rem; text-transform: uppercase;">Barrios de Operación</span><br/>
+                  <strong style="color: #1e293b;">${prof.barrios || 'José C. Paz'}</strong>
+                </div>
+                <div style="background: #f8fafc; padding: 8px 10px; border-radius: 4px; border: 1px solid #e2e8f0;">
+                  <span style="color: #64748b; font-size: 0.7rem; text-transform: uppercase;">Última Denuncia</span><br/>
+                  <strong style="color: #1e293b;">${prof.lastDate}</strong>
+                </div>
+                <div style="background: #f8fafc; padding: 8px 10px; border-radius: 4px; border: 1px solid #e2e8f0;">
+                  <span style="color: #64748b; font-size: 0.7rem; text-transform: uppercase;">Puntos Críticos</span><br/>
+                  <strong style="color: #7c3aed;">${prof.points.length} Búnkers / Esquinas</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Map of Points -->
+            ${prof.points.length > 0 ? `
+              <div style="margin-bottom: 16px; break-inside: avoid;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <strong style="font-size: 0.82rem; color: #334155; text-transform: uppercase;">
+                    🗺️ Mapa Territorial de Puntos Vinculados (${prof.points.length} Ubicaciones Georreferenciadas)
+                  </strong>
+                  <span style="font-size: 0.72rem; color: #64748b;">🔴 Armas / Balaceras | 🟣 Comercialización Narcocriminal</span>
+                </div>
+                <div id="map-suspect-${prof.idx}" class="suspect-map"></div>
+              </div>
+            ` : `
+              <div style="background: #fffbeb; border: 1px solid #fef3c7; color: #92400e; padding: 8px 12px; border-radius: 4px; font-size: 0.78rem; margin-bottom: 14px;">
+                ⚠️ Los despachos de este investigado no cuentan con coordenadas satelitales exactas registradas en la carta del 911 (se señalan domicilios aproximados al pie).
+              </div>
+            `}
+
+            <!-- Complete Dispatches without Truncating -->
+            <div style="margin-top: 14px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <strong style="font-size: 0.85rem; color: #0f172a; text-transform: uppercase;">
+                  📑 Llamados Policiales al 911 Vinculados (${prof.dispatches.length} Registros Íntegros - Sin Truncar):
+                </strong>
+                <span style="font-size: 0.72rem; color: #64748b;">Texto original del operador 911</span>
+              </div>
+
+              ${prof.dispatches.map((d: any, dIdx: number) => `
+                <div class="dispatch-card" style="border-left: 4px solid ${d.tieneArmas ? '#ef4444' : '#8b5cf6'};">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 4px;">
+                    <div>
+                      <strong style="color: #0f172a; font-size: 0.84rem;">Llamada #${dIdx + 1} · ID 911 #${d.id}</strong>
+                      <span style="color: #64748b; font-size: 0.76rem; margin-left: 8px;">🕒 ${d.fecha || ''} (${d.franja || 'N/D'})</span>
+                    </div>
+                    <div style="display: flex; gap: 4px;">
+                      <span style="background: ${d.tieneArmas ? '#fee2e2' : '#f1f5f9'}; color: ${d.tieneArmas ? '#dc2626' : '#475569'}; font-weight: 800; font-size: 0.7rem; padding: 2px 7px; border-radius: 3px;">
+                        ${d.tieneArmas ? '⚠️ ARMAS / DISPAROS' : 'SIN ARMAS'}
+                      </span>
+                      <span style="background: #ede9fe; color: #6d28d9; font-weight: 700; font-size: 0.7rem; padding: 2px 7px; border-radius: 3px;">
+                        💊 ${d.sustancia || 'Drogas'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div style="font-size: 0.8rem; color: #334155; margin-bottom: 6px;">
+                    📍 <strong>${escapeHtml(d.direccion || 'José C. Paz')}</strong> ${d.comentario ? `(${escapeHtml(d.comentario)})` : ''}
+                    <span style="color: #64748b;">— Barrio: ${escapeHtml(d.barrio || 'General')} | Entorno: ${escapeHtml(d.tipoLugar || 'Lugar')}</span>
+                    ${d.lat && d.lng ? `<span style="color: #059669; font-weight: 700; font-size: 0.75rem; margin-left: 6px;">[Coords: ${Number(d.lat).toFixed(5)}, ${Number(d.lng).toFixed(5)}]</span>` : ''}
+                  </div>
+
+                  <div class="dispatch-relato">${escapeHtml(d.relato || '(Sin transcripción textual disponible)')}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `).join('')}
+
+        <div class="footer">
+          Documento confidencial emitido por la Plataforma MSEG Intelligence · Reserva de Sumario · ${new Date().toLocaleString("es-AR")}
+        </div>
       </div>
 
       <script>
-        window.onload = function() { setTimeout(() => { window.print(); }, 800); };
+        const profilesData = ${JSON.stringify(
+          suspectProfiles.map((p) => ({
+            idx: p.idx,
+            points: p.points,
+          }))
+        )};
+
+        function initMaps() {
+          if (typeof L === 'undefined') return;
+          profilesData.forEach(item => {
+            if (!item.points || item.points.length === 0) return;
+            const el = document.getElementById('map-suspect-' + item.idx);
+            if (!el) return;
+
+            try {
+              const map = L.map(el, {
+                attributionControl: false,
+                zoomControl: false,
+                scrollWheelZoom: false,
+                dragging: false
+              });
+
+              L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                maxZoom: 18,
+              }).addTo(map);
+
+              const latLngs = [];
+              item.points.forEach(p => {
+                latLngs.push([p.lat, p.lng]);
+                L.circleMarker([p.lat, p.lng], {
+                  radius: p.tieneArmas ? 7 : 5,
+                  fillColor: p.tieneArmas ? '#ef4444' : '#8b5cf6',
+                  color: '#ffffff',
+                  weight: 1.5,
+                  fillOpacity: 0.9
+                }).addTo(map);
+              });
+
+              if (latLngs.length > 0) {
+                map.fitBounds(latLngs, { padding: [25, 25], maxZoom: 16 });
+              } else {
+                map.setView([-34.520, -58.775], 13);
+              }
+            } catch (err) {
+              console.error('Error rendering map for suspect idx ' + item.idx, err);
+            }
+          });
+        }
+
+        window.addEventListener('load', function() {
+          initMaps();
+          setTimeout(function() {
+            window.print();
+          }, 1500);
+        });
       </script>
     </body>
     </html>
