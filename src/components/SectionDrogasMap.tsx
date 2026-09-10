@@ -1,9 +1,12 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { MapPin, Filter, Download, Skull, Crosshair, ShieldAlert, Layers, Home, Info, Eye, FileText } from "lucide-react";
+import { MapPin, Filter, Download, Skull, Crosshair, ShieldAlert, Layers, Home, Info, Eye, FileText, Building2, Route, CheckSquare, Square } from "lucide-react";
 import { exportToCSV } from "@/lib/excelExport";
 import { generateDrogasJcpPDF } from "@/lib/pdfReport";
+import { JURISDICTIONS_JCP_GEOJSON } from "@/lib/jurisdictionsJcpGeoJSON";
+import { RENABAP_JCP_GEOJSON } from "@/lib/renabapJcpGeoJSON";
+import { CORRIDORS_JCP_GEOJSON } from "@/lib/corridorsJcpGeoJSON";
 import "leaflet/dist/leaflet.css";
 
 interface SectionDrogasMapProps {
@@ -14,6 +17,9 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<any>(null);
   const markersGroupRef = useRef<any>(null);
+  const jurisLayerRef = useRef<any>(null);
+  const renabapLayerRef = useRef<any>(null);
+  const corridorsLayerRef = useRef<any>(null);
 
   // Filters State
   const [filterOrigen, setFilterOrigen] = useState<string>("todos");
@@ -22,6 +28,12 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
   const [filterArmas, setFilterArmas] = useState<string>("todos");
   const [filterBarrio, setFilterBarrio] = useState<string>("todos");
   const [mapReady, setMapReady] = useState<boolean>(false);
+
+  // Layer Toggles (Replicating Mar del Plata Layer Architecture)
+  const [showJurisdictions, setShowJurisdictions] = useState<boolean>(true);
+  const [showRenabap, setShowRenabap] = useState<boolean>(true);
+  const [showCorridors, setShowCorridors] = useState<boolean>(true);
+  const [showPoints, setShowPoints] = useState<boolean>(true);
 
   // Filtered dataset
   const filteredIncidents = useMemo(() => {
@@ -86,6 +98,95 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
           maxZoom: 19,
         }).addTo(map);
 
+        // A. Police Jurisdictions Layer
+        const jurisLayer = L.geoJSON(JURISDICTIONS_JCP_GEOJSON as any, {
+          style: (feature: any) => ({
+            color: feature.properties.color || "#2563eb",
+            weight: 2,
+            opacity: 0.85,
+            fillColor: feature.properties.color || "#2563eb",
+            fillOpacity: 0.08,
+          }),
+          onEachFeature: (feature: any, layer: any) => {
+            layer.bindPopup(`
+              <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem; max-width: 260px;">
+                <strong style="color: ${feature.properties.color || '#2563eb'}; font-size: 0.95rem;">
+                  👮 ${feature.properties.name}
+                </strong><br/>
+                <span style="font-size: 0.8rem; color: #334155;">
+                  📍 <b>Sede:</b> ${feature.properties.sede}
+                </span><br/>
+                <span style="font-size: 0.78rem; color: #64748b;">
+                  <b>Zonas / Cuadrículas:</b> ${feature.properties.description}
+                </span><br/>
+                <div style="margin-top: 0.35rem; padding-top: 0.35rem; border-top: 1px solid #e2e8f0; font-size: 0.72rem; color: #64748b;">
+                  Jurisdicción Policial Oficial (Estación de Policía Departamental JCP)
+                </div>
+              </div>
+            `);
+          },
+        });
+        jurisLayerRef.current = jurisLayer;
+        if (showJurisdictions) jurisLayer.addTo(map);
+
+        // B. RENABAP Informal Settlements Layer
+        const renabapLayer = L.geoJSON(RENABAP_JCP_GEOJSON as any, {
+          style: (feature: any) => ({
+            color: feature.properties.color || "#ea580c",
+            weight: 2,
+            dashArray: "6, 4",
+            fillColor: feature.properties.color || "#ea580c",
+            fillOpacity: 0.22,
+          }),
+          onEachFeature: (feature: any, layer: any) => {
+            layer.bindPopup(`
+              <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem; max-width: 260px;">
+                <strong style="color: ${feature.properties.color || '#ea580c'}; font-size: 0.95rem;">
+                  🏘️ ${feature.properties.name}
+                </strong><br/>
+                <span style="font-size: 0.8rem; color: #334155;">
+                  <b>ID RENABAP:</b> #${feature.properties.idRenabap} · <b>Familias:</b> ${feature.properties.familias}
+                </span><br/>
+                <span style="font-size: 0.78rem; color: #64748b;">
+                  ${feature.properties.description}
+                </span>
+                <div style="margin-top: 0.35rem; padding: 3px 6px; background: #fee2e2; color: #b91c1c; border-radius: 4px; font-weight: 700; font-size: 0.72rem;">
+                  ⚠️ Área de Alta Vulnerabilidad y Presión Narcomenudeo
+                </div>
+              </div>
+            `);
+          },
+        });
+        renabapLayerRef.current = renabapLayer;
+        if (showRenabap) renabapLayer.addTo(map);
+
+        // C. Corridors & Train Lines Layer
+        const corridorsLayer = L.geoJSON(CORRIDORS_JCP_GEOJSON as any, {
+          style: (feature: any) => ({
+            color: feature.properties.color || "#d97706",
+            weight: feature.properties.weight || 3.5,
+            opacity: 0.85,
+          }),
+          onEachFeature: (feature: any, layer: any) => {
+            layer.bindPopup(`
+              <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem; max-width: 260px;">
+                <strong style="color: ${feature.properties.color || '#d97706'}; font-size: 0.95rem;">
+                  🛣️ ${feature.properties.name}
+                </strong><br/>
+                <span style="font-size: 0.8rem; color: #475569;">
+                  ${feature.properties.description}
+                </span><br/>
+                <div style="margin-top: 0.35rem; font-size: 0.72rem; color: #64748b;">
+                  Eje Troncal de Conectividad & Escape Delictual
+                </div>
+              </div>
+            `);
+          },
+        });
+        corridorsLayerRef.current = corridorsLayer;
+        if (showCorridors) corridorsLayer.addTo(map);
+
+        // D. Incidents Circle Markers LayerGroup
         markersGroupRef.current = L.layerGroup().addTo(map);
         mapInstanceRef.current = map;
         setMapReady(true);
@@ -102,10 +203,43 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
         markersGroupRef.current = null;
+        jurisLayerRef.current = null;
+        renabapLayerRef.current = null;
+        corridorsLayerRef.current = null;
         setMapReady(false);
       }
     };
   }, []);
+
+  // Sync Layer Toggles dynamically
+  useEffect(() => {
+    if (!mapReady || !mapInstanceRef.current) return;
+    const map = mapInstanceRef.current;
+
+    if (jurisLayerRef.current) {
+      if (showJurisdictions) {
+        if (!map.hasLayer(jurisLayerRef.current)) map.addLayer(jurisLayerRef.current);
+      } else {
+        if (map.hasLayer(jurisLayerRef.current)) map.removeLayer(jurisLayerRef.current);
+      }
+    }
+
+    if (renabapLayerRef.current) {
+      if (showRenabap) {
+        if (!map.hasLayer(renabapLayerRef.current)) map.addLayer(renabapLayerRef.current);
+      } else {
+        if (map.hasLayer(renabapLayerRef.current)) map.removeLayer(renabapLayerRef.current);
+      }
+    }
+
+    if (corridorsLayerRef.current) {
+      if (showCorridors) {
+        if (!map.hasLayer(corridorsLayerRef.current)) map.addLayer(corridorsLayerRef.current);
+      } else {
+        if (map.hasLayer(corridorsLayerRef.current)) map.removeLayer(corridorsLayerRef.current);
+      }
+    }
+  }, [showJurisdictions, showRenabap, showCorridors, mapReady]);
 
   // 2. Dynamically update markers without destroying the map
   useEffect(() => {
@@ -117,6 +251,8 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
       if (!markersGroup || !map) return;
 
       markersGroup.clearLayers();
+
+      if (!showPoints) return;
 
       const points = filteredIncidents.filter((r) => r.lat && r.lng);
 
@@ -160,7 +296,7 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
             <div>💊 <strong>Sustancia:</strong> ${inc.sustancia}</div>
             <div>🏠 <strong>Lugar:</strong> ${inc.tipoLugar}</div>
             ${aliasStr}
-            <div style="background:#f8fafc; padding:6px; border-radius:4px; margin-top:6px; border:1px solid #cbd5e1; font-size:0.75rem; max-height:85px; overflow-y:auto; color:#334155;">
+            <div style="background:#f8fafc; padding:6px; border-radius:4px; margin-top:6px; border:1px solid #cbd5e1; font-size:0.75rem; max-height:120px; overflow-y:auto; color:#334155; white-space:pre-wrap; word-break:break-word;">
               ${inc.relato}
             </div>
           </div>
@@ -169,7 +305,7 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
         marker.addTo(markersGroup);
       });
     });
-  }, [filteredIncidents]);
+  }, [filteredIncidents, showPoints, mapReady]);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
@@ -179,10 +315,10 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
           <div>
             <div className="card-title" style={{ gap: "0.5rem" }}>
               <MapPin color="#ef4444" size={24} />
-              <span>🗺️ Mapa Táctico de Puntos de Venta & Búnkers (José C. Paz)</span>
+              <span>🗺️ Mapa Táctico Multicapa de Puntos de Venta & Búnkers (José C. Paz)</span>
             </div>
             <p className="card-subtitle" style={{ margin: "0.2rem 0 0" }}>
-              Localización espacial de búnkers, ventanitas de comercialización y puntos de narcomenudeo con filtros multidimensionales.
+              Localización espacial integrada con capas policiales, asentamientos RENABAP y corredores troncales de escape.
             </p>
           </div>
 
@@ -190,13 +326,21 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
             <button
               onClick={() => {
                 generateDrogasJcpPDF({
-                  totalIncidents: incidents.length,
+                  totalIncidents: filteredIncidents.length,
+                  totalUniverse: incidents.length,
                   georeferencedCount: filteredIncidents.filter((r) => r.lat && r.lng).length,
                   armasCount: filteredIncidents.filter((r) => r.tieneArmas).length,
                   cocainaCount: filteredIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("COCAÍNA")).length,
                   marihuanaCount: filteredIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("MARIHUANA")).length,
                   pacoCount: filteredIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("PACO")).length,
                   incidents: filteredIncidents,
+                  activeFilters: {
+                    origen: filterOrigen,
+                    sustancia: filterSustancia,
+                    lugar: filterLugar,
+                    armas: filterArmas,
+                    barrio: filterBarrio,
+                  },
                 });
               }}
               className="btn-logout"
@@ -235,6 +379,7 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
                   Tipo_Lugar: inc.tipoLugar,
                   Tiene_Armas: inc.tieneArmas ? "SI" : "NO",
                   Alias: (inc.alias || []).join(" | "),
+                  Origen: inc.origen,
                   Relato: inc.relato,
                 }));
                 exportToCSV("puntos_venta_drogas_jose_c_paz", exportData);
@@ -242,7 +387,7 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
               className="btn-logout"
               style={{
                 height: "36px",
-                padding: "0 0.85rem",
+                padding: "0 0.9rem",
                 fontSize: "0.8rem",
                 fontWeight: 800,
                 background: "rgba(16, 185, 129, 0.15)",
@@ -254,152 +399,228 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
                 gap: "0.4rem",
               }}
             >
-              <Download size={15} /> 📊 Exportar Datos Filtrados
+              <Download size={15} /> 📊 Exportar Puntos (Excel)
             </button>
           </div>
         </div>
 
-        {/* Filters Grid */}
-        <div style={{ background: "var(--bg-base)", padding: "1rem", borderRadius: "8px", border: "1px solid var(--border)", marginBottom: "1rem" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.85rem", fontWeight: 700, color: "var(--text-primary)", marginBottom: "0.75rem" }}>
-            <Filter size={16} color="var(--accent-indigo)" />
-            <span>Filtros Operativos:</span>
-            <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginLeft: "auto" }}>
-              Mostrando <strong>{filteredIncidents.length.toLocaleString()}</strong> de {incidents.length.toLocaleString()} denuncias totales
+        {/* LAYER CONTROLS TOOLBAR (Replicated from Mar del Plata Architecture) */}
+        <div style={{ background: "rgba(99, 102, 241, 0.07)", border: "1px solid rgba(99, 102, 241, 0.25)", borderRadius: "8px", padding: "0.8rem 1rem", marginBottom: "1rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <Layers size={18} color="var(--accent-indigo)" />
+            <span style={{ fontSize: "0.82rem", fontWeight: 800, color: "var(--text-primary)", textTransform: "uppercase" }}>
+              Capas Geoespaciales Activas:
             </span>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: "0.75rem" }}>
-            {/* Vertiente / Fuente 911 */}
+          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
+            <button
+              onClick={() => setShowJurisdictions(!showJurisdictions)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.35rem",
+                padding: "0.35rem 0.75rem",
+                borderRadius: "6px",
+                border: showJurisdictions ? "1px solid #2563eb" : "1px solid var(--border)",
+                background: showJurisdictions ? "rgba(37, 99, 235, 0.15)" : "var(--bg-base)",
+                color: showJurisdictions ? "#2563eb" : "var(--text-muted)",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              {showJurisdictions ? <CheckSquare size={14} /> : <Square size={14} />}
+              <Building2 size={14} /> 👮 Comisarías JCP (3)
+            </button>
+
+            <button
+              onClick={() => setShowRenabap(!showRenabap)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.35rem",
+                padding: "0.35rem 0.75rem",
+                borderRadius: "6px",
+                border: showRenabap ? "1px solid #ea580c" : "1px solid var(--border)",
+                background: showRenabap ? "rgba(234, 88, 12, 0.15)" : "var(--bg-base)",
+                color: showRenabap ? "#ea580c" : "var(--text-muted)",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              {showRenabap ? <CheckSquare size={14} /> : <Square size={14} />}
+              <Home size={14} /> 🏘️ Asentamientos RENABAP (6)
+            </button>
+
+            <button
+              onClick={() => setShowCorridors(!showCorridors)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.35rem",
+                padding: "0.35rem 0.75rem",
+                borderRadius: "6px",
+                border: showCorridors ? "1px solid #d97706" : "1px solid var(--border)",
+                background: showCorridors ? "rgba(217, 119, 6, 0.15)" : "var(--bg-base)",
+                color: showCorridors ? "#d97706" : "var(--text-muted)",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              {showCorridors ? <CheckSquare size={14} /> : <Square size={14} />}
+              <Route size={14} /> 🛣️ Corredores Troncales & FFCC (4)
+            </button>
+
+            <button
+              onClick={() => setShowPoints(!showPoints)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.35rem",
+                padding: "0.35rem 0.75rem",
+                borderRadius: "6px",
+                border: showPoints ? "1px solid #ef4444" : "1px solid var(--border)",
+                background: showPoints ? "rgba(239, 68, 68, 0.15)" : "var(--bg-base)",
+                color: showPoints ? "#ef4444" : "var(--text-muted)",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              {showPoints ? <CheckSquare size={14} /> : <Square size={14} />}
+              <MapPin size={14} /> 💊 Puntos Venta ({filteredIncidents.filter(r => r.lat && r.lng).length})
+            </button>
+          </div>
+        </div>
+
+        {/* Filter Selectors Bar */}
+        <div style={{ background: "var(--bg-base)", padding: "1rem", borderRadius: "8px", border: "1px solid var(--border)", marginBottom: "1rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "0.75rem" }}>
             <div>
-              <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", display: "block", marginBottom: "0.25rem" }}>
+              <label style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-muted)", display: "block", marginBottom: "0.25rem" }}>
                 📑 Vertiente / Fuente 911:
               </label>
-              <select
-                value={filterOrigen}
-                onChange={(e) => setFilterOrigen(e.target.value)}
-                className="form-input"
-                style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}
-              >
-                <option value="todos">Todas las Fuentes (1.770 despachos - 1.549 con mapa)</option>
-                <option value="DROGAS_ILICITAS_FORMAL">🔴 Despacho Formal Drogas (989 - 866 con mapa)</option>
-                <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Búsqueda Semántica Relatos (781 - 683 con mapa)</option>
+              <select value={filterOrigen} onChange={(e) => setFilterOrigen(e.target.value)} className="form-input" style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}>
+                <option value="todos">Todas las Fuentes (1.770 despachos)</option>
+                <option value="DROGAS_ILICITAS_FORMAL">🔴 Despacho Formal Drogas (989 hechos)</option>
+                <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Búsqueda Semántica Relatos (781 hechos)</option>
               </select>
             </div>
 
-            {/* Sustancia */}
             <div>
-              <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", display: "block", marginBottom: "0.25rem" }}>
+              <label style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-muted)", display: "block", marginBottom: "0.25rem" }}>
                 💊 Sustancia:
               </label>
-              <select
-                value={filterSustancia}
-                onChange={(e) => setFilterSustancia(e.target.value)}
-                className="form-input"
-                style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}
-              >
+              <select value={filterSustancia} onChange={(e) => setFilterSustancia(e.target.value)} className="form-input" style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}>
                 <option value="todos">Todas las Sustancias</option>
-                <option value="COCAÍNA">🔴 Cocaína</option>
-                <option value="PACO">🟣 Paco / Pasta Base</option>
-                <option value="MARIHUANA">🟢 Marihuana</option>
+                <option value="COCAÍNA">Cocaína</option>
+                <option value="PACO">Paco / Pasta Base</option>
+                <option value="MARIHUANA">Marihuana</option>
               </select>
             </div>
 
-            {/* Lugar */}
             <div>
-              <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", display: "block", marginBottom: "0.25rem" }}>
-                🏠 Tipo de Punto de Venta:
+              <label style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-muted)", display: "block", marginBottom: "0.25rem" }}>
+                🏠 Tipo de Espacio / Punto:
               </label>
-              <select
-                value={filterLugar}
-                onChange={(e) => setFilterLugar(e.target.value)}
-                className="form-input"
-                style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}
-              >
-                <option value="todos">Todos los Lugares</option>
-                <option value="Búnker">Búnker / Casilla / Baldío</option>
-                <option value="Ventanita">Ventanita / Kiosco</option>
-                <option value="Pasillo">Pasillo de Asentamiento</option>
-                <option value="Vía Pública">Vía Pública / Esquina</option>
-                <option value="Finca">Finca / Vivienda</option>
+              <select value={filterLugar} onChange={(e) => setFilterLugar(e.target.value)} className="form-input" style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}>
+                <option value="todos">Todos los Tipos de Lugar</option>
+                <option value="Búnker">Búnkers / Pasillos Fijos</option>
+                <option value="Ventanita">Ventanitas / Kioscos</option>
+                <option value="Domicilio">Domicilios Particulares</option>
+                <option value="Vía Pública">Vía Pública / Esquinas</option>
               </select>
             </div>
 
-            {/* Armas */}
             <div>
-              <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", display: "block", marginBottom: "0.25rem" }}>
-                🔫 Conflictividad Armada:
+              <label style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-muted)", display: "block", marginBottom: "0.25rem" }}>
+                🔫 Presencia de Armas:
               </label>
-              <select
-                value={filterArmas}
-                onChange={(e) => setFilterArmas(e.target.value)}
-                className="form-input"
-                style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}
-              >
-                <option value="todos">Todas las Situaciones</option>
-                <option value="si">⚠️ Con Armas / Disparos</option>
-                <option value="no">Sin mención de armas</option>
+              <select value={filterArmas} onChange={(e) => setFilterArmas(e.target.value)} className="form-input" style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}>
+                <option value="todos">Todas las denuncias</option>
+                <option value="si">Solo con Armas / Disparos</option>
+                <option value="no">Sin armas reportadas</option>
               </select>
             </div>
 
-            {/* Barrio */}
             <div>
-              <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", display: "block", marginBottom: "0.25rem" }}>
+              <label style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-muted)", display: "block", marginBottom: "0.25rem" }}>
                 🏘️ Barrio Detectado:
               </label>
-              <select
-                value={filterBarrio}
-                onChange={(e) => setFilterBarrio(e.target.value)}
-                className="form-input"
-                style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}
-              >
-                <option value="todos">Todos los Barrios</option>
+              <select value={filterBarrio} onChange={(e) => setFilterBarrio(e.target.value)} className="form-input" style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}>
+                <option value="todos">Todos los Barrios ({barriosList.length})</option>
                 {barriosList.map((b) => (
                   <option key={b} value={b}>{b}</option>
                 ))}
               </select>
             </div>
-
-            {/* Reset */}
-            <div style={{ display: "flex", alignItems: "flex-end" }}>
-              <button
-                onClick={() => {
-                  setFilterOrigen("todos");
-                  setFilterSustancia("todos");
-                  setFilterLugar("todos");
-                  setFilterArmas("todos");
-                  setFilterBarrio("todos");
-                }}
-                className="btn-logout"
-                style={{ height: "36px", padding: "0 0.75rem", fontSize: "0.75rem", fontWeight: 700, width: "100%" }}
-              >
-                Limpiar Filtros
-              </button>
-            </div>
           </div>
         </div>
 
-        {/* Legend */}
-        <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", fontSize: "0.75rem", color: "var(--text-secondary)", marginBottom: "0.75rem" }}>
-          <span style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
-            <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#ef4444" }}></span> Cocaína
-          </span>
-          <span style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
-            <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#ec4899" }}></span> Paco / Pasta Base
-          </span>
-          <span style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
-            <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#10b981" }}></span> Marihuana
-          </span>
-          <span style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
-            <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#f59e0b" }}></span> Armado / Disparos
-          </span>
-        </div>
+        {/* Map Container */}
+        <div style={{ position: "relative" }}>
+          <div ref={mapContainerRef} style={{ width: "100%", height: "650px", borderRadius: "8px", border: "1px solid var(--border)" }} />
 
-        {/* Leaflet Map Canvas */}
-        <div
-          ref={mapContainerRef}
-          style={{ width: "100%", height: "650px", borderRadius: "8px", border: "1px solid var(--border)", zIndex: 1 }}
-        />
+          {/* Floating Map Legend (Replicated from Mar del Plata) */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: "20px",
+              right: "20px",
+              background: "rgba(15, 23, 42, 0.92)",
+              backdropFilter: "blur(6px)",
+              border: "1px solid rgba(255, 255, 255, 0.15)",
+              borderRadius: "8px",
+              padding: "0.75rem 0.9rem",
+              zIndex: 1000,
+              fontSize: "0.75rem",
+              color: "#f8fafc",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
+              maxWidth: "280px",
+              lineHeight: 1.4,
+            }}
+          >
+            <div style={{ fontWeight: 800, textTransform: "uppercase", fontSize: "0.75rem", color: "#94a3b8", marginBottom: "0.4rem", display: "flex", alignItems: "center", gap: "0.3rem" }}>
+              <Layers size={13} /> Referencias Cartográficas
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#ef4444", display: "inline-block" }} />
+                <span>Cocaína / Foco Crítico Armado</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#ec4899", display: "inline-block" }} />
+                <span>Paco / Pasta Base (Deterioro)</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#10b981", display: "inline-block" }} />
+                <span>Marihuana (Venta / Acopio)</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#f59e0b", display: "inline-block" }} />
+                <span>Sustancia Combinada / Armas</span>
+              </div>
+              <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "0.3rem", marginTop: "0.2rem" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", color: "#93c5fd" }}>
+                  <span style={{ width: "12px", height: "3px", background: "#2563eb", display: "inline-block" }} />
+                  <span>Comisarías 1ra, 2da y 3ra JCP</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", color: "#fdba74" }}>
+                  <span style={{ width: "12px", height: "3px", borderTop: "2px dashed #ea580c", display: "inline-block" }} />
+                  <span>Asentamientos RENABAP (6)</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", color: "#fcd34d" }}>
+                  <span style={{ width: "12px", height: "3px", background: "#d97706", display: "inline-block" }} />
+                  <span>Corredores RP24, RN8 y FFCC</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

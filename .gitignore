@@ -30,3 +30,4 @@ yarn-error.log*
 *.pem
 .tile_cache/
 reports/.tile_cache/
+*.tsbuildinfo

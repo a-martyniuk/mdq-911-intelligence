@@ -27,6 +27,7 @@ import SectionDrogasNLP from "./SectionDrogasNLP";
 import SectionDrogasHotspots from "./SectionDrogasHotspots";
 import SectionDrogasSearch from "./SectionDrogasSearch";
 import SectionDrogasGraph from "./SectionDrogasGraph";
+import SectionDrogasTemporal from "./SectionDrogasTemporal";
 import SectionDrogasETL from "./SectionDrogasETL";
 
 import { FilterState } from "@/lib/types";
@@ -135,12 +136,12 @@ export default function Dashboard() {
   // JCP Stats
   const jcpStats = {
     totalIncidents: data?.totalIncidents || 1770,
-    georeferencedCount: data?.georeferencedCount || 1549,
-    georeferencedPct: data?.georeferencedPct || 87.5,
+    georeferencedCount: data?.georeferencedCount || 1763,
+    georeferencedPct: data?.georeferencedPct || 99.6,
     armasCount: data?.armasCount || 1369,
     armasPct: data?.armasPct || 77.3,
-    cocainaCount: data?.cocainaCount || 705,
-    marihuanaCount: data?.marihuanaCount || 312,
+    cocainaCount: data?.cocainaCount || 717,
+    marihuanaCount: data?.marihuanaCount || 323,
     pacoCount: data?.pacoCount || 50,
   };
 
@@ -294,8 +295,9 @@ export default function Dashboard() {
         {/* ======================================= */}
         {currentProject === "jcp" && (
           <>
-            {activeSection === "drogas-overview" && <SectionDrogasOverview stats={jcpStats} />}
+            {activeSection === "drogas-overview" && <SectionDrogasOverview stats={jcpStats} incidents={data?.incidents || data?.geoPoints || []} />}
             {activeSection === "drogas-map" && <SectionDrogasMap incidents={data?.incidents || data?.geoPoints || []} />}
+            {activeSection === "drogas-temporal" && <SectionDrogasTemporal incidents={data?.incidents || data?.geoPoints || []} />}
             {activeSection === "drogas-nlp" && <SectionDrogasNLP incidents={data?.incidents || data?.geoPoints || []} />}
             {activeSection === "drogas-graph" && <SectionDrogasGraph incidents={data?.incidents || data?.geoPoints || []} />}
             {activeSection === "drogas-hotspots" && <SectionDrogasHotspots incidents={data?.incidents || data?.geoPoints || []} />}

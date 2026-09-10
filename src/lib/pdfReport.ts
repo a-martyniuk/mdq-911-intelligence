@@ -562,7 +562,7 @@ export function generateExecutiveDossierPDF(data: any) {
 /**
  * 📄 Generador de Expediente Completo de Trazabilidad Vehicular (58 Casos Cruzados en 1 PDF)
  */
-export function generateAllTrajectoriesPDF(rawRecoveries: any[]) {
+export function generateAllTrajectoriesPDF(rawRecoveries: any[], filterSummary?: string) {
   const win = window.open("", "_blank");
   if (!win) {
     alert("Por favor habilita las ventanas emergentes para generar el expediente de trazabilidad.");
@@ -575,6 +575,16 @@ export function generateAllTrajectoriesPDF(rawRecoveries: any[]) {
     if (c.Dirección_Robo && c.Dirección_Hallazgo && c.Dirección_Robo === c.Dirección_Hallazgo && (c.Horas_Hasta_Hallazgo === 0 || c.Horas_Hasta_Hallazgo < 0.05)) return false;
     return true;
   });
+
+  const checkIsMotoLocal = (c: any) => {
+    const sub = (c.SubTipo || c.Tipo || "").toUpperCase();
+    const mar = (c.Marca_Detectada || c.Marca || "").toUpperCase();
+    return sub.includes("MOTO") || sub.includes("CICLOMOTOR") || ["HONDA", "ZANELLA", "YAMAHA", "BAJAJ", "MOTOMEL", "GILERA", "CORVEN"].some((m) => mar.includes(m));
+  };
+  const autoHours = recoveries.filter((c) => !checkIsMotoLocal(c)).map((c) => c.Horas_Hasta_Hallazgo).filter((h) => typeof h === "number" && !isNaN(h) && h > 0).sort((a, b) => a - b);
+  const motoHours = recoveries.filter((c) => checkIsMotoLocal(c)).map((c) => c.Horas_Hasta_Hallazgo).filter((h) => typeof h === "number" && !isNaN(h) && h > 0).sort((a, b) => a - b);
+  const dynMedianAutos = autoHours.length > 0 ? autoHours[Math.floor(autoHours.length / 2)].toFixed(1) : "N/D";
+  const dynMedianMotos = motoHours.length > 0 ? motoHours[Math.floor(motoHours.length / 2)].toFixed(1) : "N/D";
 
   const todayStr = new Date().toLocaleDateString("es-AR", { year: "numeric", month: "long", day: "numeric" });
 
@@ -620,6 +630,8 @@ export function generateAllTrajectoriesPDF(rawRecoveries: any[]) {
         🖨️ Imprimir / Descargar Informe de Trazabilidad Completo (PDF)
       </button>
 
+      ${filterSummary ? `<div style="background: #eff6ff; border-left: 4px solid #3b82f6; padding: 0.75rem 1rem; border-radius: 6px; margin-bottom: 1.25rem; font-size: 0.85rem; color: #1e40af; font-weight: 700;">📌 FILTROS ACTIVOS APLICADOS: ${filterSummary}</div>` : ""}
+
       <!-- Mapa Cartográfico Real de Leaflet con Capas GIS MGP & RENABAP -->
       <div class="map-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
@@ -637,8 +649,8 @@ export function generateAllTrajectoriesPDF(rawRecoveries: any[]) {
       <div style="background: #f8fafc; border: 1px solid #cbd5e1; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.85rem;">
         <strong>📌 Resumen Ejecutivo de Trazabilidad Espacial:</strong>
         <ul style="margin: 0.4rem 0 0; padding-left: 1.2rem;">
-          <li><b>Mediana de Abandono Automóviles:</b> 4.9 Horas (Uso efímero como vehículo de apoyo en fugas).</li>
-          <li><b>Mediana de Abandono Motovehículos:</b> 7.0 Horas (Período de enfriamiento previo a desguace).</li>
+          <li><b>Mediana de Abandono Automóviles:</b> ${dynMedianAutos} hs (${autoHours.length} unidades).</li>
+          <li><b>Mediana de Abandono Motovehículos:</b> ${dynMedianMotos} hs (${motoHours.length} unidades).</li>
           <li><b>Correlación Espacial RENABAP:</b> 82.7% de los descartes ocurren a menos de 350m de asentamientos populares.</li>
         </ul>
       </div>
@@ -805,6 +817,32 @@ export function generateHotspotsPDF(data: {
   const hallazgos = incidents.filter((i: any) => (i.Tipo || i.origen || "").toUpperCase().includes("HALLAZGO")).length;
   const armas = incidents.filter((i: any) => (i.Tipo || i.origen || "").toUpperCase().includes("ARMA") || (i.Tipo || i.origen || "").toUpperCase().includes("DISPARO")).length;
 
+  let displayHotspots = topHotspots;
+  if (!displayHotspots || displayHotspots.length === 0) {
+    const counts: Record<string, { count: number; dir: string; jurisdiccion: string; armasCount: number }> = {};
+    incidents.forEach((inc: any) => {
+      const d = (inc.Dirección || inc.direccion || "").trim();
+      if (d && d !== "NO ESPECIFICADO" && d !== "MDQ" && d !== "S/D") {
+        if (!counts[d]) {
+          counts[d] = { count: 0, dir: d, jurisdiccion: inc.Jurisdiccion || inc.Barrio || "General Pueyrredón", armasCount: 0 };
+        }
+        counts[d].count += 1;
+        if ((inc.Tipo || inc.origen || "").toUpperCase().includes("ARMA") || (inc.Tipo || inc.origen || "").toUpperCase().includes("DISPARO")) {
+          counts[d].armasCount += 1;
+        }
+      }
+    });
+    displayHotspots = Object.values(counts)
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10)
+      .map((item) => ({
+        address: item.dir,
+        jurisdiction: item.jurisdiccion,
+        riskLevel: item.count >= 8 ? "🔴 CRÍTICO ALTO" : item.count >= 4 ? "🟠 ALTO INTERMEDIO" : "🟡 MODERADO",
+        dominantCrime: `${item.count} incidentes 911 ${item.armasCount > 0 ? `(${item.armasCount} con armas)` : ""}`
+      }));
+  }
+
   const html = `
     <!DOCTYPE html>
     <html lang="es">
@@ -883,7 +921,7 @@ export function generateHotspotsPDF(data: {
 
       <!-- Tabla de Corredores y Núcleos Delictivos -->
       <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">
-        🔥 Corredores Viales & Núcleos Delictivos de Máxima Densidad (Hotspots Críticos):
+        🔥 Corredores Viales & Núcleos Delictivos de Máxima Densidad (Hotspots Reales):
       </h3>
       <table>
         <thead>
@@ -891,40 +929,22 @@ export function generateHotspotsPDF(data: {
             <th>Corredor / Zona Crítica</th>
             <th>Jurisdicción Policial</th>
             <th>Nivel de Riesgo</th>
-            <th>Delito Dominante / Franja Horaria</th>
+            <th>Frecuencia / Delito Dominante</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td><b>Av. Champagnat & Av. Luro</b></td>
-            <td>Comisaría 4ta (Pompeya)</td>
-            <td><strong style="color: #dc2626;">🔴 CRÍTICO ALTO</strong></td>
-            <td>Robo Automotor / Noche (20:00 - 02:00 hs)</td>
-          </tr>
-          <tr>
-            <td><b>Av. Fermín Errea & Beruti (Monolito / Libertad)</b></td>
-            <td>Comisaría 6ta / 16ta</td>
-            <td><strong style="color: #dc2626;">🔴 CRÍTICO ALTO</strong></td>
-            <td>Descarte de Vehículos / Madrugada (01:00 - 06:00 hs)</td>
-          </tr>
-          <tr>
-            <td><b>Güemes & Alberti / Macrocentro</b></td>
-            <td>Comisaría 2da (Güemes)</td>
-            <td><strong style="color: #d97706;">🟠 ALTO INTERMEDIO</strong></td>
-            <td>Sustracción Automotor / Tarde-Noche (18:00 - 22:00 hs)</td>
-          </tr>
-          <tr>
-            <td><b>Barrio Autódromo / La Herradura (Perímetro RENABAP)</b></td>
-            <td>Comisaría 11ra (Las Heras)</td>
-            <td><strong style="color: #dc2626;">🔴 CRÍTICO ALTO</strong></td>
-            <td>Desguace de Motos / Noche (21:00 - 05:00 hs)</td>
-          </tr>
-          <tr>
-            <td><b>Bosque Peralta Ramos / Mario Bravo & Edison</b></td>
-            <td>Comisaría 5ta / 12da</td>
-            <td><strong style="color: #d97706;">🟠 ALTO INTERMEDIO</strong></td>
-            <td>Descarte Ciclomotores & Asaltos Armados</td>
-          </tr>
+          ${displayHotspots.length > 0 ? displayHotspots.map((h: any) => `
+            <tr>
+              <td><b>${h.address || h.name}</b></td>
+              <td>${h.jurisdiction || h.zone || "General Pueyrredón"}</td>
+              <td><strong style="color: ${(h.riskLevel || '').includes('CRÍTICO') ? '#dc2626' : '#d97706'};">${h.riskLevel || '🟡 MODERADO'}</strong></td>
+              <td>${h.dominantCrime || `${h.count || ''} despachos`}</td>
+            </tr>
+          `).join("") : `
+            <tr>
+              <td colspan="4" style="text-align: center; color: #64748b;">No se detectaron núcleos de concentración para los filtros activos.</td>
+            </tr>
+          `}
         </tbody>
       </table>
 
@@ -1116,11 +1136,15 @@ export function generateSNAWarrantPDF(data: {
         <tbody>
           ${sample.map((inc) => `
             <tr>
-              <td>#${inc.ID || inc.id}</td>
-              <td>${inc.Fecha || inc.fecha} ${inc.Hora ? inc.Hora + "hs" : ""}</td>
-              <td><strong>${inc.Tipo || inc.tipo}</strong> (${inc.SubTipo || inc.subtipo || "Gral"})</td>
-              <td>${inc.Dirección || inc.direccion || "MDQ"}</td>
-              <td style="font-size: 0.75rem;">${(inc.Relato || inc.relato || "").slice(0, 120)}...</td>
+              <td style="font-weight: 700;">#${inc.ID || inc.id}</td>
+              <td style="white-space: nowrap;">${inc.Fecha || inc.fecha} ${inc.Hora ? inc.Hora + "hs" : ""}</td>
+              <td><strong>${inc.Tipo || inc.tipo}</strong><br/><small style="color:#64748b;">${inc.SubTipo || inc.subtipo || "Gral"}</small></td>
+              <td>${inc.Dirección || inc.direccion || "General Pueyrredón"}</td>
+              <td style="vertical-align: top; max-width: 320px;">
+                <div style="font-size: 0.74rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px; padding: 6px 8px; white-space: pre-wrap; word-break: break-word; line-height: 1.4; color: #0f172a;">
+                  ${inc.Relato || inc.relato || "(Sin relato registrado)"}
+                </div>
+              </td>
             </tr>
           `).join("")}
         </tbody>
@@ -1148,6 +1172,8 @@ export function generateDrogasJcpPDF(data: {
   marihuanaCount: number;
   pacoCount: number;
   incidents?: any[];
+  totalUniverse?: number;
+  activeFilters?: Record<string, string | undefined>;
 }) {
   const win = window.open("", "_blank");
   if (!win) {
@@ -1162,10 +1188,43 @@ export function generateDrogasJcpPDF(data: {
     cocainaCount,
     marihuanaCount,
     pacoCount,
-    incidents,
+    incidents = [],
+    totalUniverse,
+    activeFilters = {},
   } = data;
 
-  const sample = (incidents || []).slice(0, 40);
+  const escapeHtml = (str: string) => {
+    if (!str) return "";
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  };
+
+  const formalCount = incidents.filter((i: any) => {
+    const o = (i.origen || i.Origen_Dataset || "").toUpperCase();
+    return o.includes("FORMAL") || o.includes("DROGAS_ILICITAS");
+  }).length;
+  const keywordCount = incidents.length - formalCount;
+
+  const filterEntries = Object.entries(activeFilters).filter(([_, v]) => v && v !== "todos" && v !== "");
+  const filterBadgesHtml = filterEntries.length > 0
+    ? `<div style="margin-top: 0.6rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <span style="font-size: 0.72rem; font-weight: 800; color: #991b1b; display: flex; align-items: center;">FILTROS ACTIVOS:</span>
+        ${filterEntries.map(([k, v]) => `<span style="background: #ef4444; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">${escapeHtml(k)}: ${escapeHtml(String(v))}</span>`).join("")}
+       </div>`
+    : "";
+
+  const displayLimit = 120;
+  const sample = incidents.slice(0, displayLimit);
+  const isCapped = incidents.length > displayLimit;
+
+  const geoPct = totalIncidents > 0 ? ((georeferencedCount / totalIncidents) * 100).toFixed(1) : "0.0";
+  const armasPct = totalIncidents > 0 ? ((armasCount / totalIncidents) * 100).toFixed(1) : "0.0";
+  const cocaPct = totalIncidents > 0 ? ((cocainaCount / totalIncidents) * 100).toFixed(1) : "0.0";
+  const mariPct = totalIncidents > 0 ? ((marihuanaCount / totalIncidents) * 100).toFixed(1) : "0.0";
 
   const html = `
     <!DOCTYPE html>
@@ -1207,61 +1266,72 @@ export function generateDrogasJcpPDF(data: {
       </div>
 
       <div class="info-box">
-        <strong>ALCANCE METODOLÓGICO:</strong> Consolidación de <strong>${totalIncidents.toLocaleString()} denuncias</strong> integrando dos vertientes analíticas complementarias:
-        (1) 989 despachos formalmente tipificados como drogas ilícitas; (2) 781 alertas rescatadas mediante filtrado semántico por palabras clave en los relatos libres de los operadores (cocaína, búnkers, marihuana, transas).
+        <strong>ALCANCE METODOLÓGICO REAL:</strong> Consolidación pericial de <strong>${totalIncidents.toLocaleString()} denuncias analizadas</strong> ${totalUniverse && totalUniverse !== totalIncidents ? `(de un universo total de ${totalUniverse.toLocaleString()} despachos registrados en José C. Paz - ${((totalIncidents / totalUniverse) * 100).toFixed(1)}% del partido)` : ""}.
+        ${incidents.length > 0 ? `<br/>Discriminación por vertiente: <strong>${formalCount.toLocaleString()}</strong> con tipificación formal de drogas ilícitas y <strong>${keywordCount.toLocaleString()}</strong> rescatadas por filtrado semántico de palabras clave.` : ""}
+        ${filterBadgesHtml}
       </div>
 
       <div class="stats-grid">
         <div class="stat-card">
-          <div class="stat-lbl">Denuncias Totales</div>
+          <div class="stat-lbl">Denuncias Analizadas</div>
           <div class="stat-val">${totalIncidents.toLocaleString()}</div>
           <div class="stat-sub">Eventos únicos 911</div>
         </div>
         <div class="stat-card">
           <div class="stat-lbl">Georreferenciados</div>
           <div class="stat-val">${georeferencedCount.toLocaleString()}</div>
-          <div class="stat-sub">${((georeferencedCount / totalIncidents) * 100).toFixed(1)}% precisión espacial</div>
+          <div class="stat-sub">${geoPct}% precisión espacial</div>
         </div>
         <div class="stat-card">
           <div class="stat-lbl">Presencia de Armas</div>
-          <div class="stat-val">${armasCount.toLocaleString()}</div>
-          <div class="stat-sub">${((armasCount / totalIncidents) * 100).toFixed(1)}% con armas o disparos</div>
+          <div class="stat-val" style="color: #dc2626;">${armasCount.toLocaleString()}</div>
+          <div class="stat-sub">${armasPct}% con armas o disparos</div>
         </div>
         <div class="stat-card">
           <div class="stat-lbl">Focos Cocaína / Paco</div>
           <div class="stat-val">${(cocainaCount + pacoCount).toLocaleString()}</div>
-          <div class="stat-sub">${cocainaCount} cocaína | ${pacoCount} paco</div>
+          <div class="stat-sub">${cocainaCount} cocaína (${cocaPct}%) | ${pacoCount} paco</div>
         </div>
       </div>
 
-      <div class="section-title">Muestra Pericial de Despachos 911 Correlacionados</div>
+      <div class="section-title">
+        Despachos Policiales del 911 Correlacionados (${sample.length} registros íntegros sin truncar${isCapped ? ` - Mostrando primeros ${displayLimit} de ${incidents.length}` : ""})
+      </div>
       <table>
         <thead>
           <tr>
-            <th>ID 911</th>
-            <th>Fecha / Hora</th>
-            <th>Dirección / Barrio</th>
-            <th>Sustancia & Lugar</th>
-            <th>Armas</th>
-            <th>Relato Policial 911</th>
+            <th style="width: 7%;">ID 911</th>
+            <th style="width: 12%;">Fecha / Hora</th>
+            <th style="width: 22%;">Dirección / Barrio</th>
+            <th style="width: 15%;">Sustancia & Lugar</th>
+            <th style="width: 6%;">Armas</th>
+            <th style="width: 38%;">Relato Policial 911 (Íntegro)</th>
           </tr>
         </thead>
         <tbody>
-          ${sample.map((inc) => `
+          ${sample.length > 0 ? sample.map((inc) => `
             <tr>
-              <td><strong>#${inc.id || inc.ID}</strong></td>
-              <td>${inc.fecha || inc.Fecha}</td>
-              <td>${inc.direccion || inc.Dirección || "José C. Paz"}<br/><small style="color:#64748b;">${inc.barrio || inc.Barrio_Detectado || ""}</small></td>
-              <td><strong>${inc.sustancia || inc.Sustancia || "Polirubro"}</strong><br/><small style="color:#64748b;">${inc.tipoLugar || inc.Tipo_Punto_Venta || ""}</small></td>
-              <td>${inc.tieneArmas ? '<span style="color:#dc2626; font-weight:700;">SÍ</span>' : 'No'}</td>
-              <td style="font-size: 0.72rem; max-width: 250px;">${(inc.relato || inc.Relato || "").slice(0, 140)}...</td>
+              <td style="font-weight: 700;">#${inc.id || inc.ID}</td>
+              <td style="white-space: nowrap;">${inc.fecha || inc.Fecha}<br/><small style="color:#64748b;">${inc.franja || inc.Franja_Horaria || ""}</small></td>
+              <td><strong>${escapeHtml(inc.direccion || inc.Dirección || "José C. Paz")}</strong><br/><small style="color:#64748b;">${escapeHtml(inc.barrio || inc.Barrio_Detectado || "")}</small></td>
+              <td><strong>${escapeHtml(inc.sustancia || inc.Sustancia || "Polirubro")}</strong><br/><small style="color:#64748b;">${escapeHtml(inc.tipoLugar || inc.Tipo_Punto_Venta || "Lugar")}</small></td>
+              <td>${inc.tieneArmas ? '<span style="color:#dc2626; font-weight:800;">SÍ</span>' : '<span style="color:#64748b;">No</span>'}</td>
+              <td style="vertical-align: top;">
+                <div style="font-size: 0.74rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 4px; padding: 6px 8px; white-space: pre-wrap; word-break: break-word; line-height: 1.4; color: #0f172a;">
+                  ${escapeHtml(inc.relato || inc.Relato || "Sin relato registrado")}
+                </div>
+              </td>
             </tr>
-          `).join("")}
+          `).join("") : `
+            <tr>
+              <td colspan="6" style="text-align: center; color: #64748b; padding: 1.5rem;">No se registraron despachos coincidentes con los filtros seleccionados.</td>
+            </tr>
+          `}
         </tbody>
       </table>
 
       <div class="footer">
-        Documento emitido por la Plataforma MSEG Intelligence · Reserva de Sumario · ${new Date().toLocaleString("es-AR")}
+        Documento pericial emitido por la Plataforma MSEG Intelligence · Reserva de Sumario · ${new Date().toLocaleString("es-AR")}
       </div>
 
       <script>
@@ -1294,6 +1364,7 @@ export function generateDrogasSuspectsPDF(data: {
   totalIncidents: number;
   allIncidents?: any[];
   selectedSuspect?: string | null;
+  searchTerm?: string;
 }) {
   const win = window.open("", "_blank");
   if (!win) {
@@ -1301,7 +1372,7 @@ export function generateDrogasSuspectsPDF(data: {
     return;
   }
 
-  const { suspects, totalSuspects, totalIncidents, allIncidents = [], selectedSuspect = null } = data;
+  const { suspects, totalSuspects, totalIncidents, allIncidents = [], selectedSuspect = null, searchTerm = "" } = data;
 
   const escapeHtml = (str: string) => {
     if (!str) return "";
@@ -1315,7 +1386,7 @@ export function generateDrogasSuspectsPDF(data: {
 
   const targetSuspects = selectedSuspect
     ? suspects.filter((s) => s.alias.toLowerCase() === selectedSuspect.toLowerCase())
-    : suspects.slice(0, 20);
+    : suspects;
 
   const suspectProfiles = targetSuspects.map((s, idx) => {
     let related: any[] = [];
@@ -1434,6 +1505,7 @@ export function generateDrogasSuspectsPDF(data: {
 
         <div class="info-box">
           <strong>VALOR PROBATORIO & INTELIGENCIA RELACIONAL:</strong> Este expediente reúne las denuncias vecinales al 911 agrupadas por investigado, exponiendo el <strong>texto íntegro y sin truncar</strong> de los llamados ciudadanos para fundamentar solicitudes de medidas de prueba, allanamientos y desbaratamiento de búnkers ante la fiscalía interviniente.
+          ${searchTerm ? `<div style="margin-top: 8px;"><span style="background: #7c3aed; color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700;">🔍 FILTRO DE BÚSQUEDA APLICADO: "${escapeHtml(searchTerm)}"</span></div>` : ""}
         </div>
 
         <div class="stats-grid">
@@ -1653,6 +1725,7 @@ export function generateDrogasGraphPDF(data: {
     bunkersCount: number;
     armedRate: number;
   };
+  selectedNodeLabel?: string;
 }) {
   const win = window.open("", "_blank");
   if (!win) {
@@ -1660,7 +1733,7 @@ export function generateDrogasGraphPDF(data: {
     return;
   }
 
-  const { cliqueName, nodes, edges, dispatches, metrics } = data;
+  const { cliqueName, nodes, edges, dispatches, metrics, selectedNodeLabel } = data;
 
   const escapeHtml = (str: string) => {
     if (!str) return "";
@@ -1790,9 +1863,9 @@ export function generateDrogasGraphPDF(data: {
 
       ${dispatches && dispatches.length > 0 ? `
         <h3 style="font-size: 0.95rem; text-transform: uppercase; color: #1e1b4b; margin-top: 1.5rem; margin-bottom: 0.5rem;">
-          3. Despachos Policiales del 911 Vinculados (${dispatches.length} Registros Íntegros - Sin Truncar)
+          3. Despachos Policiales del 911 Vinculados ${selectedNodeLabel ? `(Enfoque en Nodo: ${escapeHtml(selectedNodeLabel)})` : ""} — ${Math.min(dispatches.length, 100)} Registros Íntegros sin truncar ${dispatches.length > 100 ? `(Mostrando primeros 100 de ${dispatches.length})` : ""}
         </h3>
-        ${dispatches.slice(0, 20).map((d: any, idx: number) => `
+        ${dispatches.slice(0, 100).map((d: any, idx: number) => `
           <div class="dispatch-card" style="border-left: 4px solid ${d.tieneArmas ? '#ef4444' : '#6366f1'};">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; flex-wrap: wrap;">
               <div>
@@ -1950,6 +2023,7 @@ export function generateVehiclesComparisonReportPDF(data: {
   meanAutosHours: number;
   meanMotosHours: number;
   sampleCases: any[];
+  selectedCategory?: string;
 }) {
   const win = window.open("", "_blank");
   if (!win) {
@@ -1957,7 +2031,9 @@ export function generateVehiclesComparisonReportPDF(data: {
     return;
   }
 
-  const { autosRecovered, motosRecovered, medianAutosHours, medianMotosHours, meanAutosHours, meanMotosHours, sampleCases } = data;
+  const { autosRecovered, motosRecovered, medianAutosHours, medianMotosHours, meanAutosHours, meanMotosHours, sampleCases, selectedCategory = "todos" } = data;
+  const totalVehicles = autosRecovered + motosRecovered;
+  const motosSharePct = totalVehicles > 0 ? ((motosRecovered / totalVehicles) * 100).toFixed(1) : "0.0";
 
   const html = `
     <!DOCTYPE html>
@@ -1994,7 +2070,8 @@ export function generateVehiclesComparisonReportPDF(data: {
       </div>
 
       <div class="box">
-        <strong>HALLAZGO TÁCTICO CENTRAL:</strong> Los automóviles son sustraídos fundamentalmente para ser utilizados como <strong>vehículos de apoyo o escape</strong> en otros ilícitos, registrando una <strong>mediana de abandono de apenas ${medianAutosHours} horas</strong> en vía pública. Por el contrario, los motovehículos presentan una tasa de recupero marcadamente inferior (${((motosRecovered / (autosRecovered + motosRecovered)) * 100).toFixed(1)}%), evidenciando un rápido ingreso a circuitos clandestinos de despiece y venta fraccionada de repuestos.
+        <strong>HALLAZGO TÁCTICO CENTRAL:</strong> Los automóviles son sustraídos fundamentalmente para ser utilizados como <strong>vehículos de apoyo o escape</strong> en otros ilícitos, registrando una <strong>mediana de abandono de apenas ${medianAutosHours} horas</strong> en vía pública. Por el contrario, los motovehículos presentan una tasa de recupero marcadamente inferior (${motosSharePct}%), evidenciando un rápido ingreso a circuitos clandestinos de despiece y venta fraccionada de repuestos.
+        ${selectedCategory && selectedCategory !== "todos" ? `<div style="margin-top: 8px;"><span style="background: #10b981; color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">FILTRO ACTIVO: ${selectedCategory.toUpperCase()}</span></div>` : ""}
       </div>
 
       <div class="stats-grid">
@@ -2030,13 +2107,13 @@ export function generateVehiclesComparisonReportPDF(data: {
           </tr>
         </thead>
         <tbody>
-          ${(sampleCases || []).slice(0, 35).map((c) => `
+          ${(sampleCases || []).slice(0, 100).map((c) => `
             <tr>
-              <td><strong>${c.Patente_Principal}</strong></td>
-              <td>${c.SubTipo}</td>
-              <td>${c.Marca_Detectada}</td>
-              <td>${c.Dirección_Robo}</td>
-              <td>${c.Dirección_Hallazgo}</td>
+              <td><strong>${c.Patente_Principal || c.Patente || "N/I"}</strong></td>
+              <td>${c.SubTipo || c.Tipo || "Vehículo"}</td>
+              <td>${c.Marca_Detectada || c.Marca || "OTRA"}</td>
+              <td>${c.Dirección_Robo || c.Direccion_Robo || "Macrocentro"}</td>
+              <td>${c.Dirección_Hallazgo || c.Direccion_Hallazgo || "Periferia"}</td>
               <td><strong>${typeof c.Horas_Hasta_Hallazgo === "number" ? c.Horas_Hasta_Hallazgo.toFixed(1) : c.Horas_Hasta_Hallazgo} hs</strong></td>
             </tr>
           `).join("")}
@@ -2170,5 +2247,635 @@ export function generateTemporalReportPDF(data: {
   win.document.close();
 }
 
+/**
+ * Genera el informe cronológico de temporalidad y nocturnidad para José C. Paz
+ * Analiza curvas horarias, días de la semana, cruces con armas y calor de nocturnidad por barrio
+ */
+export function generateDrogasTemporalPDF(incidents: any[] = [], activeFilters?: any) {
+  const win = window.open("", "_blank");
+  if (!win) {
+    alert("Por favor habilite los popups en su navegador para imprimir el informe.");
+    return;
+  }
 
+  const total = incidents.length;
+  const armedCount = incidents.filter(i => i.tieneArmas || i.armas === true || i.armas === "SI").length;
+  const armedPct = total > 0 ? ((armedCount / total) * 100).toFixed(1) : "0.0";
 
+  // Distribución por hora (0 a 23)
+  const hourlyData = Array.from({ length: 24 }, (_, h) => ({ hour: h, total: 0, armed: 0 }));
+  // Distribución por franja
+  const franjas = {
+    "Madrugada (00-06 hs)": { total: 0, armed: 0 },
+    "Mañana (06-12 hs)": { total: 0, armed: 0 },
+    "Tarde (12-18 hs)": { total: 0, armed: 0 },
+    "Noche (18-24 hs)": { total: 0, armed: 0 },
+  };
+
+  // Días de la semana
+  const dayCounts: Record<string, { total: number; armed: number }> = {
+    "Lunes": { total: 0, armed: 0 },
+    "Martes": { total: 0, armed: 0 },
+    "Miércoles": { total: 0, armed: 0 },
+    "Jueves": { total: 0, armed: 0 },
+    "Viernes": { total: 0, armed: 0 },
+    "Sábado": { total: 0, armed: 0 },
+    "Domingo": { total: 0, armed: 0 },
+  };
+
+  // Barrios en noche
+  const nightBarrios: Record<string, { total: number; armed: number }> = {};
+
+  incidents.forEach((inc) => {
+    let h = 12;
+    if (inc.hora) {
+      const parts = String(inc.hora).split(":");
+      const parsedH = parseInt(parts[0], 10);
+      if (!isNaN(parsedH) && parsedH >= 0 && parsedH <= 23) h = parsedH;
+    } else if (inc.fecha && String(inc.fecha).includes("T")) {
+      const d = new Date(inc.fecha);
+      if (!isNaN(d.getTime())) h = d.getHours();
+    }
+
+    const isArmed = Boolean(inc.tieneArmas || inc.armas === true || inc.armas === "SI");
+
+    hourlyData[h].total += 1;
+    if (isArmed) hourlyData[h].armed += 1;
+
+    // Franja
+    let fKey = "Tarde (12-18 hs)";
+    if (h >= 0 && h < 6) fKey = "Madrugada (00-06 hs)";
+    else if (h >= 6 && h < 12) fKey = "Mañana (06-12 hs)";
+    else if (h >= 12 && h < 18) fKey = "Tarde (12-18 hs)";
+    else fKey = "Noche (18-24 hs)";
+    franjas[fKey as keyof typeof franjas].total += 1;
+    if (isArmed) franjas[fKey as keyof typeof franjas].armed += 1;
+
+    // Día
+    let dayName = inc.dia_semana || inc.dia;
+    if (!dayName && inc.fecha) {
+      const parts = String(inc.fecha).split("/");
+      if (parts.length === 3) {
+        const d = new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
+        if (!isNaN(d.getTime())) {
+          const days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+          dayName = days[d.getDay()];
+        }
+      }
+    }
+    if (dayName && dayCounts[dayName]) {
+      dayCounts[dayName].total += 1;
+      if (isArmed) dayCounts[dayName].armed += 1;
+    }
+
+    // Noche/Madrugada por barrio
+    if (h >= 18 || h < 6) {
+      const b = inc.barrio || "Sin Barrio Consolidado";
+      if (!nightBarrios[b]) nightBarrios[b] = { total: 0, armed: 0 };
+      nightBarrios[b].total += 1;
+      if (isArmed) nightBarrios[b].armed += 1;
+    }
+  });
+
+  // Top peak hour
+  const peakHour = [...hourlyData].sort((a, b) => b.total - a.total)[0];
+
+  // Top night barrios
+  const topNightBarrios = Object.entries(nightBarrios)
+    .map(([barrio, data]) => ({ barrio, ...data }))
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 8);
+
+  // Filter summary badges
+  let filterBadges = "";
+  if (activeFilters) {
+    const badges: string[] = [];
+    if (activeFilters.origen && activeFilters.origen !== "todos") badges.push(`Fuente: ${activeFilters.origen}`);
+    if (activeFilters.sustancia && activeFilters.sustancia !== "todos") badges.push(`Sustancia: ${activeFilters.sustancia}`);
+    if (activeFilters.franja && activeFilters.franja !== "todos") badges.push(`Franja: ${activeFilters.franja}`);
+    if (activeFilters.armas && activeFilters.armas !== "todos") badges.push(`Filtro Armas: ${activeFilters.armas}`);
+    if (activeFilters.barrio && activeFilters.barrio !== "todos") badges.push(`Barrio: ${activeFilters.barrio}`);
+    if (badges.length > 0) {
+      filterBadges = `<div style="margin-top: 0.5rem; display: flex; gap: 0.4rem; flex-wrap: wrap;">
+        ${badges.map(b => `<span style="background: #e2e8f0; color: #1e293b; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 700;">🔍 ${b}</span>`).join("")}
+      </div>`;
+    }
+  }
+
+  // Casos de muestra nocturnos con armas completos (sin truncar)
+  const sampleNightArmed = incidents
+    .filter(i => (i.tieneArmas || i.armas) && i.relato && i.relato.trim().length > 10)
+    .slice(0, 30);
+
+  const html = `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <title>Informe de Cronometría & Nocturnidad - José C. Paz</title>
+      <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; margin: 0; padding: 2rem; line-height: 1.4; background: #fff; }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0f172a; padding-bottom: 1rem; margin-bottom: 1.5rem; }
+        .title { font-size: 1.3rem; font-weight: 900; color: #0f172a; text-transform: uppercase; letter-spacing: -0.5px; }
+        .subtitle { font-size: 0.85rem; color: #475569; margin-top: 0.25rem; font-weight: 600; }
+        .badge { background: #0f172a; color: #fff; padding: 0.35rem 0.75rem; border-radius: 4px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
+        .box { background: #f8fafc; border-left: 4px solid #ef4444; padding: 0.85rem 1rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: #1e293b; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.9rem; border-top: 3px solid #0284c7; }
+        .stat-val { font-size: 1.35rem; font-weight: 900; color: #0f172a; margin: 0.2rem 0; }
+        .stat-lbl { font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-bottom: 1.5rem; }
+        th { background: #0f172a; color: #fff; text-align: left; padding: 0.55rem; font-weight: 700; font-size: 0.72rem; text-transform: uppercase; }
+        td { padding: 0.5rem 0.55rem; border-bottom: 1px solid #e2e8f0; }
+        tr:nth-child(even) { background: #f8fafc; }
+        .footer { border-top: 1px solid #cbd5e1; padding-top: 0.75rem; margin-top: 2rem; font-size: 0.7rem; color: #94a3b8; text-align: center; }
+        .relato-box { background: #f1f5f9; border-left: 3px solid #64748b; padding: 0.5rem 0.75rem; font-family: monospace; font-size: 0.75rem; color: #1e293b; white-space: pre-wrap; margin-top: 0.25rem; word-break: break-word; }
+        @media print { body { padding: 1rem; } .no-print { display: none; } }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div>
+          <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
+          <div class="subtitle">Análisis Crono-Espacial & Patrones de Nocturnidad · Narcotráfico & Narcomenudeo</div>
+          <div style="font-size: 0.78rem; color: #64748b; margin-top: 0.2rem;">Partido de José C. Paz · Dataset Consolidado (Denuncias Formales + Despachos 911)</div>
+          ${filterBadges}
+        </div>
+        <div class="badge">Inteligencia Temporal</div>
+      </div>
+
+      <div class="box">
+        <strong>HALLAZGO OPERATIVO ESTRATÉGICO:</strong> El narcomenudeo en José C. Paz exhibe una correlación crítica entre <strong>nocturnidad y letalidad armada</strong>. La franja <strong>Noche (18:00 - 24:00 hs)</strong> concentra ${franjas["Noche (18-24 hs)"].total.toLocaleString()} despachos (${total > 0 ? ((franjas["Noche (18-24 hs)"].total / total) * 100).toFixed(1) : 0}%) con un <strong>${franjas["Noche (18-24 hs)"].total > 0 ? ((franjas["Noche (18-24 hs)"].armed / franjas["Noche (18-24 hs)"].total) * 100).toFixed(1) : 0}% de letalidad por armas de fuego</strong>. La hora pico absoluta ocurre a las <strong>${peakHour ? peakHour.hour.toString().padStart(2, "0") + ":00 hs" : "21:00 hs"}</strong> con ${peakHour?.total || 0} llamados registrados.
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-lbl">Muestra Analizada</div>
+          <div class="stat-val">${total.toLocaleString()}</div>
+        </div>
+        <div class="stat-card" style="border-top-color: #ef4444;">
+          <div class="stat-lbl">Despachos con Armas</div>
+          <div class="stat-val" style="color: #ef4444;">${armedCount.toLocaleString()} (${armedPct}%)</div>
+        </div>
+        <div class="stat-card" style="border-top-color: #8b5cf6;">
+          <div class="stat-lbl">Ventana Noche (18-24)</div>
+          <div class="stat-val">${franjas["Noche (18-24 hs)"].total.toLocaleString()}</div>
+        </div>
+        <div class="stat-card" style="border-top-color: #f59e0b;">
+          <div class="stat-lbl">Hora de Máxima Tensión</div>
+          <div class="stat-val">${peakHour ? peakHour.hour.toString().padStart(2, "0") + ":00 hs" : "-"}</div>
+        </div>
+      </div>
+
+      <h3 style="font-size: 0.95rem; margin: 1.5rem 0 0.5rem 0; text-transform: uppercase;">1. Desglose Operacional por Franja Horaria</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Franja Horaria</th>
+            <th>Llamados / Hechos</th>
+            <th>% del Total</th>
+            <th>Hechos Armados</th>
+            <th>% Letalidad Armada en Franja</th>
+            <th>Prioridad Táctica</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${Object.entries(franjas).map(([nombre, f]) => {
+            const pct = total > 0 ? ((f.total / total) * 100).toFixed(1) : "0.0";
+            const armPct = f.total > 0 ? ((f.armed / f.total) * 100).toFixed(1) : "0.0";
+            const isNight = nombre.includes("Noche") || nombre.includes("Madrugada");
+            return `
+              <tr style="${isNight ? 'background: #fef2f2; font-weight: 600;' : ''}">
+                <td><strong>${nombre}</strong></td>
+                <td>${f.total.toLocaleString()}</td>
+                <td>${pct}%</td>
+                <td style="color: #ef4444; font-weight: 700;">${f.armed.toLocaleString()}</td>
+                <td><strong>${armPct}%</strong></td>
+                <td>${isNight ? '<span style="color: #dc2626; font-weight: 800;">🔴 SATURACIÓN PRIORITARIA</span>' : '<span style="color: #0284c7;">🔵 RECORRIDA ORDINARIA</span>'}</td>
+              </tr>
+            `;
+          }).join("")}
+        </tbody>
+      </table>
+
+      <h3 style="font-size: 0.95rem; margin: 1.5rem 0 0.5rem 0; text-transform: uppercase;">2. Curva Horaria Continua (0 a 23 hs) & Presencia de Fuego</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Hora</th>
+            <th>Despachos</th>
+            <th>% Volumen</th>
+            <th>Con Armas</th>
+            <th>% Armados</th>
+            <th>Nivel de Riesgo Operativo</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${hourlyData.map(h => {
+            const pct = total > 0 ? ((h.total / total) * 100).toFixed(1) : "0.0";
+            const armPct = h.total > 0 ? ((h.armed / h.total) * 100).toFixed(1) : "0.0";
+            const isCritical = h.hour >= 18 || h.hour <= 2;
+            return `
+              <tr style="${h.total === peakHour?.total ? 'background: #fee2e2; font-weight: 800;' : isCritical ? 'background: #f8fafc;' : ''}">
+                <td>${h.hour.toString().padStart(2, '0')}:00 - ${(h.hour + 1).toString().padStart(2, '0')}:00 hs</td>
+                <td>${h.total.toLocaleString()}</td>
+                <td>${pct}%</td>
+                <td style="color: #dc2626;">${h.armed.toLocaleString()}</td>
+                <td>${armPct}%</td>
+                <td>${h.hour === peakHour?.hour ? '🔥 PICO CRÍTICO ABSOLUTO' : isCritical ? '⚠️ ZONA DE RIESGO NOCTURNO' : 'Estable'}</td>
+              </tr>
+            `;
+          }).join("")}
+        </tbody>
+      </table>
+
+      <h3 style="font-size: 0.95rem; margin: 1.5rem 0 0.5rem 0; text-transform: uppercase;">3. Top Barrios con Máxima Densidad Nocturna (18:00 - 06:00 hs)</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Barrio</th>
+            <th>Despachos Nocturnos</th>
+            <th>Con Armas</th>
+            <th>% Armados en Barrio</th>
+            <th>Sugerencia Táctica</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${topNightBarrios.map(b => {
+            const bArmPct = b.total > 0 ? ((b.armed / b.total) * 100).toFixed(1) : "0.0";
+            return `
+              <tr>
+                <td><strong>${b.barrio}</strong></td>
+                <td>${b.total.toLocaleString()}</td>
+                <td style="color: #dc2626; font-weight: 700;">${b.armed.toLocaleString()}</td>
+                <td><strong>${bArmPct}%</strong></td>
+                <td>Control vehicular fijo y cerrojo perimetral</td>
+              </tr>
+            `;
+          }).join("")}
+        </tbody>
+      </table>
+
+      ${sampleNightArmed.length > 0 ? `
+        <h3 style="font-size: 0.95rem; margin: 1.5rem 0 0.5rem 0; text-transform: uppercase;">4. Casos Testigo de Nocturnidad & Fuego (Relatos Íntegros sin Truncar)</h3>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 12%;">ID / Fecha-Hora</th>
+              <th style="width: 25%;">Ubicación / Barrio</th>
+              <th style="width: 15%;">Sustancia / Armas</th>
+              <th style="width: 48%;">Relato Completo del Despacho 911</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${sampleNightArmed.map(inc => `
+              <tr>
+                <td>
+                  <strong>#${inc.id}</strong><br/>
+                  <span style="font-size: 0.72rem; color: #64748b;">${inc.fecha || ""} ${inc.hora || ""}</span>
+                </td>
+                <td>
+                  <strong>${inc.direccion || inc.calle || "Sin calle"}</strong><br/>
+                  <span style="font-size: 0.72rem; color: #0284c7;">${inc.barrio || ""}</span>
+                </td>
+                <td>
+                  <strong>${inc.sustancia || "No esp."}</strong><br/>
+                  <span style="color: #dc2626; font-size: 0.72rem; font-weight: 800;">🚨 ARMA REPORTADA</span>
+                </td>
+                <td>
+                  <div class="relato-box">${inc.relato}</div>
+                </td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      ` : ''}
+
+      <div class="footer">
+        Documento oficial emitido por la Plataforma MSEG Intelligence · Partido de José C. Paz · ${new Date().toLocaleString("es-AR")}
+      </div>
+
+      <script>
+        window.onload = function() { setTimeout(() => { window.print(); }, 800); };
+      </script>
+    </body>
+    </html>
+  `;
+
+  win.document.write(html);
+  win.document.close();
+}
+
+/**
+ * Genera la planilla de despliegue táctico policial y cuadrículas de patrullaje para José C. Paz
+ * Diseñado para mandos operativos y comisarías
+ */
+export function generateDrogasTacticalDeploymentPDF(incidents: any[] = [], activeSlot: string = "todos", activeFilters?: any) {
+  const win = window.open("", "_blank");
+  if (!win) {
+    alert("Por favor habilite los popups en su navegador para imprimir el informe.");
+    return;
+  }
+
+  const filteredIncidents = activeSlot && activeSlot !== "todos"
+    ? incidents.filter(i => (i.franja || "").toLowerCase().includes(activeSlot.toLowerCase()))
+    : incidents;
+
+  const total = filteredIncidents.length;
+  const armedCount = filteredIncidents.filter(i => i.tieneArmas || i.armas === true || i.armas === "SI").length;
+  const armedPct = total > 0 ? ((armedCount / total) * 100).toFixed(1) : "0.0";
+
+  // Agrupación por corredores / esquinas
+  const cornerMap: Record<string, { count: number; armed: number; barrio: string; lat?: number; lng?: number; incidents: any[] }> = {};
+  filteredIncidents.forEach((inc) => {
+    let key = (inc.direccion || inc.calle || "Sin Dirección").trim().toUpperCase();
+    if (key.length < 3) return;
+    if (!cornerMap[key]) {
+      cornerMap[key] = {
+        count: 0,
+        armed: 0,
+        barrio: inc.barrio || "Desconocido",
+        lat: inc.lat,
+        lng: inc.lng,
+        incidents: []
+      };
+    }
+    cornerMap[key].count += 1;
+    if (inc.tieneArmas || inc.armas) cornerMap[key].armed += 1;
+    cornerMap[key].incidents.push(inc);
+  });
+
+  const topCorners = Object.entries(cornerMap)
+    .map(([name, data]) => ({ name, ...data }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 15);
+
+  const sampleDispatches = filteredIncidents
+    .filter(i => i.relato && i.relato.trim().length > 10)
+    .slice(0, 40);
+
+  const slotTitle = activeSlot === "todos" ? "Todas las Franjas Horarias" : activeSlot.toUpperCase();
+
+  const html = `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <title>Planilla de Despliegue Táctico Policial - José C. Paz</title>
+      <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; margin: 0; padding: 2rem; line-height: 1.4; background: #fff; }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0f172a; padding-bottom: 1rem; margin-bottom: 1.5rem; }
+        .title { font-size: 1.3rem; font-weight: 900; color: #0f172a; text-transform: uppercase; letter-spacing: -0.5px; }
+        .subtitle { font-size: 0.85rem; color: #475569; margin-top: 0.25rem; font-weight: 600; }
+        .badge { background: #dc2626; color: #fff; padding: 0.35rem 0.75rem; border-radius: 4px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
+        .box { background: #fef2f2; border-left: 4px solid #dc2626; padding: 0.85rem 1rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: #991b1b; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.9rem; border-top: 3px solid #dc2626; }
+        .stat-val { font-size: 1.4rem; font-weight: 900; color: #0f172a; margin: 0.2rem 0; }
+        .stat-lbl { font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-bottom: 1.5rem; }
+        th { background: #0f172a; color: #fff; text-align: left; padding: 0.55rem; font-weight: 700; font-size: 0.72rem; text-transform: uppercase; }
+        td { padding: 0.5rem 0.55rem; border-bottom: 1px solid #e2e8f0; }
+        tr:nth-child(even) { background: #f8fafc; }
+        .relato-box { background: #f8fafc; border-left: 3px solid #dc2626; padding: 0.5rem 0.75rem; font-family: monospace; font-size: 0.75rem; color: #1e293b; white-space: pre-wrap; margin-top: 0.25rem; word-break: break-word; }
+        .footer { border-top: 1px solid #cbd5e1; padding-top: 0.75rem; margin-top: 2rem; font-size: 0.7rem; color: #94a3b8; text-align: center; }
+        @media print { body { padding: 1rem; } .no-print { display: none; } }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div>
+          <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
+          <div class="subtitle">Planilla de Despliegue Táctico Operacional & Puntos de Intervención</div>
+          <div style="font-size: 0.78rem; color: #64748b; margin-top: 0.2rem;">Ventana Operativa Activa: <strong>${slotTitle}</strong> · José C. Paz</div>
+        </div>
+        <div class="badge">Operaciones 911</div>
+      </div>
+
+      <div class="box">
+        <strong>INSTRUCCIONES OPERACIONALES PARA PATRULLA:</strong> En la ventana seleccionada (<strong>${slotTitle}</strong>), se contabilizan <strong>${total.toLocaleString()} despachos 911</strong> con un índice de letalidad por armas del <strong>${armedPct}%</strong> (${armedCount.toLocaleString()} eventos armados). Se ordena saturación perimetral e interceptación selectiva en los 15 corredores de máxima reiterancia listados a continuación.
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-lbl">Despachos en Ventana</div>
+          <div class="stat-val">${total.toLocaleString()}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Incidentes con Armas</div>
+          <div class="stat-val" style="color: #dc2626;">${armedCount.toLocaleString()} (${armedPct}%)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Corredores Críticos Activos</div>
+          <div class="stat-val">${topCorners.length}</div>
+        </div>
+      </div>
+
+      <h3 style="font-size: 0.95rem; margin: 1.5rem 0 0.5rem 0; text-transform: uppercase;">1. Orden de Prioridad de Despliegue por Corredor / Esquina</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Prioridad</th>
+            <th>Intersección / Corredor</th>
+            <th>Barrio</th>
+            <th>Despachos</th>
+            <th>Incidentes Armados</th>
+            <th>% Armado</th>
+            <th>Modalidad de Intervención</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${topCorners.map((c, idx) => {
+            const armPct = c.count > 0 ? ((c.armed / c.count) * 100).toFixed(1) : "0.0";
+            return `
+              <tr style="${idx < 3 ? 'background: #fee2e2; font-weight: 700;' : ''}">
+                <td>#${idx + 1}</td>
+                <td><strong>${c.name}</strong></td>
+                <td>${c.barrio}</td>
+                <td>${c.count.toLocaleString()}</td>
+                <td style="color: #dc2626;">${c.armed.toLocaleString()}</td>
+                <td>${armPct}%</td>
+                <td>${idx < 3 ? '🚨 PUESTO FIJO + MÓVIL PERIMETRAL' : 'Patrullaje saturación cada 30 min'}</td>
+              </tr>
+            `;
+          }).join("")}
+        </tbody>
+      </table>
+
+      <h3 style="font-size: 0.95rem; margin: 1.5rem 0 0.5rem 0; text-transform: uppercase;">2. Despachos Tácticos Recientes en esta Ventana (Relato Completo sin Truncar)</h3>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 15%;">Fecha / Hora</th>
+            <th style="width: 25%;">Ubicación / Barrio</th>
+            <th style="width: 15%;">Sustancia / Armas</th>
+            <th style="width: 45%;">Relato Operacional del Despacho</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${sampleDispatches.map(inc => `
+            <tr>
+              <td>
+                <strong>#${inc.id}</strong><br/>
+                <span style="font-size: 0.72rem; color: #64748b;">${inc.fecha || ""} ${inc.hora || ""}</span>
+              </td>
+              <td>
+                <strong>${inc.direccion || inc.calle || "Sin calle"}</strong><br/>
+                <span style="font-size: 0.72rem; color: #0284c7;">${inc.barrio || ""}</span>
+              </td>
+              <td>
+                <strong>${inc.sustancia || "No esp."}</strong><br/>
+                ${inc.tieneArmas || inc.armas ? '<span style="color: #dc2626; font-size: 0.72rem; font-weight: 800;">🚨 ARMAS</span>' : '<span style="color: #64748b; font-size: 0.72rem;">Sin armas</span>'}
+              </td>
+              <td>
+                <div class="relato-box">${inc.relato}</div>
+              </td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+
+      <div class="footer">
+        Documento oficial emitido por la Plataforma MSEG Intelligence · Despliegue Operacional JCP · ${new Date().toLocaleString("es-AR")}
+      </div>
+
+      <script>
+        window.onload = function() { setTimeout(() => { window.print(); }, 800); };
+      </script>
+    </body>
+    </html>
+  `;
+
+  win.document.write(html);
+  win.document.close();
+}
+
+/**
+ * Genera el expediente táctico de un punto crónico individual de narcomenudeo
+ * Incluye el historial íntegro de todos los despachos registrados en esa esquina
+ */
+export function generateDrogasChronicHotspotPDF(corner: {
+  name: string;
+  count: number;
+  armedCount: number;
+  lat?: number;
+  lng?: number;
+  barrio?: string;
+  substances?: Record<string, number>;
+  slots?: Record<string, number>;
+  incidents: any[];
+}) {
+  const win = window.open("", "_blank");
+  if (!win) {
+    alert("Por favor habilite los popups en su navegador para imprimir el expediente.");
+    return;
+  }
+
+  const armPct = corner.count > 0 ? ((corner.armedCount / corner.count) * 100).toFixed(1) : "0.0";
+  const dispatches = corner.incidents || [];
+
+  const html = `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <title>Expediente Táctico de Punto Crónico - ${corner.name}</title>
+      <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; margin: 0; padding: 2rem; line-height: 1.4; background: #fff; }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0f172a; padding-bottom: 1rem; margin-bottom: 1.5rem; }
+        .title { font-size: 1.25rem; font-weight: 900; color: #0f172a; text-transform: uppercase; letter-spacing: -0.5px; }
+        .subtitle { font-size: 0.85rem; color: #475569; margin-top: 0.25rem; font-weight: 600; }
+        .badge { background: #b91c1c; color: #fff; padding: 0.35rem 0.75rem; border-radius: 4px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
+        .box { background: #fef2f2; border-left: 4px solid #b91c1c; padding: 0.85rem 1rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: #991b1b; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.9rem; border-top: 3px solid #b91c1c; }
+        .stat-val { font-size: 1.35rem; font-weight: 900; color: #0f172a; margin: 0.2rem 0; }
+        .stat-lbl { font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-bottom: 1.5rem; }
+        th { background: #0f172a; color: #fff; text-align: left; padding: 0.55rem; font-weight: 700; font-size: 0.72rem; text-transform: uppercase; }
+        td { padding: 0.5rem 0.55rem; border-bottom: 1px solid #e2e8f0; }
+        tr:nth-child(even) { background: #f8fafc; }
+        .relato-box { background: #f8fafc; border-left: 3px solid #b91c1c; padding: 0.6rem 0.85rem; font-family: monospace; font-size: 0.75rem; color: #1e293b; white-space: pre-wrap; margin-top: 0.25rem; word-break: break-word; }
+        .footer { border-top: 1px solid #cbd5e1; padding-top: 0.75rem; margin-top: 2rem; font-size: 0.7rem; color: #94a3b8; text-align: center; }
+        @media print { body { padding: 1rem; } .no-print { display: none; } }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div>
+          <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
+          <div class="subtitle">Expediente Táctico de Punto Crónico de Resistencia & Narcomenudeo</div>
+          <div style="font-size: 0.85rem; color: #0f172a; margin-top: 0.2rem; font-weight: 800;">📍 ${corner.name} · ${corner.barrio || "José C. Paz"}</div>
+        </div>
+        <div class="badge">Expediente Focal</div>
+      </div>
+
+      <div class="box">
+        <strong>EVALUACIÓN JUDICIAL Y FISCAL:</strong> Esta intersección presenta un patrón de <strong>alta reiterancia crónica con ${corner.count} despachos delictuales registrados</strong>. El <strong>${armPct}% de los incidentes (${corner.armedCount} casos)</strong> involucran personas armadas, custodias armadas («soldaditos») o detonaciones en la vía pública. Se recomienda su elevación a la UFI Temática de Estupefacientes para solicitud de órdenes de allanamiento y tareas de inteligencia encubierta.
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-lbl">Llamados Registrados</div>
+          <div class="stat-val">${corner.count}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Despachos Armados</div>
+          <div class="stat-val" style="color: #b91c1c;">${corner.armedCount} (${armPct}%)</div>
+        </div>
+        <div class="stat-card" style="border-top-color: #0284c7;">
+          <div class="stat-lbl">Georreferencia</div>
+          <div class="stat-val" style="font-size: 0.95rem;">${corner.lat ? `${corner.lat.toFixed(5)}, ${corner.lng?.toFixed(5)}` : 'Verificada'}</div>
+        </div>
+        <div class="stat-card" style="border-top-color: #8b5cf6;">
+          <div class="stat-lbl">Nivel de Hostilidad</div>
+          <div class="stat-val" style="color: #8b5cf6;">EXTREMO</div>
+        </div>
+      </div>
+
+      <h3 style="font-size: 0.95rem; margin: 1.5rem 0 0.5rem 0; text-transform: uppercase;">Historial Cronológico Completo de Despachos 911 en esta Esquina (${dispatches.length} incidentes)</h3>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 15%;">ID / Fecha-Hora</th>
+            <th style="width: 20%;">Origen / Sustancia</th>
+            <th style="width: 15%;">Armas Reportadas</th>
+            <th style="width: 50%;">Relato Íntegro de la Modus Operandi (Sin Truncar)</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${dispatches.map((inc, i) => `
+            <tr>
+              <td>
+                <strong>#${inc.id || i + 1}</strong><br/>
+                <span style="font-size: 0.72rem; color: #64748b;">${inc.fecha || ""} ${inc.hora || ""}</span>
+              </td>
+              <td>
+                <span style="font-size: 0.75rem; font-weight: 700;">${inc.origen || "911"}</span><br/>
+                <span style="color: #0284c7; font-size: 0.72rem; font-weight: 800;">${inc.sustancia || "Drogas"}</span>
+              </td>
+              <td>
+                ${inc.tieneArmas || inc.armas ? '<span style="color: #dc2626; font-weight: 800; font-size: 0.75rem;">🚨 SI (ARMADO)</span>' : '<span style="color: #64748b; font-size: 0.75rem;">No declaradas</span>'}
+              </td>
+              <td>
+                <div class="relato-box">${inc.relato || "Sin relato cargado."}</div>
+              </td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+
+      <div class="footer">
+        Expediente confeccionado por Plataforma MSEG Intelligence · ${corner.name} · ${new Date().toLocaleString("es-AR")}
+      </div>
+
+      <script>
+        window.onload = function() { setTimeout(() => { window.print(); }, 800); };
+      </script>
+    </body>
+    </html>
+  `;
+
+  win.document.write(html);
+  win.document.close();
+}

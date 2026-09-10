@@ -366,7 +366,12 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
 
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
             <button
-              onClick={() => generateAllTrajectoriesPDF(uniqueRecoveries)}
+              onClick={() => {
+                let filterText = "";
+                if (vehicleType !== "todos") filterText += `Categoría: ${vehicleType.toUpperCase()} `;
+                if (searchTerm.trim()) filterText += `Búsqueda: "${searchTerm.trim()}"`;
+                generateAllTrajectoriesPDF(filteredCases, filterText || undefined);
+              }}
               style={{
                 height: "38px",
                 padding: "0 1.2rem",

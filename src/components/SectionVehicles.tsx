@@ -197,14 +197,31 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
             <button
               onClick={() => {
+                const allAutos = uniqueRecoveries.filter(checkIsAuto);
+                const allMotos = uniqueRecoveries.filter(checkIsMoto);
+
+                const autoHours = allAutos.map((r) => r.Horas_Hasta_Hallazgo).filter((h) => typeof h === "number" && !isNaN(h) && h > 0).sort((a, b) => a - b);
+                const motoHours = allMotos.map((r) => r.Horas_Hasta_Hallazgo).filter((h) => typeof h === "number" && !isNaN(h) && h > 0).sort((a, b) => a - b);
+
+                const dynMedianAutos = autoHours.length > 0
+                  ? (autoHours.length % 2 !== 0 ? autoHours[Math.floor(autoHours.length / 2)] : (autoHours[Math.floor(autoHours.length / 2) - 1] + autoHours[Math.floor(autoHours.length / 2)]) / 2)
+                  : 5.4;
+                const dynMedianMotos = motoHours.length > 0
+                  ? (motoHours.length % 2 !== 0 ? motoHours[Math.floor(motoHours.length / 2)] : (motoHours[Math.floor(motoHours.length / 2) - 1] + motoHours[Math.floor(motoHours.length / 2)]) / 2)
+                  : 7.0;
+
+                const dynMeanAutos = autoHours.length > 0 ? autoHours.reduce((a, b) => a + b, 0) / autoHours.length : 49.0;
+                const dynMeanMotos = motoHours.length > 0 ? motoHours.reduce((a, b) => a + b, 0) / motoHours.length : 75.7;
+
                 generateVehiclesComparisonReportPDF({
-                  autosRecovered: 1678,
-                  motosRecovered: 510,
-                  medianAutosHours: 4.9,
-                  medianMotosHours: 7.0,
-                  meanAutosHours: 51.2,
-                  meanMotosHours: 75.7,
-                  sampleCases: filteredRecoveries
+                  autosRecovered: allAutos.length,
+                  motosRecovered: allMotos.length,
+                  medianAutosHours: dynMedianAutos,
+                  medianMotosHours: dynMedianMotos,
+                  meanAutosHours: dynMeanAutos,
+                  meanMotosHours: dynMeanMotos,
+                  sampleCases: filteredRecoveries,
+                  selectedCategory: selectedCategory,
                 });
               }}
               className="btn-logout"

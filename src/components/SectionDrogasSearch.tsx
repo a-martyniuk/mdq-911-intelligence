@@ -73,13 +73,20 @@ export default function SectionDrogasSearch({ incidents = [] }: SectionDrogasSea
             <button
               onClick={() => {
                 generateDrogasJcpPDF({
-                  totalIncidents: incidents.length,
+                  totalIncidents: filtered.length,
+                  totalUniverse: incidents.length,
                   georeferencedCount: filtered.filter((r) => r.lat && r.lng).length,
                   armasCount: filtered.filter((r) => r.tieneArmas).length,
                   cocainaCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("COCAÍNA")).length,
                   marihuanaCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("MARIHUANA")).length,
                   pacoCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("PACO")).length,
                   incidents: filtered,
+                  activeFilters: {
+                    origen: filterOrigen,
+                    sustancia: filterSustancia,
+                    armas: filterArmas,
+                    busqueda: searchTerm || undefined,
+                  },
                 });
               }}
               className="btn-logout"

@@ -60,7 +60,7 @@ export default function SectionDrogasETL() {
             <div style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem" }}>
               <CheckCircle2 size={16} color="#10b981" style={{ marginTop: "3px", flexShrink: 0 }} />
               <div>
-                <strong style={{ color: "var(--text-primary)" }}>Corrección Decimal de Coordenadas:</strong> Se solucionó la escala exponencial de las variables exportadas (e.g. <code style={{ color: "var(--accent-indigo)" }}>-345232666812.0</code> dividido por $10^{10}$ resulta en <code style={{ color: "#10b981" }}>-34.523266</code>), situando 1.549 hechos (87,5%) exactamente en las cuadrículas urbanas de José C. Paz.
+                <strong style={{ color: "var(--text-primary)" }}>Corrección Decimal y Georreferenciación Automática:</strong> Se solucionó la escala exponencial de las variables exportadas y se completó la geocodificación de intersecciones y barrios, situando a <strong>1.763 hechos (99,60%)</strong> con coordenadas espaciales validadas dentro del Partido de José C. Paz.
               </div>
             </div>
 

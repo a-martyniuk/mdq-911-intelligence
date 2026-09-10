@@ -17,9 +17,10 @@ interface SectionDrogasOverviewProps {
     marihuanaCount: number;
     pacoCount: number;
   };
+  incidents?: any[];
 }
 
-export default function SectionDrogasOverview({ stats }: SectionDrogasOverviewProps) {
+export default function SectionDrogasOverview({ stats, incidents = [] }: SectionDrogasOverviewProps) {
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1.5rem" }}>
@@ -34,7 +35,7 @@ export default function SectionDrogasOverview({ stats }: SectionDrogasOverviewPr
 
         <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
           <button
-            onClick={() => generateDrogasJcpPDF(stats)}
+            onClick={() => generateDrogasJcpPDF({ ...stats, incidents })}
             className="btn-logout"
             style={{
               height: "38px",

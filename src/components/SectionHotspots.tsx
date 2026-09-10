@@ -94,8 +94,8 @@ function InteractiveHotspotsMap({ incidents = [] }: { incidents: any[] }) {
             📍 ${inc.Dirección || inc.direccion || "MDQ"}<br/>
             🕒 ${inc.Fecha || inc.fecha || ""} (${inc.Franja_Horaria || inc.franja || ""})<br/>
             ${inc.Patente_Principal ? `🏷️ <strong>Patente:</strong> ${inc.Patente_Principal}<br/>` : ""}
-            <div style="background:#f8fafc; padding:0.4rem; border-radius:4px; margin-top:0.3rem; border:1px solid #cbd5e1; max-height:80px; overflow-y:auto;">
-              ${(inc.Relato || inc.relato || "Sin relato").slice(0, 140)}...
+            <div style="background:#f8fafc; padding:0.4rem; border-radius:4px; margin-top:0.3rem; border:1px solid #cbd5e1; max-height:120px; overflow-y:auto; font-size:0.75rem; white-space:pre-wrap; word-break:break-word;">
+              ${inc.Relato || inc.relato || "Sin relato cargado."}
             </div>
           </div>
         `);
@@ -201,7 +201,7 @@ export default function SectionHotspots({ incidents = [], geoPoints = [] }: Sect
             <button
               onClick={() => {
                 generateHotspotsPDF({
-                  incidents: filteredIncidents.length > 0 ? filteredIncidents : dataset,
+                  incidents: filteredIncidents,
                   filterSummary,
                 });
               }}
