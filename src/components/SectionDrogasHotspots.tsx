@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { Flame, Filter, Download, FileText, Info, ShieldAlert, Clock, MapPin, ChevronRight, X, AlertOctagon, Target, Layers, Building2, Home, Route, CheckSquare, Square } from "lucide-react";
+import { Flame, Filter, Download, FileText, Info, ShieldAlert, Clock, MapPin, ChevronRight, X, AlertOctagon, Target, Layers, Building2, Home, Route, CheckSquare, Square, Zap, Shield, Crosshair, BarChart3, Radio } from "lucide-react";
 import { exportToCSV } from "@/lib/excelExport";
-import { generateDrogasJcpPDF, generateDrogasTacticalDeploymentPDF, generateDrogasChronicHotspotPDF } from "@/lib/pdfReport";
+import { generateDrogasJcpPDF, generateDrogasChronicHotspotPDF } from "@/lib/pdfReport";
 import { JURISDICTIONS_JCP_GEOJSON, JCP_MUNICIPAL_BOUNDARY_GEOJSON, POLICE_STATIONS_JCP } from "@/lib/jurisdictionsJcpGeoJSON";
 import { RENABAP_JCP_GEOJSON } from "@/lib/renabapJcpGeoJSON";
 import { CORRIDORS_JCP_GEOJSON } from "@/lib/corridorsJcpGeoJSON";
+import { CHRONIC_HOTSPOTS_JCP, ChronicHotspotNode } from "@/lib/chronicHotspotsJcpData";
 import "leaflet/dist/leaflet.css";
 
 interface SectionDrogasHotspotsProps {
@@ -16,41 +17,41 @@ interface SectionDrogasHotspotsProps {
 export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasHotspotsProps) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<any>(null);
-  const markersGroupRef = useRef<any>(null);
+  const heatLayerRef = useRef<any>(null);
+  const nodesGroupRef = useRef<any>(null);
   const jurisLayerRef = useRef<any>(null);
   const stationsLayerRef = useRef<any>(null);
   const renabapLayerRef = useRef<any>(null);
-  const renabapLabelsRef = useRef<any>(null);
   const corridorsLayerRef = useRef<any>(null);
 
-  const [activeTab, setActiveTab] = useState<"map" | "chronic">("map");
-  const [filterOrigen, setFilterOrigen] = useState<string>("todos");
+  // Tabs: Map | Matrix 10 Nodes | Esquinas Crónicas | Pareto
+  const [activeTab, setActiveTab] = useState<"map" | "nodes" | "corners" | "pareto">("map");
+  
+  // Heatmap mode: 'general' (density of all calls) vs 'armas' (density of firearms & bunkers)
+  const [heatMode, setHeatMode] = useState<"general" | "armas">("general");
+
+  // Filters State
   const [filterSustancia, setFilterSustancia] = useState<string>("todos");
   const [filterFranja, setFilterFranja] = useState<string>("todos");
-  const [filterArmas, setFilterArmas] = useState<string>("todos");
+  const [filterComisaria, setFilterComisaria] = useState<string>("todos");
   const [mapReady, setMapReady] = useState<boolean>(false);
 
-  // Layer Toggles (Replicated from Mar del Plata)
-  const [showJurisdictions, setShowJurisdictions] = useState<boolean>(false);
+  // Layer Toggles
+  const [showHeatmap, setShowHeatmap] = useState<boolean>(true);
+  const [showNodes, setShowNodes] = useState<boolean>(true);
   const [showRenabap, setShowRenabap] = useState<boolean>(true);
+  const [showJurisdictions, setShowJurisdictions] = useState<boolean>(false);
   const [showCorridors, setShowCorridors] = useState<boolean>(false);
 
-  // Selected corner for chronic dossier modal
+  // Selected Node for Tactical Dossier Modal
+  const [selectedNode, setSelectedNode] = useState<ChronicHotspotNode | null>(null);
+
+  // Selected Corner for micro dossier modal
   const [selectedCorner, setSelectedCorner] = useState<any | null>(null);
 
+  // Filtered dataset
   const filtered = useMemo(() => {
     return incidents.filter((inc) => {
-      if (filterOrigen !== "todos") {
-        const o = (inc.origen || inc.Origen_Dataset || "").toUpperCase();
-        const f = filterOrigen.toUpperCase();
-        if (f === "DROGAS_ILICITAS_FORMAL") {
-          if (!o.includes("DROGAS_ILICITAS") && !o.includes("FORMAL")) return false;
-        } else if (f === "INFORMACION_VECINAL_KEYWORDS" || f === "INTELIGENCIA_RELATO_KEYWORDS") {
-          if (!o.includes("KEYWORD") && !o.includes("INFORMACION") && !o.includes("RELATO")) return false;
-        } else if (!o.includes(f)) {
-          return false;
-        }
-      }
       if (filterSustancia !== "todos") {
         const s = (inc.sustancia || "").toUpperCase();
         if (!s.includes(filterSustancia.toUpperCase())) return false;
@@ -59,14 +60,9 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
         const f = (inc.franja || "").toLowerCase();
         if (!f.includes(filterFranja.toLowerCase())) return false;
       }
-      if (filterArmas !== "todos") {
-        const want = filterArmas === "si";
-        const has = Boolean(inc.tieneArmas || inc.armas === true || inc.armas === "SI");
-        if (has !== want) return false;
-      }
       return true;
     });
-  }, [incidents, filterOrigen, filterSustancia, filterFranja, filterArmas]);
+  }, [incidents, filterSustancia, filterFranja]);
 
   // Aggregate Chronic Corners (Top Intersections)
   const chronicCorners = useMemo(() => {
@@ -115,16 +111,37 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
 
     return Object.values(map)
       .sort((a, b) => b.count - a.count)
-      .slice(0, 20);
+      .slice(0, 25);
   }, [filtered]);
 
-  // 1. Initialize Map ONCE
+  // Key Aggregates
+  const totalCalls = filtered.length;
+  const armedCalls = filtered.filter(i => i.tieneArmas || i.armas === true || i.armas === "SI").length;
+  const bunkersCalls = filtered.filter(i => {
+    const l = String(i.tipoLugar || "");
+    return l.includes("Búnker") || l.includes("Ventanita");
+  }).length;
+
+  const top10TotalCalls = useMemo(() => {
+    return CHRONIC_HOTSPOTS_JCP.reduce((acc, n) => acc + n.totalIncidents, 0);
+  }, []);
+
+  const top10ArmedCalls = useMemo(() => {
+    return CHRONIC_HOTSPOTS_JCP.reduce((acc, n) => acc + n.armedIncidents, 0);
+  }, []);
+
+  const top10Bunkers = useMemo(() => {
+    return CHRONIC_HOTSPOTS_JCP.reduce((acc, n) => acc + n.bunkersCount, 0);
+  }, []);
+
+  // Initialize Map ONCE
   useEffect(() => {
     let isMounted = true;
 
     if (activeTab === "map") {
-      import("leaflet").then((L) => {
+      import("leaflet").then(async (LModule) => {
         if (!isMounted || !mapContainerRef.current) return;
+        const L = (LModule as any).default || LModule;
 
         if (!mapInstanceRef.current) {
           const map = L.map(mapContainerRef.current, {
@@ -132,19 +149,20 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
             zoom: 13,
           });
 
+          // Clean OpenStreetMap Tile Layer (No watermark)
           L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
             maxZoom: 19,
           }).addTo(map);
 
-          // Municipal Boundary Base
+          // Municipal Boundary Frame (INDEC / IGN)
           L.geoJSON(JCP_MUNICIPAL_BOUNDARY_GEOJSON as any, {
             style: {
-              color: "#475569",
+              color: "#334155",
               weight: 2,
               dashArray: "5, 5",
               fillColor: "#0f172a",
-              fillOpacity: 0.03,
+              fillOpacity: 0.02,
             },
             interactive: false,
           }).addTo(map);
@@ -155,9 +173,9 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
               color: feature.properties.color || "#2563eb",
               weight: 1.5,
               dashArray: "4, 4",
-              opacity: 0.7,
+              opacity: 0.6,
               fillColor: feature.properties.color || "#2563eb",
-              fillOpacity: 0.05,
+              fillOpacity: 0.04,
             }),
             onEachFeature: (feature: any, layer: any) => {
               layer.bindPopup(`
@@ -174,7 +192,7 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
           jurisLayerRef.current = jurisLayer;
           if (showJurisdictions) jurisLayer.addTo(map);
 
-          // A2. Police Stations Permanent Badges
+          // Police Stations Permanent Badges
           const stationsGroup = L.layerGroup();
           POLICE_STATIONS_JCP.forEach((st: any) => {
             const icon = L.divIcon({
@@ -205,7 +223,7 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
               weight: 1.5,
               dashArray: "5, 4",
               fillColor: feature.properties.color || "#ea580c",
-              fillOpacity: 0.18,
+              fillOpacity: 0.16,
             }),
             onEachFeature: (feature: any, layer: any) => {
               layer.bindPopup(`
@@ -222,31 +240,13 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
           renabapLayerRef.current = renabapLayer;
           if (showRenabap) renabapLayer.addTo(map);
 
-          // B2. RENABAP Key Barrio Labels
-          const renabapLabelsGroup = L.layerGroup();
-          (RENABAP_JCP_GEOJSON as any).features
-            .filter((f: any) => parseInt(f.properties.familias || "0") >= 150)
-            .forEach((f: any) => {
-              const icon = L.divIcon({
-                className: "renabap-badge-icon",
-                html: `<div style="background:rgba(124, 45, 18, 0.92); color:#ffedd5; border:1px solid #fb923c; border-radius:10px; padding:1px 6px; font-size:9px; font-weight:700; white-space:nowrap; box-shadow:0 1px 4px rgba(0,0,0,0.5); pointer-events:none; transform:translate(-50%, -50%);">
-                  🏚️ ${f.properties.name.replace("B° ", "")} (${f.properties.familias})
-                </div>`,
-                iconSize: [0, 0]
-              });
-              const m = L.marker([f.properties.center[0], f.properties.center[1]], { icon });
-              renabapLabelsGroup.addLayer(m);
-            });
-          renabapLabelsRef.current = renabapLabelsGroup;
-          if (showRenabap) renabapLabelsGroup.addTo(map);
-
           // C. Corridors Layer
           const corridorsLayer = L.geoJSON(CORRIDORS_JCP_GEOJSON as any, {
             style: (feature: any) => ({
               color: feature.properties.color || "#d97706",
               weight: 2.5,
               dashArray: "4, 3",
-              opacity: 0.7,
+              opacity: 0.65,
             }),
             onEachFeature: (feature: any, layer: any) => {
               layer.bindPopup(`
@@ -262,7 +262,9 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
           corridorsLayerRef.current = corridorsLayer;
           if (showCorridors) corridorsLayer.addTo(map);
 
-          markersGroupRef.current = L.layerGroup().addTo(map);
+          // D. Group for 10 Chronic Nodes
+          nodesGroupRef.current = L.layerGroup().addTo(map);
+
           mapInstanceRef.current = map;
           setMapReady(true);
 
@@ -278,8 +280,10 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
-        markersGroupRef.current = null;
+        heatLayerRef.current = null;
+        nodesGroupRef.current = null;
         jurisLayerRef.current = null;
+        stationsLayerRef.current = null;
         renabapLayerRef.current = null;
         corridorsLayerRef.current = null;
         setMapReady(false);
@@ -287,7 +291,7 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
     };
   }, [activeTab]);
 
-  // Sync Layer Toggles dynamically
+  // Sync Layer Toggles
   useEffect(() => {
     if (!mapReady || !mapInstanceRef.current) return;
     const map = mapInstanceRef.current;
@@ -295,8 +299,10 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
     if (jurisLayerRef.current) {
       if (showJurisdictions) {
         if (!map.hasLayer(jurisLayerRef.current)) map.addLayer(jurisLayerRef.current);
+        if (stationsLayerRef.current && !map.hasLayer(stationsLayerRef.current)) map.addLayer(stationsLayerRef.current);
       } else {
         if (map.hasLayer(jurisLayerRef.current)) map.removeLayer(jurisLayerRef.current);
+        if (stationsLayerRef.current && map.hasLayer(stationsLayerRef.current)) map.removeLayer(stationsLayerRef.current);
       }
     }
 
@@ -317,650 +323,832 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
     }
   }, [showJurisdictions, showRenabap, showCorridors, mapReady]);
 
-  // 2. Dynamically render markers
+  // Render Continuous Heatmap Layer (leaflet.heat)
   useEffect(() => {
-    if (activeTab !== "map" || !mapReady || !mapInstanceRef.current || !markersGroupRef.current) return;
+    if (activeTab !== "map" || !mapReady || !mapInstanceRef.current) return;
 
-    import("leaflet").then((L) => {
-      const group = markersGroupRef.current;
+    import("leaflet").then(async (LModule) => {
+      const L = (LModule as any).default || LModule;
+      const map = mapInstanceRef.current;
+      if (!map) return;
+
+      // Remove existing heatLayer
+      if (heatLayerRef.current && map.hasLayer(heatLayerRef.current)) {
+        map.removeLayer(heatLayerRef.current);
+        heatLayerRef.current = null;
+      }
+
+      if (!showHeatmap) return;
+
+      try {
+        if (typeof window !== "undefined") {
+          (window as any).L = L;
+          await import("leaflet.heat");
+        }
+
+        const validPoints = filtered.filter((r) => r.lat && r.lng);
+        const heatPoints = validPoints.map((inc) => {
+          const hasArmas = inc.tieneArmas || inc.armas === true || inc.armas === "SI";
+          const isBunker = String(inc.tipoLugar || "").includes("Búnker");
+          
+          let weight = 0.5;
+          if (heatMode === "armas") {
+            weight = hasArmas ? 1.0 : (isBunker ? 0.8 : 0.1);
+          } else {
+            weight = hasArmas ? 0.9 : (isBunker ? 0.8 : 0.4);
+          }
+          return [inc.lat, inc.lng, weight];
+        });
+
+        if (typeof (L as any).heatLayer === "function") {
+          const heat = (L as any).heatLayer(heatPoints, {
+            radius: heatMode === "armas" ? 32 : 26,
+            blur: heatMode === "armas" ? 22 : 18,
+            maxZoom: 16,
+            max: heatMode === "armas" ? 1.2 : 0.9,
+            gradient: heatMode === "armas" 
+              ? { 0.2: "#ef4444", 0.5: "#b91c1c", 0.7: "#7f1d1d", 1.0: "#450a0a" }
+              : { 0.2: "#3b82f6", 0.4: "#06b6d4", 0.6: "#eab308", 0.8: "#f97316", 1.0: "#ef4444" }
+          });
+          heat.addTo(map);
+          heatLayerRef.current = heat;
+        }
+      } catch (err) {
+        console.warn("Could not initialize leaflet.heat:", err);
+      }
+    });
+  }, [filtered, heatMode, showHeatmap, mapReady, activeTab]);
+
+  // Render 10 Chronic Resistance Nodes (Tactical Radars & Buffers)
+  useEffect(() => {
+    if (activeTab !== "map" || !mapReady || !mapInstanceRef.current || !nodesGroupRef.current) return;
+
+    import("leaflet").then((LModule) => {
+      const L = (LModule as any).default || LModule;
+      const group = nodesGroupRef.current;
       const map = mapInstanceRef.current;
       if (!group || !map) return;
 
       group.clearLayers();
+      if (!showNodes) return;
 
-      const points = filtered.filter((r) => r.lat && r.lng);
+      CHRONIC_HOTSPOTS_JCP.forEach((node) => {
+        const isCritical = node.nivelRiesgo === "CRÍTICO";
+        const baseColor = isCritical ? "#ef4444" : (node.nivelRiesgo === "SEVERO" ? "#f59e0b" : "#3b82f6");
 
-      points.forEach((inc) => {
-        const isArmed = Boolean(inc.tieneArmas || inc.armas === true || inc.armas === "SI");
-        const marker = L.circleMarker([inc.lat, inc.lng], {
-          radius: isArmed ? 7 : 5,
-          fillColor: isArmed ? "#ef4444" : "#f59e0b",
-          color: "#ffffff",
-          weight: 1.2,
-          fillOpacity: 0.82,
+        // 1. Concentric Tactical Buffer Circle (380m radius)
+        const circle = L.circle([node.lat, node.lng], {
+          radius: node.radiusMeters,
+          color: baseColor,
+          weight: isCritical ? 2.5 : 1.8,
+          dashArray: isCritical ? "6, 4" : "4, 4",
+          fillColor: baseColor,
+          fillOpacity: isCritical ? 0.16 : 0.10,
         });
 
-        marker.bindPopup(`
-          <div style="font-size:0.8rem; line-height:1.4; max-width: 280px;">
-            <strong style="color:#ef4444;">ID 911 #${inc.id} - ${inc.sustancia || "Drogas"}</strong><br/>
-            📍 ${inc.direccion || "José C. Paz"} (${inc.barrio || "Centro"})<br/>
-            🕒 ${inc.fecha || ""} (${inc.franja || ""})<br/>
-            ${isArmed ? `<span style="color:#dc2626; font-weight:700;">⚠️ Armas / Disparos</span><br/>` : ""}
-            <div style="background:#f8fafc; padding:0.4rem; border-radius:4px; margin-top:0.3rem; border:1px solid #cbd5e1; max-height:120px; overflow-y:auto; font-size:0.75rem; white-space:pre-wrap; word-break:break-word;">
-              ${inc.relato || "Sin relato detallado."}
-            </div>
+        circle.on("click", () => {
+          setSelectedNode(node);
+        });
+
+        circle.addTo(group);
+
+        // 2. High-Visibility Interactive Tactical Badge
+        const icon = L.divIcon({
+          className: "hotspot-node-badge",
+          html: `<div style="
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: ${isCritical ? 'linear-gradient(135deg, #991b1b 0%, #dc2626 100%)' : 'linear-gradient(135deg, #b45309 0%, #f59e0b 100%)'};
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            border-radius: 16px;
+            padding: 3px 10px;
+            font-size: 11px;
+            font-weight: 800;
+            white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            pointer-events: auto;
+          ">
+            <span style="background: rgba(0,0,0,0.35); border-radius: 8px; padding: 1px 5px; font-size: 10px;">⚡ #${node.id}</span>
+            <span>${node.shortName.split(' y ')[0].slice(0, 18)}</span>
+            <span style="background: #ffffff; color: #000; border-radius: 8px; padding: 1px 5px; font-size: 9px; font-weight: 900;">${node.totalIncidents}</span>
+          </div>`,
+          iconSize: [0, 0],
+        });
+
+        const marker = L.marker([node.lat, node.lng], { icon });
+        marker.on("click", () => {
+          setSelectedNode(node);
+        });
+
+        marker.bindTooltip(`
+          <div style="font-family:sans-serif; font-size:0.8rem; padding:2px 4px;">
+            <strong style="color:${baseColor}; font-size:0.88rem;">${node.name}</strong><br/>
+            <span>🔴 ${node.totalIncidents} denuncias · ⚠️ ${node.pctArmed}% armados · 🏚️ ${node.bunkersCount} búnkers</span><br/>
+            <span style="color:#64748b; font-size:0.72rem;">Click para abrir Dossier Táctico</span>
           </div>
-        `);
+        `, { direction: "top", offset: [0, -12] });
 
         marker.addTo(group);
       });
     });
-  }, [filtered, mapReady, activeTab]);
+  }, [showNodes, mapReady, activeTab]);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-      <div className="card">
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem" }}>
+      {/* Strategic Header Banner */}
+      <div className="card" style={{ background: "linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(245, 158, 11, 0.05) 100%)", border: "1px solid rgba(239, 68, 68, 0.25)" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem" }}>
           <div>
             <div className="card-title" style={{ gap: "0.5rem" }}>
               <Flame color="#ef4444" size={24} />
-              <span>🔥 Hotspots de Narcomenudeo & Puntos Crónicos de Resistencia (José C. Paz)</span>
+              <span>🔥 Hotspots & Nodos Crónicos de Resistencia Criminal (José C. Paz)</span>
             </div>
-            <p className="card-subtitle" style={{ margin: "0.2rem 0 0" }}>
-              Identificación espacial de núcleos de venta, capas jurisdiccionales, asentamientos RENABAP y planificación de despliegue táctico.
+            <p className="card-subtitle" style={{ margin: "0.25rem 0 0" }}>
+              Macro-análisis geoespacial de saturación delictual, densidad térmica continua (KDE) y núcleos consolidados de resistencia armada.
             </p>
           </div>
 
-          {/* Report Export Buttons */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
             <button
               onClick={() => {
                 generateDrogasJcpPDF({
                   totalIncidents: filtered.length,
                   totalUniverse: incidents.length,
-                  georeferencedCount: filtered.filter((r) => r.lat && r.lng).length,
-                  armasCount: filtered.filter((r) => r.tieneArmas || r.armas).length,
-                  cocainaCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("COCAÍNA")).length,
-                  marihuanaCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("MARIHUANA")).length,
-                  pacoCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("PACO")).length,
+                  georeferencedCount: filtered.filter((i) => i.lat && i.lng).length,
+                  armasCount: armedCalls,
+                  cocainaCount: filtered.filter((i) => (i.sustancia || "").toUpperCase().includes("COCAÍNA")).length,
+                  marihuanaCount: filtered.filter((i) => (i.sustancia || "").toUpperCase().includes("MARIHUANA")).length,
+                  pacoCount: filtered.filter((i) => (i.sustancia || "").toUpperCase().includes("PACO")).length,
                   incidents: filtered,
-                  activeFilters: {
-                    origen: filterOrigen,
-                    sustancia: filterSustancia,
-                    franja: filterFranja,
-                    armas: filterArmas,
-                  },
                 });
               }}
               className="btn-logout"
               style={{
-                height: "36px",
-                padding: "0 0.9rem",
-                fontSize: "0.78rem",
+                height: "38px",
+                padding: "0 1rem",
+                fontSize: "0.8rem",
                 fontWeight: 800,
                 background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
                 color: "#fff",
                 border: "none",
                 borderRadius: "6px",
-                cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
-                gap: "0.35rem",
-                boxShadow: "0 2px 8px rgba(239,68,68,0.3)",
-              }}
-            >
-              <FileText size={14} /> 📄 Informe Hotspots (PDF)
-            </button>
-
-            <button
-              onClick={() => {
-                generateDrogasTacticalDeploymentPDF(filtered, filterFranja, {
-                  origen: filterOrigen,
-                  sustancia: filterSustancia,
-                  franja: filterFranja,
-                  armas: filterArmas,
-                });
-              }}
-              className="btn-logout"
-              style={{
-                height: "36px",
-                padding: "0 0.9rem",
-                fontSize: "0.78rem",
-                fontWeight: 800,
-                background: "linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%)",
-                color: "#fff",
-                border: "none",
-                borderRadius: "6px",
+                gap: "0.5rem",
                 cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.35rem",
-                boxShadow: "0 2px 8px rgba(124,58,237,0.3)",
               }}
             >
-              <Target size={14} /> 🚨 Planilla Despliegue Táctico (PDF)
-            </button>
-
-            <button
-              onClick={() => {
-                const exportData = filtered.map((inc: any) => ({
-                  ID: inc.id,
-                  Fecha: inc.fecha,
-                  Direccion: inc.direccion,
-                  Barrio: inc.barrio,
-                  Sustancia: inc.sustancia,
-                  Tiene_Armas: (inc.tieneArmas || inc.armas) ? "SI" : "NO",
-                  Franja: inc.franja,
-                  Relato: inc.relato,
-                }));
-                exportToCSV("hotspots_drogas_jose_c_paz", exportData);
-              }}
-              className="btn-logout"
-              style={{
-                height: "36px",
-                padding: "0 0.85rem",
-                fontSize: "0.78rem",
-                fontWeight: 800,
-                background: "rgba(16, 185, 129, 0.15)",
-                color: "#10b981",
-                border: "1px solid rgba(16, 185, 129, 0.4)",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.35rem",
-              }}
-            >
-              <Download size={14} /> 📊 Exportar Muestra
+              <FileText size={16} />
+              <span>Descargar Informe Estratégico (PDF)</span>
             </button>
           </div>
         </div>
 
-        {/* Tab Switcher */}
-        <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem", borderBottom: "1px solid var(--border)", paddingBottom: "0.5rem" }}>
-          <button
-            onClick={() => setActiveTab("map")}
-            style={{
-              padding: "0.5rem 1rem",
-              borderRadius: "6px",
-              border: "none",
-              background: activeTab === "map" ? "var(--accent-indigo)" : "transparent",
-              color: activeTab === "map" ? "#fff" : "var(--text-secondary)",
-              fontWeight: 700,
-              fontSize: "0.85rem",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.4rem",
-            }}
-          >
-            <Flame size={16} /> Mapa de Hotspots & Densidad ({filtered.filter(i => i.lat && i.lng).length} puntos)
-          </button>
-
-          <button
-            onClick={() => setActiveTab("chronic")}
-            style={{
-              padding: "0.5rem 1rem",
-              borderRadius: "6px",
-              border: "none",
-              background: activeTab === "chronic" ? "#ef4444" : "transparent",
-              color: activeTab === "chronic" ? "#fff" : "var(--text-secondary)",
-              fontWeight: 700,
-              fontSize: "0.85rem",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.4rem",
-            }}
-          >
-            <MapPin size={16} /> Esquinas Crónicas & Resistencia (Top {chronicCorners.length})
-          </button>
-        </div>
-
-        {/* LAYER CONTROLS TOOLBAR (Replicated from Mar del Plata Architecture) */}
-        {activeTab === "map" && (
-          <div style={{ background: "rgba(99, 102, 241, 0.07)", border: "1px solid rgba(99, 102, 241, 0.25)", borderRadius: "8px", padding: "0.75rem 1rem", marginBottom: "1rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <Layers size={17} color="var(--accent-indigo)" />
-              <span style={{ fontSize: "0.8rem", fontWeight: 800, color: "var(--text-primary)", textTransform: "uppercase" }}>
-                Capas de Inteligencia Espacial:
-              </span>
+        {/* Intelligence KPIs Banner */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1rem", marginTop: "1.25rem" }}>
+          <div style={{ background: "rgba(0,0,0,0.25)", padding: "0.85rem", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.06)" }}>
+            <div style={{ fontSize: "0.72rem", color: "#9ca3af", textTransform: "uppercase", fontWeight: 700 }}>
+              Concentración Territorial (Pareto)
             </div>
-
-            <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
-              <button
-                onClick={() => setShowJurisdictions(!showJurisdictions)}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.35rem",
-                  padding: "0.3rem 0.7rem",
-                  borderRadius: "6px",
-                  border: showJurisdictions ? "1px solid #2563eb" : "1px solid var(--border)",
-                  background: showJurisdictions ? "rgba(37, 99, 235, 0.15)" : "var(--bg-base)",
-                  color: showJurisdictions ? "#2563eb" : "var(--text-muted)",
-                  fontSize: "0.78rem",
-                  fontWeight: 700,
-                  cursor: "pointer",
-                }}
-              >
-                {showJurisdictions ? <CheckSquare size={14} /> : <Square size={14} />}
-                <Building2 size={14} /> 👮 Comisarías (3)
-              </button>
-
-              <button
-                onClick={() => setShowRenabap(!showRenabap)}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.35rem",
-                  padding: "0.3rem 0.7rem",
-                  borderRadius: "6px",
-                  border: showRenabap ? "1px solid #ea580c" : "1px solid var(--border)",
-                  background: showRenabap ? "rgba(234, 88, 12, 0.15)" : "var(--bg-base)",
-                  color: showRenabap ? "#ea580c" : "var(--text-muted)",
-                  fontSize: "0.78rem",
-                  fontWeight: 700,
-                  cursor: "pointer",
-                }}
-              >
-                {showRenabap ? <CheckSquare size={14} /> : <Square size={14} />}
-                <Home size={14} /> 🏘️ RENABAP (6)
-              </button>
-
-              <button
-                onClick={() => setShowCorridors(!showCorridors)}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.35rem",
-                  padding: "0.3rem 0.7rem",
-                  borderRadius: "6px",
-                  border: showCorridors ? "1px solid #d97706" : "1px solid var(--border)",
-                  background: showCorridors ? "rgba(217, 119, 6, 0.15)" : "var(--bg-base)",
-                  color: showCorridors ? "#d97706" : "var(--text-muted)",
-                  fontSize: "0.78rem",
-                  fontWeight: 700,
-                  cursor: "pointer",
-                }}
-              >
-                {showCorridors ? <CheckSquare size={14} /> : <Square size={14} />}
-                <Route size={14} /> 🛣️ Corredores (4)
-              </button>
+            <div style={{ fontSize: "1.3rem", fontWeight: 900, color: "#f59e0b", marginTop: "2px" }}>
+              {((top10TotalCalls / (totalCalls || 1)) * 100).toFixed(1)}% de Despachos
             </div>
-          </div>
-        )}
-
-        {/* Filters */}
-        <div style={{ background: "var(--bg-base)", padding: "1rem", borderRadius: "8px", border: "1px solid var(--border)", marginBottom: "1rem" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "0.75rem" }}>
-            <div>
-              <label style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-muted)", display: "block", marginBottom: "0.25rem" }}>
-                📑 Vertiente / Fuente 911:
-              </label>
-              <select value={filterOrigen} onChange={(e) => setFilterOrigen(e.target.value)} className="form-input" style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}>
-                <option value="todos">Todas las Fuentes (1.770 despachos)</option>
-                <option value="DROGAS_ILICITAS_FORMAL">🔴 Despacho Formal Drogas (989 hechos)</option>
-                <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Búsqueda Semántica Relatos (781 hechos)</option>
-              </select>
-            </div>
-
-            <div>
-              <label style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-muted)", display: "block", marginBottom: "0.25rem" }}>
-                💊 Sustancia:
-              </label>
-              <select value={filterSustancia} onChange={(e) => setFilterSustancia(e.target.value)} className="form-input" style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}>
-                <option value="todos">Todas las Sustancias</option>
-                <option value="COCAÍNA">Cocaína</option>
-                <option value="PACO">Paco / Pasta Base</option>
-                <option value="MARIHUANA">Marihuana</option>
-              </select>
-            </div>
-
-            <div>
-              <label style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-muted)", display: "block", marginBottom: "0.25rem" }}>
-                ⏰ Franja Horaria Táctica:
-              </label>
-              <select value={filterFranja} onChange={(e) => setFilterFranja(e.target.value)} className="form-input" style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}>
-                <option value="todos">Todas las Franjas</option>
-                <option value="noche">Noche (18-24 hs)</option>
-                <option value="madrugada">Madrugada (00-06 hs)</option>
-                <option value="tarde">Tarde (12-18 hs)</option>
-                <option value="mañana">Mañana (06-12 hs)</option>
-              </select>
-            </div>
-
-            <div>
-              <label style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-muted)", display: "block", marginBottom: "0.25rem" }}>
-                🔫 Presencia de Armas:
-              </label>
-              <select value={filterArmas} onChange={(e) => setFilterArmas(e.target.value)} className="form-input" style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}>
-                <option value="todos">Todas las denuncias</option>
-                <option value="si">Solo con Armas / Disparos</option>
-                <option value="no">Sin armas reportadas</option>
-              </select>
-            </div>
-
-            <div style={{ display: "flex", alignItems: "flex-end" }}>
-              <button
-                onClick={() => {
-                  setFilterOrigen("todos");
-                  setFilterSustancia("todos");
-                  setFilterFranja("todos");
-                  setFilterArmas("todos");
-                }}
-                className="btn-logout"
-                style={{ height: "36px", width: "100%", fontSize: "0.75rem", fontWeight: 700 }}
-              >
-                Limpiar Filtros
-              </button>
+            <div style={{ fontSize: "0.72rem", color: "#64748b", marginTop: "2px" }}>
+              {top10TotalCalls} denuncias en los 10 Nodos Crónicos
             </div>
           </div>
 
-          {/* Quick time slot pills */}
-          <div style={{ display: "flex", gap: "0.4rem", marginTop: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
-            <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-muted)" }}>Ventana Rápida:</span>
-            {[
-              { id: "todos", label: "Todas" },
-              { id: "noche", label: "🌙 Noche (18-24 hs)" },
-              { id: "madrugada", label: "🌌 Madrugada (00-06 hs)" },
-              { id: "tarde", label: "☀️ Tarde (12-18 hs)" },
-              { id: "mañana", label: "🌅 Mañana (06-12 hs)" },
-            ].map((p) => (
-              <button
-                key={p.id}
-                onClick={() => setFilterFranja(p.id)}
-                style={{
-                  fontSize: "0.72rem",
-                  padding: "2px 8px",
-                  borderRadius: "12px",
-                  border: filterFranja === p.id ? "1px solid #ef4444" : "1px solid var(--border)",
-                  background: filterFranja === p.id ? "rgba(239,68,68,0.2)" : "transparent",
-                  color: filterFranja === p.id ? "#ef4444" : "var(--text-secondary)",
-                  fontWeight: filterFranja === p.id ? 800 : 500,
-                  cursor: "pointer",
-                }}
-              >
-                {p.label}
-              </button>
-            ))}
+          <div style={{ background: "rgba(0,0,0,0.25)", padding: "0.85rem", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.06)" }}>
+            <div style={{ fontSize: "0.72rem", color: "#9ca3af", textTransform: "uppercase", fontWeight: 700 }}>
+              Letalidad Armada en Nodos
+            </div>
+            <div style={{ fontSize: "1.3rem", fontWeight: 900, color: "#ef4444", marginTop: "2px" }}>
+              {((top10ArmedCalls / (top10TotalCalls || 1)) * 100).toFixed(1)}% con Armas
+            </div>
+            <div style={{ fontSize: "0.72rem", color: "#64748b", marginTop: "2px" }}>
+              {top10ArmedCalls} hechos con balaceras / custodias
+            </div>
+          </div>
+
+          <div style={{ background: "rgba(0,0,0,0.25)", padding: "0.85rem", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.06)" }}>
+            <div style={{ fontSize: "0.72rem", color: "#9ca3af", textTransform: "uppercase", fontWeight: 700 }}>
+              Búnkers Fortificados Mapeados
+            </div>
+            <div style={{ fontSize: "1.3rem", fontWeight: 900, color: "#a855f7", marginTop: "2px" }}>
+              {top10Bunkers} Búnkers Críticos
+            </div>
+            <div style={{ fontSize: "0.72rem", color: "#64748b", marginTop: "2px" }}>
+              Construcciones reforzadas con expendio directo
+            </div>
+          </div>
+
+          <div style={{ background: "rgba(0,0,0,0.25)", padding: "0.85rem", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.06)" }}>
+            <div style={{ fontSize: "0.72rem", color: "#9ca3af", textTransform: "uppercase", fontWeight: 700 }}>
+              Nodo de Máxima Hostilidad
+            </div>
+            <div style={{ fontSize: "1.05rem", fontWeight: 900, color: "#dc2626", marginTop: "2px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+              San Lorenzo & Mendoza
+            </div>
+            <div style={{ fontSize: "0.72rem", color: "#ef4444", fontWeight: 700, marginTop: "2px" }}>
+              🚨 98.1% Armado (53 de 54 hechos)
+            </div>
           </div>
         </div>
-
-        {/* Tab 1: Map View */}
-        {activeTab === "map" && (
-          <div style={{ position: "relative" }}>
-            <div ref={mapContainerRef} style={{ width: "100%", height: "650px", borderRadius: "8px", border: "1px solid var(--border)" }} />
-
-            {/* Floating Map Legend */}
-            <div
-              style={{
-                position: "absolute",
-                bottom: "20px",
-                right: "20px",
-                background: "rgba(15, 23, 42, 0.92)",
-                backdropFilter: "blur(6px)",
-                border: "1px solid rgba(255, 255, 255, 0.15)",
-                borderRadius: "8px",
-                padding: "0.75rem 0.9rem",
-                zIndex: 1000,
-                fontSize: "0.75rem",
-                color: "#f8fafc",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
-                maxWidth: "280px",
-                lineHeight: 1.4,
-              }}
-            >
-              <div style={{ fontWeight: 800, textTransform: "uppercase", fontSize: "0.75rem", color: "#94a3b8", marginBottom: "0.4rem", display: "flex", alignItems: "center", gap: "0.3rem" }}>
-                <Layers size={13} /> Capas Superpuestas
-              </div>
-
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                  <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#ef4444", display: "inline-block" }} />
-                  <span>Despacho con Armas / Disparos</span>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                  <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#f59e0b", display: "inline-block" }} />
-                  <span>Denuncia sin armas reportadas</span>
-                </div>
-                <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "0.3rem", marginTop: "0.2rem" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", color: "#93c5fd" }}>
-                    <span style={{ width: "12px", height: "3px", background: "#2563eb", display: "inline-block" }} />
-                    <span>Límites Comisarías 1ra, 2da y 3ra</span>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", color: "#fdba74" }}>
-                    <span style={{ width: "12px", height: "3px", borderTop: "2px dashed #ea580c", display: "inline-block" }} />
-                    <span>Asentamientos RENABAP (6)</span>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", color: "#fcd34d" }}>
-                    <span style={{ width: "12px", height: "3px", background: "#d97706", display: "inline-block" }} />
-                    <span>Ruta 24, Ruta 8 y Vías FFCC</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Tab 2: Chronic Corners Ranking View */}
-        {activeTab === "chronic" && (
-          <div>
-            <div style={{ background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: "8px", padding: "0.9rem", marginBottom: "1rem" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", marginBottom: "0.25rem" }}>
-                <AlertOctagon size={18} color="#ef4444" />
-                <strong style={{ fontSize: "0.9rem", color: "var(--text-primary)" }}>
-                  MATRIZ DE RESISTENCIA & REITERANCIA CRÓNICA
-                </strong>
-              </div>
-              <p style={{ fontSize: "0.82rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.4 }}>
-                Las esquinas aquí ordenadas concentran múltiples llamados 911 a lo largo del tiempo, evidenciando búnkers consolidados, soldaditos armados y redes de distribución con arraigo territorial. Haga clic en <strong>«Abrir Expediente»</strong> para auditar los relatos completos o <strong>«Dossier PDF»</strong> para generar la prueba procesal.
-              </p>
-            </div>
-
-            <div style={{ overflowX: "auto", border: "1px solid var(--border)", borderRadius: "8px" }}>
-              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.82rem", textAlign: "left" }}>
-                <thead>
-                  <tr style={{ background: "var(--bg-base)", borderBottom: "2px solid var(--border)", color: "var(--text-secondary)" }}>
-                    <th style={{ padding: "0.65rem 0.85rem" }}>Rango</th>
-                    <th style={{ padding: "0.65rem 0.85rem" }}>Esquina / Intersección</th>
-                    <th style={{ padding: "0.65rem 0.85rem" }}>Barrio</th>
-                    <th style={{ padding: "0.65rem 0.85rem" }}>Total Llamados</th>
-                    <th style={{ padding: "0.65rem 0.85rem" }}>Hechos Armados</th>
-                    <th style={{ padding: "0.65rem 0.85rem" }}>% Armado</th>
-                    <th style={{ padding: "0.65rem 0.85rem" }}>Franja Dominante</th>
-                    <th style={{ padding: "0.65rem 0.85rem" }}>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {chronicCorners.map((corner, idx) => {
-                    const armPct = corner.count > 0 ? ((corner.armedCount / corner.count) * 100).toFixed(1) : "0.0";
-                    const topSlot = Object.entries(corner.slots).sort((a, b) => b[1] - a[1])[0]?.[0] || "Noche";
-                    return (
-                      <tr key={corner.name} style={{ borderBottom: "1px solid var(--border)", background: idx < 3 ? "rgba(239,68,68,0.04)" : "transparent" }}>
-                        <td style={{ padding: "0.65rem 0.85rem", fontWeight: 800, color: idx < 3 ? "#ef4444" : "var(--text-muted)" }}>
-                          #{idx + 1}
-                        </td>
-                        <td style={{ padding: "0.65rem 0.85rem" }}>
-                          <strong style={{ color: "var(--text-primary)" }}>{corner.name}</strong>
-                          {corner.lat && corner.lng && (
-                            <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>
-                              Lat: {corner.lat.toFixed(4)}, Lng: {corner.lng.toFixed(4)}
-                            </div>
-                          )}
-                        </td>
-                        <td style={{ padding: "0.65rem 0.85rem", color: "#0284c7", fontWeight: 600 }}>
-                          {corner.barrio}
-                        </td>
-                        <td style={{ padding: "0.65rem 0.85rem", fontWeight: 800, fontSize: "0.95rem" }}>
-                          {corner.count} llamados
-                        </td>
-                        <td style={{ padding: "0.65rem 0.85rem", color: "#ef4444", fontWeight: 700 }}>
-                          {corner.armedCount} con armas
-                        </td>
-                        <td style={{ padding: "0.65rem 0.85rem" }}>
-                          <span style={{ fontWeight: 700, color: Number(armPct) > 70 ? "#dc2626" : "var(--text-primary)" }}>
-                            {armPct}%
-                          </span>
-                        </td>
-                        <td style={{ padding: "0.65rem 0.85rem" }}>
-                          <span style={{ fontSize: "0.75rem", background: "var(--bg-base)", padding: "2px 6px", borderRadius: "4px", border: "1px solid var(--border)" }}>
-                            {topSlot}
-                          </span>
-                        </td>
-                        <td style={{ padding: "0.65rem 0.85rem" }}>
-                          <div style={{ display: "flex", gap: "0.4rem" }}>
-                            <button
-                              onClick={() => setSelectedCorner(corner)}
-                              style={{
-                                padding: "0.3rem 0.6rem",
-                                fontSize: "0.75rem",
-                                fontWeight: 700,
-                                background: "rgba(99,102,241,0.15)",
-                                color: "var(--accent-indigo)",
-                                border: "1px solid rgba(99,102,241,0.3)",
-                                borderRadius: "4px",
-                                cursor: "pointer",
-                              }}
-                            >
-                              📂 Expediente
-                            </button>
-
-                            <button
-                              onClick={() => generateDrogasChronicHotspotPDF(corner)}
-                              style={{
-                                padding: "0.3rem 0.6rem",
-                                fontSize: "0.75rem",
-                                fontWeight: 700,
-                                background: "rgba(239,68,68,0.15)",
-                                color: "#ef4444",
-                                border: "1px solid rgba(239,68,68,0.3)",
-                                borderRadius: "4px",
-                                cursor: "pointer",
-                              }}
-                            >
-                              📄 Dossier PDF
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
       </div>
 
-      {/* Chronic Corner Detail Modal */}
-      {selectedCorner && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center", padding: "1.5rem" }}>
-          <div style={{ background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: "10px", width: "100%", maxWidth: "850px", maxHeight: "85vh", display: "flex", flexDirection: "column", boxShadow: "0 10px 25px rgba(0,0,0,0.5)" }}>
-            {/* Modal Header */}
-            <div style={{ padding: "1.2rem", borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-              <div>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                  <MapPin size={20} color="#ef4444" />
-                  <h3 style={{ margin: 0, fontSize: "1.15rem", fontWeight: 800 }}>
-                    {selectedCorner.name}
-                  </h3>
-                </div>
-                <div style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginTop: "0.2rem" }}>
-                  Barrio: <strong style={{ color: "#0284c7" }}>{selectedCorner.barrio}</strong> · {selectedCorner.count} incidentes registrados
-                </div>
+      {/* Tabs Navigation */}
+      <div style={{ display: "flex", gap: "0.5rem", borderBottom: "1px solid #374151", paddingBottom: "0.5rem", flexWrap: "wrap" }}>
+        <button
+          onClick={() => setActiveTab("map")}
+          style={{
+            background: activeTab === "map" ? "#ef4444" : "transparent",
+            color: activeTab === "map" ? "#fff" : "#9ca3af",
+            border: "none",
+            borderRadius: "6px",
+            padding: "0.5rem 1rem",
+            fontSize: "0.82rem",
+            fontWeight: 700,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.4rem",
+          }}
+        >
+          <Radio size={16} />
+          <span>🗺️ Densidad Térmica & Nodos de Gravedad</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab("nodes")}
+          style={{
+            background: activeTab === "nodes" ? "#ef4444" : "transparent",
+            color: activeTab === "nodes" ? "#fff" : "#9ca3af",
+            border: "none",
+            borderRadius: "6px",
+            padding: "0.5rem 1rem",
+            fontSize: "0.82rem",
+            fontWeight: 700,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.4rem",
+          }}
+        >
+          <Shield size={16} />
+          <span>🛡️ Matriz de los 10 Nodos Crónicos</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab("corners")}
+          style={{
+            background: activeTab === "corners" ? "#ef4444" : "transparent",
+            color: activeTab === "corners" ? "#fff" : "#9ca3af",
+            border: "none",
+            borderRadius: "6px",
+            padding: "0.5rem 1rem",
+            fontSize: "0.82rem",
+            fontWeight: 700,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.4rem",
+          }}
+        >
+          <Crosshair size={16} />
+          <span>📍 Esquinas Crónicas (Micro-Epicentros)</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab("pareto")}
+          style={{
+            background: activeTab === "pareto" ? "#ef4444" : "transparent",
+            color: activeTab === "pareto" ? "#fff" : "#9ca3af",
+            border: "none",
+            borderRadius: "6px",
+            padding: "0.5rem 1rem",
+            fontSize: "0.82rem",
+            fontWeight: 700,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.4rem",
+          }}
+        >
+          <BarChart3 size={16} />
+          <span>📊 Concentración Espacial & Pareto</span>
+        </button>
+      </div>
+
+      {/* TAB 1: DENSIDAD TÉRMICA & NODOS DE GRAVEDAD */}
+      {activeTab === "map" && (
+        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+          {/* Map Controls & Filters Bar */}
+          <div className="card" style={{ padding: "0.75rem 1rem" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.75rem" }}>
+              {/* Heatmap Mode Selector */}
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <span style={{ fontSize: "0.78rem", fontWeight: 700, color: "#9ca3af", textTransform: "uppercase" }}>
+                  Modo Térmico:
+                </span>
+                <button
+                  onClick={() => setHeatMode("general")}
+                  style={{
+                    background: heatMode === "general" ? "rgba(239, 68, 68, 0.2)" : "rgba(255, 255, 255, 0.05)",
+                    border: `1px solid ${heatMode === "general" ? "#ef4444" : "#4b5563"}`,
+                    color: heatMode === "general" ? "#fca5a5" : "#9ca3af",
+                    borderRadius: "4px",
+                    padding: "3px 8px",
+                    fontSize: "0.75rem",
+                    cursor: "pointer",
+                    fontWeight: 700,
+                  }}
+                >
+                  🔥 Densidad General ({totalCalls})
+                </button>
+                <button
+                  onClick={() => setHeatMode("armas")}
+                  style={{
+                    background: heatMode === "armas" ? "rgba(185, 28, 28, 0.3)" : "rgba(255, 255, 255, 0.05)",
+                    border: `1px solid ${heatMode === "armas" ? "#dc2626" : "#4b5563"}`,
+                    color: heatMode === "armas" ? "#f87171" : "#9ca3af",
+                    borderRadius: "4px",
+                    padding: "3px 8px",
+                    fontSize: "0.75rem",
+                    cursor: "pointer",
+                    fontWeight: 700,
+                  }}
+                >
+                  ⚔️ Intensidad de Fuego & Búnkers
+                </button>
               </div>
 
-              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+              {/* Layer Toggles */}
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
                 <button
-                  onClick={() => generateDrogasChronicHotspotPDF(selectedCorner)}
+                  onClick={() => setShowHeatmap(!showHeatmap)}
                   style={{
-                    height: "32px",
-                    padding: "0 0.85rem",
-                    fontSize: "0.78rem",
-                    fontWeight: 800,
-                    background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
                     display: "flex",
                     alignItems: "center",
                     gap: "0.3rem",
+                    background: showHeatmap ? "rgba(239, 68, 68, 0.15)" : "transparent",
+                    border: `1px solid ${showHeatmap ? "#ef4444" : "#4b5563"}`,
+                    color: showHeatmap ? "#fca5a5" : "#9ca3af",
+                    borderRadius: "4px",
+                    padding: "3px 8px",
+                    fontSize: "0.75rem",
+                    cursor: "pointer",
+                    fontWeight: 600,
                   }}
                 >
-                  <FileText size={14} /> Imprimir Expediente
+                  {showHeatmap ? <CheckSquare size={13} color="#ef4444" /> : <Square size={13} />}
+                  <span>Mancha Térmica (KDE)</span>
                 </button>
 
                 <button
-                  onClick={() => setSelectedCorner(null)}
-                  style={{ background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer" }}
+                  onClick={() => setShowNodes(!showNodes)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.3rem",
+                    background: showNodes ? "rgba(245, 158, 11, 0.15)" : "transparent",
+                    border: `1px solid ${showNodes ? "#f59e0b" : "#4b5563"}`,
+                    color: showNodes ? "#fde68a" : "#9ca3af",
+                    borderRadius: "4px",
+                    padding: "3px 8px",
+                    fontSize: "0.75rem",
+                    cursor: "pointer",
+                    fontWeight: 600,
+                  }}
                 >
-                  <X size={22} />
+                  {showNodes ? <CheckSquare size={13} color="#f59e0b" /> : <Square size={13} />}
+                  <span>Balizas 10 Nodos</span>
+                </button>
+
+                <button
+                  onClick={() => setShowRenabap(!showRenabap)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.3rem",
+                    background: showRenabap ? "rgba(234, 88, 12, 0.15)" : "transparent",
+                    border: `1px solid ${showRenabap ? "#ea580c" : "#4b5563"}`,
+                    color: showRenabap ? "#fdba74" : "#9ca3af",
+                    borderRadius: "4px",
+                    padding: "3px 8px",
+                    fontSize: "0.75rem",
+                    cursor: "pointer",
+                    fontWeight: 600,
+                  }}
+                >
+                  {showRenabap ? <CheckSquare size={13} color="#ea580c" /> : <Square size={13} />}
+                  <span>RENABAP Oficial (53)</span>
+                </button>
+
+                <button
+                  onClick={() => setShowJurisdictions(!showJurisdictions)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.3rem",
+                    background: showJurisdictions ? "rgba(37, 99, 235, 0.15)" : "transparent",
+                    border: `1px solid ${showJurisdictions ? "#2563eb" : "#4b5563"}`,
+                    color: showJurisdictions ? "#93c5fd" : "#9ca3af",
+                    borderRadius: "4px",
+                    padding: "3px 8px",
+                    fontSize: "0.75rem",
+                    cursor: "pointer",
+                    fontWeight: 600,
+                  }}
+                >
+                  {showJurisdictions ? <CheckSquare size={13} color="#2563eb" /> : <Square size={13} />}
+                  <span>Comisarías PBA</span>
                 </button>
               </div>
             </div>
+          </div>
 
-            {/* Modal Body: Dispatches List */}
-            <div style={{ padding: "1.2rem", overflowY: "auto", display: "flex", flexDirection: "column", gap: "0.85rem" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.75rem", background: "var(--bg-base)", padding: "0.85rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
-                <div>
-                  <div style={{ fontSize: "0.72rem", color: "var(--text-muted)" }}>Total Despachos</div>
-                  <div style={{ fontSize: "1.25rem", fontWeight: 800 }}>{selectedCorner.count}</div>
-                </div>
-                <div>
-                  <div style={{ fontSize: "0.72rem", color: "var(--text-muted)" }}>Despachos Armados</div>
-                  <div style={{ fontSize: "1.25rem", fontWeight: 800, color: "#ef4444" }}>{selectedCorner.armedCount}</div>
-                </div>
-                <div>
-                  <div style={{ fontSize: "0.72rem", color: "var(--text-muted)" }}>% Armas</div>
-                  <div style={{ fontSize: "1.25rem", fontWeight: 800, color: "#ef4444" }}>
-                    {((selectedCorner.armedCount / selectedCorner.count) * 100).toFixed(1)}%
+          {/* Map Container */}
+          <div style={{ position: "relative", width: "100%", height: "620px", borderRadius: "10px", overflow: "hidden", border: "1px solid #374151" }}>
+            <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
+
+            {/* Quick Strategic Overlay */}
+            <div style={{
+              position: "absolute",
+              top: "14px",
+              right: "14px",
+              background: "rgba(15, 23, 42, 0.92)",
+              backdropFilter: "blur(6px)",
+              border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: "8px",
+              padding: "0.75rem 1rem",
+              zIndex: 1000,
+              maxWidth: "280px",
+              color: "#fff",
+              fontSize: "0.75rem"
+            }}>
+              <strong style={{ color: "#ef4444", fontSize: "0.85rem", display: "flex", alignItems: "center", gap: "4px" }}>
+                <Zap size={14} color="#ef4444" /> Nodos de Resistencia
+              </strong>
+              <div style={{ color: "#cbd5e1", marginTop: "4px", lineHeight: "1.3" }}>
+                Haga clic en cualquiera de las <strong>10 balizas numeradas</strong> o en sus círculos de calor para abrir el <strong>Dossier Táctico</strong> de intervención.
+              </div>
+              <div style={{ marginTop: "6px", display: "flex", gap: "8px", fontSize: "0.7rem" }}>
+                <span style={{ color: "#ef4444" }}>🔴 Crítico (&gt;75% Armas)</span>
+                <span style={{ color: "#f59e0b" }}>🟡 Severo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TAB 2: MATRIZ DE LOS 10 NODOS CRÓNICOS */}
+      {activeTab === "nodes" && (
+        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: "1rem" }}>
+            {CHRONIC_HOTSPOTS_JCP.map((node) => {
+              const isCrit = node.nivelRiesgo === "CRÍTICO";
+              return (
+                <div
+                  key={node.id}
+                  className="card"
+                  style={{
+                    borderLeft: `4px solid ${isCrit ? '#ef4444' : '#f59e0b'}`,
+                    cursor: "pointer",
+                    transition: "transform 0.15s ease",
+                  }}
+                  onClick={() => setSelectedNode(node)}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem" }}>
+                    <div>
+                      <span style={{
+                        background: isCrit ? '#fee2e2' : '#fef3c7',
+                        color: isCrit ? '#b91c1c' : '#b45309',
+                        padding: '2px 6px',
+                        borderRadius: '4px',
+                        fontSize: '0.7rem',
+                        fontWeight: 800,
+                        textTransform: 'uppercase'
+                      }}>
+                        {node.nivelRiesgo} · NODO #{node.id}
+                      </span>
+                      <h4 style={{ margin: "0.35rem 0 0 0", fontSize: "0.95rem", color: "#f8fafc" }}>
+                        {node.shortName}
+                      </h4>
+                    </div>
+                    <span style={{ fontSize: "1.1rem", fontWeight: 900, color: "#f8fafc" }}>
+                      {node.totalIncidents} <span style={{ fontSize: "0.7rem", color: "#9ca3af" }}>hechos</span>
+                    </span>
+                  </div>
+
+                  <div style={{ fontSize: "0.75rem", color: "#9ca3af", marginBottom: "0.6rem" }}>
+                    🏛️ {node.comisaria} · 🏘️ {node.barrio}
+                  </div>
+
+                  {/* Weapon Proportion Bar */}
+                  <div style={{ marginBottom: "0.6rem" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.7rem", marginBottom: "2px" }}>
+                      <span style={{ color: "#ef4444", fontWeight: 700 }}>Hostilidad Armada: {node.pctArmed}%</span>
+                      <span style={{ color: "#a855f7", fontWeight: 700 }}>{node.bunkersCount} Búnkers</span>
+                    </div>
+                    <div style={{ width: "100%", height: "6px", background: "#374151", borderRadius: "3px", overflow: "hidden" }}>
+                      <div style={{ width: `${node.pctArmed}%`, height: "100%", background: isCrit ? "#ef4444" : "#f59e0b" }} />
+                    </div>
+                  </div>
+
+                  <div style={{ fontSize: "0.75rem", color: "#cbd5e1", lineHeight: 1.3, marginBottom: "0.8rem", background: "rgba(0,0,0,0.2)", padding: "6px 8px", borderRadius: "4px" }}>
+                    {node.modusOperandi}
+                  </div>
+
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #374151", paddingTop: "0.5rem" }}>
+                    <span style={{ fontSize: "0.7rem", color: "#64748b" }}>Franja: {node.franjaCritica}</span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedNode(node);
+                      }}
+                      style={{
+                        background: "transparent",
+                        border: "1px solid #ef4444",
+                        color: "#fca5a5",
+                        padding: "2px 8px",
+                        borderRadius: "4px",
+                        fontSize: "0.72rem",
+                        fontWeight: 700,
+                        cursor: "pointer",
+                      }}
+                    >
+                      Ver Dossier Táctico →
+                    </button>
                   </div>
                 </div>
-              </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
-              <h4 style={{ fontSize: "0.88rem", fontWeight: 700, margin: "0.5rem 0 0 0", textTransform: "uppercase", color: "var(--text-secondary)" }}>
-                Historial Cronológico de Relatos 911 (Íntegros sin truncar)
-              </h4>
+      {/* TAB 3: ESQUINAS CRÓNICAS (MICRO-EPICENTROS) */}
+      {activeTab === "corners" && (
+        <div className="card">
+          <div className="card-title" style={{ fontSize: "1rem", marginBottom: "0.8rem" }}>
+            <Crosshair size={18} color="#ef4444" />
+            <span>Ranking de Intersecciones con Mayor Reincidencia (Top 25)</span>
+          </div>
 
-              {selectedCorner.incidents.map((inc: any, i: number) => {
-                const isArm = Boolean(inc.tieneArmas || inc.armas === true || inc.armas === "SI");
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.8rem", textAlign: "left" }}>
+              <thead>
+                <tr style={{ borderBottom: "2px solid #374151", color: "#9ca3af" }}>
+                  <th style={{ padding: "8px" }}>Ranking</th>
+                  <th style={{ padding: "8px" }}>Intersección / Esquina</th>
+                  <th style={{ padding: "8px" }}>Barrio</th>
+                  <th style={{ padding: "8px" }}>Despachos</th>
+                  <th style={{ padding: "8px" }}>Armas / Fuego</th>
+                  <th style={{ padding: "8px" }}>% Hostilidad</th>
+                  <th style={{ padding: "8px" }}>Sustancia Dominante</th>
+                  <th style={{ padding: "8px" }}>Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+                {chronicCorners.map((corner, idx) => {
+                  const pct = corner.count > 0 ? ((corner.armedCount / corner.count) * 100).toFixed(1) : "0.0";
+                  const topSust = Object.entries(corner.substances).sort((a, b) => b[1] - a[1])[0]?.[0] || "Polirubro";
+                  return (
+                    <tr key={idx} style={{ borderBottom: "1px solid #1f2937", background: idx < 5 ? "rgba(239, 68, 68, 0.05)" : "transparent" }}>
+                      <td style={{ padding: "8px", fontWeight: 800, color: idx < 3 ? "#ef4444" : "#9ca3af" }}>#{idx + 1}</td>
+                      <td style={{ padding: "8px", fontWeight: 700, color: "#f8fafc" }}>{corner.name}</td>
+                      <td style={{ padding: "8px", color: "#cbd5e1" }}>{corner.barrio}</td>
+                      <td style={{ padding: "8px", fontWeight: 800 }}>{corner.count}</td>
+                      <td style={{ padding: "8px", color: corner.armedCount > 0 ? "#ef4444" : "#64748b", fontWeight: 700 }}>
+                        {corner.armedCount}
+                      </td>
+                      <td style={{ padding: "8px" }}>
+                        <span style={{
+                          background: Number(pct) >= 70 ? "#fee2e2" : "#fef3c7",
+                          color: Number(pct) >= 70 ? "#b91c1c" : "#b45309",
+                          padding: "2px 6px",
+                          borderRadius: "4px",
+                          fontSize: "0.72rem",
+                          fontWeight: 800
+                        }}>
+                          {pct}%
+                        </span>
+                      </td>
+                      <td style={{ padding: "8px", color: "#a855f7", fontSize: "0.75rem" }}>{topSust}</td>
+                      <td style={{ padding: "8px" }}>
+                        <button
+                          onClick={() => generateDrogasChronicHotspotPDF(corner)}
+                          style={{
+                            background: "rgba(239, 68, 68, 0.15)",
+                            border: "1px solid #ef4444",
+                            color: "#fca5a5",
+                            padding: "2px 8px",
+                            borderRadius: "4px",
+                            fontSize: "0.72rem",
+                            cursor: "pointer",
+                            fontWeight: 700,
+                          }}
+                        >
+                          PDF Esquina
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* TAB 4: CONCENTRACIÓN ESPACIAL & PARETO */}
+      {activeTab === "pareto" && (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(450px, 1fr))", gap: "1.5rem" }}>
+          <div className="card">
+            <div className="card-title" style={{ fontSize: "1rem", marginBottom: "0.6rem" }}>
+              <BarChart3 size={18} color="#f59e0b" />
+              <span>Ley de Pareto Territorial: Concentración de Hechos</span>
+            </div>
+            <p style={{ fontSize: "0.82rem", color: "#9ca3af", lineHeight: 1.4 }}>
+              En José C. Paz se comprueba la regla empírica del 80/20 del delito urbano: una porción diminuta del territorio absorbe la gran mayoría de los recursos del 911 y de violencia armada.
+            </p>
+
+            <div style={{ marginTop: "1rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              {CHRONIC_HOTSPOTS_JCP.map((n, i) => {
+                const cumPct = (CHRONIC_HOTSPOTS_JCP.slice(0, i + 1).reduce((a, b) => a + b.totalIncidents, 0) / (totalCalls || 1) * 100).toFixed(1);
                 return (
-                  <div
-                    key={inc.id || i}
-                    style={{
-                      background: "var(--bg-base)",
-                      border: "1px solid var(--border)",
-                      borderLeft: isArm ? "4px solid #ef4444" : "4px solid #3b82f6",
-                      borderRadius: "6px",
-                      padding: "0.75rem 0.9rem",
-                    }}
-                  >
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem", flexWrap: "wrap", gap: "0.4rem" }}>
-                      <div>
-                        <strong style={{ fontSize: "0.82rem" }}>ID #{inc.id}</strong>
-                        <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginLeft: "0.5rem" }}>
-                          🕒 {inc.fecha || ""} {inc.hora || ""} ({inc.franja || ""})
-                        </span>
-                      </div>
-                      <div style={{ display: "flex", gap: "0.4rem" }}>
-                        <span style={{ fontSize: "0.7rem", fontWeight: 700, padding: "1px 6px", borderRadius: "4px", background: "rgba(99,102,241,0.15)", color: "var(--accent-indigo)" }}>
-                          💊 {inc.sustancia || "No especificada"}
-                        </span>
-                        {isArm && (
-                          <span style={{ fontSize: "0.7rem", fontWeight: 800, padding: "1px 6px", borderRadius: "4px", background: "rgba(239,68,68,0.2)", color: "#ef4444" }}>
-                            🚨 ARMAS / DISPAROS
-                          </span>
-                        )}
-                      </div>
+                  <div key={n.id}>
+                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.75rem", marginBottom: "2px" }}>
+                      <span>#{n.id} {n.shortName}</span>
+                      <span style={{ fontWeight: 700, color: "#f59e0b" }}>{n.totalIncidents} hechos ({cumPct}% acumulado)</span>
                     </div>
-
-                    <div style={{ fontSize: "0.78rem", color: "var(--text-secondary)", fontFamily: "monospace", whiteSpace: "pre-wrap", wordBreak: "break-word", lineHeight: 1.45 }}>
-                      {inc.relato || "Sin relato detallado registrado en el despacho."}
+                    <div style={{ width: "100%", height: "8px", background: "#1f2937", borderRadius: "4px", overflow: "hidden" }}>
+                      <div style={{ width: `${(n.totalIncidents / (CHRONIC_HOTSPOTS_JCP[0].totalIncidents || 1)) * 100}%`, height: "100%", background: "#ef4444" }} />
                     </div>
                   </div>
                 );
               })}
+            </div>
+          </div>
+
+          <div className="card">
+            <div className="card-title" style={{ fontSize: "1rem", marginBottom: "0.6rem" }}>
+              <ShieldAlert size={18} color="#ef4444" />
+              <span>Recomendaciones Táctico-Operativas del MSEG</span>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem", fontSize: "0.8rem", color: "#cbd5e1", lineHeight: 1.4 }}>
+              <div style={{ background: "rgba(239, 68, 68, 0.08)", padding: "0.8rem", borderRadius: "6px", borderLeft: "3px solid #ef4444" }}>
+                <strong style={{ color: "#ef4444" }}>1. Intervención con Fuerzas Tácticas (GAD / Halcón)</strong><br/>
+                En los Nodos #1 (Castelli), #2 (Lasalle) y #4 (San Lorenzo), donde la tasa de armas supera el 75%, los allanamientos deben contar con anillo perimetral blindado para evitar fuego cruzado hacia móviles policiales.
+              </div>
+
+              <div style={{ background: "rgba(245, 158, 11, 0.08)", padding: "0.8rem", borderRadius: "6px", borderLeft: "3px solid #f59e0b" }}>
+                <strong style={{ color: "#f59e0b" }}>2. Bloqueo de Vías de Fuga Férrea</strong><br/>
+                En el Nodo #2 (Fournier y Lasalle), el terraplén del FFCC San Martín actúa como corredor de escape rápido peatonal. Se requiere apostamiento sobre la traza en sincronía con el asalto frontal.
+              </div>
+
+              <div style={{ background: "rgba(168, 85, 247, 0.08)", padding: "0.8rem", borderRadius: "6px", borderLeft: "3px solid #a855f7" }}>
+                <strong style={{ color: "#a855f7" }}>3. Demolición y Clausura Definitiva de Búnkers</strong><br/>
+                En el Nodo #6 (Las Tres Marías y Ruta 24), la recurrencia se sustenta en edificaciones reforzadas. Se precisa orden fiscal de demolición de muros de contención clandestinos.
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* SELECTED NODE TACTICAL DOSSIER MODAL */}
+      {selectedNode && (
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: "rgba(0, 0, 0, 0.8)",
+          backdropFilter: "blur(4px)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 9999,
+          padding: "1rem"
+        }}>
+          <div style={{
+            background: "#0f172a",
+            border: "1px solid #374151",
+            borderRadius: "12px",
+            width: "100%",
+            maxWidth: "680px",
+            maxHeight: "90vh",
+            overflowY: "auto",
+            padding: "1.5rem",
+            color: "#f8fafc",
+            boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.5)"
+          }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: "1px solid #374151", paddingBottom: "0.75rem", marginBottom: "1rem" }}>
+              <div>
+                <span style={{
+                  background: selectedNode.nivelRiesgo === "CRÍTICO" ? "#fee2e2" : "#fef3c7",
+                  color: selectedNode.nivelRiesgo === "CRÍTICO" ? "#b91c1c" : "#b45309",
+                  padding: "2px 8px",
+                  borderRadius: "4px",
+                  fontSize: "0.72rem",
+                  fontWeight: 800
+                }}>
+                  {selectedNode.nivelRiesgo} · NODO #{selectedNode.id}
+                </span>
+                <h3 style={{ margin: "0.4rem 0 0 0", fontSize: "1.2rem", color: "#f8fafc" }}>
+                  {selectedNode.name}
+                </h3>
+              </div>
+              <button
+                onClick={() => setSelectedNode(null)}
+                style={{ background: "transparent", border: "none", color: "#9ca3af", cursor: "pointer", padding: "4px" }}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Quick Metrics */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.75rem", marginBottom: "1rem" }}>
+              <div style={{ background: "rgba(255,255,255,0.04)", padding: "0.75rem", borderRadius: "6px", border: "1px solid rgba(255,255,255,0.06)" }}>
+                <span style={{ fontSize: "0.7rem", color: "#9ca3af", textTransform: "uppercase" }}>Llamados 911</span>
+                <div style={{ fontSize: "1.25rem", fontWeight: 900, color: "#f8fafc" }}>{selectedNode.totalIncidents}</div>
+              </div>
+              <div style={{ background: "rgba(255,255,255,0.04)", padding: "0.75rem", borderRadius: "6px", border: "1px solid rgba(255,255,255,0.06)" }}>
+                <span style={{ fontSize: "0.7rem", color: "#9ca3af", textTransform: "uppercase" }}>Tasa Armada</span>
+                <div style={{ fontSize: "1.25rem", fontWeight: 900, color: "#ef4444" }}>{selectedNode.pctArmed}%</div>
+              </div>
+              <div style={{ background: "rgba(255,255,255,0.04)", padding: "0.75rem", borderRadius: "6px", border: "1px solid rgba(255,255,255,0.06)" }}>
+                <span style={{ fontSize: "0.7rem", color: "#9ca3af", textTransform: "uppercase" }}>Búnkers</span>
+                <div style={{ fontSize: "1.25rem", fontWeight: 900, color: "#a855f7" }}>{selectedNode.bunkersCount}</div>
+              </div>
+            </div>
+
+            {/* Details */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", fontSize: "0.82rem", marginBottom: "1.25rem" }}>
+              <div><strong>🏛️ Comisaría:</strong> {selectedNode.comisaria}</div>
+              <div><strong>🏘️ Entorno Barrial:</strong> {selectedNode.barrio} (RENABAP: {selectedNode.renabapCercano})</div>
+              <div><strong>🕒 Franja Crítica:</strong> {selectedNode.franjaCritica}</div>
+              <div><strong>📍 Esquinas Constitutivas:</strong> {selectedNode.callesClave.join(" · ")}</div>
+              <div><strong>💊 Sustancias:</strong> {selectedNode.sustanciasDominantes.join(", ")}</div>
+
+              <div style={{ background: "rgba(239, 68, 68, 0.08)", borderLeft: "3px solid #ef4444", padding: "8px 10px", borderRadius: "4px", marginTop: "4px" }}>
+                <strong style={{ color: "#ef4444" }}>Modus Operandi:</strong> {selectedNode.modusOperandi}
+              </div>
+
+              <div style={{ background: "rgba(16, 185, 129, 0.08)", borderLeft: "3px solid #10b981", padding: "8px 10px", borderRadius: "4px", marginTop: "4px" }}>
+                <strong style={{ color: "#10b981" }}>Intervención Táctica Recomendada:</strong> {selectedNode.intervencionSugerida}
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: "0.75rem", borderTop: "1px solid #374151", paddingTop: "1rem" }}>
+              <button
+                onClick={() => setSelectedNode(null)}
+                style={{ background: "#374151", border: "none", color: "#fff", padding: "0.5rem 1rem", borderRadius: "6px", fontSize: "0.8rem", cursor: "pointer" }}
+              >
+                Cerrar
+              </button>
+
+              <button
+                onClick={() => {
+                  generateDrogasChronicHotspotPDF({
+                    name: selectedNode.name,
+                    count: selectedNode.totalIncidents,
+                    armedCount: selectedNode.armedIncidents,
+                    lat: selectedNode.lat,
+                    lng: selectedNode.lng,
+                    barrio: selectedNode.barrio,
+                    incidents: filtered.filter(i => {
+                      if (!i.lat || !i.lng) return false;
+                      const dLat = i.lat - selectedNode.lat;
+                      const dLng = i.lng - selectedNode.lng;
+                      return Math.sqrt(dLat * dLat + dLng * dLng) < 0.005;
+                    })
+                  });
+                }}
+                style={{
+                  background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
+                  border: "none",
+                  color: "#fff",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "6px",
+                  fontSize: "0.8rem",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.4rem"
+                }}
+              >
+                <FileText size={16} />
+                <span>Imprimir Expediente Táctico (PDF)</span>
+              </button>
             </div>
           </div>
         </div>
