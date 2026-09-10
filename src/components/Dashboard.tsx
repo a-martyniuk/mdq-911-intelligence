@@ -268,6 +268,41 @@ export default function Dashboard() {
             </button>
           )}
 
+          {currentProject === "malvinas" && (
+            <button
+              onClick={() => {
+                import("@/lib/pdfReport").then((mod) => {
+                  mod.generateDrogasMalvinasPDF({
+                    totalIncidents: malvinasStats.totalIncidents,
+                    georeferencedCount: malvinasStats.georeferencedCount,
+                    armasCount: malvinasStats.armasCount,
+                    cocainaCount: malvinasStats.cocainaCount,
+                    marihuanaCount: malvinasStats.marihuanaCount,
+                    pacoCount: malvinasStats.pacoCount,
+                    incidents: data?.incidents || data?.geoPoints || [],
+                  });
+                });
+              }}
+              style={{
+                height: "36px",
+                padding: "0 1rem",
+                fontSize: "0.8rem",
+                fontWeight: 800,
+                background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+                color: "#fff",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                boxShadow: "0 2px 8px rgba(245,158,11,0.3)"
+              }}
+            >
+              📄 Dossier Drogas Malvinas (PDF)
+            </button>
+          )}
+
           <div className="user-badge">
             <span className="user-dot"></span>
             <span>Usuario: {user}</span>

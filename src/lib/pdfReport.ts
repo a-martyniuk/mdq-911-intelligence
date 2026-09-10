@@ -2,6 +2,16 @@ import { POLICE_JURISDICTIONS_GEOJSON } from "./jurisdictionsGeoJSON";
 import { RENABAP_BARRIOS_GEOJSON } from "./renabapGeoJSON";
 import { formatTimeDifference } from "./formatters";
 
+function escapeHtml(str: string): string {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 /**
  * 📄 Generador de Expediente Individual / Ficha Policial por Banda (PDF)
  */
@@ -1315,7 +1325,7 @@ export function generateDrogasJcpPDF(data: {
             <tr>
               <td style="font-weight: 700;">#${inc.id || inc.ID}</td>
               <td style="white-space: nowrap;">${inc.fecha || inc.Fecha}<br/><small style="color:#64748b;">${inc.franja || inc.Franja_Horaria || ""}</small></td>
-              <td><strong>${escapeHtml(inc.direccion || inc.Dirección || "José C. Paz")}</strong><br/><small style="color:#64748b;">${escapeHtml(inc.barrio || inc.Barrio_Detectado || "")}</small></td>
+              <td><strong>${escapeHtml(inc.direccion || inc.Dirección || partido)}</strong><br/><small style="color:#64748b;">${escapeHtml(inc.barrio || inc.Barrio_Detectado || "")}</small></td>
               <td><strong>${escapeHtml(inc.sustancia || inc.Sustancia || "Polirubro")}</strong><br/><small style="color:#64748b;">${escapeHtml(inc.tipoLugar || inc.Tipo_Punto_Venta || "Lugar")}</small></td>
               <td>${inc.tieneArmas ? '<span style="color:#dc2626; font-weight:800;">SÍ</span>' : '<span style="color:#64748b;">No</span>'}</td>
               <td style="vertical-align: top;">
@@ -1370,6 +1380,7 @@ export function generateDrogasSuspectsPDF(data: {
   allIncidents?: any[];
   selectedSuspect?: string | null;
   searchTerm?: string;
+  partido?: string;
 }) {
   const win = window.open("", "_blank");
   if (!win) {
@@ -1377,7 +1388,7 @@ export function generateDrogasSuspectsPDF(data: {
     return;
   }
 
-  const { suspects, totalSuspects, totalIncidents, allIncidents = [], selectedSuspect = null, searchTerm = "" } = data;
+  const { suspects, totalSuspects, totalIncidents, allIncidents = [], selectedSuspect = null, searchTerm = "", partido = "José C. Paz" } = data;
 
   const escapeHtml = (str: string) => {
     if (!str) return "";
@@ -1413,7 +1424,7 @@ export function generateDrogasSuspectsPDF(data: {
         id: r.id,
         lat: Number(r.lat),
         lng: Number(r.lng),
-        direccion: r.direccion || "José C. Paz",
+        direccion: r.direccion || partido,
         barrio: r.barrio || "Centro",
         tieneArmas: Boolean(r.tieneArmas),
         sustancia: r.sustancia || "Estupefacientes",
@@ -1428,7 +1439,7 @@ export function generateDrogasSuspectsPDF(data: {
       isFullName: s.isFullName,
       count: related.length || s.count,
       lastDate: s.lastDate || (related[0]?.fecha || "N/D"),
-      barrios: s.barrios || "José C. Paz",
+      barrios: s.barrios || partido,
       points,
       dispatches: related,
       armedCount,
@@ -1439,7 +1450,7 @@ export function generateDrogasSuspectsPDF(data: {
   const isIndividual = Boolean(selectedSuspect && suspectProfiles.length === 1);
   const docTitle = isIndividual
     ? `Dossier Judicial Individual: ${selectedSuspect} · MSEG`
-    : "Dossier Pericial de Inteligencia · Redes & Sospechosos 911 (José C. Paz)";
+    : `Dossier Pericial de Inteligencia · Redes & Sospechosos 911 (${partido})`;
 
   const html = `
     <!DOCTYPE html>
@@ -1503,7 +1514,7 @@ export function generateDrogasSuspectsPDF(data: {
         <div class="header">
           <div>
             <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
-            <div class="subtitle">Dossier Judicial Pericial · Redes, Sospechosos & Despachos 911 (José C. Paz)</div>
+            <div class="subtitle">Dossier Judicial Pericial · Redes, Sospechosos & Despachos 911 (${escapeHtml(partido)})</div>
           </div>
           <div class="badge">Uso Judicial / Sumario</div>
         </div>
@@ -1528,7 +1539,7 @@ export function generateDrogasSuspectsPDF(data: {
           </div>
           <div class="stat-card">
             <div class="stat-lbl">Jurisdicción</div>
-            <div class="stat-val">José C. Paz</div>
+            <div class="stat-val">${escapeHtml(partido)}</div>
           </div>
         </div>
 
@@ -1560,7 +1571,7 @@ export function generateDrogasSuspectsPDF(data: {
                 </div>
                 <div style="background: #f8fafc; padding: 8px 10px; border-radius: 4px; border: 1px solid #e2e8f0;">
                   <span style="color: #64748b; font-size: 0.7rem; text-transform: uppercase;">Barrios de Operación</span><br/>
-                  <strong style="color: #1e293b;">${prof.barrios || 'José C. Paz'}</strong>
+                  <strong style="color: #1e293b;">${prof.barrios || escapeHtml(partido)}</strong>
                 </div>
                 <div style="background: #f8fafc; padding: 8px 10px; border-radius: 4px; border: 1px solid #e2e8f0;">
                   <span style="color: #64748b; font-size: 0.7rem; text-transform: uppercase;">Última Denuncia</span><br/>
@@ -1617,7 +1628,7 @@ export function generateDrogasSuspectsPDF(data: {
                   </div>
 
                   <div style="font-size: 0.8rem; color: #334155; margin-bottom: 6px;">
-                    📍 <strong>${escapeHtml(d.direccion || 'José C. Paz')}</strong> ${d.comentario ? `(${escapeHtml(d.comentario)})` : ''}
+                    📍 <strong>${escapeHtml(d.direccion || partido)}</strong> ${d.comentario ? `(${escapeHtml(d.comentario)})` : ''}
                     <span style="color: #64748b;">— Barrio: ${escapeHtml(d.barrio || 'General')} | Entorno: ${escapeHtml(d.tipoLugar || 'Lugar')}</span>
                     ${d.lat && d.lng ? `<span style="color: #059669; font-weight: 700; font-size: 0.75rem; margin-left: 6px;">[Coords: ${Number(d.lat).toFixed(5)}, ${Number(d.lng).toFixed(5)}]</span>` : ''}
                   </div>
@@ -1791,7 +1802,7 @@ export function generateDrogasGraphPDF(data: {
       <button class="btn-print" onclick="window.print()">🖨️ Imprimir / Guardar como PDF</button>
 
       <div class="box">
-        <strong>OBJETO DEL INFORME PERICIAL:</strong> Análisis relacional de estructuras criminales, puntos de comercialización (búnkers/kioscos), actores identificados y nivel de conflictividad armada para el clúster: <strong>${escapeHtml(cliqueName)}</strong> en el partido de José C. Paz. La red integra ${metrics.totalNodes} nodos y ${metrics.totalEdges} aristas de co-ocurrencia verificada en el sistema 911.
+        <strong>OBJETO DEL INFORME PERICIAL:</strong> Análisis relacional de estructuras criminales, puntos de comercialización (búnkers/kioscos), actores identificados y nivel de conflictividad armada para el clúster: <strong>${escapeHtml(cliqueName)}</strong> en el partido de ${escapeHtml(partido)}. La red integra ${metrics.totalNodes} nodos y ${metrics.totalEdges} aristas de co-ocurrencia verificada en el sistema 911.
       </div>
 
       <div class="stats-grid">
@@ -1837,7 +1848,7 @@ export function generateDrogasGraphPDF(data: {
               <td><span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: ${n.category === 'suspect' ? '#7c3aed' : n.category === 'bunker' ? '#d97706' : n.category === 'weapon' ? '#dc2626' : '#059669'};">${escapeHtml(n.category)}</span></td>
               <td style="font-weight: 700;">${n.count}</td>
               <td>${n.degree}</td>
-              <td>${escapeHtml(n.address || n.barrio || n.description || 'José C. Paz')}</td>
+              <td>${escapeHtml(n.address || n.barrio || n.description || partido)}</td>
             </tr>
           `).join("")}
         </tbody>
@@ -1888,7 +1899,7 @@ export function generateDrogasGraphPDF(data: {
               </div>
             </div>
             <div style="font-size: 0.8rem; color: #334155; margin-bottom: 6px;">
-              📍 <strong>${escapeHtml(d.direccion || d.Dirección || 'José C. Paz')}</strong> ${d.comentario ? `(${escapeHtml(d.comentario)})` : ''}
+              📍 <strong>${escapeHtml(d.direccion || d.Dirección || partido)}</strong> ${d.comentario ? `(${escapeHtml(d.comentario)})` : ''}
               <span style="color: #64748b;">— Barrio: ${escapeHtml(d.barrio || d.Barrio_Detectado || 'Centro')}</span>
             </div>
             <div class="dispatch-relato">${escapeHtml(d.relato || d.Relato || '(Sin relato textual)')}</div>
@@ -2257,13 +2268,14 @@ export function generateTemporalReportPDF(data: {
  * Genera el informe cronológico de temporalidad y nocturnidad para José C. Paz
  * Analiza curvas horarias, días de la semana, cruces con armas y calor de nocturnidad por barrio
  */
-export function generateDrogasTemporalPDF(incidents: any[] = [], activeFilters?: any) {
+export function generateDrogasTemporalPDF(incidents: any[] = [], activeFilters?: any, customPartido?: string) {
   const win = window.open("", "_blank");
   if (!win) {
     alert("Por favor habilite los popups en su navegador para imprimir el informe.");
     return;
   }
 
+  const partido = customPartido || activeFilters?.partido || "José C. Paz";
   const total = incidents.length;
   const armedCount = incidents.filter(i => i.tieneArmas || i.armas === true || i.armas === "SI").length;
   const armedPct = total > 0 ? ((armedCount / total) * 100).toFixed(1) : "0.0";
@@ -2378,7 +2390,7 @@ export function generateDrogasTemporalPDF(incidents: any[] = [], activeFilters?:
     <html lang="es">
     <head>
       <meta charset="UTF-8">
-      <title>Informe de Cronometría & Nocturnidad - José C. Paz</title>
+      <title>Informe de Cronometría & Nocturnidad - ${escapeHtml(partido)}</title>
       <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; margin: 0; padding: 2rem; line-height: 1.4; background: #fff; }
         .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0f172a; padding-bottom: 1rem; margin-bottom: 1.5rem; }
@@ -2404,14 +2416,14 @@ export function generateDrogasTemporalPDF(incidents: any[] = [], activeFilters?:
         <div>
           <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
           <div class="subtitle">Análisis Crono-Espacial & Patrones de Nocturnidad · Narcotráfico & Narcomenudeo</div>
-          <div style="font-size: 0.78rem; color: #64748b; margin-top: 0.2rem;">Partido de José C. Paz · Dataset Consolidado (Denuncias Formales + Despachos 911)</div>
+          <div style="font-size: 0.78rem; color: #64748b; margin-top: 0.2rem;">Partido de ${escapeHtml(partido)} · Dataset Consolidado (Denuncias Formales + Despachos 911)</div>
           ${filterBadges}
         </div>
         <div class="badge">Inteligencia Temporal</div>
       </div>
 
       <div class="box">
-        <strong>HALLAZGO OPERATIVO ESTRATÉGICO:</strong> El narcomenudeo en José C. Paz exhibe una correlación crítica entre <strong>nocturnidad y letalidad armada</strong>. La franja <strong>Noche (18:00 - 24:00 hs)</strong> concentra ${franjas["Noche (18-24 hs)"].total.toLocaleString()} despachos (${total > 0 ? ((franjas["Noche (18-24 hs)"].total / total) * 100).toFixed(1) : 0}%) con un <strong>${franjas["Noche (18-24 hs)"].total > 0 ? ((franjas["Noche (18-24 hs)"].armed / franjas["Noche (18-24 hs)"].total) * 100).toFixed(1) : 0}% de letalidad por armas de fuego</strong>. La hora pico absoluta ocurre a las <strong>${peakHour ? peakHour.hour.toString().padStart(2, "0") + ":00 hs" : "21:00 hs"}</strong> con ${peakHour?.total || 0} llamados registrados.
+        <strong>HALLAZGO OPERATIVO ESTRATÉGICO:</strong> El narcomenudeo en ${escapeHtml(partido)} exhibe una correlación crítica entre <strong>nocturnidad y letalidad armada</strong>. La franja <strong>Noche (18:00 - 24:00 hs)</strong> concentra ${franjas["Noche (18-24 hs)"].total.toLocaleString()} despachos (${total > 0 ? ((franjas["Noche (18-24 hs)"].total / total) * 100).toFixed(1) : 0}%) con un <strong>${franjas["Noche (18-24 hs)"].total > 0 ? ((franjas["Noche (18-24 hs)"].armed / franjas["Noche (18-24 hs)"].total) * 100).toFixed(1) : 0}% de letalidad por armas de fuego</strong>. La hora pico absoluta ocurre a las <strong>${peakHour ? peakHour.hour.toString().padStart(2, "0") + ":00 hs" : "21:00 hs"}</strong> con ${peakHour?.total || 0} llamados registrados.
       </div>
 
       <div class="stats-grid">
@@ -2558,7 +2570,7 @@ export function generateDrogasTemporalPDF(incidents: any[] = [], activeFilters?:
       ` : ''}
 
       <div class="footer">
-        Documento oficial emitido por la Plataforma MSEG Intelligence · Partido de José C. Paz · ${new Date().toLocaleString("es-AR")}
+        Documento oficial emitido por la Plataforma MSEG Intelligence · Partido de ${escapeHtml(partido)} · ${new Date().toLocaleString("es-AR")}
       </div>
 
       <script>
@@ -2576,13 +2588,14 @@ export function generateDrogasTemporalPDF(incidents: any[] = [], activeFilters?:
  * Genera la planilla de despliegue táctico policial y cuadrículas de patrullaje para José C. Paz
  * Diseñado para mandos operativos y comisarías
  */
-export function generateDrogasTacticalDeploymentPDF(incidents: any[] = [], activeSlot: string = "todos", activeFilters?: any) {
+export function generateDrogasTacticalDeploymentPDF(incidents: any[] = [], activeSlot: string = "todos", activeFilters?: any, customPartido?: string) {
   const win = window.open("", "_blank");
   if (!win) {
     alert("Por favor habilite los popups en su navegador para imprimir el informe.");
     return;
   }
 
+  const partido = customPartido || activeFilters?.partido || "José C. Paz";
   const filteredIncidents = activeSlot && activeSlot !== "todos"
     ? incidents.filter(i => (i.franja || "").toLowerCase().includes(activeSlot.toLowerCase()))
     : incidents;
@@ -2627,7 +2640,7 @@ export function generateDrogasTacticalDeploymentPDF(incidents: any[] = [], activ
     <html lang="es">
     <head>
       <meta charset="UTF-8">
-      <title>Planilla de Despliegue Táctico Policial - José C. Paz</title>
+      <title>Planilla de Despliegue Táctico Policial - ${escapeHtml(partido)}</title>
       <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; margin: 0; padding: 2rem; line-height: 1.4; background: #fff; }
         .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0f172a; padding-bottom: 1rem; margin-bottom: 1.5rem; }
@@ -2653,7 +2666,7 @@ export function generateDrogasTacticalDeploymentPDF(incidents: any[] = [], activ
         <div>
           <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
           <div class="subtitle">Planilla de Despliegue Táctico Operacional & Puntos de Intervención</div>
-          <div style="font-size: 0.78rem; color: #64748b; margin-top: 0.2rem;">Ventana Operativa Activa: <strong>${slotTitle}</strong> · José C. Paz</div>
+          <div style="font-size: 0.78rem; color: #64748b; margin-top: 0.2rem;">Ventana Operativa Activa: <strong>${slotTitle}</strong> · ${escapeHtml(partido)}</div>
         </div>
         <div class="badge">Operaciones 911</div>
       </div>
@@ -2742,7 +2755,7 @@ export function generateDrogasTacticalDeploymentPDF(incidents: any[] = [], activ
       </table>
 
       <div class="footer">
-        Documento oficial emitido por la Plataforma MSEG Intelligence · Despliegue Operacional JCP · ${new Date().toLocaleString("es-AR")}
+        Documento oficial emitido por la Plataforma MSEG Intelligence · Despliegue Operacional ${escapeHtml(partido)} · ${new Date().toLocaleString("es-AR")}
       </div>
 
       <script>
@@ -2767,6 +2780,7 @@ export function generateDrogasChronicHotspotPDF(corner: {
   lat?: number;
   lng?: number;
   barrio?: string;
+  partido?: string;
   substances?: Record<string, number>;
   slots?: Record<string, number>;
   incidents: any[];
@@ -2811,7 +2825,7 @@ export function generateDrogasChronicHotspotPDF(corner: {
         <div>
           <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
           <div class="subtitle">Expediente Táctico de Punto Crónico de Resistencia & Narcomenudeo</div>
-          <div style="font-size: 0.85rem; color: #0f172a; margin-top: 0.2rem; font-weight: 800;">📍 ${corner.name} · ${corner.barrio || "José C. Paz"}</div>
+          <div style="font-size: 0.85rem; color: #0f172a; margin-top: 0.2rem; font-weight: 800;">📍 ${corner.name} · ${corner.barrio || corner.partido || "José C. Paz"}</div>
         </div>
         <div class="badge">Expediente Focal</div>
       </div>

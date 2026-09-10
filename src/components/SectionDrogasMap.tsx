@@ -348,7 +348,7 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
               <span>🗺️ Mapa Táctico Multicapa de Puntos de Venta & Búnkers (José C. Paz)</span>
             </div>
             <p className="card-subtitle" style={{ margin: "0.2rem 0 0" }}>
-              Localización espacial integrada con capas policiales, asentamientos RENABAP y corredores troncales de escape.
+              Localización espacial integrada con capas policiales y asentamientos RENABAP oficiales.
             </p>
           </div>
 
@@ -621,11 +621,7 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", color: "#fdba74" }}>
                   <span style={{ width: "12px", height: "3px", borderTop: "2px dashed #ea580c", display: "inline-block" }} />
-                  <span>Asentamientos RENABAP (6)</span>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", color: "#fcd34d" }}>
-                  <span style={{ width: "12px", height: "3px", background: "#d97706", display: "inline-block" }} />
-                  <span>Corredores RP24, RN8 y FFCC</span>
+                  <span>Asentamientos RENABAP (53)</span>
                 </div>
               </div>
             </div>

@@ -238,6 +238,7 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionDroga
                   sustancia: filterSustancia,
                   armas: filterArmas,
                   barrio: filterBarrio,
+                  partido: "Malvinas Argentinas",
                 });
               }}
               className="btn-logout"

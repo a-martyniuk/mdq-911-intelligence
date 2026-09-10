@@ -296,6 +296,7 @@ export default function SectionMalvinasNLP({ incidents = [] }: SectionDrogasNLPP
                   totalIncidents: incidents.length,
                   allIncidents: incidents,
                   selectedSuspect: selectedSuspect,
+                  partido: "Malvinas Argentinas",
                 });
               }}
               className="btn-logout"
@@ -328,6 +329,7 @@ export default function SectionMalvinasNLP({ incidents = [] }: SectionDrogasNLPP
                     totalIncidents: incidents.length,
                     allIncidents: incidents,
                     selectedSuspect: null,
+                    partido: "Malvinas Argentinas",
                   });
                 }}
                 className="btn-logout"

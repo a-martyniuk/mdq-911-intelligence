@@ -2,8 +2,9 @@
 
 import React from "react";
 import MetricCard from "./MetricCard";
-import { ShieldAlert, AlertOctagon, MapPin, Skull, Flame, Crosshair, Download } from "lucide-react";
+import { ShieldAlert, AlertOctagon, MapPin, Skull, Flame, Crosshair, Download, FileText } from "lucide-react";
 import { exportToCSV } from "@/lib/excelExport";
+import { generateDrogasMalvinasPDF } from "@/lib/pdfReport";
 
 interface SectionMalvinasOverviewProps {
   stats: {
@@ -31,22 +32,47 @@ export default function SectionMalvinasOverview({ stats, incidents = [] }: Secti
             Consolidación de 1.471 denuncias 911 sobre comercialización de estupefacientes, búnkers territoriales y conflictividad armada en las seis localidades del Partido de Malvinas Argentinas (Ene–Ago 2026).
           </p>
         </div>
-        <button
-          onClick={() => {
-            exportToCSV("indicadores_narcocriminalidad_malvinas", [
-              { Indicador: "Total Denuncias 911", Valor: stats.totalIncidents },
-              { Indicador: "Georreferenciación Válida", Valor: stats.georeferencedCount },
-              { Indicador: "Conflictividad con Armas", Valor: stats.armasCount },
-              { Indicador: "Puntos de Cocaína", Valor: stats.cocainaCount },
-              { Indicador: "Puntos de Marihuana", Valor: stats.marihuanaCount },
-              { Indicador: "Focos de Paco", Valor: stats.pacoCount },
-            ]);
-          }}
-          className="btn-logout"
-          style={{ height: "38px", padding: "0 0.9rem", fontSize: "0.8rem", fontWeight: 700, background: "rgba(16,185,129,0.15)", color: "#10b981", border: "1px solid rgba(16,185,129,0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.4rem" }}
-        >
-          <Download size={15} /> 📊 Exportar Indicadores
-        </button>
+
+        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
+          <button
+            onClick={() => generateDrogasMalvinasPDF({ ...stats, incidents })}
+            className="btn-logout"
+            style={{
+              height: "38px",
+              padding: "0 1rem",
+              fontSize: "0.825rem",
+              fontWeight: 800,
+              background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+              color: "#fff",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.4rem",
+              boxShadow: "0 2px 8px rgba(245,158,11,0.3)"
+            }}
+          >
+            <FileText size={16} /> 📄 Descargar Informe Ejecutivo Malvinas (PDF)
+          </button>
+
+          <button
+            onClick={() => {
+              exportToCSV("indicadores_narcocriminalidad_malvinas", [
+                { Indicador: "Total Denuncias 911", Valor: stats.totalIncidents },
+                { Indicador: "Georreferenciación Válida", Valor: stats.georeferencedCount },
+                { Indicador: "Conflictividad con Armas", Valor: stats.armasCount },
+                { Indicador: "Puntos de Cocaína", Valor: stats.cocainaCount },
+                { Indicador: "Puntos de Marihuana", Valor: stats.marihuanaCount },
+                { Indicador: "Focos de Paco", Valor: stats.pacoCount },
+              ]);
+            }}
+            className="btn-logout"
+            style={{ height: "38px", padding: "0 0.9rem", fontSize: "0.8rem", fontWeight: 700, background: "rgba(16,185,129,0.15)", color: "#10b981", border: "1px solid rgba(16,185,129,0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.4rem" }}
+          >
+            <Download size={15} /> 📊 Exportar Indicadores
+          </button>
+        </div>
       </div>
 
       <div className="metric-grid">

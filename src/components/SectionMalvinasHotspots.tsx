@@ -911,7 +911,7 @@ export default function SectionMalvinasHotspots({ incidents = [] }: SectionDroga
                       <td style={{ padding: "8px", color: "#a855f7", fontSize: "0.75rem" }}>{topSust}</td>
                       <td style={{ padding: "8px" }}>
                         <button
-                          onClick={() => generateDrogasChronicHotspotPDF(corner)}
+                          onClick={() => generateDrogasChronicHotspotPDF({ ...corner, partido: "Malvinas Argentinas" })}
                           style={{
                             background: "rgba(239, 68, 68, 0.15)",
                             border: "1px solid #ef4444",
@@ -973,18 +973,18 @@ export default function SectionMalvinasHotspots({ incidents = [] }: SectionDroga
 
             <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem", fontSize: "0.8rem", color: "#cbd5e1", lineHeight: 1.4 }}>
               <div style={{ background: "rgba(239, 68, 68, 0.08)", padding: "0.8rem", borderRadius: "6px", borderLeft: "3px solid #ef4444" }}>
-                <strong style={{ color: "#ef4444" }}>1. Intervención con Fuerzas Tácticas (GAD / Halcón)</strong><br/>
-                En los Nodos #1 (Castelli), #2 (Lasalle) y #4 (San Lorenzo), donde la tasa de armas supera el 75%, los allanamientos deben contar con anillo perimetral blindado para evitar fuego cruzado hacia móviles policiales.
+                <strong style={{ color: "#ef4444" }}>1. Intervención con Fuerzas Tácticas (GAD / UTOI)</strong><br/>
+                En los Nodos #4 (Py & Hiroshima - 93.1% armado, 8 búnkers) y #10 (Excombatientes & Uruguay - 100% armado), donde la hostilidad armada es crítica, los allanamientos deben contar con anillo perimetral blindado y cobertura táctica para neutralizar centinelas en azoteas.
               </div>
 
               <div style={{ background: "rgba(245, 158, 11, 0.08)", padding: "0.8rem", borderRadius: "6px", borderLeft: "3px solid #f59e0b" }}>
-                <strong style={{ color: "#f59e0b" }}>2. Bloqueo de Vías de Fuga Férrea</strong><br/>
-                En el Nodo #2 (Fournier y Lasalle), el terraplén del FFCC San Martín actúa como corredor de escape rápido peatonal. Se requiere apostamiento sobre la traza en sincronía con el asalto frontal.
+                <strong style={{ color: "#f59e0b" }}>2. Bloqueo de Vías de Fuga Férrea (FFCC Belgrano Norte)</strong><br/>
+                En el Nodo #2 (San Lorenzo & Sarmiento) y Nodo #3 (Hernández & Maure), la cercanía a la traza férrea del Belgrano Norte y límites inter-seccionales facilita la fuga peatonal. Se requiere apostamiento cerrojo simultáneo sobre terraplenes y pasos peatonales.
               </div>
 
               <div style={{ background: "rgba(168, 85, 247, 0.08)", padding: "0.8rem", borderRadius: "6px", borderLeft: "3px solid #a855f7" }}>
-                <strong style={{ color: "#a855f7" }}>3. Demolición y Clausura Definitiva de Búnkers</strong><br/>
-                En el Nodo #6 (Las Tres Marías y Ruta 24), la recurrencia se sustenta en edificaciones reforzadas. Se precisa orden fiscal de demolición de muros de contención clandestinos.
+                <strong style={{ color: "#a855f7" }}>3. Desarticulación y Clausura de Bocas de Paco</strong><br/>
+                En el Nodo #3 (Hernández & Maure, 6 búnkers de pasta base) y Nodo #9 (Yatasto & Panamá en Tortuguitas, 6 bocas de venta), la concentración de expendio exige secuestro judicial urgente, tapiado de ventanitas de chapa y demolición de casillas usurpadas.
               </div>
             </div>
           </div>
@@ -1094,6 +1094,7 @@ export default function SectionMalvinasHotspots({ incidents = [] }: SectionDroga
                     lat: selectedNode.lat,
                     lng: selectedNode.lng,
                     barrio: selectedNode.barrio,
+                    partido: "Malvinas Argentinas",
                     incidents: filtered.filter(i => {
                       if (!i.lat || !i.lng) return false;
                       const dLat = i.lat - selectedNode.lat;

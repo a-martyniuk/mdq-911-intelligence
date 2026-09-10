@@ -108,6 +108,7 @@ export default function Sidebar({
         <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
           <button
             onClick={() => {
+              resetFilters();
               setCurrentProject("mdp");
               setActiveSection("overview");
             }}
@@ -135,6 +136,7 @@ export default function Sidebar({
 
           <button
             onClick={() => {
+              resetFilters();
               setCurrentProject("jcp");
               setActiveSection("drogas-overview");
             }}
@@ -162,6 +164,7 @@ export default function Sidebar({
 
           <button
             onClick={() => {
+              resetFilters();
               setCurrentProject("malvinas");
               setActiveSection("malvinas-overview");
             }}
@@ -314,6 +317,25 @@ export default function Sidebar({
             <div style={{ background: "rgba(16,185,129,0.1)", padding: "0.5rem", borderRadius: "4px", border: "1px solid rgba(16,185,129,0.25)" }}>
               <strong style={{ color: "#10b981", display: "block" }}>INFORMACIÓN VECINAL:</strong>
               781 hechos rescatados por búsqueda de términos (cocaína, búnker, venta).
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Malvinas Specific Source Distinction Box */}
+      {currentProject === "malvinas" && (
+        <div style={{ marginTop: "2rem", paddingTop: "1.25rem", borderTop: "1px solid var(--border)", fontSize: "0.75rem", color: "var(--text-secondary)" }}>
+          <div style={{ fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "0.5rem" }}>
+            Fuentes Integradas Malvinas
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+            <div style={{ background: "rgba(245,158,11,0.1)", padding: "0.5rem", borderRadius: "4px", border: "1px solid rgba(245,158,11,0.25)" }}>
+              <strong style={{ color: "#f59e0b", display: "block" }}>DROGAS ILÍCITAS:</strong>
+              802 hechos con tipificación formal 911.
+            </div>
+            <div style={{ background: "rgba(16,185,129,0.1)", padding: "0.5rem", borderRadius: "4px", border: "1px solid rgba(16,185,129,0.25)" }}>
+              <strong style={{ color: "#10b981", display: "block" }}>INFORMACIÓN VECINAL:</strong>
+              669 hechos rescatados por búsqueda semántica (cocaína, búnker, venta).
             </div>
           </div>
         </div>

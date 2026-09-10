@@ -149,8 +149,8 @@ export async function GET(req: NextRequest) {
       });
     }
     if (sustancia && sustancia !== "todos") {
-      const q = sustancia.toUpperCase();
-      filtered = filtered.filter((r: any) => (r.sustancia || r.SubTipo || "").toUpperCase().includes(q));
+      const q = sustancia.toUpperCase().replace(/Í/g, "I");
+      filtered = filtered.filter((r: any) => (r.sustancia || r.SubTipo || "").toUpperCase().replace(/Í/g, "I").includes(q));
     }
     if (tipoLugar && tipoLugar !== "todos") {
       const q = tipoLugar.toUpperCase();
@@ -190,7 +190,10 @@ export async function GET(req: NextRequest) {
     const nightCount = filtered.filter((r: any) => (r.franja || "").includes("Noche")).length;
     const nightPct = totalIncidents > 0 ? (nightCount / totalIncidents) * 100 : 0;
 
-    const cocainaCount = filtered.filter((r: any) => (r.sustancia || "").includes("COCAÍNA")).length;
+    const cocainaCount = filtered.filter((r: any) => {
+      const s = (r.sustancia || "").toUpperCase();
+      return s.includes("COCAINA") || s.includes("COCAÍNA");
+    }).length;
     const marihuanaCount = filtered.filter((r: any) => (r.sustancia || "").includes("MARIHUANA")).length;
     const pacoCount = filtered.filter((r: any) => (r.sustancia || "").includes("PACO")).length;
 
