@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useMemo } from "react";
 import dynamic from "next/dynamic";
@@ -527,7 +527,7 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionDroga
             </div>
             <button
               onClick={() => setExcludeCentro(!excludeCentro)}
-              title={excludeCentro ? "Click para incluir Malvinas Argentinas (Centro / General)" : "Click para excluir genérico Centro"}
+              title={excludeCentro ? "Click para incluir registros genéricos sin barrio específico" : "Click para excluir registros genéricos"}
               style={{
                 background: excludeCentro ? "rgba(16, 185, 129, 0.15)" : "rgba(255, 255, 255, 0.06)",
                 border: `1px solid ${excludeCentro ? "#10b981" : "#4b5563"}`,
@@ -542,7 +542,7 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionDroga
                 gap: "4px"
               }}
             >
-              {excludeCentro ? "✓ Excluyendo genérico Centro (1.605)" : "Incluir genérico Centro"}
+              {excludeCentro ? "✓ Excluyendo genérico partido" : "Incluir genérico partido"}
             </button>
           </div>
           <Plot

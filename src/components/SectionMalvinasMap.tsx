@@ -1,9 +1,9 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { MapPin, Filter, Download, Skull, Crosshair, ShieldAlert, Layers, Home, Info, Eye, FileText, Building2, CheckSquare, Square } from "lucide-react";
 import { exportToCSV } from "@/lib/excelExport";
-import { generateDrogasJcpPDF } from "@/lib/pdfReport";
+import { generateDrogasMalvinasPDF } from "@/lib/pdfReport";
 import { JURISDICTIONS_MALVINAS_GEOJSON, MALVINAS_MUNICIPAL_BOUNDARY_GEOJSON, POLICE_STATIONS_MALVINAS } from "@/lib/jurisdictionsMalvinasGeoJSON";
 import { RENABAP_MALVINAS_GEOJSON } from "@/lib/renabapMalvinasGeoJSON";
 import "leaflet/dist/leaflet.css";
@@ -29,7 +29,7 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionDrogasMapP
   const [filterBarrio, setFilterBarrio] = useState<string>("todos");
   const [mapReady, setMapReady] = useState<boolean>(false);
 
-  // Layer Toggles (Replicating Mar del Plata Layer Architecture)
+  // Layer Toggles
   const [showJurisdictions, setShowJurisdictions] = useState<boolean>(false);
   const [showRenabap, setShowRenabap] = useState<boolean>(true);
   const [showPoints, setShowPoints] = useState<boolean>(true);
@@ -50,12 +50,14 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionDrogasMapP
         }
       }
       if (filterSustancia !== "todos") {
-        const sust = (inc.sustancia || inc.SubTipo || "").toUpperCase();
-        if (!sust.includes(filterSustancia.toUpperCase())) return false;
+        const sust = (inc.sustancia || inc.SubTipo || "").toUpperCase().replace(/Í/g, "I");
+        const fSust = filterSustancia.toUpperCase().replace(/Í/g, "I");
+        if (!sust.includes(fSust)) return false;
       }
       if (filterLugar !== "todos") {
-        const lug = (inc.tipoLugar || inc.Tipo_Punto_Venta || "").toUpperCase();
-        if (!lug.includes(filterLugar.toUpperCase())) return false;
+        const lug = (inc.tipoLugar || inc.Tipo_Punto_Venta || "").toUpperCase().replace(/[ÚÙ]/g, "U").replace(/[ÍÌ]/g, "I");
+        const fLug = filterLugar.toUpperCase().replace(/[ÚÙ]/g, "U").replace(/[ÍÌ]/g, "I");
+        if (!lug.includes(fLug)) return false;
       }
       if (filterArmas !== "todos") {
         const wantArmas = filterArmas === "si";
@@ -74,7 +76,7 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionDrogasMapP
     const setB = new Set<string>();
     incidents.forEach((r) => {
       const b = r.barrio || r.Barrio_Detectado;
-      if (b && b !== "Malvinas Argentinas (Centro / General)") setB.add(b);
+      if (b && !b.includes("General") && !b.includes("Desconocido")) setB.add(b);
     });
     return Array.from(setB).sort();
   }, [incidents]);
@@ -293,7 +295,7 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionDrogasMapP
         let color = "#3b82f6";
         if (sust.includes("PACO")) {
           color = "#ec4899";
-        } else if (sust.includes("COCAÍNA")) {
+        } else if (sust.includes("COCAÍNA") || sust.includes("COCAINA")) {
           color = "#ef4444";
         } else if (sust.includes("MARIHUANA")) {
           color = "#10b981";
@@ -321,7 +323,7 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionDrogasMapP
               ${armasBadge}
             </div>
             <div>📍 <strong>Dirección:</strong> ${inc.direccion || "Malvinas Argentinas"}</div>
-            <div>🏘️ <strong>Barrio:</strong> ${inc.barrio || "Centro"}</div>
+            <div>🏘️ <strong>Barrio:</strong> ${inc.barrio || "General"}</div>
             <div>🕒 <strong>Fecha:</strong> ${inc.fecha} (${inc.franja || ""})</div>
             <div>💊 <strong>Sustancia:</strong> ${inc.sustancia}</div>
             <div>🏠 <strong>Lugar:</strong> ${inc.tipoLugar}</div>
@@ -348,20 +350,20 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionDrogasMapP
               <span>🗺️ Mapa Táctico Multicapa de Puntos de Venta & Búnkers (Malvinas Argentinas)</span>
             </div>
             <p className="card-subtitle" style={{ margin: "0.2rem 0 0" }}>
-              Localización espacial integrada con capas policiales, asentamientos RENABAP y corredores troncales de escape.
+              Localización espacial integrada con capas policiales de 4 comisarías y asentamientos RENABAP.
             </p>
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
             <button
               onClick={() => {
-                generateDrogasJcpPDF({
+                generateDrogasMalvinasPDF({
                   totalIncidents: filteredIncidents.length,
                   totalUniverse: incidents.length,
                   georeferencedCount: filteredIncidents.filter((r) => r.lat && r.lng).length,
                   armasCount: filteredIncidents.filter((r) => r.tieneArmas).length,
-                  cocainaCount: filteredIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("COCAÍNA")).length,
-                  marihuanaCount: filteredIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("MARIHUANA")).length,
+                  cocainaCount: filteredIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("COCA")).length,
+                  marihuanaCount: filteredIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("MARI")).length,
                   pacoCount: filteredIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("PACO")).length,
                   incidents: filteredIncidents,
                   activeFilters: {
@@ -461,7 +463,7 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionDrogasMapP
               }}
             >
               {showJurisdictions ? <CheckSquare size={14} /> : <Square size={14} />}
-              <Building2 size={14} /> 👮 Comisarías JCP (3)
+              <Building2 size={14} /> 👮 Comisarías Malvinas (4)
             </button>
 
             <button
@@ -481,7 +483,7 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionDrogasMapP
               }}
             >
               {showRenabap ? <CheckSquare size={14} /> : <Square size={14} />}
-              <Home size={14} /> 🏘️ RENABAP Oficial
+              <Home size={14} /> 🏘️ RENABAP Oficial (8)
             </button>
 
             <button
@@ -515,8 +517,8 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionDrogasMapP
               </label>
               <select value={filterOrigen} onChange={(e) => setFilterOrigen(e.target.value)} className="form-input" style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}>
                 <option value="todos">Todas las Fuentes (1.471 despachos)</option>
-                <option value="DROGAS_ILICITAS_FORMAL">🔴 Despacho Formal Drogas (989 hechos)</option>
-                <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Búsqueda Semántica Relatos (781 hechos)</option>
+                <option value="DROGAS_ILICITAS_FORMAL">🔴 Despacho Formal Drogas (802 hechos)</option>
+                <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Alerta Vecinal por Relato (669 hechos)</option>
               </select>
             </div>
 
@@ -617,15 +619,11 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionDrogasMapP
               <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "0.3rem", marginTop: "0.2rem" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", color: "#93c5fd" }}>
                   <span style={{ width: "12px", height: "3px", background: "#2563eb", display: "inline-block" }} />
-                  <span>Comisarías 1ra, 2da y 3ra JCP</span>
+                  <span>Comisarías 1ra a 4ta Malvinas (4)</span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", color: "#fdba74" }}>
                   <span style={{ width: "12px", height: "3px", borderTop: "2px dashed #ea580c", display: "inline-block" }} />
-                  <span>Asentamientos RENABAP (6)</span>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", color: "#fcd34d" }}>
-                  <span style={{ width: "12px", height: "3px", background: "#d97706", display: "inline-block" }} />
-                  <span>Corredores RP24, RN8 y FFCC</span>
+                  <span>Asentamientos RENABAP (8)</span>
                 </div>
               </div>
             </div>

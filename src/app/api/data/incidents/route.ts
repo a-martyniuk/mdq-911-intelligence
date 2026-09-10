@@ -257,8 +257,14 @@ export async function GET(req: NextRequest) {
         return o.includes(q);
       });
     }
-    if (sustancia && sustancia !== "todos") filtered = filtered.filter((r: any) => (r.sustancia || r.SubTipo || "").toUpperCase().includes(sustancia.toUpperCase()));
-    if (tipoLugar && tipoLugar !== "todos") filtered = filtered.filter((r: any) => (r.tipoLugar || "").toUpperCase().includes(tipoLugar.toUpperCase()));
+    if (sustancia && sustancia !== "todos") {
+      const q = sustancia.toUpperCase().replace(/Í/g, "I");
+      filtered = filtered.filter((r: any) => (r.sustancia || r.SubTipo || "").toUpperCase().replace(/Í/g, "I").includes(q));
+    }
+    if (tipoLugar && tipoLugar !== "todos") {
+      const q = tipoLugar.toUpperCase().replace(/[ÚÙ]/g, "U").replace(/[ÍÌ]/g, "I");
+      filtered = filtered.filter((r: any) => (r.tipoLugar || "").toUpperCase().replace(/[ÚÙ]/g, "U").replace(/[ÍÌ]/g, "I").includes(q));
+    }
     if (tieneArmas && tieneArmas !== "todos") { const w = tieneArmas === "true"; filtered = filtered.filter((r: any) => r.tieneArmas === w); }
     if (barrio && barrio !== "todos") filtered = filtered.filter((r: any) => (r.barrio || "").toUpperCase().includes(barrio.toUpperCase()));
     if (franjaHoraria && franjaHoraria !== "todos") filtered = filtered.filter((r: any) => (r.franja || "").toUpperCase().includes(franjaHoraria.toUpperCase()));
@@ -280,9 +286,12 @@ export async function GET(req: NextRequest) {
     const armasPct = totalIncidents > 0 ? (armasCount / totalIncidents) * 100 : 0;
     const nightCount = filtered.filter((r: any) => (r.franja || "").includes("Noche")).length;
     const nightPct = totalIncidents > 0 ? (nightCount / totalIncidents) * 100 : 0;
-    const cocainaCount = filtered.filter((r: any) => (r.sustancia || "").includes("COCAINA")).length;
-    const marihuanaCount = filtered.filter((r: any) => (r.sustancia || "").includes("MARIHUANA")).length;
-    const pacoCount = filtered.filter((r: any) => (r.sustancia || "").includes("PACO")).length;
+    const cocainaCount = filtered.filter((r: any) => {
+      const s = (r.sustancia || "").toUpperCase();
+      return s.includes("COCAINA") || s.includes("COCAÍNA");
+    }).length;
+    const marihuanaCount = filtered.filter((r: any) => (r.sustancia || "").toUpperCase().includes("MARIHUANA")).length;
+    const pacoCount = filtered.filter((r: any) => (r.sustancia || "").toUpperCase().includes("PACO")).length;
 
     return NextResponse.json({
       project: "malvinas",

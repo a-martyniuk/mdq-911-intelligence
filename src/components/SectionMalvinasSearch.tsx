@@ -1,9 +1,9 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useMemo } from "react";
 import { Search, Filter, Download, AlertTriangle, Shield, MapPin, Eye, FileText } from "lucide-react";
 import { exportToCSV } from "@/lib/excelExport";
-import { generateDrogasJcpPDF } from "@/lib/pdfReport";
+import { generateDrogasMalvinasPDF } from "@/lib/pdfReport";
 
 interface SectionDrogasSearchProps {
   incidents: any[];
@@ -32,8 +32,8 @@ export default function SectionMalvinasSearch({ incidents = [] }: SectionDrogasS
     }
 
     if (filterSustancia !== "todos") {
-      const s = filterSustancia.toUpperCase();
-      result = result.filter((r) => (r.sustancia || "").toUpperCase().includes(s));
+      const s = filterSustancia.toUpperCase().replace(/Í/g, "I");
+      result = result.filter((r) => (r.sustancia || "").toUpperCase().replace(/Í/g, "I").includes(s));
     }
 
     if (filterArmas !== "todos") {
@@ -72,13 +72,13 @@ export default function SectionMalvinasSearch({ incidents = [] }: SectionDrogasS
           <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
             <button
               onClick={() => {
-                generateDrogasJcpPDF({
+                generateDrogasMalvinasPDF({
                   totalIncidents: filtered.length,
                   totalUniverse: incidents.length,
                   georeferencedCount: filtered.filter((r) => r.lat && r.lng).length,
                   armasCount: filtered.filter((r) => r.tieneArmas).length,
-                  cocainaCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("COCAÍNA")).length,
-                  marihuanaCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("MARIHUANA")).length,
+                  cocainaCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("COCA")).length,
+                  marihuanaCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("MARI")).length,
                   pacoCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("PACO")).length,
                   incidents: filtered,
                   activeFilters: {

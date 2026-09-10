@@ -164,9 +164,9 @@ export default function Dashboard() {
     georeferencedPct: data?.georeferencedPct || 98.6,
     armasCount: data?.armasCount || 1059,
     armasPct: data?.armasPct || 72.0,
-    cocainaCount: data?.cocainaCount || 519,
-    marihuanaCount: data?.marihuanaCount || 243,
-    pacoCount: data?.pacoCount || 76,
+    cocainaCount: data?.cocainaCount || 546,
+    marihuanaCount: data?.marihuanaCount || 252,
+    pacoCount: data?.pacoCount || 39,
   };
 
   return (

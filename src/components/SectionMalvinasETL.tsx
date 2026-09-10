@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import { Database, GitCompare, CheckCircle2, ShieldAlert, Cpu, ArrowRight, FileSpreadsheet } from "lucide-react";
@@ -25,7 +25,7 @@ export default function SectionMalvinasETL() {
               </strong>
             </div>
             <span style={{ fontSize: "0.75rem", fontWeight: 700, padding: "2px 8px", borderRadius: "4px", background: "rgba(239,68,68,0.15)", color: "#ef4444" }}>
-              Tipificación Formal 911 (989 registros)
+              Tipificación Formal 911 (802 registros)
             </span>
             <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.75rem", lineHeight: 1.5 }}>
               Despachos y cartas de llamada clasificados formalmente por el operador o la policía bajo la carátula o ámbito de <strong>Drogas Ilícitas</strong>. Representa el núcleo institucional de causas tipificadas por estupefacientes.
@@ -41,7 +41,7 @@ export default function SectionMalvinasETL() {
               </strong>
             </div>
             <span style={{ fontSize: "0.75rem", fontWeight: 700, padding: "2px 8px", borderRadius: "4px", background: "rgba(16,185,129,0.15)", color: "#10b981" }}>
-              Filtro de Inteligencia por Palabras Clave (781 registros)
+              Filtro de Inteligencia por Palabras Clave (669 registros)
             </span>
             <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.75rem", lineHeight: 1.5 }}>
               Llamados al 911 registrados inicialmente bajo otras tipificaciones (conflictos vecinales, cartas de información, robos o armas), pero donde un filtrado por palabras clave en el relato (<strong>"cocaína", "marihuana", "venta", "bunkers", "transa"</strong>) rescató denuncias con valiosa información sobre narcotráfico.
@@ -60,7 +60,7 @@ export default function SectionMalvinasETL() {
             <div style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem" }}>
               <CheckCircle2 size={16} color="#10b981" style={{ marginTop: "3px", flexShrink: 0 }} />
               <div>
-                <strong style={{ color: "var(--text-primary)" }}>Corrección Decimal y Georreferenciación Automática:</strong> Se solucionó la escala exponencial de las variables exportadas y se completó la geocodificación de intersecciones y barrios, situando a <strong>1.763 hechos (99,60%)</strong> con coordenadas espaciales validadas dentro del Partido de Malvinas Argentinas.
+                <strong style={{ color: "var(--text-primary)" }}>Corrección Decimal y Georreferenciación Automática:</strong> Se solucionó la escala decimal de las variables y se completó la geocodificación de intersecciones y barrios, situando a <strong>1.451 hechos (98,6%)</strong> con coordenadas espaciales validadas dentro del Partido de Malvinas Argentinas.
               </div>
             </div>
 
@@ -74,7 +74,7 @@ export default function SectionMalvinasETL() {
             <div style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem" }}>
               <CheckCircle2 size={16} color="#10b981" style={{ marginTop: "3px", flexShrink: 0 }} />
               <div>
-                <strong style={{ color: "var(--text-primary)" }}>Complementariedad Total:</strong> Se verificó que entre ambas planillas existe únicamente 1 ID coincidente, sumando un universo consolidado de <strong>1.471 denuncias únicas</strong> de alto valor judicial.
+                <strong style={{ color: "var(--text-primary)" }}>Complementariedad Total:</strong> Se verificó que ambas planillas son 100% complementarias sin superposición de IDs, sumando un universo consolidado de <strong>1.471 denuncias únicas</strong> de alto valor judicial.
               </div>
             </div>
           </div>

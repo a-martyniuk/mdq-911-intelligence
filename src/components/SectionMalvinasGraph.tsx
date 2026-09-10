@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useRef, useMemo, useCallback } from "react";
 import {
@@ -68,13 +68,14 @@ interface SectionDrogasGraphProps {
 }
 
 const CLIQUE_PRESETS = [
-  { id: "all", label: "🌐 Red General Completa JCP", color: "#6366f1", icon: "🌐" },
-  { id: "sol-y-verde", label: "🔥 Foco Sol y Verde (Ojeda / Bravo / Corbata)", color: "#ef4444", icon: "🔥" },
-  { id: "porta-berni", label: "🚗 Clan Boyacá (Porta / Lucho Berni)", color: "#f59e0b", icon: "🚗" },
-  { id: "palomero", label: "📍 Red San Lorenzo (Palomero / Banfi)", color: "#8b5cf6", icon: "📍" },
-  { id: "coliqueo", label: "⚡ Célula Coliqueo & Junín (Hernán / Lili)", color: "#06b6d4", icon: "⚡" },
-  { id: "fournier", label: "🏢 Clan Fournier (Poroto / Ariel / Pajone)", color: "#10b981", icon: "🏢" },
-  { id: "lamas", label: "🏚️ Célula Barrio Lamas & Casitas (Godoy / Angie)", color: "#ec4899", icon: "🏚️" }
+  { id: "all", label: "🌐 Red General Completa Malvinas", color: "#6366f1", icon: "🌐" },
+  { id: "rojas-ambrosetti", label: "🔥 Eje Ricardo Rojas & Ambrosetti (Grand Bourg)", color: "#ef4444", icon: "🔥" },
+  { id: "py-hiroshima", label: "⚡ Foco Marino Luis Py & Hiroshima (Pablo Nogués)", color: "#f59e0b", icon: "⚡" },
+  { id: "san-lorenzo", label: "🚗 Célula San Lorenzo & Sarmiento (Grand Bourg Centro)", color: "#8b5cf6", icon: "🚗" },
+  { id: "hernandez-maure", label: "🏚️ Clan José Hernández & Maure (Límite Villa de Mayo)", color: "#06b6d4", icon: "🏚️" },
+  { id: "palacios-cangallo", label: "📍 Red Palacios & Cangallo (Los Polvorines)", color: "#10b981", icon: "📍" },
+  { id: "tokio-santa-sede", label: "🏢 Célula Tokio & Santa Sede (Pablo Nogués Oeste)", color: "#ec4899", icon: "🏢" },
+  { id: "yatasto-panama", label: "🎯 Foco Yatasto & Panamá (Tortuguitas)", color: "#ea580c", icon: "🎯" }
 ];
 
 export default function SectionMalvinasGraph({ incidents = [] }: SectionDrogasGraphProps) {
@@ -83,7 +84,7 @@ export default function SectionMalvinasGraph({ incidents = [] }: SectionDrogasGr
   const [filterCategory, setFilterCategory] = useState<string>("all");
   const [minConnections, setMinConnections] = useState<number>(1);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [selectedNodeId, setSelectedNodeId] = useState<string | null>("polonia-pinero");
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<boolean>(false);
 
   // Zoom & Pan Viewport States
@@ -118,12 +119,13 @@ export default function SectionMalvinasGraph({ incidents = [] }: SectionDrogasGr
     // Helper to detect clique
     const detectClique = (text: string, address: string) => {
       const t = (text + " " + address).toLowerCase();
-      if (t.includes("polonia") || t.includes("piñero") || t.includes("pinero") || t.includes("sol y verde") || t.includes("ojeda") || t.includes("bravo") || t.includes("corbata") || t.includes("tore")) return "sol-y-verde";
-      if (t.includes("boyaca") || t.includes("pinazo") || t.includes("berni") || t.includes("porta") || t.includes("lucho")) return "porta-berni";
-      if (t.includes("san lorenzo") || t.includes("pedro de mendoza") || t.includes("tres sargentos") || t.includes("palomero") || t.includes("banfi") || t.includes("cachi")) return "palomero";
-      if (t.includes("cacique coliqueo") || t.includes("coliqueo") || t.includes("junin") || t.includes("hernan") || t.includes("lili")) return "coliqueo";
-      if (t.includes("fournier") || t.includes("lasalle") || t.includes("poroto") || t.includes("pajone")) return "fournier";
-      if (t.includes("barrio lamas") || t.includes("saavedra lamas") || t.includes("nestor kirchner") || t.includes("kirchner") || t.includes("godoy") || t.includes("angie")) return "lamas";
+      if (t.includes("rojas") || t.includes("ambrosetti") || t.includes("sergio") || t.includes("fruto") || t.includes("beiro")) return "rojas-ambrosetti";
+      if (t.includes("marino luis py") || t.includes("hiroshima") || t.includes("descartes") || t.includes("morse")) return "py-hiroshima";
+      if (t.includes("san lorenzo") || t.includes("sarmiento") || t.includes("rivadavia") || t.includes("gaston acosta")) return "san-lorenzo";
+      if (t.includes("jose hernandez") || t.includes("hernandez") || t.includes("maure") || t.includes("bouchard") || t.includes("coneja")) return "hernandez-maure";
+      if (t.includes("palacios") || t.includes("cangallo") || t.includes("lugones") || t.includes("laprida")) return "palacios-cangallo";
+      if (t.includes("tokio") || t.includes("santa sede") || t.includes("pozo de vargas") || t.includes("mudo")) return "tokio-santa-sede";
+      if (t.includes("yatasto") || t.includes("panama") || t.includes("tortuguitas")) return "yatasto-panama";
       return "general";
     };
 
@@ -175,7 +177,7 @@ export default function SectionMalvinasGraph({ incidents = [] }: SectionDrogasGr
     // Curate top Suspect nodes (>= 2 calls or specific relevant actor)
     const suspectNodes: GraphNode[] = [];
     Object.entries(suspectMap)
-      .filter(([name, data]) => data.count >= 2 || ["Eduardo Bravo", "Agustin", "Corbata", "Sosa", "Tore", "Gonzalo Martin Godoy", "Banfi", "Lucho"].includes(name))
+      .filter(([name, data]) => data.count >= 2 || ["Sergio", "Sebastian Frutos", "Gaston Acosta", "Lucas", "Nahuel", "Hugo", "La Coneja", "El Mudo", "Patricia", "Osqui", "Brandon", "Cocucha"].includes(name))
       .sort((a, b) => b[1].count - a[1].count)
       .slice(0, 35)
       .forEach(([name, data]) => {
@@ -200,7 +202,7 @@ export default function SectionMalvinasGraph({ incidents = [] }: SectionDrogasGr
     // Curate top Bunker nodes (>= 4 calls or linked to known suspects)
     const bunkerNodes: GraphNode[] = [];
     Object.entries(bunkerMap)
-      .filter(([addr, data]) => data.count >= 4 || data.suspects.size >= 2 || addr.toLowerCase().includes("polonia") || addr.toLowerCase().includes("castelli"))
+      .filter(([addr, data]) => data.count >= 4 || data.suspects.size >= 1 || addr.toLowerCase().includes("rojas") || addr.toLowerCase().includes("hiroshima") || addr.toLowerCase().includes("san lorenzo"))
       .sort((a, b) => b[1].count - a[1].count)
       .slice(0, 30)
       .forEach(([addr, data]) => {
@@ -643,7 +645,7 @@ export default function SectionMalvinasGraph({ incidents = [] }: SectionDrogasGr
       Foco_Banda: n.cliqueId || "general",
       Direccion: n.address || n.barrio || ""
     }));
-    exportToCSV(`grafo_narcocriminal_jcp_${selectedClique}`, nodeExport);
+    exportToCSV(`grafo_narcocriminal_malvinas_${selectedClique}`, nodeExport);
   };
 
   const handleExportPDF = () => {
@@ -652,6 +654,7 @@ export default function SectionMalvinasGraph({ incidents = [] }: SectionDrogasGr
 
     generateDrogasGraphPDF({
       cliqueName: activeCliqueLabel,
+      partido: "Malvinas Argentinas",
       nodes: displayNodes.map((n) => ({
         id: n.id,
         label: n.label,

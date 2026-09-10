@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { Brain, UserCheck, Home, MessageSquare, Search, AlertTriangle, ShieldAlert, Sparkles, Filter, CheckCircle, Tag, Download, FileText, MapPin, Crosshair, Navigation, LocateFixed } from "lucide-react";
@@ -51,7 +51,7 @@ export default function SectionMalvinasNLP({ incidents = [] }: SectionDrogasNLPP
           counts[clean] = { count: 0, lastDate: inc.fecha, barrios: new Set(), sampleRelato: inc.relato, isFullName };
         }
         counts[clean].count += 1;
-        if (inc.barrio && inc.barrio !== "Malvinas Argentinas (Centro / General)") {
+        if (inc.barrio && !inc.barrio.includes("General") && !inc.barrio.includes("Centro")) {
           counts[clean].barrios.add(inc.barrio);
         }
       });

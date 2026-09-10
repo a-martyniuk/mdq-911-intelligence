@@ -80,10 +80,10 @@ def fix_coord(val, coord_type='lat'):
 def extract_sustancias(text):
     text_u = str(text).upper()
     sustancias = []
-    if 'COCAIN' in text_u or 'MERCA' in text_u or 'BLANCA' in text_u: sustancias.append('COCAINA')
+    if 'COCAIN' in text_u or 'MERCA' in text_u or 'BLANCA' in text_u: sustancias.append('COCAÍNA')
     if 'PACO' in text_u or 'PASTA BASE' in text_u: sustancias.append('PACO')
     if 'MARIHUAN' in text_u or 'FASO' in text_u or 'FLORES' in text_u or 'HIERBA' in text_u or 'PORRO' in text_u: sustancias.append('MARIHUANA')
-    if 'PASTILLA' in text_u or 'EXTASIS' in text_u or 'ACIDO' in text_u: sustancias.append('SINTETICAS / PASTILLAS')
+    if 'PASTILLA' in text_u or 'EXTASIS' in text_u or 'ACIDO' in text_u: sustancias.append('SINTÉTICAS / PASTILLAS')
     return ' / '.join(sustancias) if sustancias else 'NO ESPECIFICADA / POLIRUBRO'
 
 def check_armas(text):
@@ -92,10 +92,10 @@ def check_armas(text):
 
 def extract_tipo_lugar(text, comment=''):
     combined = (str(text) + ' ' + str(comment)).upper()
-    if 'BUNKER' in combined or 'CASILLA' in combined or 'CHAPA' in combined or 'BALDIO' in combined: return 'Bunker / Casilla / Baldio'
+    if 'BUNKER' in combined or 'BÚNKER' in combined or 'CASILLA' in combined or 'CHAPA' in combined or 'BALDIO' in combined or 'BALDÍO' in combined: return 'Búnker / Casilla / Baldío'
     if 'VENTANITA' in combined or 'VENTANA' in combined or 'KIOSCO' in combined or 'QUIOSCO' in combined: return 'Ventanita / Kiosco'
     if 'PASILLO' in combined: return 'Pasillo de Asentamiento'
-    if 'ESQUINA' in combined or 'VIA PUBLICA' in combined or 'VEREDA' in combined: return 'Via Publica / Esquina'
+    if 'ESQUINA' in combined or 'VIA PUBLICA' in combined or 'VÍA PÚBLICA' in combined or 'VEREDA' in combined: return 'Vía Pública / Esquina'
     if 'CASA' in combined or 'FINCA' in combined or 'PROPIEDAD' in combined or 'DEPARTAMENTO' in combined: return 'Finca / Vivienda'
     return 'Lugar No Especificado'
 
@@ -114,7 +114,7 @@ def extract_barrio(comment, addr=''):
 
 def get_franja(h):
     if 0 <= h < 6: return 'Madrugada (00-06 hs)'
-    elif 6 <= h < 12: return 'Manana (06-12 hs)'
+    elif 6 <= h < 12: return 'Mañana (06-12 hs)'
     elif 12 <= h < 18: return 'Tarde (12-18 hs)'
     else: return 'Noche (18-24 hs)'
 

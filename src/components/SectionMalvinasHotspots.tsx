@@ -1,9 +1,9 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { Flame, Filter, Download, FileText, Info, ShieldAlert, Clock, MapPin, ChevronRight, X, AlertOctagon, Target, Layers, Building2, Home, CheckSquare, Square, Zap, Shield, Crosshair, BarChart3, Radio } from "lucide-react";
 import { exportToCSV } from "@/lib/excelExport";
-import { generateDrogasJcpPDF, generateDrogasChronicHotspotPDF } from "@/lib/pdfReport";
+import { generateDrogasMalvinasPDF, generateDrogasChronicHotspotPDF } from "@/lib/pdfReport";
 import { JURISDICTIONS_MALVINAS_GEOJSON, MALVINAS_MUNICIPAL_BOUNDARY_GEOJSON, POLICE_STATIONS_MALVINAS } from "@/lib/jurisdictionsMalvinasGeoJSON";
 import { RENABAP_MALVINAS_GEOJSON } from "@/lib/renabapMalvinasGeoJSON";
 import { CHRONIC_HOTSPOTS_MALVINAS, ChronicHotspotNode } from "@/lib/chronicHotspotsMalvinasData";
@@ -116,7 +116,7 @@ export default function SectionMalvinasHotspots({ incidents = [] }: SectionDroga
   const armedCalls = filtered.filter(i => i.tieneArmas || i.armas === true || i.armas === "SI").length;
   const bunkersCalls = filtered.filter(i => {
     const l = String(i.tipoLugar || "");
-    return l.includes("Búnker") || l.includes("Ventanita");
+    return l.includes("Búnker") || l.includes("Bunker") || l.includes("Ventanita");
   }).length;
 
   const top10TotalCalls = useMemo(() => {
@@ -445,13 +445,13 @@ export default function SectionMalvinasHotspots({ incidents = [] }: SectionDroga
           <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
             <button
               onClick={() => {
-                generateDrogasJcpPDF({
+                generateDrogasMalvinasPDF({
                   totalIncidents: filtered.length,
                   totalUniverse: incidents.length,
                   georeferencedCount: filtered.filter((i) => i.lat && i.lng).length,
                   armasCount: armedCalls,
-                  cocainaCount: filtered.filter((i) => (i.sustancia || "").toUpperCase().includes("COCAÍNA")).length,
-                  marihuanaCount: filtered.filter((i) => (i.sustancia || "").toUpperCase().includes("MARIHUANA")).length,
+                  cocainaCount: filtered.filter((i) => (i.sustancia || "").toUpperCase().includes("COCA")).length,
+                  marihuanaCount: filtered.filter((i) => (i.sustancia || "").toUpperCase().includes("MARI")).length,
                   pacoCount: filtered.filter((i) => (i.sustancia || "").toUpperCase().includes("PACO")).length,
                   incidents: filtered,
                 });

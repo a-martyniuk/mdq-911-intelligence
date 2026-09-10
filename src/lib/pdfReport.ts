@@ -1174,6 +1174,7 @@ export function generateDrogasJcpPDF(data: {
   incidents?: any[];
   totalUniverse?: number;
   activeFilters?: Record<string, string | undefined>;
+  partido?: string;
 }) {
   const win = window.open("", "_blank");
   if (!win) {
@@ -1191,6 +1192,7 @@ export function generateDrogasJcpPDF(data: {
     incidents = [],
     totalUniverse,
     activeFilters = {},
+    partido = "José C. Paz",
   } = data;
 
   const escapeHtml = (str: string) => {
@@ -1231,7 +1233,7 @@ export function generateDrogasJcpPDF(data: {
     <html lang="es">
     <head>
       <meta charset="UTF-8">
-      <title>Dossier Pericial Drogas 911 - José C. Paz</title>
+      <title>Dossier Pericial Drogas 911 - ${escapeHtml(partido)}</title>
       <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #0f172a; padding: 2.5rem; margin: 0; line-height: 1.5; }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #ef4444; padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
@@ -1260,13 +1262,13 @@ export function generateDrogasJcpPDF(data: {
       <div class="header">
         <div>
           <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
-          <div class="subtitle">Dossier de Inteligencia Criminal & Puntos de Venta (911) · Partido de José C. Paz</div>
+          <div class="subtitle">Dossier de Inteligencia Criminal & Puntos de Venta (911) · Partido de ${escapeHtml(partido)}</div>
         </div>
         <div class="badge">Uso Oficial / Pericial</div>
       </div>
 
       <div class="info-box">
-        <strong>ALCANCE METODOLÓGICO REAL:</strong> Consolidación pericial de <strong>${totalIncidents.toLocaleString()} denuncias analizadas</strong> ${totalUniverse && totalUniverse !== totalIncidents ? `(de un universo total de ${totalUniverse.toLocaleString()} despachos registrados en José C. Paz - ${((totalIncidents / totalUniverse) * 100).toFixed(1)}% del partido)` : ""}.
+        <strong>ALCANCE METODOLÓGICO REAL:</strong> Consolidación pericial de <strong>${totalIncidents.toLocaleString()} denuncias analizadas</strong> ${totalUniverse && totalUniverse !== totalIncidents ? `(de un universo total de ${totalUniverse.toLocaleString()} despachos registrados en ${escapeHtml(partido)} - ${((totalIncidents / totalUniverse) * 100).toFixed(1)}% del partido)` : ""}.
         ${incidents.length > 0 ? `<br/>Discriminación por vertiente: <strong>${formalCount.toLocaleString()}</strong> con tipificación formal de drogas ilícitas y <strong>${keywordCount.toLocaleString()}</strong> rescatadas por filtrado semántico de palabras clave.` : ""}
         ${filterBadgesHtml}
       </div>
@@ -1344,7 +1346,10 @@ export function generateDrogasJcpPDF(data: {
   `;
 
   win.document.write(html);
-  win.document.close();
+}
+
+export function generateDrogasMalvinasPDF(data: Parameters<typeof generateDrogasJcpPDF>[0]) {
+  return generateDrogasJcpPDF({ ...data, partido: "Malvinas Argentinas" });
 }
 
 /**
@@ -1726,6 +1731,7 @@ export function generateDrogasGraphPDF(data: {
     armedRate: number;
   };
   selectedNodeLabel?: string;
+  partido?: string;
 }) {
   const win = window.open("", "_blank");
   if (!win) {
@@ -1733,7 +1739,7 @@ export function generateDrogasGraphPDF(data: {
     return;
   }
 
-  const { cliqueName, nodes, edges, dispatches, metrics, selectedNodeLabel } = data;
+  const { cliqueName, nodes, edges, dispatches, metrics, selectedNodeLabel, partido = "José C. Paz" } = data;
 
   const escapeHtml = (str: string) => {
     if (!str) return "";
@@ -1750,7 +1756,7 @@ export function generateDrogasGraphPDF(data: {
     <html lang="es">
     <head>
       <meta charset="UTF-8">
-      <title>Expediente de Inteligencia de Redes Narcocriminales - José C. Paz</title>
+      <title>Expediente de Inteligencia de Redes Narcocriminales - ${escapeHtml(partido)}</title>
       <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #0f172a; padding: 2.5rem; margin: 0; line-height: 1.5; }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #6366f1; padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
@@ -1777,7 +1783,7 @@ export function generateDrogasGraphPDF(data: {
       <div class="header">
         <div>
           <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
-          <div class="subtitle">Dirección de Inteligencia Criminal · Grafo Relacional de Narcotráfico & Bandas (911)</div>
+          <div class="subtitle">Dirección de Inteligencia Criminal · Grafo Relacional de Narcotráfico & Bandas (911) · Partido de ${escapeHtml(partido)}</div>
         </div>
         <div class="badge">Uso Judicial Reservado</div>
       </div>
