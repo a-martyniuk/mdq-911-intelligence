@@ -27,7 +27,14 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
     return incidents.filter((inc) => {
       if (filterOrigen !== "todos") {
         const orig = (inc.origen || inc.Origen_Dataset || "").toUpperCase();
-        if (orig !== filterOrigen.toUpperCase()) return false;
+        const f = filterOrigen.toUpperCase();
+        if (f === "DROGAS_ILICITAS_FORMAL") {
+          if (!orig.includes("DROGAS_ILICITAS") && !orig.includes("FORMAL")) return false;
+        } else if (f === "INFORMACION_VECINAL_KEYWORDS" || f === "INTELIGENCIA_RELATO_KEYWORDS") {
+          if (!orig.includes("KEYWORD") && !orig.includes("INFORMACION") && !orig.includes("RELATO")) return false;
+        } else if (!orig.includes(f)) {
+          return false;
+        }
       }
       if (filterSustancia !== "todos") {
         const sust = (inc.sustancia || inc.SubTipo || "").toUpperCase();
@@ -266,9 +273,9 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
                 className="form-input"
                 style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}
               >
-                <option value="todos">Todas las Fuentes</option>
-                <option value="DROGAS_ILICITAS_FORMAL">🔴 Despacho Formal Drogas</option>
-                <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Búsqueda Semántica Relatos</option>
+                <option value="todos">Todas las Fuentes (1.770 despachos - 1.549 con mapa)</option>
+                <option value="DROGAS_ILICITAS_FORMAL">🔴 Despacho Formal Drogas (989 - 866 con mapa)</option>
+                <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Búsqueda Semántica Relatos (781 - 683 con mapa)</option>
               </select>
             </div>
 

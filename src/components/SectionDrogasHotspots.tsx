@@ -24,7 +24,14 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
     return incidents.filter((inc) => {
       if (filterOrigen !== "todos") {
         const o = (inc.origen || inc.Origen_Dataset || "").toUpperCase();
-        if (o !== filterOrigen.toUpperCase()) return false;
+        const f = filterOrigen.toUpperCase();
+        if (f === "DROGAS_ILICITAS_FORMAL") {
+          if (!o.includes("DROGAS_ILICITAS") && !o.includes("FORMAL")) return false;
+        } else if (f === "INFORMACION_VECINAL_KEYWORDS" || f === "INTELIGENCIA_RELATO_KEYWORDS") {
+          if (!o.includes("KEYWORD") && !o.includes("INFORMACION") && !o.includes("RELATO")) return false;
+        } else if (!o.includes(f)) {
+          return false;
+        }
       }
       if (filterSustancia !== "todos") {
         const s = (inc.sustancia || "").toUpperCase();
@@ -202,9 +209,9 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
                 📑 Vertiente / Fuente 911:
               </label>
               <select value={filterOrigen} onChange={(e) => setFilterOrigen(e.target.value)} className="form-input" style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}>
-                <option value="todos">Todas las Fuentes</option>
-                <option value="DROGAS_ILICITAS_FORMAL">🔴 Despacho Formal Drogas</option>
-                <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Búsqueda Semántica Relatos</option>
+                <option value="todos">Todas las Fuentes (1.770 despachos)</option>
+                <option value="DROGAS_ILICITAS_FORMAL">🔴 Despacho Formal Drogas (989 hechos)</option>
+                <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Búsqueda Semántica Relatos (781 hechos)</option>
               </select>
             </div>
 

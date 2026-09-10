@@ -20,7 +20,15 @@ export default function SectionDrogasSearch({ incidents = [] }: SectionDrogasSea
     let result = incidents;
 
     if (filterOrigen !== "todos") {
-      result = result.filter((r) => (r.origen || r.Origen_Dataset || "").toUpperCase() === filterOrigen.toUpperCase());
+      const f = filterOrigen.toUpperCase();
+      result = result.filter((r) => {
+        const o = (r.origen || r.Origen_Dataset || "").toUpperCase();
+        if (f === "DROGAS_ILICITAS_FORMAL") return o.includes("DROGAS_ILICITAS") || o.includes("FORMAL");
+        if (f === "INFORMACION_VECINAL_KEYWORDS" || f === "INTELIGENCIA_RELATO_KEYWORDS") {
+          return o.includes("KEYWORD") || o.includes("INFORMACION") || o.includes("RELATO");
+        }
+        return o.includes(f);
+      });
     }
 
     if (filterSustancia !== "todos") {
@@ -148,9 +156,9 @@ export default function SectionDrogasSearch({ incidents = [] }: SectionDrogasSea
               className="form-input"
               style={{ width: "100%", height: "38px", fontSize: "0.8rem" }}
             >
-              <option value="todos">Todas las Fuentes</option>
-              <option value="DROGAS_ILICITAS_FORMAL">🔴 Despacho Formal Drogas</option>
-              <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Búsqueda Semántica</option>
+              <option value="todos">Todas las Fuentes (1.770 despachos)</option>
+              <option value="DROGAS_ILICITAS_FORMAL">🔴 Despacho Formal Drogas (989)</option>
+              <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Búsqueda Semántica (781)</option>
             </select>
 
             <select

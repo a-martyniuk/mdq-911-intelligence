@@ -121,7 +121,14 @@ export async function GET(req: NextRequest) {
 
     if (origen && origen !== "todos") {
       const q = origen.toUpperCase();
-      filtered = filtered.filter((r: any) => (r.origen || r.Origen_Dataset || "").toUpperCase().includes(q));
+      filtered = filtered.filter((r: any) => {
+        const o = (r.origen || r.Origen_Dataset || "").toUpperCase();
+        if (q === "DROGAS_ILICITAS_FORMAL") return o.includes("DROGAS_ILICITAS") || o.includes("FORMAL");
+        if (q === "INFORMACION_VECINAL_KEYWORDS" || q === "INTELIGENCIA_RELATO_KEYWORDS") {
+          return o.includes("KEYWORD") || o.includes("INFORMACION") || o.includes("RELATO");
+        }
+        return o.includes(q);
+      });
     }
     if (sustancia && sustancia !== "todos") {
       const q = sustancia.toUpperCase();
