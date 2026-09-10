@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { Flame, Filter, Download, FileText, Info, ShieldAlert, Clock, MapPin, ChevronRight, X, AlertOctagon, Target, Layers, Building2, Home, Route, CheckSquare, Square, Zap, Shield, Crosshair, BarChart3, Radio } from "lucide-react";
+import { Flame, Filter, Download, FileText, Info, ShieldAlert, Clock, MapPin, ChevronRight, X, AlertOctagon, Target, Layers, Building2, Home, CheckSquare, Square, Zap, Shield, Crosshair, BarChart3, Radio } from "lucide-react";
 import { exportToCSV } from "@/lib/excelExport";
 import { generateDrogasJcpPDF, generateDrogasChronicHotspotPDF } from "@/lib/pdfReport";
 import { JURISDICTIONS_JCP_GEOJSON, JCP_MUNICIPAL_BOUNDARY_GEOJSON, POLICE_STATIONS_JCP } from "@/lib/jurisdictionsJcpGeoJSON";
 import { RENABAP_JCP_GEOJSON } from "@/lib/renabapJcpGeoJSON";
-import { CORRIDORS_JCP_GEOJSON } from "@/lib/corridorsJcpGeoJSON";
 import { CHRONIC_HOTSPOTS_JCP, ChronicHotspotNode } from "@/lib/chronicHotspotsJcpData";
 import "leaflet/dist/leaflet.css";
 
@@ -22,7 +21,6 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
   const jurisLayerRef = useRef<any>(null);
   const stationsLayerRef = useRef<any>(null);
   const renabapLayerRef = useRef<any>(null);
-  const corridorsLayerRef = useRef<any>(null);
 
   // Tabs: Map | Matrix 10 Nodes | Esquinas Crónicas | Pareto
   const [activeTab, setActiveTab] = useState<"map" | "nodes" | "corners" | "pareto">("map");
@@ -41,7 +39,6 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
   const [showNodes, setShowNodes] = useState<boolean>(true);
   const [showRenabap, setShowRenabap] = useState<boolean>(true);
   const [showJurisdictions, setShowJurisdictions] = useState<boolean>(false);
-  const [showCorridors, setShowCorridors] = useState<boolean>(false);
 
   // Selected Node for Tactical Dossier Modal
   const [selectedNode, setSelectedNode] = useState<ChronicHotspotNode | null>(null);
@@ -240,27 +237,7 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
           renabapLayerRef.current = renabapLayer;
           if (showRenabap) renabapLayer.addTo(map);
 
-          // C. Corridors Layer
-          const corridorsLayer = L.geoJSON(CORRIDORS_JCP_GEOJSON as any, {
-            style: (feature: any) => ({
-              color: feature.properties.color || "#d97706",
-              weight: 2.5,
-              dashArray: "4, 3",
-              opacity: 0.65,
-            }),
-            onEachFeature: (feature: any, layer: any) => {
-              layer.bindPopup(`
-                <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem; max-width: 260px;">
-                  <strong style="color: ${feature.properties.color || '#d97706'}; font-size: 0.95rem;">
-                    🛣️ ${feature.properties.name}
-                  </strong><br/>
-                  <span style="font-size: 0.8rem; color: #475569;">${feature.properties.description}</span>
-                </div>
-              `);
-            },
-          });
-          corridorsLayerRef.current = corridorsLayer;
-          if (showCorridors) corridorsLayer.addTo(map);
+
 
           // D. Group for 10 Chronic Nodes
           nodesGroupRef.current = L.layerGroup().addTo(map);
@@ -285,7 +262,6 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
         jurisLayerRef.current = null;
         stationsLayerRef.current = null;
         renabapLayerRef.current = null;
-        corridorsLayerRef.current = null;
         setMapReady(false);
       }
     };
@@ -314,14 +290,8 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
       }
     }
 
-    if (corridorsLayerRef.current) {
-      if (showCorridors) {
-        if (!map.hasLayer(corridorsLayerRef.current)) map.addLayer(corridorsLayerRef.current);
-      } else {
-        if (map.hasLayer(corridorsLayerRef.current)) map.removeLayer(corridorsLayerRef.current);
-      }
-    }
-  }, [showJurisdictions, showRenabap, showCorridors, mapReady]);
+
+  }, [showJurisdictions, showRenabap, mapReady]);
 
   // Render Continuous Heatmap Layer (leaflet.heat)
   useEffect(() => {

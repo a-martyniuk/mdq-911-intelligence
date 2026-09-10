@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { MapPin, Filter, Download, Skull, Crosshair, ShieldAlert, Layers, Home, Info, Eye, FileText, Building2, Route, CheckSquare, Square } from "lucide-react";
+import { MapPin, Filter, Download, Skull, Crosshair, ShieldAlert, Layers, Home, Info, Eye, FileText, Building2, CheckSquare, Square } from "lucide-react";
 import { exportToCSV } from "@/lib/excelExport";
 import { generateDrogasJcpPDF } from "@/lib/pdfReport";
 import { JURISDICTIONS_JCP_GEOJSON, JCP_MUNICIPAL_BOUNDARY_GEOJSON, POLICE_STATIONS_JCP } from "@/lib/jurisdictionsJcpGeoJSON";
 import { RENABAP_JCP_GEOJSON } from "@/lib/renabapJcpGeoJSON";
-import { CORRIDORS_JCP_GEOJSON } from "@/lib/corridorsJcpGeoJSON";
 import "leaflet/dist/leaflet.css";
 
 interface SectionDrogasMapProps {
@@ -21,7 +20,6 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
   const stationsLayerRef = useRef<any>(null);
   const renabapLayerRef = useRef<any>(null);
   const renabapLabelsRef = useRef<any>(null);
-  const corridorsLayerRef = useRef<any>(null);
 
   // Filters State
   const [filterOrigen, setFilterOrigen] = useState<string>("todos");
@@ -34,7 +32,6 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
   // Layer Toggles (Replicating Mar del Plata Layer Architecture)
   const [showJurisdictions, setShowJurisdictions] = useState<boolean>(false);
   const [showRenabap, setShowRenabap] = useState<boolean>(true);
-  const [showCorridors, setShowCorridors] = useState<boolean>(false);
   const [showPoints, setShowPoints] = useState<boolean>(true);
   const [onlyBunkers, setOnlyBunkers] = useState<boolean>(false);
 
@@ -218,32 +215,7 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
         renabapLabelsRef.current = renabapLabelsGroup;
         if (showRenabap) renabapLabelsGroup.addTo(map);
 
-        // C. Corridors & Train Lines Layer
-        const corridorsLayer = L.geoJSON(CORRIDORS_JCP_GEOJSON as any, {
-          style: (feature: any) => ({
-            color: feature.properties.color || "#d97706",
-            weight: 2.5,
-            dashArray: "4, 3",
-            opacity: 0.7,
-          }),
-          onEachFeature: (feature: any, layer: any) => {
-            layer.bindPopup(`
-              <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem; max-width: 260px;">
-                <strong style="color: ${feature.properties.color || '#d97706'}; font-size: 0.95rem;">
-                  🛣️ ${feature.properties.name}
-                </strong><br/>
-                <span style="font-size: 0.8rem; color: #475569;">
-                  ${feature.properties.description}
-                </span><br/>
-                <div style="margin-top: 0.35rem; font-size: 0.72rem; color: #64748b;">
-                  Eje Troncal de Conectividad & Escape Delictual
-                </div>
-              </div>
-            `);
-          },
-        });
-        corridorsLayerRef.current = corridorsLayer;
-        if (showCorridors) corridorsLayer.addTo(map);
+
 
         // D. Incidents Circle Markers LayerGroup
         markersGroupRef.current = L.layerGroup().addTo(map);
@@ -266,7 +238,6 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
         stationsLayerRef.current = null;
         renabapLayerRef.current = null;
         renabapLabelsRef.current = null;
-        corridorsLayerRef.current = null;
         setMapReady(false);
       }
     };
@@ -293,14 +264,8 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
       }
     }
 
-    if (corridorsLayerRef.current) {
-      if (showCorridors) {
-        if (!map.hasLayer(corridorsLayerRef.current)) map.addLayer(corridorsLayerRef.current);
-      } else {
-        if (map.hasLayer(corridorsLayerRef.current)) map.removeLayer(corridorsLayerRef.current);
-      }
-    }
-  }, [showJurisdictions, showRenabap, showCorridors, mapReady]);
+
+  }, [showJurisdictions, showRenabap, mapReady]);
 
   // 2. Dynamically update markers without destroying the map
   useEffect(() => {
@@ -516,27 +481,7 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
               }}
             >
               {showRenabap ? <CheckSquare size={14} /> : <Square size={14} />}
-              <Home size={14} /> 🏘️ Asentamientos RENABAP (6)
-            </button>
-
-            <button
-              onClick={() => setShowCorridors(!showCorridors)}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.35rem",
-                padding: "0.35rem 0.75rem",
-                borderRadius: "6px",
-                border: showCorridors ? "1px solid #d97706" : "1px solid var(--border)",
-                background: showCorridors ? "rgba(217, 119, 6, 0.15)" : "var(--bg-base)",
-                color: showCorridors ? "#d97706" : "var(--text-muted)",
-                fontSize: "0.78rem",
-                fontWeight: 700,
-                cursor: "pointer",
-              }}
-            >
-              {showCorridors ? <CheckSquare size={14} /> : <Square size={14} />}
-              <Route size={14} /> 🛣️ Corredores Troncales & FFCC (4)
+              <Home size={14} /> 🏘️ RENABAP Oficial (53)
             </button>
 
             <button
