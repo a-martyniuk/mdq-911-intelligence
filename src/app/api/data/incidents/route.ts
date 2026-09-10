@@ -149,12 +149,29 @@ export async function GET(req: NextRequest) {
       });
     }
     if (sustancia && sustancia !== "todos") {
-      const q = sustancia.toUpperCase().replace(/Í/g, "I");
-      filtered = filtered.filter((r: any) => (r.sustancia || r.SubTipo || "").toUpperCase().replace(/Í/g, "I").includes(q));
+      const q = sustancia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      filtered = filtered.filter((r: any) => {
+        const s = (r.sustancia || r.SubTipo || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        if (q.includes("coca")) return s.includes("coca");
+        if (q.includes("paco")) return s.includes("paco") || s.includes("pasta base");
+        if (q.includes("mari")) return s.includes("mari") || s.includes("faso") || s.includes("flores");
+        if (q.includes("sintet")) return s.includes("sintet") || s.includes("pastilla") || s.includes("extasis");
+        if (q.includes("poli")) return s.includes("poli") || s.includes("no especificada");
+        return s.includes(q);
+      });
     }
     if (tipoLugar && tipoLugar !== "todos") {
-      const q = tipoLugar.toUpperCase();
-      filtered = filtered.filter((r: any) => (r.tipoLugar || r.Tipo_Punto_Venta || "").toUpperCase().includes(q));
+      const q = tipoLugar.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      filtered = filtered.filter((r: any) => {
+        const lug = (r.tipoLugar || r.Tipo_Punto_Venta || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        if (q === "bunker") return lug.includes("bunker") || lug.includes("casilla") || lug.includes("baldio");
+        if (q === "pasillo") return lug.includes("pasillo");
+        if (q === "ventanita") return lug.includes("ventanita") || lug.includes("kiosco") || lug.includes("quiosco");
+        if (q === "vivienda" || q.includes("domicilio")) return lug.includes("finca") || lug.includes("vivienda") || lug.includes("casa") || lug.includes("domicilio") || lug.includes("propiedad");
+        if (q === "via_publica" || q.includes("publica") || q.includes("esquina")) return lug.includes("via publica") || lug.includes("esquina") || lug.includes("vereda");
+        if (q === "no_especificado") return lug.includes("no especificado") || lug.includes("indefinido");
+        return lug.includes(q);
+      });
     }
     if (tieneArmas && tieneArmas !== "todos") {
       const wantArmas = tieneArmas === "true" || tieneArmas === "1";
@@ -165,12 +182,12 @@ export async function GET(req: NextRequest) {
       filtered = filtered.filter((r: any) => (r.barrio || r.Barrio_Detectado || "").toUpperCase().includes(q));
     }
     if (franjaHoraria && franjaHoraria !== "todos") {
-      const q = franjaHoraria.toUpperCase();
-      filtered = filtered.filter((r: any) => (r.franja || r.Franja_Horaria || "").toUpperCase().includes(q));
+      const q = franjaHoraria.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      filtered = filtered.filter((r: any) => (r.franja || r.Franja_Horaria || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(q));
     }
     if (diaSemana && diaSemana !== "todos") {
-      const q = diaSemana.toUpperCase();
-      filtered = filtered.filter((r: any) => (r.dia || r.Dia_Semana || "").toUpperCase().includes(q));
+      const q = diaSemana.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      filtered = filtered.filter((r: any) => (r.dia || r.Dia_Semana || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(q));
     }
     if (qSearch && qSearch.trim() !== "") {
       const q = qSearch.toLowerCase();
@@ -194,8 +211,8 @@ export async function GET(req: NextRequest) {
       const s = (r.sustancia || "").toUpperCase();
       return s.includes("COCAINA") || s.includes("COCAÍNA");
     }).length;
-    const marihuanaCount = filtered.filter((r: any) => (r.sustancia || "").includes("MARIHUANA")).length;
-    const pacoCount = filtered.filter((r: any) => (r.sustancia || "").includes("PACO")).length;
+    const marihuanaCount = filtered.filter((r: any) => (r.sustancia || "").toUpperCase().includes("MARIHUANA")).length;
+    const pacoCount = filtered.filter((r: any) => (r.sustancia || "").toUpperCase().includes("PACO")).length;
 
     return NextResponse.json({
       project: "jcp",
@@ -261,17 +278,40 @@ export async function GET(req: NextRequest) {
       });
     }
     if (sustancia && sustancia !== "todos") {
-      const q = sustancia.toUpperCase().replace(/Í/g, "I");
-      filtered = filtered.filter((r: any) => (r.sustancia || r.SubTipo || "").toUpperCase().replace(/Í/g, "I").includes(q));
+      const q = sustancia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      filtered = filtered.filter((r: any) => {
+        const s = (r.sustancia || r.SubTipo || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        if (q.includes("coca")) return s.includes("coca");
+        if (q.includes("paco")) return s.includes("paco") || s.includes("pasta base");
+        if (q.includes("mari")) return s.includes("mari") || s.includes("faso") || s.includes("flores");
+        if (q.includes("sintet")) return s.includes("sintet") || s.includes("pastilla") || s.includes("extasis");
+        if (q.includes("poli")) return s.includes("poli") || s.includes("no especificada");
+        return s.includes(q);
+      });
     }
     if (tipoLugar && tipoLugar !== "todos") {
-      const q = tipoLugar.toUpperCase().replace(/[ÚÙ]/g, "U").replace(/[ÍÌ]/g, "I");
-      filtered = filtered.filter((r: any) => (r.tipoLugar || "").toUpperCase().replace(/[ÚÙ]/g, "U").replace(/[ÍÌ]/g, "I").includes(q));
+      const q = tipoLugar.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      filtered = filtered.filter((r: any) => {
+        const lug = (r.tipoLugar || r.Tipo_Punto_Venta || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        if (q === "bunker") return lug.includes("bunker") || lug.includes("casilla") || lug.includes("baldio");
+        if (q === "pasillo") return lug.includes("pasillo");
+        if (q === "ventanita") return lug.includes("ventanita") || lug.includes("kiosco") || lug.includes("quiosco");
+        if (q === "vivienda" || q.includes("domicilio")) return lug.includes("finca") || lug.includes("vivienda") || lug.includes("casa") || lug.includes("domicilio") || lug.includes("propiedad");
+        if (q === "via_publica" || q.includes("publica") || q.includes("esquina")) return lug.includes("via publica") || lug.includes("esquina") || lug.includes("vereda");
+        if (q === "no_especificado") return lug.includes("no especificado") || lug.includes("indefinido");
+        return lug.includes(q);
+      });
     }
     if (tieneArmas && tieneArmas !== "todos") { const w = tieneArmas === "true"; filtered = filtered.filter((r: any) => r.tieneArmas === w); }
     if (barrio && barrio !== "todos") filtered = filtered.filter((r: any) => (r.barrio || "").toUpperCase().includes(barrio.toUpperCase()));
-    if (franjaHoraria && franjaHoraria !== "todos") filtered = filtered.filter((r: any) => (r.franja || "").toUpperCase().includes(franjaHoraria.toUpperCase()));
-    if (diaSemana && diaSemana !== "todos") filtered = filtered.filter((r: any) => (r.dia || "").toUpperCase().includes(diaSemana.toUpperCase()));
+    if (franjaHoraria && franjaHoraria !== "todos") {
+      const q = franjaHoraria.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      filtered = filtered.filter((r: any) => (r.franja || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(q));
+    }
+    if (diaSemana && diaSemana !== "todos") {
+      const q = diaSemana.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      filtered = filtered.filter((r: any) => (r.dia || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(q));
+    }
     if (qSearch && qSearch.trim() !== "") {
       const q = qSearch.toLowerCase();
       filtered = filtered.filter((r: any) =>
@@ -337,12 +377,12 @@ export async function GET(req: NextRequest) {
     filtered = filtered.filter((r) => (r.SubTipo || "").toUpperCase().includes(q));
   }
   if (franjaHoraria && franjaHoraria !== "todos") {
-    const q = franjaHoraria.toUpperCase();
-    filtered = filtered.filter((r) => (r.Franja_Horaria || "").toUpperCase().includes(q));
+    const q = franjaHoraria.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    filtered = filtered.filter((r) => (r.Franja_Horaria || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(q));
   }
   if (diaSemana && diaSemana !== "todos") {
-    const q = diaSemana.toUpperCase();
-    filtered = filtered.filter((r) => (r.Dia_Semana || "").toUpperCase().includes(q));
+    const q = diaSemana.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    filtered = filtered.filter((r) => (r.Dia_Semana || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(q));
   }
   if (origenDataset && origenDataset !== "todos") {
     const q = origenDataset.toUpperCase();

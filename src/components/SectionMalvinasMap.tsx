@@ -8,6 +8,16 @@ import { JURISDICTIONS_MALVINAS_GEOJSON, MALVINAS_MUNICIPAL_BOUNDARY_GEOJSON, PO
 import { RENABAP_MALVINAS_GEOJSON } from "@/lib/renabapMalvinasGeoJSON";
 import "leaflet/dist/leaflet.css";
 
+function normalizeBarrio(b: string): string {
+  if (!b) return "";
+  const u = b.toUpperCase().trim();
+  if (u === "NOGUES" || u === "PABLO NOGUES") return "Pablo Nogués";
+  if (u === "MAYO" || u === "VILLA DE MAYO") return "Villa de Mayo";
+  if (u === "POLVORINES" || u === "LOS POLVORINES") return "Los Polvorines";
+  if (u === "SOURDEAUX" || u === "ADOLFO SOURDEAUX") return "Adolfo Sourdeaux";
+  return b.trim();
+}
+
 interface SectionDrogasMapProps {
   incidents: any[];
 }
@@ -50,22 +60,53 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionDrogasMapP
         }
       }
       if (filterSustancia !== "todos") {
-        const sust = (inc.sustancia || inc.SubTipo || "").toUpperCase().replace(/Í/g, "I");
-        const fSust = filterSustancia.toUpperCase().replace(/Í/g, "I");
-        if (!sust.includes(fSust)) return false;
+        const sNorm = (inc.sustancia || inc.SubTipo || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const fNorm = filterSustancia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        if (fNorm.includes("coca")) {
+          if (!sNorm.includes("coca")) return false;
+        } else if (fNorm.includes("paco")) {
+          if (!sNorm.includes("paco") && !sNorm.includes("pasta base")) return false;
+        } else if (fNorm.includes("mari")) {
+          if (!sNorm.includes("mari") && !sNorm.includes("faso") && !sNorm.includes("flores")) return false;
+        } else if (fNorm.includes("sintet")) {
+          if (!sNorm.includes("sintet") && !sNorm.includes("pastilla") && !sNorm.includes("extasis")) return false;
+        } else if (fNorm.includes("poli")) {
+          if (!sNorm.includes("poli") && !sNorm.includes("no especificada")) return false;
+        } else if (!sNorm.includes(fNorm)) {
+          return false;
+        }
       }
       if (filterLugar !== "todos") {
-        const lug = (inc.tipoLugar || inc.Tipo_Punto_Venta || "").toUpperCase().replace(/[ÚÙ]/g, "U").replace(/[ÍÌ]/g, "I");
-        const fLug = filterLugar.toUpperCase().replace(/[ÚÙ]/g, "U").replace(/[ÍÌ]/g, "I");
-        if (!lug.includes(fLug)) return false;
+        const lugNorm = (inc.tipoLugar || inc.Tipo_Punto_Venta || "")
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "");
+        const fLugNorm = filterLugar.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+        if (fLugNorm === "bunker") {
+          if (!lugNorm.includes("bunker") && !lugNorm.includes("casilla") && !lugNorm.includes("baldio")) return false;
+        } else if (fLugNorm === "pasillo") {
+          if (!lugNorm.includes("pasillo")) return false;
+        } else if (fLugNorm === "ventanita") {
+          if (!lugNorm.includes("ventanita") && !lugNorm.includes("kiosco") && !lugNorm.includes("quiosco")) return false;
+        } else if (fLugNorm === "vivienda" || fLugNorm.includes("domicilio")) {
+          if (!lugNorm.includes("finca") && !lugNorm.includes("vivienda") && !lugNorm.includes("casa") && !lugNorm.includes("domicilio") && !lugNorm.includes("propiedad")) return false;
+        } else if (fLugNorm === "via_publica" || fLugNorm.includes("publica") || fLugNorm.includes("esquina")) {
+          if (!lugNorm.includes("via publica") && !lugNorm.includes("esquina") && !lugNorm.includes("vereda")) return false;
+        } else if (fLugNorm === "no_especificado") {
+          if (!lugNorm.includes("no especificado") && !lugNorm.includes("indefinido")) return false;
+        } else if (!lugNorm.includes(fLugNorm)) {
+          return false;
+        }
       }
       if (filterArmas !== "todos") {
         const wantArmas = filterArmas === "si";
         if (inc.tieneArmas !== wantArmas) return false;
       }
       if (filterBarrio !== "todos") {
-        const bar = (inc.barrio || inc.Barrio_Detectado || "").toUpperCase();
-        if (!bar.includes(filterBarrio.toUpperCase())) return false;
+        const bar = normalizeBarrio(inc.barrio || inc.Barrio_Detectado || "").toUpperCase();
+        const fBar = normalizeBarrio(filterBarrio).toUpperCase();
+        if (!bar.includes(fBar)) return false;
       }
       return true;
     });
@@ -75,8 +116,11 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionDrogasMapP
   const barriosList = useMemo(() => {
     const setB = new Set<string>();
     incidents.forEach((r) => {
-      const b = r.barrio || r.Barrio_Detectado;
-      if (b && !b.includes("General") && !b.includes("Desconocido")) setB.add(b);
+      const raw = r.barrio || r.Barrio_Detectado;
+      if (raw && !raw.includes("General") && !raw.includes("Desconocido")) {
+        const norm = normalizeBarrio(raw);
+        if (norm) setB.add(norm);
+      }
     });
     return Array.from(setB).sort();
   }, [incidents]);
@@ -505,6 +549,26 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionDrogasMapP
               {showPoints ? <CheckSquare size={14} /> : <Square size={14} />}
               <MapPin size={14} /> 💊 Puntos Venta ({filteredIncidents.filter(r => r.lat && r.lng).length})
             </button>
+
+            <button
+              onClick={() => setOnlyBunkers(!onlyBunkers)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.35rem",
+                padding: "0.35rem 0.75rem",
+                borderRadius: "6px",
+                border: onlyBunkers ? "1px solid #dc2626" : "1px solid var(--border)",
+                background: onlyBunkers ? "rgba(220, 38, 38, 0.15)" : "var(--bg-base)",
+                color: onlyBunkers ? "#dc2626" : "var(--text-muted)",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              {onlyBunkers ? <CheckSquare size={14} /> : <Square size={14} />}
+              <span>⚡ Solo Focos Críticos (Búnkers / Armados)</span>
+            </button>
           </div>
         </div>
 
@@ -531,6 +595,8 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionDrogasMapP
                 <option value="COCAÍNA">Cocaína</option>
                 <option value="PACO">Paco / Pasta Base</option>
                 <option value="MARIHUANA">Marihuana</option>
+                <option value="SINTETICAS">Sintéticas / Pastillas</option>
+                <option value="POLIRUBRO">Polirubro / Sin especificar</option>
               </select>
             </div>
 
@@ -540,10 +606,12 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionDrogasMapP
               </label>
               <select value={filterLugar} onChange={(e) => setFilterLugar(e.target.value)} className="form-input" style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}>
                 <option value="todos">Todos los Tipos de Lugar</option>
-                <option value="Búnker">Búnkers / Pasillos Fijos</option>
-                <option value="Ventanita">Ventanitas / Kioscos</option>
-                <option value="Domicilio">Domicilios Particulares</option>
-                <option value="Vía Pública">Vía Pública / Esquinas</option>
+                <option value="bunker">Búnkers / Casillas / Baldíos</option>
+                <option value="pasillo">Pasillos de Asentamiento</option>
+                <option value="ventanita">Ventanitas / Kioscos</option>
+                <option value="vivienda">Fincas / Domicilios / Viviendas</option>
+                <option value="via_publica">Vía Pública / Esquinas</option>
+                <option value="no_especificado">Lugar No Especificado</option>
               </select>
             </div>
 

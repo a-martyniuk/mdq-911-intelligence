@@ -28,9 +28,23 @@ function getHour(inc: any): number {
   return 12;
 }
 
+function normalizeDay(d: string): string {
+  if (!d) return "Sin Dato";
+  const s = d.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  if (s.startsWith("lun")) return "Lunes";
+  if (s.startsWith("mar")) return "Martes";
+  if (s.startsWith("mie")) return "Miércoles";
+  if (s.startsWith("jue")) return "Jueves";
+  if (s.startsWith("vie")) return "Viernes";
+  if (s.startsWith("sab")) return "Sábado";
+  if (s.startsWith("dom")) return "Domingo";
+  return d;
+}
+
 function getDay(inc: any): string {
-  if (inc.dia_semana) return inc.dia_semana;
-  if (inc.dia) return inc.dia;
+  if (inc.dia_semana) return normalizeDay(inc.dia_semana);
+  if (inc.dia) return normalizeDay(inc.dia);
+  if (inc.Dia_Semana) return normalizeDay(inc.Dia_Semana);
   if (inc.fecha) {
     const parts = String(inc.fecha).split("/");
     if (parts.length === 3) {
@@ -83,8 +97,21 @@ export default function SectionDrogasTemporal({ incidents = [] }: SectionDrogasT
         }
       }
       if (filterSustancia !== "todos") {
-        const s = (inc.sustancia || "").toUpperCase();
-        if (!s.includes(filterSustancia.toUpperCase())) return false;
+        const sNorm = (inc.sustancia || inc.SubTipo || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const fNorm = filterSustancia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        if (fNorm.includes("coca")) {
+          if (!sNorm.includes("coca")) return false;
+        } else if (fNorm.includes("paco")) {
+          if (!sNorm.includes("paco") && !sNorm.includes("pasta base")) return false;
+        } else if (fNorm.includes("mari")) {
+          if (!sNorm.includes("mari") && !sNorm.includes("faso") && !sNorm.includes("flores")) return false;
+        } else if (fNorm.includes("sintet")) {
+          if (!sNorm.includes("sintet") && !sNorm.includes("pastilla") && !sNorm.includes("extasis")) return false;
+        } else if (fNorm.includes("poli")) {
+          if (!sNorm.includes("poli") && !sNorm.includes("no especificada")) return false;
+        } else if (!sNorm.includes(fNorm)) {
+          return false;
+        }
       }
       if (filterArmas !== "todos") {
         const want = filterArmas === "si";
@@ -319,6 +346,8 @@ export default function SectionDrogasTemporal({ incidents = [] }: SectionDrogasT
               <option value="COCAÍNA">Cocaína</option>
               <option value="PACO">Paco / Pasta Base</option>
               <option value="MARIHUANA">Marihuana</option>
+              <option value="SINTETICAS">Sintéticas / Pastillas</option>
+              <option value="POLIRUBRO">Polirubro / Sin especificar</option>
             </select>
           </div>
 

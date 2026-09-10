@@ -146,14 +146,16 @@ export default function SectionHotspots({ incidents = [], geoPoints = [] }: Sect
 
       // Filter by Franja Horaria
       if (filterFranja !== "todos") {
-        const franja = (inc.Franja_Horaria || inc.franja || "").toLowerCase();
-        if (!franja.includes(filterFranja.toLowerCase())) return false;
+        const franja = (inc.Franja_Horaria || inc.franja || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const fFranja = filterFranja.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        if (!franja.includes(fFranja)) return false;
       }
 
       // Filter by Día de la Semana
       if (filterDia !== "todos") {
-        const dia = (inc.Dia_Semana || inc.dia || "").toLowerCase();
-        if (!dia.includes(filterDia.toLowerCase())) return false;
+        const dia = (inc.Dia_Semana || inc.dia || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const fDia = filterDia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        if (!dia.includes(fDia)) return false;
       }
 
       return true;

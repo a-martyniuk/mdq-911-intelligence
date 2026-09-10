@@ -12,6 +12,19 @@ interface SectionTemporalProps {
   incidents: any[];
 }
 
+function normalizeDay(d: any): string {
+  if (!d) return "";
+  const s = String(d).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  if (s.startsWith("lun")) return "Lunes";
+  if (s.startsWith("mar")) return "Martes";
+  if (s.startsWith("mie")) return "Miércoles";
+  if (s.startsWith("jue")) return "Jueves";
+  if (s.startsWith("vie")) return "Viernes";
+  if (s.startsWith("sab")) return "Sábado";
+  if (s.startsWith("dom")) return "Domingo";
+  return String(d);
+}
+
 export default function SectionTemporal({ incidents = [] }: SectionTemporalProps) {
   const safeIncidents = incidents || [];
 
@@ -21,15 +34,15 @@ export default function SectionTemporal({ incidents = [] }: SectionTemporalProps
 
   // Aggregate day of week data
   const daysOrder = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
-  const dailyCounts = daysOrder.map((d) => safeIncidents.filter((r) => (r.Dia_Semana || r.dia || r.diaSemana) === d).length);
+  const dailyCounts = daysOrder.map((d) => safeIncidents.filter((r) => normalizeDay(r.Dia_Semana || r.dia || r.diaSemana) === d).length);
 
   // 2D Crosstab Matrix (Day x Hour)
   const zMatrix = daysOrder.map((d) =>
-    hours.map((h) => safeIncidents.filter((r) => (r.Dia_Semana || r.dia || r.diaSemana) === d && (r.Hora ?? r.hora) === h).length)
+    hours.map((h) => safeIncidents.filter((r) => normalizeDay(r.Dia_Semana || r.dia || r.diaSemana) === d && (r.Hora ?? r.hora) === h).length)
   );
 
   // Weekend vs Weekday
-  const weekendCount = safeIncidents.filter((r) => r.Es_FinDeSemana || r.es_fin_de_semana || (r.Dia_Semana === "Sábado" || r.Dia_Semana === "Domingo" || r.dia === "Sábado" || r.dia === "Domingo")).length;
+  const weekendCount = safeIncidents.filter((r) => r.Es_FinDeSemana || r.es_fin_de_semana || ["Sábado", "Domingo"].includes(normalizeDay(r.Dia_Semana || r.dia || r.diaSemana))).length;
   const weekdayCount = safeIncidents.length - weekendCount;
 
   // Dynamic Night Calculation

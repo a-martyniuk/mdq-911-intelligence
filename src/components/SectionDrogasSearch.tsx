@@ -32,8 +32,16 @@ export default function SectionDrogasSearch({ incidents = [] }: SectionDrogasSea
     }
 
     if (filterSustancia !== "todos") {
-      const s = filterSustancia.toUpperCase();
-      result = result.filter((r) => (r.sustancia || "").toUpperCase().includes(s));
+      const fNorm = filterSustancia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      result = result.filter((r) => {
+        const sNorm = (r.sustancia || r.SubTipo || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        if (fNorm.includes("coca")) return sNorm.includes("coca");
+        if (fNorm.includes("paco")) return sNorm.includes("paco") || sNorm.includes("pasta base");
+        if (fNorm.includes("mari")) return sNorm.includes("mari") || sNorm.includes("faso") || sNorm.includes("flores");
+        if (fNorm.includes("sintet")) return sNorm.includes("sintet") || sNorm.includes("pastilla") || sNorm.includes("extasis");
+        if (fNorm.includes("poli")) return sNorm.includes("poli") || sNorm.includes("no especificada");
+        return sNorm.includes(fNorm);
+      });
     }
 
     if (filterArmas !== "todos") {
@@ -178,6 +186,8 @@ export default function SectionDrogasSearch({ incidents = [] }: SectionDrogasSea
               <option value="COCAÍNA">Cocaína</option>
               <option value="PACO">Paco / Pasta Base</option>
               <option value="MARIHUANA">Marihuana</option>
+              <option value="SINTETICAS">Sintéticas / Pastillas</option>
+              <option value="POLIRUBRO">Polirubro / Sin especificar</option>
             </select>
 
             <select

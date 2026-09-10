@@ -32,8 +32,16 @@ export default function SectionMalvinasSearch({ incidents = [] }: SectionDrogasS
     }
 
     if (filterSustancia !== "todos") {
-      const s = filterSustancia.toUpperCase().replace(/Í/g, "I");
-      result = result.filter((r) => (r.sustancia || "").toUpperCase().replace(/Í/g, "I").includes(s));
+      const fNorm = filterSustancia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      result = result.filter((r) => {
+        const sNorm = (r.sustancia || r.SubTipo || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        if (fNorm.includes("coca")) return sNorm.includes("coca");
+        if (fNorm.includes("paco")) return sNorm.includes("paco") || sNorm.includes("pasta base");
+        if (fNorm.includes("mari")) return sNorm.includes("mari") || sNorm.includes("faso") || sNorm.includes("flores");
+        if (fNorm.includes("sintet")) return sNorm.includes("sintet") || sNorm.includes("pastilla") || sNorm.includes("extasis");
+        if (fNorm.includes("poli")) return sNorm.includes("poli") || sNorm.includes("no especificada");
+        return sNorm.includes(fNorm);
+      });
     }
 
     if (filterArmas !== "todos") {
@@ -164,8 +172,8 @@ export default function SectionMalvinasSearch({ incidents = [] }: SectionDrogasS
               style={{ width: "100%", height: "38px", fontSize: "0.8rem" }}
             >
               <option value="todos">Todas las Fuentes (1.471 despachos)</option>
-              <option value="DROGAS_ILICITAS_FORMAL">🔴 Despacho Formal Drogas (989)</option>
-              <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Búsqueda Semántica (781)</option>
+              <option value="DROGAS_ILICITAS_FORMAL">🔴 Despacho Formal Drogas (802 hechos)</option>
+              <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Alerta Vecinal por Relato (669 hechos)</option>
             </select>
 
             <select
@@ -178,6 +186,8 @@ export default function SectionMalvinasSearch({ incidents = [] }: SectionDrogasS
               <option value="COCAÍNA">Cocaína</option>
               <option value="PACO">Paco / Pasta Base</option>
               <option value="MARIHUANA">Marihuana</option>
+              <option value="SINTETICAS">Sintéticas / Pastillas</option>
+              <option value="POLIRUBRO">Polirubro / Sin especificar</option>
             </select>
 
             <select

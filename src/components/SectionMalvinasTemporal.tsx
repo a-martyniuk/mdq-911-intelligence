@@ -28,9 +28,33 @@ function getHour(inc: any): number {
   return 12;
 }
 
+function normalizeDay(d: string): string {
+  if (!d) return "Sin Dato";
+  const s = d.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  if (s.startsWith("lun")) return "Lunes";
+  if (s.startsWith("mar")) return "Martes";
+  if (s.startsWith("mie")) return "Miércoles";
+  if (s.startsWith("jue")) return "Jueves";
+  if (s.startsWith("vie")) return "Viernes";
+  if (s.startsWith("sab")) return "Sábado";
+  if (s.startsWith("dom")) return "Domingo";
+  return d;
+}
+
+function normalizeBarrio(b: string): string {
+  if (!b) return "";
+  const u = b.toUpperCase().trim();
+  if (u === "NOGUES" || u === "PABLO NOGUES") return "Pablo Nogués";
+  if (u === "MAYO" || u === "VILLA DE MAYO") return "Villa de Mayo";
+  if (u === "POLVORINES" || u === "LOS POLVORINES") return "Los Polvorines";
+  if (u === "SOURDEAUX" || u === "ADOLFO SOURDEAUX") return "Adolfo Sourdeaux";
+  return b.trim();
+}
+
 function getDay(inc: any): string {
-  if (inc.dia_semana) return inc.dia_semana;
-  if (inc.dia) return inc.dia;
+  if (inc.dia_semana) return normalizeDay(inc.dia_semana);
+  if (inc.dia) return normalizeDay(inc.dia);
+  if (inc.Dia_Semana) return normalizeDay(inc.Dia_Semana);
   if (inc.fecha) {
     const parts = String(inc.fecha).split("/");
     if (parts.length === 3) {
@@ -83,16 +107,30 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionDroga
         }
       }
       if (filterSustancia !== "todos") {
-        const s = (inc.sustancia || "").toUpperCase();
-        if (!s.includes(filterSustancia.toUpperCase())) return false;
+        const sNorm = (inc.sustancia || inc.SubTipo || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const fNorm = filterSustancia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        if (fNorm.includes("coca")) {
+          if (!sNorm.includes("coca")) return false;
+        } else if (fNorm.includes("paco")) {
+          if (!sNorm.includes("paco") && !sNorm.includes("pasta base")) return false;
+        } else if (fNorm.includes("mari")) {
+          if (!sNorm.includes("mari") && !sNorm.includes("faso") && !sNorm.includes("flores")) return false;
+        } else if (fNorm.includes("sintet")) {
+          if (!sNorm.includes("sintet") && !sNorm.includes("pastilla") && !sNorm.includes("extasis")) return false;
+        } else if (fNorm.includes("poli")) {
+          if (!sNorm.includes("poli") && !sNorm.includes("no especificada")) return false;
+        } else if (!sNorm.includes(fNorm)) {
+          return false;
+        }
       }
       if (filterArmas !== "todos") {
         const want = filterArmas === "si";
         if (isArmed(inc) !== want) return false;
       }
       if (filterBarrio !== "todos") {
-        const b = (inc.barrio || "").toUpperCase();
-        if (!b.includes(filterBarrio.toUpperCase())) return false;
+        const b = normalizeBarrio(inc.barrio || inc.Barrio_Detectado || "").toUpperCase();
+        const fBar = normalizeBarrio(filterBarrio).toUpperCase();
+        if (!b.includes(fBar)) return false;
       }
       return true;
     });
@@ -102,7 +140,11 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionDroga
   const barriosList = useMemo(() => {
     const s = new Set<string>();
     incidents.forEach((i) => {
-      if (i.barrio && i.barrio.trim()) s.add(i.barrio.trim());
+      const raw = i.barrio || i.Barrio_Detectado;
+      if (raw && !raw.includes("General") && !raw.includes("Desconocido")) {
+        const norm = normalizeBarrio(raw);
+        if (norm) s.add(norm);
+      }
     });
     return Array.from(s).sort();
   }, [incidents]);
@@ -305,9 +347,9 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionDroga
               📑 Fuente 911:
             </label>
             <select value={filterOrigen} onChange={(e) => setFilterOrigen(e.target.value)} className="form-input" style={{ width: "100%", height: "34px", fontSize: "0.8rem" }}>
-              <option value="todos">Todas las Fuentes</option>
-              <option value="DROGAS_ILICITAS_FORMAL">🔴 Tipificación Formal (989)</option>
-              <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Búsqueda Semántica (781)</option>
+              <option value="todos">Todas las Fuentes (1.471 despachos)</option>
+              <option value="DROGAS_ILICITAS_FORMAL">🔴 Tipificación Formal (802 hechos)</option>
+              <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Alerta Vecinal por Relato (669 hechos)</option>
             </select>
           </div>
 
@@ -320,6 +362,8 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionDroga
               <option value="COCAÍNA">Cocaína</option>
               <option value="PACO">Paco / Pasta Base</option>
               <option value="MARIHUANA">Marihuana</option>
+              <option value="SINTETICAS">Sintéticas / Pastillas</option>
+              <option value="POLIRUBRO">Polirubro / Sin especificar</option>
             </select>
           </div>
 
