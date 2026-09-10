@@ -1,4 +1,4 @@
-﻿// Datos Analíticos y Geoespaciales de los 10 Nodos Crónicos de Resistencia Criminal
+// Datos Analíticos y Geoespaciales de los 10 Nodos Crónicos de Resistencia Criminal
 // Generado a partir de la clusterización espacial de 1.471 despachos 911 en Malvinas Argentinas
 
 export interface ChronicHotspotNode {
@@ -49,7 +49,7 @@ export const CHRONIC_HOTSPOTS_MALVINAS: ChronicHotspotNode[] = [
     franjaCritica: "Noche (18-24 hs)",
     modusOperandi: "Comercialización masiva en vía pública y casas tomadas en torno a la esquina de Ricardo Rojas. Alta presencia de jóvenes sentinelas a pie. Conducción de operaciones desde vivienda principal con múltiples bocas de expendio.",
     intervencionSugerida: "Plan de Saturación Perimetral con 4 móviles en rotación. Relevamiento catastral de inmuebles abandonados en radio de 380m. Solicitud judicial de escuchas telefónicas sobre números detectados en reiterados llamados.",
-    renabapCercano: "Barrio El Sol"
+    renabapCercano: "Barrio Popular Santa Mónica"
   },
   {
     id: 2,
@@ -74,7 +74,7 @@ export const CHRONIC_HOTSPOTS_MALVINAS: ChronicHotspotNode[] = [
     franjaCritica: "Noche (20-02 hs)",
     modusOperandi: "Zona limítrofe entre jurisdicciones policiales explotada para dificultar intervenciones continuas. Puntos de venta semi-fijos en esquinas y delivery en motos sin patente.",
     intervencionSugerida: "Coordinación inter-comisarial 1ra-2da para patrullajes cerrojo. Operativos de interceptación vehicular sorpresiva sobre motos sin patente.",
-    renabapCercano: "Barrio Infico"
+    renabapCercano: "Barrio Popular Santa Lucía"
   },
   {
     id: 3,
@@ -99,7 +99,7 @@ export const CHRONIC_HOTSPOTS_MALVINAS: ChronicHotspotNode[] = [
     franjaCritica: "Madrugada (00-06 hs)",
     modusOperandi: "Conglomerado de 6 bocas de expendio en radio de 2 cuadras. Foco crítico de paco y pasta base. Custodia con armas de fuego en las esquinas de acceso.",
     intervencionSugerida: "Operativo táctico nocturno con fuerzas especiales. Allanamientos simultáneos de las 6 bocas identificadas e intervención judicial por venta de paco.",
-    renabapCercano: "Barrio El Rincón"
+    renabapCercano: "Barrio Popular Eaton"
   },
   {
     id: 4,
@@ -124,7 +124,7 @@ export const CHRONIC_HOTSPOTS_MALVINAS: ChronicHotspotNode[] = [
     franjaCritica: "Noche (19-01 hs)",
     modusOperandi: "Epicentro de mayor hostilidad armada del partido: 93% de hechos con armas reportadas. 8 búnkers y casillas fortificadas. Fuerte intimidación y tiroteos a testigos vecinales.",
     intervencionSugerida: "Intervención de máxima seguridad con Grupo GAD. Derribo de búnkers y puestos fortificados. Protección a testigos vecinales.",
-    renabapCercano: "Barrio Las Casitas"
+    renabapCercano: "Barrio Popular Bellaflor"
   },
   {
     id: 5,
@@ -149,7 +149,7 @@ export const CHRONIC_HOTSPOTS_MALVINAS: ChronicHotspotNode[] = [
     franjaCritica: "Tarde / Noche (16-22 hs)",
     modusOperandi: "Red satelital vinculada al nodo Py & Hiroshima. Escape inmediato hacia arterias de egreso. Empleo de menores de edad como campanas y pasadores.",
     intervencionSugerida: "Saturación perimetral coordinada con el Nodo #4. Corte de ejes de escape y control dinámico con patrullas motorizadas.",
-    renabapCercano: "Barrio Loma Verde"
+    renabapCercano: "Barrio Popular El Chiri"
   },
   {
     id: 6,
@@ -174,7 +174,7 @@ export const CHRONIC_HOTSPOTS_MALVINAS: ChronicHotspotNode[] = [
     franjaCritica: "Noche (18-02 hs)",
     modusOperandi: "Expendio en vía pública con un búnker de resguardo cercano. Alta tasa de portación de armas de fuego y enfrentamientos entre soldaditos de guardia.",
     intervencionSugerida: "Patrullajes a pie intensivos y desarticulación del búnker de apoyo. Puntos de control fijos en esquinas de acceso a Cangallo.",
-    renabapCercano: "La Cava (Grand Bourg)"
+    renabapCercano: "Barrio Popular San Carlitos"
   },
   {
     id: 7,
@@ -199,7 +199,7 @@ export const CHRONIC_HOTSPOTS_MALVINAS: ChronicHotspotNode[] = [
     franjaCritica: "Tarde (14-20 hs)",
     modusOperandi: "Puntos de venta de cocaína fraccionada en viviendas particulares con ventanitas de chapa. Distribución hacia barrios periféricos.",
     intervencionSugerida: "Inspecciones judiciales de los domicilios reincidentes. Investigación de la cadena de proveedores que abastece este corredor.",
-    renabapCercano: "Barrio El Rincón"
+    renabapCercano: "Barrio Popular Santa Mónica"
   },
   {
     id: 8,
@@ -224,7 +224,7 @@ export const CHRONIC_HOTSPOTS_MALVINAS: ChronicHotspotNode[] = [
     franjaCritica: "Noche (20-03 hs)",
     modusOperandi: "Expendio en pasillo interior de difícil penetración vehicular. Centinelas con silbatos y armas cortas alertan ante proximidad policial.",
     intervencionSugerida: "Incursión táctica a pie con unidades de apoyo rápido. Corte de los dos extremos del pasillo de Pozo de Vargas durante el procedimiento.",
-    renabapCercano: "Barrio Unión"
+    renabapCercano: "Barrio Popular Bellaflor"
   },
   {
     id: 9,
@@ -249,7 +249,7 @@ export const CHRONIC_HOTSPOTS_MALVINAS: ChronicHotspotNode[] = [
     franjaCritica: "Tarde / Noche (15-22 hs)",
     modusOperandi: "El nodo con mayor densidad de búnkers en Tortuguitas (6 bocas). Venta continua con rotación de vendedores para evitar flagrancia.",
     intervencionSugerida: "Operativo multi-objetivo con allanamientos en simultáneo. Blindaje de la salida hacia Ruta 197.",
-    renabapCercano: "Santa Rosa (Tortuguitas)"
+    renabapCercano: "Barrio Popular El Cuadrado"
   },
   {
     id: 10,
@@ -274,6 +274,6 @@ export const CHRONIC_HOTSPOTS_MALVINAS: ChronicHotspotNode[] = [
     franjaCritica: "Noche (21-04 hs)",
     modusOperandi: "Tasa de armamento del 100%: la totalidad de denuncias reportan armas de fuego o disparos. Operatoria nocturna de alta peligrosidad.",
     intervencionSugerida: "Acción táctica en franja de madrugada con cobertura blindada. Protección de denunciantes y relevamiento pericial de impactos balísticos.",
-    renabapCercano: "Barrio Infico"
+    renabapCercano: "Barrio Popular Santa Elena"
   }
 ];

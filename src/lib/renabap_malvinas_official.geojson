@@ -1,8 +1,4 @@
-// Capa Oficial RENABAP (Registro Nacional de Barrios Populares - Decreto 573/2023)
-// Fuente: CONICET / Poblaciones.org (Mapa 191801, Región r13860) / SISU
-// 53 Barrios Populares oficiales georreferenciados en Malvinas Argentinas
-
-export const RENABAP_MALVINAS_GEOJSON = {
+{
   "type": "FeatureCollection",
   "features": [
     {
@@ -3812,4 +3808,4 @@ export const RENABAP_MALVINAS_GEOJSON = {
       }
     }
   ]
-};
+}

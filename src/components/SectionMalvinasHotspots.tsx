@@ -715,7 +715,7 @@ export default function SectionMalvinasHotspots({ incidents = [] }: SectionDroga
                   }}
                 >
                   {showRenabap ? <CheckSquare size={13} color="#ea580c" /> : <Square size={13} />}
-                  <span>RENABAP Oficial</span>
+                  <span>RENABAP Oficial (53)</span>
                 </button>
 
                 <button

@@ -483,7 +483,7 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionDrogasMapP
               }}
             >
               {showRenabap ? <CheckSquare size={14} /> : <Square size={14} />}
-              <Home size={14} /> 🏘️ RENABAP Oficial (8)
+              <Home size={14} /> 🏘️ RENABAP Oficial (53)
             </button>
 
             <button
@@ -623,7 +623,7 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionDrogasMapP
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", color: "#fdba74" }}>
                   <span style={{ width: "12px", height: "3px", borderTop: "2px dashed #ea580c", display: "inline-block" }} />
-                  <span>Asentamientos RENABAP (8)</span>
+                  <span>Asentamientos RENABAP (53)</span>
                 </div>
               </div>
             </div>
