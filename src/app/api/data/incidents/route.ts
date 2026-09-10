@@ -7,6 +7,24 @@ import Papa from "papaparse";
 let cachedMdpIncidents: any[] | null = null;
 let cachedMdpRecoveries: any[] | null = null;
 let cachedJcpIncidents: any[] | null = null;
+let cachedMalvinasIncidents: any[] | null = null;
+
+function loadMalvinasData(): any[] {
+  if (!cachedMalvinasIncidents) {
+    let jsonPath = path.join(process.cwd(), "public", "data", "processed", "malvinas_drogas_consolidado.json");
+    if (!fs.existsSync(jsonPath)) {
+      jsonPath = path.join(process.cwd(), "data", "processed", "malvinas_drogas_consolidado.json");
+    }
+    if (fs.existsSync(jsonPath)) {
+      const content = fs.readFileSync(jsonPath, "utf-8");
+      cachedMalvinasIncidents = JSON.parse(content);
+    } else {
+      cachedMalvinasIncidents = [];
+    }
+  }
+  return cachedMalvinasIncidents || [];
+}
+
 
 function loadMdpData() {
   if (!cachedMdpIncidents) {
@@ -209,6 +227,77 @@ export async function GET(req: NextRequest) {
         barrio: r.barrio,
         relato: r.relato,
         comentario: r.comentario
+      })),
+      recoveries: []
+    });
+  }
+
+  // ==========================================
+  // PROYECTO 3: MALVINAS ARGENTINAS (DROGAS)
+  // ==========================================
+  if (project === "malvinas") {
+    const rawMalvinas = loadMalvinasData();
+    let filtered: any[] = rawMalvinas || [];
+
+    const origen = searchParams.get("origen");
+    const sustancia = searchParams.get("sustancia") || searchParams.get("subtipo");
+    const tipoLugar = searchParams.get("tipoLugar");
+    const tieneArmas = searchParams.get("tieneArmas");
+    const barrio = searchParams.get("barrio");
+    const franjaHoraria = searchParams.get("franjaHoraria");
+    const diaSemana = searchParams.get("diaSemana");
+    const qSearch = searchParams.get("q");
+
+    if (origen && origen !== "todos") {
+      const q = origen.toUpperCase();
+      filtered = filtered.filter((r: any) => {
+        const o = (r.origen || r.Origen_Dataset || "").toUpperCase();
+        if (q === "DROGAS_ILICITAS_FORMAL") return o.includes("DROGAS_ILICITAS") || o.includes("FORMAL");
+        if (q === "INFORMACION_VECINAL_KEYWORDS") return o.includes("KEYWORD") || o.includes("INFORMACION");
+        return o.includes(q);
+      });
+    }
+    if (sustancia && sustancia !== "todos") filtered = filtered.filter((r: any) => (r.sustancia || r.SubTipo || "").toUpperCase().includes(sustancia.toUpperCase()));
+    if (tipoLugar && tipoLugar !== "todos") filtered = filtered.filter((r: any) => (r.tipoLugar || "").toUpperCase().includes(tipoLugar.toUpperCase()));
+    if (tieneArmas && tieneArmas !== "todos") { const w = tieneArmas === "true"; filtered = filtered.filter((r: any) => r.tieneArmas === w); }
+    if (barrio && barrio !== "todos") filtered = filtered.filter((r: any) => (r.barrio || "").toUpperCase().includes(barrio.toUpperCase()));
+    if (franjaHoraria && franjaHoraria !== "todos") filtered = filtered.filter((r: any) => (r.franja || "").toUpperCase().includes(franjaHoraria.toUpperCase()));
+    if (diaSemana && diaSemana !== "todos") filtered = filtered.filter((r: any) => (r.dia || "").toUpperCase().includes(diaSemana.toUpperCase()));
+    if (qSearch && qSearch.trim() !== "") {
+      const q = qSearch.toLowerCase();
+      filtered = filtered.filter((r: any) =>
+        (r.relato || "").toLowerCase().includes(q) ||
+        (r.direccion || "").toLowerCase().includes(q) ||
+        (r.comentario || "").toLowerCase().includes(q) ||
+        (r.alias || []).some((a: string) => a.toLowerCase().includes(q))
+      );
+    }
+
+    const totalIncidents = filtered.length;
+    const georeferencedCount = filtered.filter((r: any) => r.lat && r.lng).length;
+    const georeferencedPct = totalIncidents > 0 ? (georeferencedCount / totalIncidents) * 100 : 0;
+    const armasCount = filtered.filter((r: any) => r.tieneArmas).length;
+    const armasPct = totalIncidents > 0 ? (armasCount / totalIncidents) * 100 : 0;
+    const nightCount = filtered.filter((r: any) => (r.franja || "").includes("Noche")).length;
+    const nightPct = totalIncidents > 0 ? (nightCount / totalIncidents) * 100 : 0;
+    const cocainaCount = filtered.filter((r: any) => (r.sustancia || "").includes("COCAINA")).length;
+    const marihuanaCount = filtered.filter((r: any) => (r.sustancia || "").includes("MARIHUANA")).length;
+    const pacoCount = filtered.filter((r: any) => (r.sustancia || "").includes("PACO")).length;
+
+    return NextResponse.json({
+      project: "malvinas",
+      totalIncidents, georeferencedCount, georeferencedPct,
+      armasCount, armasPct, nightCount, nightPct,
+      cocainaCount, marihuanaCount, pacoCount,
+      incidentsCount: filtered.length,
+      incidents: filtered, incidentsSample: filtered,
+      geoPoints: filtered.filter((r: any) => r.lat && r.lng).map((r: any) => ({
+        id: r.id, lat: r.lat, lng: r.lng, tipo: r.tipo, subtipo: r.subtipo,
+        sustancia: r.sustancia, direccion: r.direccion, fecha: r.fecha,
+        franja: r.franja, dia: r.dia, hora: r.hora, tieneArmas: r.tieneArmas,
+        tipoLugar: r.tipoLugar, alias: r.alias, barrio: r.barrio,
+        relato: r.relato, comentario: r.comentario, localidad: r.localidad,
+        partido: r.partido
       })),
       recoveries: []
     });

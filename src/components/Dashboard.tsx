@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { LogOut, Loader2, Car, Skull } from "lucide-react";
+import { LogOut, Loader2, Car, Skull, Crosshair } from "lucide-react";
 import Sidebar from "./Sidebar";
 import IntroBanner from "./IntroBanner";
 import SectionOverview from "./SectionOverview";
@@ -30,11 +30,21 @@ import SectionDrogasGraph from "./SectionDrogasGraph";
 import SectionDrogasTemporal from "./SectionDrogasTemporal";
 import SectionDrogasETL from "./SectionDrogasETL";
 
+// Malvinas Argentinas Sections
+import SectionMalvinasOverview from "./SectionMalvinasOverview";
+import SectionMalvinasMap from "./SectionMalvinasMap";
+import SectionMalvinasNLP from "./SectionMalvinasNLP";
+import SectionMalvinasHotspots from "./SectionMalvinasHotspots";
+import SectionMalvinasSearch from "./SectionMalvinasSearch";
+import SectionMalvinasGraph from "./SectionMalvinasGraph";
+import SectionMalvinasTemporal from "./SectionMalvinasTemporal";
+import SectionMalvinasETL from "./SectionMalvinasETL";
+
 import { FilterState } from "@/lib/types";
 import { getApiUrl, getAppPath } from "@/lib/apiUrl";
 
 export default function Dashboard() {
-  const [currentProject, setCurrentProject] = useState<"mdp" | "jcp">("mdp");
+  const [currentProject, setCurrentProject] = useState<"mdp" | "jcp" | "malvinas">("mdp");
   const [activeSection, setActiveSection] = useState("overview");
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<any>(null);
@@ -53,7 +63,9 @@ export default function Dashboard() {
   useEffect(() => {
     if (currentProject === "jcp" && !activeSection.startsWith("drogas-")) {
       setActiveSection("drogas-overview");
-    } else if (currentProject === "mdp" && activeSection.startsWith("drogas-")) {
+    } else if (currentProject === "malvinas" && !activeSection.startsWith("malvinas-")) {
+      setActiveSection("malvinas-overview");
+    } else if (currentProject === "mdp" && (activeSection.startsWith("drogas-") || activeSection.startsWith("malvinas-"))) {
       setActiveSection("overview");
     }
   }, [currentProject, activeSection]);
@@ -145,6 +157,18 @@ export default function Dashboard() {
     pacoCount: data?.pacoCount || 50,
   };
 
+  // Malvinas Stats
+  const malvinasStats = {
+    totalIncidents: data?.totalIncidents || 1471,
+    georeferencedCount: data?.georeferencedCount || 1451,
+    georeferencedPct: data?.georeferencedPct || 98.6,
+    armasCount: data?.armasCount || 1059,
+    armasPct: data?.armasPct || 72.0,
+    cocainaCount: data?.cocainaCount || 519,
+    marihuanaCount: data?.marihuanaCount || 243,
+    pacoCount: data?.pacoCount || 76,
+  };
+
   return (
     <div className="app-layout">
       {/* Header */}
@@ -159,9 +183,13 @@ export default function Dashboard() {
                 <span style={{ fontSize: "0.75rem", fontWeight: 700, background: "rgba(99,102,241,0.2)", color: "#a5b4fc", padding: "1px 7px", borderRadius: "4px", display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
                   <Car size={12} /> Mar del Plata (Automotores & Delito Calificado)
                 </span>
-              ) : (
+              ) : currentProject === "jcp" ? (
                 <span style={{ fontSize: "0.75rem", fontWeight: 700, background: "rgba(239,68,68,0.2)", color: "#fca5a5", padding: "1px 7px", borderRadius: "4px", display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
                   <Skull size={12} /> José C. Paz (Narcocriminalidad & Puntos de Venta)
+                </span>
+              ) : (
+                <span style={{ fontSize: "0.75rem", fontWeight: 700, background: "rgba(245,158,11,0.2)", color: "#fcd34d", padding: "1px 7px", borderRadius: "4px", display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
+                  <Crosshair size={12} /> Malvinas Argentinas (Narcocriminalidad & Puntos de Venta)
                 </span>
               )}
             </div>
@@ -303,6 +331,22 @@ export default function Dashboard() {
             {activeSection === "drogas-hotspots" && <SectionDrogasHotspots incidents={data?.incidents || data?.geoPoints || []} />}
             {activeSection === "drogas-search" && <SectionDrogasSearch incidents={data?.incidents || []} />}
             {activeSection === "drogas-etl" && <SectionDrogasETL />}
+          </>
+        )}
+
+        {/* ======================================= */}
+        {/* PROYECTO 3: MALVINAS ARGENTINAS (DROGAS) */}
+        {/* ======================================= */}
+        {currentProject === "malvinas" && (
+          <>
+            {activeSection === "malvinas-overview" && <SectionMalvinasOverview stats={malvinasStats} incidents={data?.incidents || data?.geoPoints || []} />}
+            {activeSection === "malvinas-map" && <SectionMalvinasMap incidents={data?.incidents || data?.geoPoints || []} />}
+            {activeSection === "malvinas-temporal" && <SectionMalvinasTemporal incidents={data?.incidents || data?.geoPoints || []} />}
+            {activeSection === "malvinas-nlp" && <SectionMalvinasNLP incidents={data?.incidents || data?.geoPoints || []} />}
+            {activeSection === "malvinas-graph" && <SectionMalvinasGraph incidents={data?.incidents || data?.geoPoints || []} />}
+            {activeSection === "malvinas-hotspots" && <SectionMalvinasHotspots incidents={data?.incidents || data?.geoPoints || []} />}
+            {activeSection === "malvinas-search" && <SectionMalvinasSearch incidents={data?.incidents || []} />}
+            {activeSection === "malvinas-etl" && <SectionMalvinasETL />}
           </>
         )}
       </main>

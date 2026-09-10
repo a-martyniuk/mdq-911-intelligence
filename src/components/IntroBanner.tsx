@@ -1,13 +1,55 @@
 "use client";
 
 import React from "react";
-import { Car, Skull } from "lucide-react";
+import { Car, Skull, Crosshair } from "lucide-react";
 
 interface IntroBannerProps {
-  currentProject?: "mdp" | "jcp";
+  currentProject?: "mdp" | "jcp" | "malvinas";
 }
 
 export default function IntroBanner({ currentProject = "mdp" }: IntroBannerProps) {
+  if (currentProject === "malvinas") {
+    return (
+      <div style={{
+        background: "linear-gradient(135deg, rgba(245,158,11,0.12) 0%, rgba(17,24,39,0.95) 100%)",
+        border: "1px solid rgba(245,158,11,0.3)",
+        borderRadius: "var(--radius-lg)",
+        padding: "1.75rem 2rem",
+        marginBottom: "2rem",
+        position: "relative",
+        overflow: "hidden"
+      }}>
+        <div style={{ position: "relative", zIndex: 2 }}>
+          <div style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            fontSize: "0.75rem",
+            fontWeight: 700,
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            color: "#fbbf24",
+            marginBottom: "0.4rem"
+          }}>
+            <Crosshair size={14} />
+            <span>Plataforma de Inteligencia Narcocriminal & Puntos de Venta · Malvinas Argentinas</span>
+          </div>
+
+          <h2 style={{ fontSize: "1.75rem", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.4rem", lineHeight: 1.2 }}>
+            MALVINAS ARGENTINAS — NARCOCRIMINALIDAD & DROGAS ILÍCITAS 911
+          </h2>
+          <h3 style={{ fontSize: "1rem", fontWeight: 600, color: "var(--text-secondary)", marginBottom: "0.8rem" }}>
+            Georreferenciación de Búnkers, Redes de Expendio y Conflictividad Territorial (6 Localidades)
+          </h3>
+
+          <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", maxWidth: "850px", lineHeight: 1.5 }}>
+            Consolidación y auditoría de <strong style={{ color: "var(--text-primary)" }}>1.471 denuncias vecinales del 911</strong> (802 despachos tipificados formalmente y 669 alertas de información vecinal). Cobertura del 98.6% georreferenciada en Grand Bourg, Los Polvorines, Pablo Nogués, Tortuguitas, Villa de Mayo y Sourdeaux. Identificación de 10 nodos crónicos de resistencia, búnkers y zonas con alta presencia de armamento (72.0%).
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   if (currentProject === "jcp") {
     return (
       <div style={{

@@ -24,8 +24,8 @@ import {
 import { FilterState } from "@/lib/types";
 
 interface SidebarProps {
-  currentProject: "mdp" | "jcp";
-  setCurrentProject: (proj: "mdp" | "jcp") => void;
+  currentProject: "mdp" | "jcp" | "malvinas";
+  setCurrentProject: (proj: "mdp" | "jcp" | "malvinas") => void;
   activeSection: string;
   setActiveSection: (sec: string) => void;
   filters: FilterState;
@@ -74,6 +74,18 @@ export default function Sidebar({
     { id: "drogas-etl", label: "Metodología & Integración ETL", icon: <Database size={18} /> },
   ];
 
+  // Sections for Malvinas Argentinas (Narcocriminalidad & Drogas)
+  const malvinasSections = [
+    { id: "malvinas-overview", label: "Resumen Ejecutivo Narcocriminalidad", icon: <LayoutDashboard size={18} /> },
+    { id: "malvinas-map", label: "Mapa Táctico de Puntos & Búnkers", icon: <MapPin size={18} /> },
+    { id: "malvinas-temporal", label: "Patrones Temporales & Nocturnidad", icon: <Clock size={18} /> },
+    { id: "malvinas-hotspots", label: "Hotspots & Esquinas Crónicas", icon: <Flame size={18} /> },
+    { id: "malvinas-nlp", label: "Inteligencia de Alias & Redes (NLP)", icon: <Brain size={18} /> },
+    { id: "malvinas-graph", label: "Grafo Relacional & Redes de Bandas", icon: <Share2 size={18} /> },
+    { id: "malvinas-search", label: "Buscador Universal de Denuncias 911", icon: <Search size={18} /> },
+    { id: "malvinas-etl", label: "Metodología & Integración ETL", icon: <Database size={18} /> },
+  ];
+
   const resetFilters = () => {
     setFilters({
       tipo: "todos",
@@ -84,7 +96,7 @@ export default function Sidebar({
     });
   };
 
-  const sectionsToRender = currentProject === "mdp" ? mdpSections : jcpSections;
+  const sectionsToRender = currentProject === "mdp" ? mdpSections : currentProject === "jcp" ? jcpSections : malvinasSections;
 
   return (
     <aside className="app-sidebar">
@@ -147,11 +159,38 @@ export default function Sidebar({
               <span style={{ fontSize: "0.68rem", fontWeight: 500, color: "var(--text-muted)" }}>Drogas & Búnkers (1.770)</span>
             </div>
           </button>
+
+          <button
+            onClick={() => {
+              setCurrentProject("malvinas");
+              setActiveSection("malvinas-overview");
+            }}
+            style={{
+              padding: "0.6rem 0.75rem",
+              borderRadius: "6px",
+              border: currentProject === "malvinas" ? "1.5px solid #f59e0b" : "1px solid var(--border)",
+              background: currentProject === "malvinas" ? "rgba(245,158,11,0.15)" : "var(--bg-base)",
+              color: currentProject === "malvinas" ? "#f59e0b" : "var(--text-primary)",
+              fontWeight: 700,
+              fontSize: "0.8rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              cursor: "pointer",
+              textAlign: "left"
+            }}
+          >
+            <Crosshair size={16} />
+            <div>
+              <div>Malvinas Argentinas</div>
+              <span style={{ fontSize: "0.68rem", fontWeight: 500, color: "var(--text-muted)" }}>Drogas & Búnkers (1.471)</span>
+            </div>
+          </button>
         </div>
       </div>
 
       <div className="nav-section-label">
-        {currentProject === "mdp" ? "Inteligencia Mar del Plata" : "Inteligencia Narcocriminal JCP"}
+        {currentProject === "mdp" ? "Inteligencia Mar del Plata" : currentProject === "jcp" ? "Inteligencia Narcocriminal JCP" : "Inteligencia Narcocriminal Malvinas"}
       </div>
 
       {sectionsToRender.map((sec) => (
