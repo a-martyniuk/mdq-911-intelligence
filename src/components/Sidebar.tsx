@@ -340,6 +340,38 @@ export default function Sidebar({
           </div>
         </div>
       )}
+
+      {/* Tarjeta Institucional Oficial */}
+      <div style={{
+        marginTop: "2rem",
+        padding: "0.9rem",
+        background: "rgba(15, 23, 42, 0.65)",
+        border: "1px solid rgba(255, 255, 255, 0.08)",
+        borderRadius: "8px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "0.5rem"
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+          <img
+            src="/images/institucional/logo_superintendencia.png"
+            alt="Superintendencia"
+            style={{ height: "30px", width: "auto", objectFit: "contain" }}
+          />
+          <div>
+            <div style={{ fontWeight: 800, color: "var(--text-primary)", fontSize: "0.72rem", lineHeight: 1.2 }}>
+              Superintendencia de Investigaciones
+            </div>
+            <div style={{ fontSize: "0.65rem", color: "#38bdf8", fontWeight: 600 }}>
+              Delitos Complejos y Crimen Organizado
+            </div>
+          </div>
+        </div>
+        <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "0.4rem", fontSize: "0.66rem", color: "var(--text-muted)", lineHeight: 1.3 }}>
+          📍 Paseo del Bosque, La Plata (CP 1900)<br/>
+          📞 (0221) 423-1867/186
+        </div>
+      </div>
     </aside>
   );
 }

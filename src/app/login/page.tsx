@@ -41,15 +41,39 @@ export default function LoginPage() {
   return (
     <div className="login-container">
       <div className="login-card">
-        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-          <div className="brand-icon" style={{ width: "56px", height: "56px", margin: "0 auto 1.25rem", fontSize: "1.5rem" }}>
-            <ShieldCheck size={32} />
+        <div style={{ textAlign: "center", marginBottom: "1.75rem" }}>
+          <div style={{
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "1rem",
+            background: "rgba(255, 255, 255, 0.05)",
+            border: "1px solid rgba(255, 255, 255, 0.12)",
+            borderRadius: "12px",
+            padding: "8px 16px",
+            marginBottom: "1rem"
+          }}>
+            <img
+              src="/images/institucional/logo_ministerio.svg"
+              alt="Ministerio de Seguridad PBA"
+              style={{ height: "44px", width: "auto" }}
+            />
+            <div style={{ width: "1px", height: "34px", background: "rgba(255, 255, 255, 0.2)" }} />
+            <img
+              src="/images/institucional/logo_superintendencia.png"
+              alt="Superintendencia de Investigaciones"
+              style={{ height: "42px", width: "auto" }}
+            />
           </div>
-          <h1 style={{ fontSize: "1.6rem", fontWeight: 800, marginBottom: "0.4rem" }} className="gradient-text">
-            Plataforma 911 Mar del Plata
+
+          <div style={{ fontSize: "0.78rem", fontWeight: 700, color: "#38bdf8", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "0.25rem" }}>
+            Superintendencia de Investigaciones de Delitos Complejos
+          </div>
+          <h1 style={{ fontSize: "1.4rem", fontWeight: 800, marginBottom: "0.25rem" }} className="gradient-text">
+            Plataforma 911 & Geointeligencia Criminal
           </h1>
-          <p style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
-            Acceso restringido para análisis de Data Engineering & Intelligence
+          <p style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
+            Ministerio de Seguridad · Provincia de Buenos Aires
           </p>
         </div>
 
@@ -105,10 +129,12 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div style={{ marginTop: "2rem", paddingTop: "1.25rem", borderTop: "1px solid var(--border)", textAlign: "center" }}>
-          <p style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
-            © 2026 Alexis Martyniuk · Data Engineering Portfolio
-          </p>
+        <div style={{ marginTop: "1.75rem", paddingTop: "1.25rem", borderTop: "1px solid var(--border)", textAlign: "center" }}>
+          <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", lineHeight: 1.45 }}>
+            <strong style={{ color: "var(--text-secondary)" }}>Superintendencia de Investigaciones de Delitos Complejos y Crimen Organizado</strong><br/>
+            📍 Avenida 52 S/N entre 117 y 118 – Paseo del Bosque de La Plata (C.P. N° 1900)<br/>
+            📞 Conmutador Oficial: (0221) 423-1867/186 · Documento Reservado (Ley 13.482)
+          </div>
         </div>
       </div>
     </div>

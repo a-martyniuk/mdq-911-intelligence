@@ -1,3 +1,4 @@
+import { INSTITUCIONAL_INFO, getInstitucionalHeaderHTML, getInstitucionalFooterHTML } from "./institucionalData";
 import { POLICE_JURISDICTIONS_GEOJSON } from "./jurisdictionsGeoJSON";
 import { RENABAP_BARRIOS_GEOJSON } from "./renabapGeoJSON";
 import { formatTimeDifference } from "./formatters";
@@ -51,6 +52,7 @@ export function generateCaseFilePrint(data: any) {
         </style>
       </head>
       <body>
+        ${getInstitucionalHeaderHTML()}
         <div class="header">
           <div>
             <div class="title">FICHA DE TRAZABILIDAD VEHICULAR (PATENTE ${data.Patente || data.Patente_Principal})</div>
@@ -85,6 +87,8 @@ export function generateCaseFilePrint(data: any) {
             <b>Relato 911:</b> ${data.Relato_Hallazgo || "Sin relato disponible"}
           </div>
         </div>
+
+        ${getInstitucionalFooterHTML()}
 
         <div class="footer">
           Documento Oficial de Inteligencia Operativa · Generado por MDQ 911 System
@@ -173,6 +177,7 @@ export function generateCaseFilePrint(data: any) {
       </style>
     </head>
     <body>
+      ${getInstitucionalHeaderHTML()}
       <div class="header">
         <div>
           <div class="title">JEFATURA DEPARTAMENTAL GENERAL PUEYRREDÓN</div>
@@ -234,6 +239,8 @@ export function generateCaseFilePrint(data: any) {
           </div>
         `).join("")}
       </div>
+
+      ${getInstitucionalFooterHTML()}
 
       <div class="footer">
         Expediente de Inteligencia Generado por MDQ 911 System · Documento reservado · ${new Date().toLocaleString("es-AR")}
@@ -401,6 +408,7 @@ export function generateExecutiveDossierPDF(data: any) {
       </style>
     </head>
     <body>
+      ${getInstitucionalHeaderHTML()}
       <div class="header">
         <div>
           <div class="title">DOSSIER EJECUTIVO DE SEGURIDAD E INTELIGENCIA 911</div>
@@ -504,6 +512,8 @@ export function generateExecutiveDossierPDF(data: any) {
           <strong>👮 APORTE OPERATIVO POLICIAL:</strong> Confirma empíricamente que los asentamientos periféricos vulnerables son utilizados de forma sistemática por las bandas delictivas como <strong>zonas primarias de enfriamiento de vehículos, desguace rápido de motovehículos (&lt; 6 horas) o punto de transbordo a vehículos de apoyo</strong>.
         </div>
       </div>
+
+      ${getInstitucionalFooterHTML()}
 
       <div class="footer">
         Documento oficial generado por la Plataforma de Inteligencia Policial & Trazabilidad 911 - General Pueyrredón.<br/>
@@ -631,6 +641,7 @@ export function generateAllTrajectoriesPDF(rawRecoveries: any[], filterSummary?:
       </style>
     </head>
     <body>
+      ${getInstitucionalHeaderHTML()}
       <div class="header">
         <div>
           <div class="title">INFORME CONSOLIDADO DE TRAZABILIDAD VEHICULAR (ROBO ➔ HALLAZGO)</div>
@@ -718,6 +729,8 @@ export function generateAllTrajectoriesPDF(rawRecoveries: any[], filterSummary?:
           }).join("")}
         </tbody>
       </table>
+
+      ${getInstitucionalFooterHTML()}
 
       <div class="footer">
         Documento Oficial de Inteligencia Operativa · General Pueyrredón · Uso Reservado
@@ -887,6 +900,7 @@ export function generateHotspotsPDF(data: {
       </style>
     </head>
     <body>
+      ${getInstitucionalHeaderHTML()}
       <div class="header">
         <div>
           <div class="title">INFORME DE INTELIGENCIA DE HOTSPOTS & DENSIDAD KERNEL (KDE)</div>
@@ -963,6 +977,8 @@ export function generateHotspotsPDF(data: {
           `}
         </tbody>
       </table>
+
+      ${getInstitucionalFooterHTML()}
 
       <div class="footer">
         Documento Oficial de Inteligencia Policial · Plataforma MDQ 911 · Emisión Reservada
@@ -1082,6 +1098,7 @@ export function generateSNAWarrantPDF(data: {
       </style>
     </head>
     <body>
+      ${getInstitucionalHeaderHTML()}
       <div class="header">
         <div>
           <div class="title">MINISTERIO PÚBLICO FISCAL · JEFATURA DEPARTAMENTAL MDQ</div>
@@ -1165,6 +1182,8 @@ export function generateSNAWarrantPDF(data: {
           `).join("")}
         </tbody>
       </table>
+
+      ${getInstitucionalFooterHTML()}
 
       <div class="footer">
         Documento de Fundamentación Analítica generado por MDQ 911 Intelligence System · Reserva Judicial · ${new Date().toLocaleString("es-AR")}
@@ -1480,6 +1499,7 @@ export function generateDrogasJcpPDF(data: {
       </style>
     </head>
     <body>
+      ${getInstitucionalHeaderHTML({ themeColor })}
       <div class="header">
         <div>
           <div class="title">MINISTERIO DE SEGURIDAD · PROVINCIA DE BUENOS AIRES</div>
@@ -1811,6 +1831,8 @@ export function generateDrogasJcpPDF(data: {
         </div>
       `}
 
+      ${getInstitucionalFooterHTML()}
+
       <div class="footer">
         Documento judicial y operacional emitido por la Plataforma MSEG Intelligence · Reserva de Sumario · Partido de ${escapeHtml(partido)} · ${new Date().toLocaleString("es-AR")}
       </div>
@@ -2127,6 +2149,7 @@ export function generateDrogasSuspectsPDF(data: {
       </div>
 
       <div class="page-wrap">
+        ${getInstitucionalHeaderHTML({ themeColor: "#7c3aed" })}
         <div class="header">
           <div>
             <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
@@ -2255,6 +2278,8 @@ export function generateDrogasSuspectsPDF(data: {
             </div>
           </div>
         `).join('')}
+
+        ${getInstitucionalFooterHTML()}
 
         <div class="footer">
           Documento confidencial emitido por la Plataforma MSEG Intelligence · Reserva de Sumario · ${new Date().toLocaleString("es-AR")}
@@ -2407,6 +2432,7 @@ export function generateDrogasGraphPDF(data: {
       </style>
     </head>
     <body>
+      ${getInstitucionalHeaderHTML({ themeColor: "#2563eb" })}
       <div class="header">
         <div>
           <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
@@ -2523,6 +2549,8 @@ export function generateDrogasGraphPDF(data: {
         `).join("")}
       ` : ''}
 
+      ${getInstitucionalFooterHTML()}
+
       <div class="footer">
         Documento judicial reservado emitido por la Plataforma MSEG Intelligence · Reserva de Sumario · ${new Date().toLocaleString("es-AR")}
       </div>
@@ -2584,6 +2612,7 @@ export function generateJurisdictionsReportPDF(data: {
       </style>
     </head>
     <body>
+      ${getInstitucionalHeaderHTML()}
       <div class="header">
         <div>
           <div class="title">Jefatura Departamental General Pueyrredón · Ministerio de Seguridad</div>
@@ -2629,6 +2658,8 @@ export function generateJurisdictionsReportPDF(data: {
           `).join("")}
         </tbody>
       </table>
+
+      ${getInstitucionalFooterHTML()}
 
       <div class="footer">
         Documento oficial emitido por la Plataforma MSEG Intelligence · ${new Date().toLocaleString("es-AR")}
@@ -2694,6 +2725,7 @@ export function generateVehiclesComparisonReportPDF(data: {
       </style>
     </head>
     <body>
+      ${getInstitucionalHeaderHTML()}
       <div class="header">
         <div>
           <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
@@ -2752,6 +2784,8 @@ export function generateVehiclesComparisonReportPDF(data: {
           `).join("")}
         </tbody>
       </table>
+
+      ${getInstitucionalFooterHTML()}
 
       <div class="footer">
         Documento oficial emitido por la Plataforma MSEG Intelligence · ${new Date().toLocaleString("es-AR")}
@@ -2813,6 +2847,7 @@ export function generateTemporalReportPDF(data: {
       </style>
     </head>
     <body>
+      ${getInstitucionalHeaderHTML()}
       <div class="header">
         <div>
           <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
@@ -2864,6 +2899,8 @@ export function generateTemporalReportPDF(data: {
           }).join("")}
         </tbody>
       </table>
+
+      ${getInstitucionalFooterHTML()}
 
       <div class="footer">
         Documento oficial emitido por la Plataforma MSEG Intelligence · ${new Date().toLocaleString("es-AR")}
@@ -3112,6 +3149,7 @@ export function generateDrogasTemporalPDF(incidents: any[] = [], activeFilters?:
       </style>
     </head>
     <body>
+      ${getInstitucionalHeaderHTML({ themeColor })}
       <div class="header">
         <div>
           <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
@@ -3253,6 +3291,8 @@ export function generateDrogasTemporalPDF(incidents: any[] = [], activeFilters?:
           </div>
         `;
       }).join("")}
+
+      ${getInstitucionalFooterHTML()}
 
       <div class="footer">
         Documento oficial emitido por la Plataforma MSEG Intelligence · Partido de ${escapeHtml(partido)} · ${new Date().toLocaleString("es-AR")}
@@ -3396,6 +3436,7 @@ export function generateDrogasTacticalDeploymentPDF(incidents: any[] = [], activ
       </style>
     </head>
     <body>
+      ${getInstitucionalHeaderHTML({ themeColor: "#059669" })}
       <div class="header">
         <div>
           <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
@@ -3487,6 +3528,8 @@ export function generateDrogasTacticalDeploymentPDF(incidents: any[] = [], activ
           `).join("")}
         </tbody>
       </table>
+
+      ${getInstitucionalFooterHTML()}
 
       <div class="footer">
         Documento oficial emitido por la Plataforma MSEG Intelligence · Despliegue Operacional ${escapeHtml(partido)} · ${new Date().toLocaleString("es-AR")}
@@ -3597,6 +3640,7 @@ export function generateDrogasChronicHotspotPDF(corner: {
       </style>
     </head>
     <body>
+      ${getInstitucionalHeaderHTML({ themeColor: "#dc2626" })}
       <div class="header">
         <div>
           <div class="title">Ministerio de Seguridad · Provincia de Buenos Aires</div>
@@ -3668,6 +3712,8 @@ export function generateDrogasChronicHotspotPDF(corner: {
           </div>
         `;
       }).join("")}
+
+      ${getInstitucionalFooterHTML()}
 
       <div class="footer">
         Expediente confeccionado por Plataforma MSEG Intelligence · ${escapeHtml(corner.name)} · ${new Date().toLocaleString("es-AR")}

@@ -173,12 +173,31 @@ export default function Dashboard() {
     <div className="app-layout">
       {/* Header */}
       <header className="app-header">
-        <div className="header-brand">
-          <div className="brand-icon">MSEG</div>
+        <div className="header-brand" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", background: "rgba(255, 255, 255, 0.05)", padding: "4px 8px", borderRadius: "8px", border: "1px solid rgba(255, 255, 255, 0.1)" }}>
+            <img
+              src="/images/institucional/logo_ministerio.svg"
+              alt="Ministerio de Seguridad PBA"
+              style={{ height: "32px", width: "auto", objectFit: "contain" }}
+            />
+            <div style={{ width: "1px", height: "24px", background: "rgba(255, 255, 255, 0.2)" }} />
+            <img
+              src="/images/institucional/logo_superintendencia.png"
+              alt="Superintendencia de Investigaciones"
+              style={{ height: "32px", width: "auto", objectFit: "contain" }}
+            />
+          </div>
           <div>
-            <h1 className="brand-title">MSEG — Inteligencia Delictual & Análisis Criminal 911</h1>
+            <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem", flexWrap: "wrap" }}>
+              <h1 className="brand-title" style={{ margin: 0, fontSize: "1.05rem" }}>
+                Superintendencia de Investigaciones de Delitos Complejos
+              </h1>
+              <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontWeight: 600 }}>
+                · Ministerio de Seguridad PBA
+              </span>
+            </div>
             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "0.15rem" }}>
-              <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Proyecto Activo:</span>
+              <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Jurisdicción Operacional:</span>
               {currentProject === "mdp" ? (
                 <span style={{ fontSize: "0.75rem", fontWeight: 700, background: "rgba(99,102,241,0.2)", color: "#a5b4fc", padding: "1px 7px", borderRadius: "4px", display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
                   <Car size={12} /> Mar del Plata (Automotores & Delito Calificado)
@@ -385,6 +404,54 @@ export default function Dashboard() {
           </>
         )}
       </main>
+
+      {/* Footer Institucional Oficial */}
+      <footer style={{
+        margin: "2rem 1.5rem 1rem 1.5rem",
+        padding: "1.25rem 1.75rem",
+        background: "rgba(15, 23, 42, 0.75)",
+        backdropFilter: "blur(12px)",
+        border: "1px solid rgba(255, 255, 255, 0.08)",
+        borderRadius: "12px",
+        display: "flex",
+        flexWrap: "wrap",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: "1.5rem",
+        fontSize: "0.8rem",
+        color: "var(--text-muted)"
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "1.25rem", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", background: "rgba(255, 255, 255, 0.05)", padding: "6px 10px", borderRadius: "8px", border: "1px solid rgba(255, 255, 255, 0.1)" }}>
+            <img src="/images/institucional/logo_ministerio.svg" alt="Ministerio de Seguridad PBA" style={{ height: "36px", width: "auto" }} />
+            <div style={{ width: "1px", height: "28px", background: "rgba(255, 255, 255, 0.2)" }} />
+            <img src="/images/institucional/logo_superintendencia.png" alt="Superintendencia de Investigaciones" style={{ height: "36px", width: "auto" }} />
+          </div>
+          <div>
+            <div style={{ fontWeight: 800, color: "var(--text-primary)", fontSize: "0.85rem" }}>
+              Ministerio de Seguridad de la Provincia de Buenos Aires
+            </div>
+            <div style={{ color: "#38bdf8", fontWeight: 700, fontSize: "0.8rem", marginTop: "1px" }}>
+              Superintendencia de Investigaciones de Delitos Complejos y Crimen Organizado
+            </div>
+            <div style={{ fontSize: "0.74rem", marginTop: "3px", color: "var(--text-secondary)" }}>
+              📍 Avenida 52 S/N entre 117 y 118 – Paseo del Bosque de La Plata (C.P. N° 1900) · 📞 (0221) 423-1867/186
+            </div>
+          </div>
+        </div>
+
+        <div style={{ textAlign: "right", fontSize: "0.75rem", lineHeight: 1.45 }}>
+          <div style={{ fontWeight: 800, color: "var(--text-primary)", textTransform: "uppercase", letterSpacing: "0.4px" }}>
+            Sistema Integrado de Geointeligencia & Análisis Criminal 911
+          </div>
+          <div style={{ color: "var(--text-muted)" }}>
+            Documento y Plataforma de Carácter Reservado · Ley Provincial N° 13.482
+          </div>
+          <div style={{ color: "#64748b", fontSize: "0.7rem", marginTop: "2px" }}>
+            Apoyo Técnico Operacional y Pericial a Unidades Fiscales de Instrucción
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
