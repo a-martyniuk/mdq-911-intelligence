@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { Brain, UserCheck, Home, MessageSquare, Search, AlertTriangle, ShieldAlert, Sparkles, Filter, CheckCircle, Tag, Download, FileText } from "lucide-react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
+import { Brain, UserCheck, Home, MessageSquare, Search, AlertTriangle, ShieldAlert, Sparkles, Filter, CheckCircle, Tag, Download, FileText, MapPin, Crosshair, Navigation, LocateFixed } from "lucide-react";
 import { generateDrogasSuspectsPDF } from "@/lib/pdfReport";
 import { exportToCSV } from "@/lib/excelExport";
+import "leaflet/dist/leaflet.css";
 
 interface SectionDrogasNLPProps {
   incidents: any[];
@@ -12,6 +13,27 @@ interface SectionDrogasNLPProps {
 export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSuspect, setSelectedSuspect] = useState<string | null>(null);
+
+  const mapContainerRef = useRef<HTMLDivElement | null>(null);
+  const mapInstanceRef = useRef<any>(null);
+  const markersGroupRef = useRef<any>(null);
+  const markerMapRef = useRef<Map<string | number, any>>(new Map());
+
+  // Count geocoded points per suspect/alias
+  const suspectGeoCounts = useMemo(() => {
+    const counts: { [alias: string]: number } = {};
+    incidents.forEach((inc) => {
+      if (inc.lat && inc.lng && inc.alias) {
+        inc.alias.forEach((a: string) => {
+          const clean = a.trim();
+          if (clean) {
+            counts[clean] = (counts[clean] || 0) + 1;
+          }
+        });
+      }
+    });
+    return counts;
+  }, [incidents]);
 
   // Extract Top Aliases and occurrences
   const aliasRanking = useMemo(() => {
@@ -88,6 +110,150 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
 
     return list.filter((r) => (r.alias && r.alias.length > 0) || r.tieneArmas).slice(0, 30);
   }, [incidents, searchTerm, selectedSuspect]);
+
+  const geocodedFilteredCount = useMemo(() => {
+    return filteredIncidents.filter((r) => r.lat && r.lng).length;
+  }, [filteredIncidents]);
+
+  // 1. Initialize Map once
+  useEffect(() => {
+    let isMounted = true;
+
+    import("leaflet").then((L) => {
+      if (!isMounted || !mapContainerRef.current) return;
+
+      if (!mapInstanceRef.current) {
+        const map = L.map(mapContainerRef.current, {
+          center: [-34.520, -58.775],
+          zoom: 13,
+        });
+
+        L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+          attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap',
+          maxZoom: 19,
+        }).addTo(map);
+
+        markersGroupRef.current = L.layerGroup().addTo(map);
+        mapInstanceRef.current = map;
+
+        setTimeout(() => {
+          map.invalidateSize();
+        }, 300);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+        markersGroupRef.current = null;
+        markerMapRef.current.clear();
+      }
+    };
+  }, []);
+
+  // 2. Render markers dynamically when suspect or search filter changes
+  useEffect(() => {
+    if (!mapInstanceRef.current || !markersGroupRef.current) return;
+
+    import("leaflet").then((L) => {
+      const group = markersGroupRef.current;
+      const map = mapInstanceRef.current;
+      if (!group || !map) return;
+
+      group.clearLayers();
+      markerMapRef.current.clear();
+
+      const points = filteredIncidents.filter((r) => r.lat && r.lng);
+
+      points.forEach((inc) => {
+        const isArmed = inc.tieneArmas;
+        const isTargetSuspect = selectedSuspect && (inc.alias || []).some((a: string) => a.toLowerCase() === selectedSuspect.toLowerCase());
+
+        const fillColor = isArmed ? "#ef4444" : isTargetSuspect ? "#8b5cf6" : "#f59e0b";
+        const radius = isTargetSuspect ? 8 : (isArmed ? 7 : 5);
+
+        const marker = L.circleMarker([inc.lat, inc.lng], {
+          radius,
+          fillColor,
+          color: "#ffffff",
+          weight: isTargetSuspect ? 2.5 : 1.5,
+          fillOpacity: 0.88,
+        });
+
+        const popupHtml = `
+          <div style="font-family:inherit; font-size:0.8rem; line-height:1.45; min-width:210px; max-width:280px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; border-bottom:1px solid #e2e8f0; padding-bottom:3px;">
+              <strong style="color:${isArmed ? '#dc2626' : '#6366f1'};">ID 911 #${inc.id}</strong>
+              <span style="font-size:0.7rem; color:#64748b;">${inc.fecha}</span>
+            </div>
+            ${selectedSuspect ? `
+              <div style="display:inline-flex; align-items:center; gap:3px; background:#ede9fe; color:#6d28d9; font-weight:700; font-size:0.72rem; padding:2px 7px; border-radius:4px; margin-bottom:5px;">
+                👤 Investigado: ${selectedSuspect}
+              </div><br/>
+            ` : (inc.alias && inc.alias.length ? `
+              <div style="color:#d97706; font-size:0.72rem; font-weight:700; margin-bottom:4px;">
+                🏷️ ${inc.alias.join(", ")}
+              </div>
+            ` : "")}
+            <div style="font-size:0.78rem; color:#1e293b; margin-bottom:2px;">
+              📍 <strong>${inc.direccion || "José C. Paz"}</strong>
+            </div>
+            <div style="font-size:0.72rem; color:#64748b; margin-bottom:6px;">
+              Barrio: ${inc.barrio || "Centro / General"} (${inc.tipoLugar || "Lugar"})
+            </div>
+            <div style="display:flex; gap:4px; flex-wrap:wrap; margin-bottom:6px;">
+              <span style="background:#fee2e2; color:#dc2626; font-weight:700; font-size:0.7rem; padding:1px 5px; border-radius:3px;">💊 ${inc.sustancia || "Drogas"}</span>
+              ${isArmed ? `<span style="background:#fecaca; color:#991b1b; font-weight:700; font-size:0.7rem; padding:1px 5px; border-radius:3px;">⚠️ ARMAS</span>` : ""}
+            </div>
+            <div style="background:#f8fafc; padding:6px 8px; border-radius:4px; border:1px solid #e2e8f0; font-size:0.73rem; color:#334155; max-height:85px; overflow-y:auto; line-height:1.35;">
+              "${inc.relato}"
+            </div>
+          </div>
+        `;
+
+        marker.bindPopup(popupHtml);
+        marker.addTo(group);
+        markerMapRef.current.set(inc.id, marker);
+      });
+
+      // Fit bounds to points if suspect selected or search active
+      if (points.length > 0) {
+        if (selectedSuspect || searchTerm.trim() !== "") {
+          const latLngs = points.map((p) => [p.lat, p.lng] as [number, number]);
+          const bounds = L.latLngBounds(latLngs);
+          map.fitBounds(bounds, { padding: [45, 45], maxZoom: 16, animate: true });
+        } else {
+          map.setView([-34.520, -58.775], 13);
+        }
+      } else {
+        map.setView([-34.520, -58.775], 13);
+      }
+    });
+  }, [filteredIncidents, selectedSuspect, searchTerm]);
+
+  const panToIncident = (inc: any) => {
+    if (!mapInstanceRef.current || !inc.lat || !inc.lng) return;
+    mapInstanceRef.current.setView([inc.lat, inc.lng], 16, { animate: true });
+    const marker = markerMapRef.current.get(inc.id);
+    if (marker) {
+      marker.openPopup();
+    }
+  };
+
+  const reCenterMap = () => {
+    if (!mapInstanceRef.current) return;
+    import("leaflet").then((L) => {
+      const points = filteredIncidents.filter((r) => r.lat && r.lng);
+      if (points.length > 0) {
+        const bounds = L.latLngBounds(points.map((p) => [p.lat, p.lng] as [number, number]));
+        mapInstanceRef.current.fitBounds(bounds, { padding: [45, 45], maxZoom: 16, animate: true });
+      } else {
+        mapInstanceRef.current.setView([-34.520, -58.775], 13);
+      }
+    });
+  };
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
@@ -242,6 +408,11 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
                     <span style={{ fontSize: "0.75rem", fontWeight: 800, padding: "0.2rem 0.6rem", borderRadius: "4px", background: "rgba(239,68,68,0.15)", color: "#ef4444" }}>
                       {item.count} denuncias
                     </span>
+                    {suspectGeoCounts[item.alias] > 0 && (
+                      <div style={{ fontSize: "0.68rem", color: "#10b981", fontWeight: 700, display: "flex", alignItems: "center", gap: "2px", justifyContent: "flex-end", marginTop: "3px" }}>
+                        📍 {suspectGeoCounts[item.alias]} en mapa
+                      </div>
+                    )}
                     <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "0.2rem" }}>
                       Último: {item.lastDate?.split(" ")[0]}
                     </div>
@@ -291,72 +462,220 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
         </div>
       </div>
 
-      {/* Relatos Explorer with Live NLP Highlight */}
-      <div className="card">
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem" }}>
-          <div>
-            <div className="card-title" style={{ gap: "0.5rem" }}>
-              <MessageSquare size={18} color="var(--accent-indigo)" />
-              <span>
-                {selectedSuspect ? `Despachos Correlacionados con "${selectedSuspect}" (${filteredIncidents.length} Casos)` : "Auditoría de Relatos Policiales 911 (NLP en Vivo)"}
-              </span>
+      {/* Dynamic Georeferencing Map & Despachos Correlacionados */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(460px, 1fr))", gap: "1.5rem" }}>
+        {/* Left Column: Interactive Suspect / Alias Map */}
+        <div className="card" style={{ display: "flex", flexDirection: "column" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.8rem", marginBottom: "0.75rem" }}>
+            <div>
+              <div className="card-title" style={{ gap: "0.5rem", margin: 0 }}>
+                <MapPin size={18} color={selectedSuspect ? "#8b5cf6" : "#ef4444"} />
+                <span>
+                  {selectedSuspect
+                    ? `Mapa Territorial de "${selectedSuspect}"`
+                    : "Georreferenciación de Redes & Despachos NLP"}
+                </span>
+              </div>
+              <p className="card-subtitle" style={{ margin: "0.2rem 0 0" }}>
+                {selectedSuspect
+                  ? `Mostrando ${geocodedFilteredCount} de ${filteredIncidents.length} despachos con coordenadas vinculados a ${selectedSuspect}:`
+                  : "Ubicaciones de denuncias con mención de alias o estupefacientes en José C. Paz:"}
+              </p>
             </div>
-            <p className="card-subtitle" style={{ margin: "0.2rem 0 0" }}>
-              {selectedSuspect ? `Llamadas donde se menciona directamente a ${selectedSuspect} como involucrado:` : "Explorador de declaraciones textuales con detección de narcocriminalidad, armas y alias."}
-            </p>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <span
+                style={{
+                  fontSize: "0.72rem",
+                  fontWeight: 700,
+                  padding: "0.25rem 0.6rem",
+                  borderRadius: "4px",
+                  background: geocodedFilteredCount > 0 ? "rgba(16, 185, 129, 0.15)" : "rgba(156, 163, 175, 0.15)",
+                  color: geocodedFilteredCount > 0 ? "#10b981" : "var(--text-muted)",
+                }}
+              >
+                📍 {geocodedFilteredCount} / {filteredIncidents.length} en mapa
+              </span>
+
+              <button
+                onClick={reCenterMap}
+                className="btn-logout"
+                title="Recentrar y encuadrar todos los puntos en el mapa"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.3rem",
+                  fontSize: "0.72rem",
+                  fontWeight: 700,
+                  height: "30px",
+                  padding: "0 0.6rem",
+                  background: "var(--bg-base)",
+                  border: "1px solid var(--border)",
+                  color: "var(--text-secondary)",
+                  cursor: "pointer",
+                }}
+              >
+                <Crosshair size={13} />
+                <span>Recentrar</span>
+              </button>
+            </div>
           </div>
 
-          {!selectedSuspect && (
-            <div style={{ width: "320px" }}>
-              <input
-                type="text"
-                placeholder="Buscar por alias, búnker, cocaína, calle..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="form-input"
-                style={{ width: "100%", height: "36px", fontSize: "0.8rem" }}
-              />
+          {/* Map Legend & Active Target Indicator */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: "0.5rem",
+              background: "var(--bg-base)",
+              padding: "0.45rem 0.75rem",
+              borderRadius: "6px",
+              marginBottom: "0.75rem",
+              border: "1px solid var(--border)",
+              fontSize: "0.72rem",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", flexWrap: "wrap" }}>
+              <span style={{ display: "flex", alignItems: "center", gap: "4px", color: "var(--text-secondary)" }}>
+                <span style={{ width: "9px", height: "9px", borderRadius: "50%", background: "#ef4444", display: "inline-block" }}></span>
+                Armas / Balaceras
+              </span>
+              <span style={{ display: "flex", alignItems: "center", gap: "4px", color: "var(--text-secondary)" }}>
+                <span style={{ width: "9px", height: "9px", borderRadius: "50%", background: "#8b5cf6", display: "inline-block" }}></span>
+                {selectedSuspect ? `Vinculado a ${selectedSuspect}` : "Sospechoso con Alias"}
+              </span>
+              <span style={{ display: "flex", alignItems: "center", gap: "4px", color: "var(--text-secondary)" }}>
+                <span style={{ width: "9px", height: "9px", borderRadius: "50%", background: "#f59e0b", display: "inline-block" }}></span>
+                Punto de Venta / Búnker
+              </span>
             </div>
-          )}
+            {selectedSuspect && (
+              <span style={{ color: "var(--accent-indigo)", fontWeight: 700 }}>
+                Filtro activo: {selectedSuspect}
+              </span>
+            )}
+          </div>
+
+          {/* Leaflet Map Canvas */}
+          <div
+            ref={mapContainerRef}
+            style={{
+              width: "100%",
+              height: "530px",
+              borderRadius: "6px",
+              border: "1px solid var(--border)",
+              overflow: "hidden",
+              position: "relative",
+              zIndex: 1,
+            }}
+          />
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", maxHeight: "480px", overflowY: "auto", paddingRight: "0.5rem" }}>
-          {filteredIncidents.map((inc, i) => (
-            <div key={i} style={{ background: "var(--bg-base)", padding: "0.85rem", borderRadius: "6px", border: "1px solid var(--border)", fontSize: "0.8rem" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontWeight: 700, marginBottom: "0.4rem" }}>
-                <span style={{ color: "var(--accent-indigo)" }}>
-                  ID 911 #{inc.id} | {inc.tipoLugar}
+        {/* Right Column: Despachos / Relatos Auditoría */}
+        <div className="card" style={{ display: "flex", flexDirection: "column" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.8rem", marginBottom: "0.75rem" }}>
+            <div>
+              <div className="card-title" style={{ gap: "0.5rem", margin: 0 }}>
+                <MessageSquare size={18} color="var(--accent-indigo)" />
+                <span>
+                  {selectedSuspect
+                    ? `Despachos: "${selectedSuspect}" (${filteredIncidents.length})`
+                    : `Relatos 911 Auditados (${filteredIncidents.length})`}
                 </span>
-                <span style={{ color: "var(--text-muted)", fontSize: "0.75rem" }}>
-                  {inc.fecha} ({inc.franja}) | {inc.barrio}
-                </span>
               </div>
-
-              <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginBottom: "0.5rem" }}>
-                <span style={{ background: "rgba(239,68,68,0.15)", color: "#ef4444", padding: "2px 6px", borderRadius: "4px", fontWeight: 700, fontSize: "0.75rem" }}>
-                  💊 {inc.sustancia}
-                </span>
-                {inc.tieneArmas && (
-                  <span style={{ background: "rgba(220,38,38,0.2)", color: "#f87171", padding: "2px 6px", borderRadius: "4px", fontWeight: 700, fontSize: "0.75rem" }}>
-                    ⚠️ ARMAS / DISPAROS
-                  </span>
-                )}
-                {inc.alias && inc.alias.map((a: string, aIdx: number) => (
-                  <span key={aIdx} style={{ background: "rgba(245,158,11,0.2)", color: "#fbbf24", padding: "2px 6px", borderRadius: "4px", fontWeight: 700, fontSize: "0.75rem" }}>
-                    🏷️ {a}
-                  </span>
-                ))}
-              </div>
-
-              <div style={{ color: "var(--text-secondary)", marginBottom: "0.3rem" }}>
-                📍 {inc.direccion} {inc.comentario ? `(${inc.comentario})` : ""}
-              </div>
-
-              <div style={{ background: "var(--bg-card)", padding: "0.6rem", borderRadius: "4px", border: "1px solid var(--border)", color: "var(--text-secondary)", lineHeight: 1.4 }}>
-                {inc.relato}
-              </div>
+              <p className="card-subtitle" style={{ margin: "0.2rem 0 0" }}>
+                {selectedSuspect
+                  ? `Denuncias al 911 donde se señala la actividad de ${selectedSuspect}:`
+                  : "Muestra de llamados con mención de alias delictivos y narcotráfico:"}
+              </p>
             </div>
-          ))}
+
+            {!selectedSuspect && (
+              <div style={{ width: "240px" }}>
+                <input
+                  type="text"
+                  placeholder="Filtrar despachos o calles..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="form-input"
+                  style={{ width: "100%", height: "32px", fontSize: "0.75rem" }}
+                />
+              </div>
+            )}
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", maxHeight: "580px", overflowY: "auto", paddingRight: "0.4rem" }}>
+            {filteredIncidents.map((inc, i) => {
+              const hasCoords = Boolean(inc.lat && inc.lng);
+              return (
+                <div key={i} style={{ background: "var(--bg-base)", padding: "0.85rem", borderRadius: "6px", border: "1px solid var(--border)", fontSize: "0.8rem" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontWeight: 700, marginBottom: "0.4rem" }}>
+                    <span style={{ color: "var(--accent-indigo)" }}>
+                      ID 911 #{inc.id} | {inc.tipoLugar || "Lugar"}
+                    </span>
+                    <span style={{ color: "var(--text-muted)", fontSize: "0.75rem" }}>
+                      {inc.fecha} ({inc.franja}) | {inc.barrio}
+                    </span>
+                  </div>
+
+                  <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap", marginBottom: "0.5rem", alignItems: "center" }}>
+                    <span style={{ background: "rgba(239,68,68,0.15)", color: "#ef4444", padding: "2px 6px", borderRadius: "4px", fontWeight: 700, fontSize: "0.72rem" }}>
+                      💊 {inc.sustancia || "Drogas"}
+                    </span>
+                    {inc.tieneArmas && (
+                      <span style={{ background: "rgba(220,38,38,0.2)", color: "#f87171", padding: "2px 6px", borderRadius: "4px", fontWeight: 700, fontSize: "0.72rem" }}>
+                        ⚠️ ARMAS / DISPAROS
+                      </span>
+                    )}
+                    {inc.alias && inc.alias.map((a: string, aIdx: number) => (
+                      <span key={aIdx} style={{ background: "rgba(245,158,11,0.2)", color: "#fbbf24", padding: "2px 6px", borderRadius: "4px", fontWeight: 700, fontSize: "0.72rem" }}>
+                        🏷️ {a}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem", flexWrap: "wrap", gap: "0.4rem" }}>
+                    <div style={{ color: "var(--text-secondary)", fontSize: "0.78rem" }}>
+                      📍 <strong>{inc.direccion || "José C. Paz"}</strong> {inc.comentario ? `(${inc.comentario})` : ""}
+                    </div>
+
+                    {hasCoords ? (
+                      <button
+                        onClick={() => panToIncident(inc)}
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "4px",
+                          padding: "3px 8px",
+                          borderRadius: "4px",
+                          fontSize: "0.72rem",
+                          fontWeight: 700,
+                          background: "rgba(99, 102, 241, 0.15)",
+                          color: "var(--accent-indigo)",
+                          border: "1px solid rgba(99, 102, 241, 0.35)",
+                          cursor: "pointer",
+                          transition: "all 0.15s ease",
+                        }}
+                        title="Localizar este incidente en el mapa"
+                      >
+                        <MapPin size={12} /> Ver en Mapa
+                      </button>
+                    ) : (
+                      <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", fontStyle: "italic" }}>
+                        (Sin coordenadas exactas)
+                      </span>
+                    )}
+                  </div>
+
+                  <div style={{ background: "var(--bg-card)", padding: "0.6rem", borderRadius: "4px", border: "1px solid var(--border)", color: "var(--text-secondary)", lineHeight: 1.4, fontSize: "0.76rem" }}>
+                    {inc.relato}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
