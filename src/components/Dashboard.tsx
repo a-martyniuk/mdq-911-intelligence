@@ -412,7 +412,7 @@ export default function Dashboard() {
             {activeSection === "recovery-tracker" && <SectionRecoveryTracker recoveries={data?.recoveries || []} />}
             {activeSection === "gang-intelligence" && <SectionGangIntelligence incidents={data?.incidents || data?.incidentsSample || []} />}
             {activeSection === "jurisdictions" && <SectionJurisdictions incidents={data?.incidents || data?.incidentsSample || []} recoveries={data?.recoveries || []} />}
-            {activeSection === "graph" && <SectionGraph incidents={data?.incidents || data?.incidentsSample || []} />}
+            {activeSection === "graph" && <SectionGraph incidents={data?.incidents || data?.incidentsSample || []} recoveries={data?.recoveries || []} />}
             {activeSection === "search" && <SectionSearch incidents={data?.incidents || data?.incidentsSample || []} />}
             {activeSection === "hotspots" && <SectionHotspots incidents={data?.incidents || data?.incidentsSample || []} geoPoints={data?.geoPoints || []} />}
             {activeSection === "temporal" && <SectionTemporal incidents={data?.incidents || data?.incidentsSample || []} />}
