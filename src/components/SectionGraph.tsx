@@ -66,6 +66,23 @@ const GRAPH_EDGES: Edge[] = [
   { source: "moto_negra_dos", target: "noche", weight: 310, label: "Operación Nocturna Serial" }
 ];
 
+const getCategoryLabel = (category: string) => {
+  switch (category) {
+    case "weapon":
+      return "ARMAS / BALÍSTICA";
+    case "brand":
+      return "MARCA VEHICULAR";
+    case "modus":
+      return "MODUS OPERANDI / HUB";
+    case "time":
+      return "FRANJA HORARIA";
+    case "nlp_cell":
+      return "CÉLULA BISAGRA (NLP)";
+    default:
+      return category.toUpperCase();
+  }
+};
+
 interface SectionGraphProps {
   incidents: any[];
   recoveries?: any[];
@@ -448,7 +465,7 @@ export default function SectionGraph({ incidents = [], recoveries = [], gangs = 
               <div style={{ background: "var(--bg-base)", padding: "1rem", borderRadius: "8px", border: `1.5px solid ${selectedNode.color}` }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
                   <span style={{ fontSize: "0.75rem", fontWeight: 800, padding: "0.2rem 0.6rem", borderRadius: "4px", background: selectedNode.color, color: "#fff" }}>
-                    {selectedNode.category.toUpperCase()}
+                    {getCategoryLabel(selectedNode.category)}
                   </span>
                   <span style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontWeight: 600 }}>
                     Intermediación SNA ($C_B$): <strong style={{ color: "#a855f7" }}>{selectedNode.betweennessScore || 0.5}</strong>

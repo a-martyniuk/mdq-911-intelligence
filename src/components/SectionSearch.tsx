@@ -103,23 +103,28 @@ export default function SectionSearch({ incidents = [] }: SectionSearchProps) {
             <Filter size={16} style={{ color: "var(--text-muted)" }} />
             <span style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontWeight: 600 }}>Entidad:</span>
             <div style={{ display: "flex", gap: "0.3rem" }}>
-              {(["todos", "armas", "patentes", "marcas", "modus"] as const).map((mode) => (
+              {[
+                { id: "todos", label: "Todas" },
+                { id: "armas", label: "Armas" },
+                { id: "patentes", label: "Patentes" },
+                { id: "marcas", label: "Marcas" },
+                { id: "modus", label: "Modus Operandi" }
+              ].map(({ id, label }) => (
                 <button
-                  key={mode}
-                  onClick={() => setEntityFilter(mode)}
+                  key={id}
+                  onClick={() => setEntityFilter(id as any)}
                   style={{
                     padding: "0.4rem 0.75rem",
                     borderRadius: "6px",
                     border: "1px solid var(--border)",
-                    background: entityFilter === mode ? "var(--accent-indigo)" : "var(--bg-card)",
-                    color: entityFilter === mode ? "#fff" : "var(--text-secondary)",
+                    background: entityFilter === id ? "var(--accent-indigo)" : "var(--bg-card)",
+                    color: entityFilter === id ? "#fff" : "var(--text-secondary)",
                     cursor: "pointer",
                     fontSize: "0.75rem",
                     fontWeight: 600,
-                    textTransform: "capitalize",
                   }}
                 >
-                  {mode === "todos" ? "Todas" : mode}
+                  {label}
                 </button>
               ))}
             </div>

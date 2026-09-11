@@ -2484,15 +2484,32 @@ export function generateDrogasGraphPDF(data: {
           </tr>
         </thead>
         <tbody>
-          ${nodes.slice(0, 30).map((n) => `
+          ${nodes.slice(0, 30).map((n) => {
+            const catLower = (n.category || "").toLowerCase();
+            let catEs = n.category;
+            let catColor = "#059669";
+            if (catLower.includes("suspect") || catLower.includes("sospech")) {
+              catEs = "Sospechoso / Investigado";
+              catColor = "#7c3aed";
+            } else if (catLower.includes("bunker") || catLower.includes("búnker") || catLower.includes("punto")) {
+              catEs = "Punto de Venta / Búnker";
+              catColor = "#d97706";
+            } else if (catLower.includes("weapon") || catLower.includes("arma") || catLower.includes("balística")) {
+              catEs = "Armamento / Disparos";
+              catColor = "#dc2626";
+            } else if (catLower.includes("substance") || catLower.includes("sustancia")) {
+              catEs = "Sustancia Ilícita";
+              catColor = "#059669";
+            }
+            return `
             <tr>
               <td><strong>${escapeHtml(n.label)}</strong></td>
-              <td><span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: ${n.category === 'suspect' ? '#7c3aed' : n.category === 'bunker' ? '#d97706' : n.category === 'weapon' ? '#dc2626' : '#059669'};">${escapeHtml(n.category)}</span></td>
+              <td><span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: ${catColor};">${escapeHtml(catEs)}</span></td>
               <td style="font-weight: 700;">${n.count}</td>
               <td>${n.degree}</td>
               <td>${escapeHtml(n.address || n.barrio || n.description || partido)}</td>
             </tr>
-          `).join("")}
+          `;}).join("")}
         </tbody>
       </table>
 

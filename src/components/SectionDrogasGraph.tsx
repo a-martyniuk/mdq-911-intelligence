@@ -655,7 +655,16 @@ export default function SectionDrogasGraph({ incidents = [] }: SectionDrogasGrap
       nodes: displayNodes.map((n) => ({
         id: n.id,
         label: n.label,
-        category: n.category,
+        category:
+          n.category === "suspect"
+            ? "Sospechoso / Investigado"
+            : n.category === "bunker"
+            ? "Punto de Venta / Búnker"
+            : n.category === "weapon"
+            ? "Armamento / Disparos"
+            : n.category === "substance"
+            ? "Sustancia Ilícita"
+            : n.category,
         count: n.count,
         degree: n.degree,
         address: n.address,
@@ -677,7 +686,15 @@ export default function SectionDrogasGraph({ incidents = [] }: SectionDrogasGrap
 
   const handleCopyFicha = () => {
     if (!activeSelectedNode) return;
-    const text = `FICHA INTELIGENCIA MSEG\nEntidad: ${activeSelectedNode.label}\nCategoría: ${activeSelectedNode.category.toUpperCase()}\nDespachos 911: ${activeSelectedNode.count}\nConexiones: ${activeSelectedNode.degree}\nSustancia: ${activeSelectedNode.dominantSubstance || 'N/D'}\nArmas: ${activeSelectedNode.isArmed ? 'SI' : 'NO'}\nDirección: ${activeSelectedNode.address || activeSelectedNode.barrio || 'José C. Paz'}`;
+    const catLabel =
+      activeSelectedNode.category === "suspect"
+        ? "Sospechoso / Investigado"
+        : activeSelectedNode.category === "bunker"
+        ? "Punto de Venta / Búnker"
+        : activeSelectedNode.category === "substance"
+        ? "Sustancia Ilícita"
+        : "Armamento / Disparos";
+    const text = `FICHA INTELIGENCIA MSEG\nEntidad: ${activeSelectedNode.label}\nCategoría: ${catLabel}\nDespachos 911: ${activeSelectedNode.count}\nConexiones: ${activeSelectedNode.degree}\nSustancia: ${activeSelectedNode.dominantSubstance || 'N/D'}\nArmas: ${activeSelectedNode.isArmed ? 'SI' : 'NO'}\nDirección: ${activeSelectedNode.address || activeSelectedNode.barrio || 'José C. Paz'}`;
     navigator.clipboard.writeText(text);
     setCopiedId(true);
     setTimeout(() => setCopiedId(false), 2000);
