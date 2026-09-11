@@ -52,6 +52,7 @@ function MapComponent({
   const jurisLayerRef = React.useRef<any>(null);
   const renabapLayerRef = React.useRef<any>(null);
   const LRef = React.useRef<any>(null);
+  const [mapReady, setMapReady] = React.useState(false);
 
   // Initialize Map Once
   useEffect(() => {
@@ -139,6 +140,11 @@ function MapComponent({
         if (showRenabap) renabapLayer.addTo(map);
 
         mapInstanceRef.current = map;
+        setMapReady(true);
+
+        setTimeout(() => {
+          map.invalidateSize();
+        }, 200);
       }
     });
 
@@ -151,36 +157,38 @@ function MapComponent({
         vectorsLayerRef.current = null;
         jurisLayerRef.current = null;
         renabapLayerRef.current = null;
+        setMapReady(false);
       }
     };
   }, []);
 
   // Toggle Jurisdictions Layer
   useEffect(() => {
+    if (!mapReady || !mapInstanceRef.current || !jurisLayerRef.current) return;
     const map = mapInstanceRef.current;
     const layer = jurisLayerRef.current;
-    if (!map || !layer) return;
     if (showJurisdictions) {
       if (!map.hasLayer(layer)) map.addLayer(layer);
     } else {
       if (map.hasLayer(layer)) map.removeLayer(layer);
     }
-  }, [showJurisdictions]);
+  }, [showJurisdictions, mapReady]);
 
   // Toggle RENABAP Layer
   useEffect(() => {
+    if (!mapReady || !mapInstanceRef.current || !renabapLayerRef.current) return;
     const map = mapInstanceRef.current;
     const layer = renabapLayerRef.current;
-    if (!map || !layer) return;
     if (showRenabap) {
       if (!map.hasLayer(layer)) map.addLayer(layer);
     } else {
       if (map.hasLayer(layer)) map.removeLayer(layer);
     }
-  }, [showRenabap]);
+  }, [showRenabap, mapReady]);
 
   // Update Points Layer Group (dynamic time slider / filter)
   useEffect(() => {
+    if (!mapReady) return;
     const layerGroup = pointsLayerRef.current;
     const L = LRef.current;
     if (!layerGroup || !L) return;
@@ -248,10 +256,11 @@ function MapComponent({
       marker.bindPopup(popupContent);
       marker.addTo(layerGroup);
     });
-  }, [points, showPoints]);
+  }, [points, showPoints, mapReady]);
 
   // Update Vectors Layer Group
   useEffect(() => {
+    if (!mapReady) return;
     const layerGroup = vectorsLayerRef.current;
     const L = LRef.current;
     if (!layerGroup || !L) return;
@@ -309,7 +318,7 @@ function MapComponent({
         }).bindPopup(`<b>🟢 Hallazgo / Descarte: Patente ${c.Patente_Principal}</b><br/>${c.Dirección_Hallazgo || ""}`).addTo(layerGroup);
       }
     });
-  }, [recoveries, showVectors]);
+  }, [recoveries, showVectors, mapReady]);
 
   return (
     <div

@@ -70,6 +70,7 @@ function TrajectoryMap({
   const renabapLayerRef = React.useRef<any>(null);
   const trajectoriesLayerRef = React.useRef<any>(null);
   const LRef = React.useRef<any>(null);
+  const [mapReady, setMapReady] = React.useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -155,6 +156,11 @@ function TrajectoryMap({
         if (showRenabap) renabapLayer.addTo(map);
 
         mapInstanceRef.current = map;
+        setMapReady(true);
+
+        setTimeout(() => {
+          map.invalidateSize();
+        }, 200);
       }
     });
 
@@ -166,36 +172,38 @@ function TrajectoryMap({
         jurisLayerRef.current = null;
         renabapLayerRef.current = null;
         trajectoriesLayerRef.current = null;
+        setMapReady(false);
       }
     };
   }, []);
 
   // Toggle Jurisdictions Layer
   useEffect(() => {
+    if (!mapReady || !mapInstanceRef.current || !jurisLayerRef.current) return;
     const map = mapInstanceRef.current;
     const layer = jurisLayerRef.current;
-    if (!map || !layer) return;
     if (showJurisdictions) {
       if (!map.hasLayer(layer)) map.addLayer(layer);
     } else {
       if (map.hasLayer(layer)) map.removeLayer(layer);
     }
-  }, [showJurisdictions]);
+  }, [showJurisdictions, mapReady]);
 
   // Toggle RENABAP Layer
   useEffect(() => {
+    if (!mapReady || !mapInstanceRef.current || !renabapLayerRef.current) return;
     const map = mapInstanceRef.current;
     const layer = renabapLayerRef.current;
-    if (!map || !layer) return;
     if (showRenabap) {
       if (!map.hasLayer(layer)) map.addLayer(layer);
     } else {
       if (map.hasLayer(layer)) map.removeLayer(layer);
     }
-  }, [showRenabap]);
+  }, [showRenabap, mapReady]);
 
   // Update Trajectories Layer
   useEffect(() => {
+    if (!mapReady) return;
     const layerGroup = trajectoriesLayerRef.current;
     const L = LRef.current;
     if (!layerGroup || !L) return;
@@ -270,7 +278,7 @@ function TrajectoryMap({
       `);
       polyline.addTo(layerGroup);
     });
-  }, [cases, selectedCase, showAllTrajectories]);
+  }, [cases, selectedCase, showAllTrajectories, mapReady]);
 
   return <div ref={mapContainerRef} style={{ width: "100%", height: "480px", borderRadius: "var(--radius-md)" }} />;
 }
