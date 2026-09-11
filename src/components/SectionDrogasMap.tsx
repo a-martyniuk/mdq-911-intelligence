@@ -109,7 +109,7 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
     const setB = new Set<string>();
     incidents.forEach((r) => {
       const b = r.barrio || r.Barrio_Detectado;
-      if (b && b !== "José C. Paz (Centro / General)") setB.add(b);
+      if (b && !b.includes("Sin Georreferenciar")) setB.add(b);
     });
     return Array.from(setB).sort();
   }, [incidents]);

@@ -133,17 +133,62 @@ def extract_tipo_lugar(text, comment=""):
         return "Finca / Vivienda"
     return "Lugar No Especificado"
 
-def extract_barrio(comment, addr=""):
-    combined = (str(comment) + " " + str(addr)).upper()
-    barrios = [
-        "BARRIO LA PAZ", "BARRIO LAMAS", "CASITAS DE LAMAS", "SOL Y VERDE", 
-        "VUCETICH", "FRINO", "PIÑERO", "PIÑEYRO", "SAN ATILIO", "YAPEYU", 
-        "ALBERDI", "ALTOS DE JOSE C PAZ", "EL TIMON", "PRIMAVERA", "SANTA PAULA"
-    ]
-    for b in barrios:
-        if b in combined:
-            return b.title()
-    return "José C. Paz (Centro / General)"
+def extract_barrio(comment, addr="", lat=None, lng=None, relato="", calle=""):
+    combined = (str(comment) + " " + str(addr) + " " + str(relato) + " " + str(calle)).upper()
+    
+    # 1. Text-based explicit match
+    if "SOL Y VERDE" in combined or "POLONIA" in combined or "CROACIA" in combined:
+        return "Sol y Verde"
+    if "FRINO" in combined or "CASTELLI" in combined or "FRINOS" in combined:
+        return "Barrio Frino"
+    if "VUCETICH" in combined or "SALVATORI" in combined or "DAVAINE" in combined or "CARRIO" in combined:
+        return "Vucetich / Salvatori"
+    if "SAN ATILIO" in combined or "GRANADEROS" in combined:
+        return "San Atilio"
+    if "LAMAS" in combined or "SAAVEDRA LAMAS" in combined or "MARCHENA" in combined or "CASITAS DE LAMAS" in combined:
+        return "Barrio Lamas"
+    if "LA PAZ" in combined or "PANAMA" in combined or "CANAL DE PANAMA" in combined:
+        return "Barrio La Paz"
+    if "KIRCHNER" in combined or "NESTOR KIRCHNER" in combined:
+        return "Néstor Kirchner"
+    if "CEIBO" in combined or "EL CEIBO" in combined or "PROVIDENCIA" in combined:
+        return "El Ceibo"
+    if "YAPEYU" in combined or "SAN ROQUE" in combined:
+        return "Yapeyú"
+    if "LEON" in combined or "BARRIO LEON" in combined or "CONCEJAL ALFONSO" in combined:
+        return "Barrio León"
+    if "ALTUBE" in combined or "ESTACION JOSE C PAZ" in combined:
+        return "José C. Paz Centro"
+
+    # 2. Spatial proximity based on validated neighborhood centroids
+    if pd.notnull(lat) and pd.notnull(lng):
+        try:
+            lat_f = float(lat)
+            lng_f = float(lng)
+            if lat_f != 0 and lng_f != 0:
+                barrios_jcp_centroids = {
+                    "San Atilio": (-34.5240, -58.7820),
+                    "Sol y Verde": (-34.5325, -58.7915),
+                    "Barrio Frino": (-34.5070, -58.7610),
+                    "El Ceibo": (-34.5290, -58.7560),
+                    "Barrio León": (-34.5120, -58.7350),
+                    "Vucetich / Salvatori": (-34.5420, -58.7720),
+                    "Barrio La Paz": (-34.5210, -58.7650),
+                    "Piñero / San Martín": (-34.5250, -58.7470),
+                    "Barrio Lamas": (-34.5028, -58.7482),
+                    "Yapeyú": (-34.5180, -58.7710),
+                    "Néstor Kirchner": (-34.5385, -58.7845),
+                    "José C. Paz Centro": (-34.5160, -58.7520),
+                }
+                closest_b = min(
+                    barrios_jcp_centroids.keys(),
+                    key=lambda b: (lat_f - barrios_jcp_centroids[b][0])**2 + (lng_f - barrios_jcp_centroids[b][1])**2
+                )
+                return closest_b
+        except Exception:
+            pass
+
+    return "José C. Paz (Sin Georreferenciar)"
 
 def get_franja(h):
     if 0 <= h < 6:
@@ -403,7 +448,17 @@ def run_etl_jcp():
     df_clean['Tiene_Armas'] = df_clean['Relato'].apply(check_armas)
     df_clean['Tipo_Punto_Venta'] = df_clean.apply(lambda r: extract_tipo_lugar(r['Relato'], r.get('comentario', '')), axis=1)
     df_clean['Alias_Identificados'] = df_clean['Relato'].apply(extract_smart_aliases)
-    df_clean['Barrio_Detectado'] = df_clean.apply(lambda r: extract_barrio(r.get('comentario', ''), r.get('Dirección', '')), axis=1)
+    df_clean['Barrio_Detectado'] = df_clean.apply(
+        lambda r: extract_barrio(
+            r.get('comentario', ''),
+            r.get('Dirección', ''),
+            r.get('Latitud_Clean'),
+            r.get('Longitud_Clean'),
+            r.get('Relato', ''),
+            r.get('calle', '')
+        ),
+        axis=1
+    )
     
     df_clean['Tipo'] = "NARCOCRIMINALIDAD"
     df_clean['SubTipo'] = df_clean['Sustancia_Detectada']

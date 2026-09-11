@@ -29,6 +29,40 @@ export default function SectionDrogasOverview({ stats, incidents = [] }: Section
     });
   }, [incidents]);
 
+  const barrioDistribution = React.useMemo(() => {
+    const list = jcpOnlyIncidents.length > 0 ? jcpOnlyIncidents : incidents;
+    if (!list || list.length === 0) {
+      return [
+        { loc: "San Atilio / Granaderos", pct: 20.6, color: "#ef4444" },
+        { loc: "Sol y Verde / Croacia", pct: 18.1, color: "#f59e0b" },
+        { loc: "Barrio Frino / Castelli", pct: 15.0, color: "#8b5cf6" },
+        { loc: "El Ceibo / Providencia", pct: 10.2, color: "#3b82f6" },
+        { loc: "Barrio León / Alfonso", pct: 7.9, color: "#10b981" },
+        { loc: "Vucetich / Salvatori", pct: 7.7, color: "#06b6d4" },
+        { loc: "Barrio La Paz", pct: 4.7, color: "#ec4899" },
+        { loc: "Piñero / San Martín", pct: 4.6, color: "#a855f7" },
+        { loc: "Barrio Lamas / Casitas", pct: 4.1, color: "#14b8a6" },
+        { loc: "Yapeyú / San Roque", pct: 3.9, color: "#eab308" },
+      ];
+    }
+    const counts: Record<string, number> = {};
+    list.forEach((i: any) => {
+      const b = i.barrio || i.Barrio_Detectado || "Sin Georreferenciar";
+      counts[b] = (counts[b] || 0) + 1;
+    });
+
+    const total = list.length;
+    const colors = ["#ef4444", "#f59e0b", "#8b5cf6", "#3b82f6", "#10b981", "#06b6d4", "#ec4899", "#a855f7", "#14b8a6", "#eab308", "#64748b", "#475569"];
+    return Object.entries(counts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([loc, count], idx) => ({
+        loc,
+        pct: Number(((count / total) * 100).toFixed(1)),
+        color: colors[idx % colors.length]
+      }));
+  }, [jcpOnlyIncidents, incidents]);
+
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1.5rem" }}>
@@ -173,17 +207,9 @@ export default function SectionDrogasOverview({ stats, incidents = [] }: Section
         </div>
 
         <div className="card">
-          <div className="card-title">🏙️ Distribución Territorial por Barrio</div>
+          <div className="card-title">🏙️ Distribución Territorial por Barrio (José C. Paz)</div>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-            {[
-              { loc: "Sol y Verde", pct: 3.2, color: "#ef4444" },
-              { loc: "Vucetich / Salvatori", pct: 1.5, color: "#f59e0b" },
-              { loc: "Barrio Frino", pct: 1.0, color: "#8b5cf6" },
-              { loc: "Barrio La Paz", pct: 1.0, color: "#3b82f6" },
-              { loc: "Barrio Lamas", pct: 0.8, color: "#10b981" },
-              { loc: "San Atilio / Alberdi", pct: 1.0, color: "#06b6d4" },
-              { loc: "José C. Paz (Centro / General)", pct: 91.1, color: "#64748b" },
-            ].map((item) => (
+            {barrioDistribution.map((item) => (
               <div key={item.loc}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", marginBottom: "2px" }}>
                   <span style={{ color: "var(--text-secondary)" }}>{item.loc}</span>
