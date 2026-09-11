@@ -5,11 +5,11 @@ import { Search, Filter, Download, AlertTriangle, Shield, MapPin, Eye, FileText 
 import { exportToCSV } from "@/lib/excelExport";
 import { generateDrogasMalvinasPDF } from "@/lib/pdfReport";
 
-interface SectionDrogasSearchProps {
+interface SectionMalvinasSearchProps {
   incidents: any[];
 }
 
-export default function SectionMalvinasSearch({ incidents = [] }: SectionDrogasSearchProps) {
+export default function SectionMalvinasSearch({ incidents = [] }: SectionMalvinasSearchProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterOrigen, setFilterOrigen] = useState("todos");
   const [filterSustancia, setFilterSustancia] = useState("todos");

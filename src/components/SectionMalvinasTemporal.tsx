@@ -8,7 +8,7 @@ import { exportToCSV } from "@/lib/excelExport";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
-interface SectionDrogasTemporalProps {
+interface SectionMalvinasTemporalProps {
   incidents: any[];
 }
 
@@ -84,7 +84,7 @@ function getSlot(h: number): "Madrugada" | "Mañana" | "Tarde" | "Noche" {
   return "Noche";
 }
 
-export default function SectionMalvinasTemporal({ incidents = [] }: SectionDrogasTemporalProps) {
+export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvinasTemporalProps) {
   const [filterOrigen, setFilterOrigen] = useState<string>("todos");
   const [filterSustancia, setFilterSustancia] = useState<string>("todos");
   const [filterArmas, setFilterArmas] = useState<string>("todos");

@@ -435,7 +435,7 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
           <div>
             <div className="card-title" style={{ gap: "0.5rem" }}>
               <Flame color="#ef4444" size={24} />
-              <span>🔥 Hotspots & Nodos Crónicos de Resistencia Criminal (José C. Paz)</span>
+              <span>🔥 Concentración Territorial & Nodos Crónicos de Resistencia Criminal (José C. Paz)</span>
             </div>
             <p className="card-subtitle" style={{ margin: "0.25rem 0 0" }}>
               Macro-análisis geoespacial de saturación delictual, densidad térmica continua (KDE) y núcleos consolidados de resistencia armada.
@@ -911,7 +911,7 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
                       <td style={{ padding: "8px", color: "#a855f7", fontSize: "0.75rem" }}>{topSust}</td>
                       <td style={{ padding: "8px" }}>
                         <button
-                          onClick={() => generateDrogasChronicHotspotPDF(corner)}
+                          onClick={() => generateDrogasChronicHotspotPDF({ ...corner, partido: "José C. Paz" })}
                           style={{
                             background: "rgba(239, 68, 68, 0.15)",
                             border: "1px solid #ef4444",
@@ -1094,6 +1094,7 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
                     lat: selectedNode.lat,
                     lng: selectedNode.lng,
                     barrio: selectedNode.barrio,
+                    partido: "José C. Paz",
                     incidents: filtered.filter(i => {
                       if (!i.lat || !i.lng) return false;
                       const dLat = i.lat - selectedNode.lat;

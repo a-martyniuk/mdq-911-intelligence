@@ -119,7 +119,7 @@ export default function IntroBanner({ currentProject = "mdp" }: IntroBannerProps
         </div>
 
         <h2 style={{ fontSize: "1.75rem", fontWeight: 800, color: "var(--text-primary)", marginBottom: "0.4rem", lineHeight: 1.2 }}>
-          MDQ 911 INTELLIGENCE PLATFORM
+          MAR DEL PLATA — SUSTRACCIÓN AUTOMOTOR & DELITO CALIFICADO 911
         </h2>
         <h3 style={{ fontSize: "1rem", fontWeight: 600, color: "var(--text-secondary)", marginBottom: "0.8rem" }}>
           Descubrimiento de Relaciones Ocultas, Vinculación de Dominios y Modus Operandi

@@ -325,7 +325,7 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
         let color = "#3b82f6";
         if (sust.includes("PACO")) {
           color = "#ec4899";
-        } else if (sust.includes("COCAÍNA")) {
+        } else if (sust.includes("COCAÍNA") || sust.includes("COCAINA")) {
           color = "#ef4444";
         } else if (sust.includes("MARIHUANA")) {
           color = "#10b981";

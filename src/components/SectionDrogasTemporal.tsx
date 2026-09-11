@@ -331,9 +331,9 @@ export default function SectionDrogasTemporal({ incidents = [] }: SectionDrogasT
               📑 Fuente 911:
             </label>
             <select value={filterOrigen} onChange={(e) => setFilterOrigen(e.target.value)} className="form-input" style={{ width: "100%", height: "34px", fontSize: "0.8rem" }}>
-              <option value="todos">Todas las Fuentes</option>
-              <option value="DROGAS_ILICITAS_FORMAL">🔴 Tipificación Formal (989)</option>
-              <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Búsqueda Semántica (781)</option>
+              <option value="todos">Todas las Fuentes (1.770 despachos)</option>
+              <option value="DROGAS_ILICITAS_FORMAL">🔴 Tipificación Formal (989 hechos)</option>
+              <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Búsqueda Semántica Relatos (781 hechos)</option>
             </select>
           </div>
 
@@ -571,7 +571,7 @@ export default function SectionDrogasTemporal({ incidents = [] }: SectionDrogasT
                 gap: "4px"
               }}
             >
-              {excludeCentro ? "✓ Excluyendo genérico Centro (1.605)" : "Incluir genérico Centro"}
+              {excludeCentro ? "✓ Excluyendo genérico Centro" : "Incluir genérico Centro"}
             </button>
           </div>
           <Plot

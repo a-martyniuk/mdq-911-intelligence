@@ -172,8 +172,8 @@ export default function SectionDrogasSearch({ incidents = [] }: SectionDrogasSea
               style={{ width: "100%", height: "38px", fontSize: "0.8rem" }}
             >
               <option value="todos">Todas las Fuentes (1.770 despachos)</option>
-              <option value="DROGAS_ILICITAS_FORMAL">🔴 Despacho Formal Drogas (989)</option>
-              <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Búsqueda Semántica (781)</option>
+              <option value="DROGAS_ILICITAS_FORMAL">🔴 Despacho Formal Drogas (989 hechos)</option>
+              <option value="INFORMACION_VECINAL_KEYWORDS">🟢 Búsqueda Semántica Relatos (781 hechos)</option>
             </select>
 
             <select

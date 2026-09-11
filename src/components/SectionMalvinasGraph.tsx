@@ -63,22 +63,21 @@ export interface GraphEdge {
   type: "suspect-bunker" | "suspect-suspect" | "suspect-substance" | "suspect-weapon" | "bunker-substance" | "bunker-weapon";
 }
 
-interface SectionDrogasGraphProps {
+interface SectionMalvinasGraphProps {
   incidents: any[];
 }
 
 const CLIQUE_PRESETS = [
   { id: "all", label: "🌐 Red General Completa Malvinas", color: "#6366f1", icon: "🌐" },
   { id: "rojas-ambrosetti", label: "🔥 Eje Ricardo Rojas & Ambrosetti (Grand Bourg)", color: "#ef4444", icon: "🔥" },
-  { id: "py-hiroshima", label: "⚡ Foco Marino Luis Py & Hiroshima (Pablo Nogués)", color: "#f59e0b", icon: "⚡" },
-  { id: "san-lorenzo", label: "🚗 Célula San Lorenzo & Sarmiento (Grand Bourg Centro)", color: "#8b5cf6", icon: "🚗" },
-  { id: "hernandez-maure", label: "🏚️ Clan José Hernández & Maure (Límite Villa de Mayo)", color: "#06b6d4", icon: "🏚️" },
-  { id: "palacios-cangallo", label: "📍 Red Palacios & Cangallo (Los Polvorines)", color: "#10b981", icon: "📍" },
-  { id: "tokio-santa-sede", label: "🏢 Célula Tokio & Santa Sede (Pablo Nogués Oeste)", color: "#ec4899", icon: "🏢" },
-  { id: "yatasto-panama", label: "🎯 Foco Yatasto & Panamá (Tortuguitas)", color: "#ea580c", icon: "🎯" }
+  { id: "callao-almirante", label: "📍 Sector Callao & Almirante Brown (Grand Bourg)", color: "#f59e0b", icon: "📍" },
+  { id: "cura-brochero", label: "⚡ Nodo Cura Brochero & Paso de los Andes (Tortuguitas)", color: "#10b981", icon: "⚡" },
+  { id: "perito-moreno", label: "🛡️ Corredor Perito Moreno & Comisaría 2da (Polvorines)", color: "#8b5cf6", icon: "🛡️" },
+  { id: "san-martin-nogues", label: "🚗 Hub Ruta 197 & Av. San Martín (Pablo Nogués)", color: "#06b6d4", icon: "🚗" },
+  { id: "sourdeaux-estacion", label: "🏚️ Búnkers Estación Adolfo Sourdeaux / Villa de Mayo", color: "#ec4899", icon: "🏚️" },
 ];
 
-export default function SectionMalvinasGraph({ incidents = [] }: SectionDrogasGraphProps) {
+export default function SectionMalvinasGraph({ incidents = [] }: SectionMalvinasGraphProps) {
   // Navigation & Filter States
   const [selectedClique, setSelectedClique] = useState<string>("all");
   const [filterCategory, setFilterCategory] = useState<string>("all");

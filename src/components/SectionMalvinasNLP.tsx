@@ -6,11 +6,11 @@ import { generateDrogasSuspectsPDF } from "@/lib/pdfReport";
 import { exportToCSV } from "@/lib/excelExport";
 import "leaflet/dist/leaflet.css";
 
-interface SectionDrogasNLPProps {
+interface SectionMalvinasNLPProps {
   incidents: any[];
 }
 
-export default function SectionMalvinasNLP({ incidents = [] }: SectionDrogasNLPProps) {
+export default function SectionMalvinasNLP({ incidents = [] }: SectionMalvinasNLPProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSuspect, setSelectedSuspect] = useState<string | null>(null);
   const [mapReady, setMapReady] = useState<boolean>(false);

@@ -18,11 +18,11 @@ function normalizeBarrio(b: string): string {
   return b.trim();
 }
 
-interface SectionDrogasMapProps {
+interface SectionMalvinasMapProps {
   incidents: any[];
 }
 
-export default function SectionMalvinasMap({ incidents = [] }: SectionDrogasMapProps) {
+export default function SectionMalvinasMap({ incidents = [] }: SectionMalvinasMapProps) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<any>(null);
   const markersGroupRef = useRef<any>(null);

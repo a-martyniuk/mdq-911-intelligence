@@ -160,6 +160,50 @@ export default function SectionDrogasOverview({ stats, incidents = [] }: Section
             </p>
           </div>
         </div>
+
+        <div className="card">
+          <div className="card-title">🏙️ Distribución Territorial por Barrio</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            {[
+              { loc: "Sol y Verde", pct: 3.2, color: "#ef4444" },
+              { loc: "Vucetich / Salvatori", pct: 1.5, color: "#f59e0b" },
+              { loc: "Barrio Frino", pct: 1.0, color: "#8b5cf6" },
+              { loc: "Barrio La Paz", pct: 1.0, color: "#3b82f6" },
+              { loc: "Barrio Lamas", pct: 0.8, color: "#10b981" },
+              { loc: "San Atilio / Alberdi", pct: 1.0, color: "#06b6d4" },
+              { loc: "José C. Paz (Centro / General)", pct: 91.1, color: "#64748b" },
+            ].map((item) => (
+              <div key={item.loc}>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", marginBottom: "2px" }}>
+                  <span style={{ color: "var(--text-secondary)" }}>{item.loc}</span>
+                  <span style={{ fontWeight: 700, color: item.color }}>{item.pct}%</span>
+                </div>
+                <div style={{ background: "var(--bg-base)", borderRadius: "4px", height: "6px", overflow: "hidden" }}>
+                  <div style={{ width: `${item.pct}%`, height: "100%", background: item.color, borderRadius: "4px" }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="card">
+          <div className="card-title">🗓️ Cobertura Temporal & Fuentes</div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
+            {[
+              { label: "Período", value: "Ene – Ago 2026" },
+              { label: "Drogas Ilícitas Formales", value: "989 hechos" },
+              { label: "Info Vecinal (Relatos)", value: "781 alertas" },
+              { label: "Duplicados Eliminados", value: "1 (ID coincidente)" },
+              { label: "Cobertura Geo", value: "99.6%" },
+              { label: "Con Armas Reportadas", value: "77.3%" },
+            ].map((item) => (
+              <div key={item.label} style={{ background: "var(--bg-base)", padding: "0.5rem 0.75rem", borderRadius: "6px" }}>
+                <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontWeight: 700, textTransform: "uppercase" }}>{item.label}</div>
+                <div style={{ fontSize: "0.9rem", fontWeight: 800, color: "var(--text-primary)", marginTop: "2px" }}>{item.value}</div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

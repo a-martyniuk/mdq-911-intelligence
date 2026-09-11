@@ -9,11 +9,11 @@ import { RENABAP_MALVINAS_GEOJSON } from "@/lib/renabapMalvinasGeoJSON";
 import { CHRONIC_HOTSPOTS_MALVINAS, ChronicHotspotNode } from "@/lib/chronicHotspotsMalvinasData";
 import "leaflet/dist/leaflet.css";
 
-interface SectionDrogasHotspotsProps {
+interface SectionMalvinasHotspotsProps {
   incidents: any[];
 }
 
-export default function SectionMalvinasHotspots({ incidents = [] }: SectionDrogasHotspotsProps) {
+export default function SectionMalvinasHotspots({ incidents = [] }: SectionMalvinasHotspotsProps) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<any>(null);
   const heatLayerRef = useRef<any>(null);
@@ -435,7 +435,7 @@ export default function SectionMalvinasHotspots({ incidents = [] }: SectionDroga
           <div>
             <div className="card-title" style={{ gap: "0.5rem" }}>
               <Flame color="#ef4444" size={24} />
-              <span>🔥 Hotspots & Nodos Crónicos de Resistencia Criminal (Malvinas Argentinas)</span>
+              <span>🔥 Concentración Territorial & Nodos Crónicos de Resistencia Criminal (Malvinas Argentinas)</span>
             </div>
             <p className="card-subtitle" style={{ margin: "0.25rem 0 0" }}>
               Macro-análisis geoespacial de saturación delictual, densidad térmica continua (KDE) y núcleos consolidados de resistencia armada.
