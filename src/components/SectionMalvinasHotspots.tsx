@@ -454,6 +454,11 @@ export default function SectionMalvinasHotspots({ incidents = [] }: SectionMalvi
                   marihuanaCount: filtered.filter((i) => (i.sustancia || "").toUpperCase().includes("MARI")).length,
                   pacoCount: filtered.filter((i) => (i.sustancia || "").toUpperCase().includes("PACO")).length,
                   incidents: filtered,
+                  activeFilters: {
+                    sustancia: filterSustancia,
+                    franja: filterFranja,
+                  },
+                  reportType: "hotspots",
                 });
               }}
               className="btn-logout"

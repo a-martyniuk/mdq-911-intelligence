@@ -384,7 +384,7 @@ export default function Dashboard() {
             {activeSection === "drogas-graph" && <SectionDrogasGraph incidents={data?.incidents || data?.geoPoints || []} />}
             {activeSection === "drogas-hotspots" && <SectionDrogasHotspots incidents={data?.incidents || data?.geoPoints || []} />}
             {activeSection === "drogas-search" && <SectionDrogasSearch incidents={data?.incidents || []} />}
-            {activeSection === "drogas-etl" && <SectionDrogasETL />}
+            {activeSection === "drogas-etl" && <SectionDrogasETL incidents={data?.incidents || data?.geoPoints || []} stats={jcpStats} />}
           </>
         )}
 
@@ -400,7 +400,7 @@ export default function Dashboard() {
             {activeSection === "malvinas-graph" && <SectionMalvinasGraph incidents={data?.incidents || data?.geoPoints || []} />}
             {activeSection === "malvinas-hotspots" && <SectionMalvinasHotspots incidents={data?.incidents || data?.geoPoints || []} />}
             {activeSection === "malvinas-search" && <SectionMalvinasSearch incidents={data?.incidents || []} />}
-            {activeSection === "malvinas-etl" && <SectionMalvinasETL />}
+            {activeSection === "malvinas-etl" && <SectionMalvinasETL incidents={data?.incidents || data?.geoPoints || []} stats={malvinasStats} />}
           </>
         )}
       </main>

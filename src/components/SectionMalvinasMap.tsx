@@ -417,6 +417,7 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionMalvinasMa
                     armas: filterArmas,
                     barrio: filterBarrio,
                   },
+                  reportType: "map",
                 });
               }}
               className="btn-logout"

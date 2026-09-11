@@ -95,6 +95,7 @@ export default function SectionMalvinasSearch({ incidents = [] }: SectionMalvina
                     armas: filterArmas,
                     busqueda: searchTerm || undefined,
                   },
+                  reportType: "search",
                 });
               }}
               className="btn-logout"

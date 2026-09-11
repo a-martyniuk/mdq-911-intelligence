@@ -403,6 +403,7 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
                     armas: filterArmas,
                     barrio: filterBarrio,
                   },
+                  reportType: "map",
                 });
               }}
               className="btn-logout"

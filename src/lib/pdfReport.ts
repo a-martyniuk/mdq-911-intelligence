@@ -1205,16 +1205,26 @@ export function generateSNAWarrantPDF(data: {
  * Generates an institutional executive dossier for José C. Paz Drug Intelligence
  */
 export function generateDrogasJcpPDF(data: {
-  totalIncidents: number;
-  georeferencedCount: number;
-  armasCount: number;
-  cocainaCount: number;
-  marihuanaCount: number;
-  pacoCount: number;
+  totalIncidents?: number;
+  georeferencedCount?: number;
+  armasCount?: number;
+  cocainaCount?: number;
+  marihuanaCount?: number;
+  pacoCount?: number;
   incidents?: any[];
   totalUniverse?: number;
   activeFilters?: Record<string, string | undefined>;
   partido?: string;
+  reportType?: "dossier" | "map" | "hotspots" | "search" | "temporal" | "custom";
+  reportTitle?: string;
+  reportSubtitle?: string;
+  includedSections?: {
+    tacticalMap?: boolean;
+    heatMap?: boolean;
+    chronicNodes?: boolean;
+    temporal?: boolean;
+    dispatches?: boolean;
+  };
 }) {
   const win = window.open("", "_blank");
   if (!win) {
@@ -1233,6 +1243,10 @@ export function generateDrogasJcpPDF(data: {
     totalUniverse,
     activeFilters = {},
     partido = "José C. Paz",
+    reportType = "dossier",
+    reportTitle,
+    reportSubtitle,
+    includedSections,
   } = data;
 
   const isMalvinas = (partido || "").toLowerCase().includes("malvinas");
@@ -1248,6 +1262,42 @@ export function generateDrogasJcpPDF(data: {
   const headerDeptal = isMalvinas
     ? "ESTACIÓN DE POLICÍA DEPARTAMENTAL DE SEGURIDAD MALVINAS ARGENTINAS · POLICÍA PBA"
     : "ESTACIÓN DE POLICÍA DEPARTAMENTAL DE SEGURIDAD JOSÉ C. PAZ · POLICÍA PBA";
+
+  // Secciones activas según tipo de reporte o selector modular
+  const sections = includedSections || {
+    tacticalMap: reportType === "map" || reportType === "dossier",
+    heatMap: reportType === "hotspots" || reportType === "dossier",
+    chronicNodes: reportType === "hotspots" || reportType === "dossier",
+    temporal: reportType === "temporal" || reportType === "dossier",
+    dispatches: reportType === "search" || reportType === "dossier",
+  };
+
+  const docTitle = reportTitle || (
+    reportType === "map" ? `Informe Operacional Táctico · Despliegue Espacial · ${partido}` :
+    reportType === "hotspots" ? `Informe Estratégico de Concentración Criminal & Nodos Crónicos · ${partido}` :
+    reportType === "search" ? `Informe Pericial de Búsqueda y Despachos 911 · ${partido}` :
+    reportType === "temporal" ? `Informe Cronométrico y Patrones de Nocturnidad · ${partido}` :
+    reportType === "custom" ? `Informe Modular de Inteligencia Narcocriminal · ${partido}` :
+    `Dossier Táctico & Judicial de Inteligencia Narcocriminal · ${partido}`
+  );
+
+  const docSubtitle = reportSubtitle || (
+    reportType === "map" ? `Mapeo Táctico de Puntos de Venta, Búnkers y Jurisdicciones Policiales` :
+    reportType === "hotspots" ? `Densidad Térmica KDE, Intersecciones Críticas y Dependencias Policiales` :
+    reportType === "search" ? `Auditoría Pericial de Registros 911 y Evidencia Testimonial Verbatim` :
+    reportType === "temporal" ? `Cronometría 24 hs, Franjas Circadianas y Ventanas Críticas de Nocturnidad` :
+    reportType === "custom" ? `Módulos Seleccionados a Medida de Inteligencia Narcocriminal` :
+    `Dossier Táctico & Judicial de Inteligencia Narcocriminal · ${partido}`
+  );
+
+  const badgeText = (
+    reportType === "map" ? "Mapeo Táctico Espacial" :
+    reportType === "hotspots" ? "Inteligencia Estratégica KDE" :
+    reportType === "search" ? "Registro Pericial Verbatim" :
+    reportType === "temporal" ? "Cronometría & Nocturnidad" :
+    reportType === "custom" ? "Reporte Modular a Medida" :
+    "Dossier Integral 5 Secciones"
+  );
 
   let countFormal = 0;
   let countKeyword = 0;
@@ -1411,10 +1461,14 @@ export function generateDrogasJcpPDF(data: {
     };
   });
 
-  // Dispatches to display verbatim in printable format (up to 250 complete records)
-  const displayLimit = Math.min(incidents.length, 250);
+  // Dispatches to display verbatim in printable format (up to 500 for search/custom, 250 for general)
+  const maxDispatches = reportType === "search" || (includedSections && includedSections.dispatches) ? 500 : 250;
+  const displayLimit = Math.min(incidents.length, maxDispatches);
   const sample = incidents.slice(0, displayLimit);
   const isCapped = incidents.length > displayLimit;
+
+  // Dynamic Section Counter
+  let secIdx = 1;
 
   // Build SVG Hourly Curve
   const svgWidth = 800;
@@ -1447,7 +1501,7 @@ export function generateDrogasJcpPDF(data: {
     <html lang="es">
     <head>
       <meta charset="UTF-8">
-      <title>Dossier Táctico & Judicial de Inteligencia Narcocriminal · ${escapeHtml(partido)}</title>
+      <title>${escapeHtml(docTitle)}</title>
       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
       <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
       <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
@@ -1508,17 +1562,17 @@ export function generateDrogasJcpPDF(data: {
       <div class="header">
         <div>
           <div class="title">MINISTERIO DE SEGURIDAD · PROVINCIA DE BUENOS AIRES</div>
-          <div class="subtitle">Dossier Táctico & Judicial de Inteligencia Narcocriminal · ${escapeHtml(partido)}</div>
+          <div class="subtitle">${escapeHtml(docSubtitle)} · ${escapeHtml(partido)}</div>
           <div class="deptal">${headerDeptal}</div>
         </div>
         <div class="badge">
-          USO JUDICIAL / PERICIAL<br/>
+          ${escapeHtml(badgeText)}<br/>
           <span style="font-size: 0.68rem; font-weight: 600;">Sumario Reservado · ${new Date().toLocaleDateString("es-AR")}</span>
         </div>
       </div>
 
       <button class="btn-print no-print" onclick="window.print()">
-        🖨️ Imprimir / Guardar como PDF (${escapeHtml(partido)})
+        🖨️ Imprimir / Guardar como PDF (${escapeHtml(partido)} · ${escapeHtml(badgeText)})
       </button>
 
       <!-- ALCANCE Y FILTROS -->
@@ -1562,10 +1616,11 @@ export function generateDrogasJcpPDF(data: {
         </div>
       </div>
 
-      <!-- SECCIÓN 1: MAPA TÁCTICO -->
+      ${sections.tacticalMap ? `
+      <!-- SECCIÓN MAPA TÁCTICO -->
       <div class="section-header avoid-break">
         <div>
-          <h2 class="section-title">1. Mapa Táctico Multicapa: Puntos de Venta, Nodos Crónicos & Jurisdicciones</h2>
+          <h2 class="section-title">${secIdx++}. Mapa Táctico Multicapa: Puntos de Venta, Nodos Crónicos & Jurisdicciones</h2>
           <div class="section-desc">Delimitación perimetral oficial, cuadrículas de comisarías, 53 asentamientos RENABAP y focos delictuales filtrados.</div>
         </div>
       </div>
@@ -1578,11 +1633,13 @@ export function generateDrogasJcpPDF(data: {
         <div class="legend-item"><span class="legend-dot" style="background: #ef4444;"></span> Hecho con Armas / Tiroteos</div>
         <div class="legend-item"><span class="legend-dot" style="background: #d97706;"></span> Búnker / Casilla Fortificada</div>
       </div>
+      ` : ''}
 
-      <!-- SECCIÓN 2: MAPA DE CALOR -->
-      <div class="section-header avoid-break page-break">
+      ${sections.heatMap ? `
+      <!-- SECCIÓN MAPA DE CALOR -->
+      <div class="section-header avoid-break ${secIdx > 1 ? 'page-break' : ''}">
         <div>
-          <h2 class="section-title">2. Mapa Térmico de Concentración Delictual (Heatmap KDE)</h2>
+          <h2 class="section-title">${secIdx++}. Mapa Térmico de Concentración Delictual (Heatmap KDE)</h2>
           <div class="section-desc">Gradiente térmico continuo de densidad territorial ponderado por severidad armada y tipo de sustancia.</div>
         </div>
       </div>
@@ -1590,12 +1647,14 @@ export function generateDrogasJcpPDF(data: {
       <div style="font-size: 0.76rem; color: #475569; margin-bottom: 1.5rem; background: #f1f5f9; padding: 0.6rem 0.8rem; border-radius: 4px;" class="avoid-break">
         <strong>NOTA METODOLÓGICA DE DENSIDAD KERNEL:</strong> La termografía refleja la saturación espacial acumulada de las denuncias filtradas. Los núcleos en color rojo oscuro y naranja denotan áreas donde la reiteración de denuncias coincide con armamento y transas identificados, delimitando los blancos de allanamiento prioritarios.
       </div>
+      ` : ''}
 
-      <!-- SECCIÓN 3: PUNTOS DE INTERÉS -->
-      <div class="section-header avoid-break">
+      ${sections.chronicNodes ? `
+      <!-- SECCIÓN PUNTOS DE INTERÉS -->
+      <div class="section-header avoid-break ${secIdx > 1 && !sections.heatMap ? 'page-break' : ''}">
         <div>
-          <h2 class="section-title">3. Puntos de Interés Táctico (POI) & Nodos Crónicos de Resistencia</h2>
-          <div class="section-desc">Los 10 focos consolidados de comercialización, red de dependencias policiales y barrios populares vulnerables.</div>
+          <h2 class="section-title">${secIdx++}. Puntos de Interés Táctico (POI) & Nodos Crónicos de Resistencia</h2>
+          <div class="section-desc">Los 10 focos consolidados de comercialización, red de dependencias policiales y distribución de entornos de expendio.</div>
         </div>
       </div>
 
@@ -1682,11 +1741,13 @@ export function generateDrogasJcpPDF(data: {
           </table>
         </div>
       </div>
+      ` : ''}
 
-      <!-- SECCIÓN 4: HORARIOS Y CRONOMETRÍA -->
-      <div class="section-header avoid-break page-break">
+      ${sections.temporal ? `
+      <!-- SECCIÓN HORARIOS Y CRONOMETRÍA -->
+      <div class="section-header avoid-break ${secIdx > 1 ? 'page-break' : ''}">
         <div>
-          <h2 class="section-title">4. Cronometría, Horarios & Patrones de Nocturnidad</h2>
+          <h2 class="section-title">${secIdx++}. Cronometría, Horarios & Patrones de Nocturnidad</h2>
           <div class="section-desc">Curva continua de 24 horas, tasa de hostilidad armada por franja y días de mayor conflictividad.</div>
         </div>
       </div>
@@ -1778,11 +1839,13 @@ export function generateDrogasJcpPDF(data: {
           </table>
         </div>
       </div>
+      ` : ''}
 
-      <!-- SECCIÓN 5: REGISTROS FILTRADOS VERBATIM -->
-      <div class="section-header avoid-break page-break">
+      ${sections.dispatches ? `
+      <!-- SECCIÓN REGISTROS FILTRADOS VERBATIM -->
+      <div class="section-header avoid-break ${secIdx > 1 ? 'page-break' : ''}">
         <div>
-          <h2 class="section-title">5. Registro Pericial de Despachos 911 Filtrados en esta Vista</h2>
+          <h2 class="section-title">${secIdx++}. Registro Pericial de Despachos 911 Filtrados en esta Vista</h2>
           <div class="section-desc">
             Mostrando ${sample.length.toLocaleString()} denuncias completas sin truncar ${isCapped ? `(de ${incidents.length.toLocaleString()} despachos filtrados en la página)` : ''} con transcripción textual original del operador 911.
           </div>
@@ -1835,6 +1898,7 @@ export function generateDrogasJcpPDF(data: {
           No se registraron despachos coincidentes con los filtros seleccionados en esta vista.
         </div>
       `}
+      ` : ''}
 
       ${getInstitucionalFooterHTML()}
 
@@ -1852,144 +1916,151 @@ export function generateDrogasJcpPDF(data: {
         const hotspots = ${JSON.stringify(chronicHotspots)};
 
         window.onload = function() {
-          if (typeof L === 'undefined') return;
+          if (typeof L !== 'undefined') {
+            // 1. Tactical Map (solo si el contenedor fue renderizado)
+            const mapEl1 = document.getElementById('pdf-tactical-map');
+            if (mapEl1) {
+              try {
+                const map1 = L.map('pdf-tactical-map', {
+                  center: ${JSON.stringify(defaultCenter)},
+                  zoom: 13,
+                  zoomControl: false,
+                  attributionControl: false
+                });
 
-          // 1. Tactical Map
-          try {
-            const map1 = L.map('pdf-tactical-map', {
-              center: ${JSON.stringify(defaultCenter)},
-              zoom: 13,
-              zoomControl: false,
-              attributionControl: false
-            });
-
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-              maxZoom: 19
-            }).addTo(map1);
-
-            // Municipal Boundary
-            const bLayer = L.geoJSON(boundaryGeo, {
-              style: { color: "${themeColor}", weight: 3, fillOpacity: 0.02 }
-            }).addTo(map1);
-
-            // Precincts
-            L.geoJSON(jurisGeo, {
-              style: function(f) {
-                return { color: f.properties.color || "#2563eb", weight: 1.5, fillOpacity: 0.05, dashArray: "4, 4" };
-              }
-            }).addTo(map1);
-
-            // RENABAP
-            L.geoJSON(renabap, {
-              style: function(f) {
-                return { color: f.properties.color || "#ea580c", weight: 1.5, fillColor: "#f97316", fillOpacity: 0.18 };
-              }
-            }).addTo(map1);
-
-            // 10 Chronic Hotspots (380m)
-            hotspots.forEach(function(h) {
-              L.circle([h.lat, h.lng], {
-                radius: h.radiusMeters || 380,
-                color: "#991b1b",
-                weight: 2,
-                fillColor: "#dc2626",
-                fillOpacity: 0.22
-              }).addTo(map1);
-
-              L.circleMarker([h.lat, h.lng], {
-                radius: 6,
-                color: "#ffffff",
-                weight: 2,
-                fillColor: "#991b1b",
-                fillOpacity: 1
-              }).addTo(map1).bindTooltip("Nodo #" + h.id + " (" + h.totalIncidents + " hechos)", { permanent: false });
-            });
-
-            // Police Stations
-            stations.forEach(function(st) {
-              L.circleMarker(st.center, {
-                radius: 8,
-                color: "#ffffff",
-                weight: 2,
-                fillColor: "#1d4ed8",
-                fillOpacity: 1
-              }).addTo(map1).bindTooltip(st.name, { permanent: false });
-            });
-
-            // Incidents
-            tacticalData.forEach(function(pt) {
-              if (pt.isBunker) {
-                L.circleMarker([pt.lat, pt.lng], {
-                  radius: 6,
-                  color: "#ffffff",
-                  weight: 1.5,
-                  fillColor: "#d97706",
-                  fillOpacity: 0.95
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                  maxZoom: 19
                 }).addTo(map1);
-              } else {
-                L.circleMarker([pt.lat, pt.lng], {
-                  radius: pt.armas ? 4.5 : 3.5,
-                  color: pt.armas ? "#991b1b" : "#475569",
-                  weight: 1,
-                  fillColor: pt.armas ? "#ef4444" : "#64748b",
-                  fillOpacity: 0.85
-                }).addTo(map1);
-              }
-            });
 
-            if (bLayer.getBounds().isValid()) {
-              map1.fitBounds(bLayer.getBounds(), { padding: [15, 15] });
+                // Municipal Boundary
+                const bLayer = L.geoJSON(boundaryGeo, {
+                  style: { color: "${themeColor}", weight: 3, fillOpacity: 0.02 }
+                }).addTo(map1);
+
+                // Precincts
+                L.geoJSON(jurisGeo, {
+                  style: function(f) {
+                    return { color: f.properties.color || "#2563eb", weight: 1.5, fillOpacity: 0.05, dashArray: "4, 4" };
+                  }
+                }).addTo(map1);
+
+                // RENABAP
+                L.geoJSON(renabap, {
+                  style: function(f) {
+                    return { color: f.properties.color || "#ea580c", weight: 1.5, fillColor: "#f97316", fillOpacity: 0.18 };
+                  }
+                }).addTo(map1);
+
+                // 10 Chronic Hotspots (380m)
+                hotspots.forEach(function(h) {
+                  L.circle([h.lat, h.lng], {
+                    radius: h.radiusMeters || 380,
+                    color: "#991b1b",
+                    weight: 2,
+                    fillColor: "#dc2626",
+                    fillOpacity: 0.22
+                  }).addTo(map1);
+
+                  L.circleMarker([h.lat, h.lng], {
+                    radius: 6,
+                    color: "#ffffff",
+                    weight: 2,
+                    fillColor: "#991b1b",
+                    fillOpacity: 1
+                  }).addTo(map1).bindTooltip("Nodo #" + h.id + " (" + h.totalIncidents + " hechos)", { permanent: false });
+                });
+
+                // Police Stations
+                stations.forEach(function(st) {
+                  L.circleMarker(st.center, {
+                    radius: 8,
+                    color: "#ffffff",
+                    weight: 2,
+                    fillColor: "#1d4ed8",
+                    fillOpacity: 1
+                  }).addTo(map1).bindTooltip(st.name, { permanent: false });
+                });
+
+                // Incidents
+                tacticalData.forEach(function(pt) {
+                  if (pt.isBunker) {
+                    L.circleMarker([pt.lat, pt.lng], {
+                      radius: 6,
+                      color: "#ffffff",
+                      weight: 1.5,
+                      fillColor: "#d97706",
+                      fillOpacity: 0.95
+                    }).addTo(map1);
+                  } else {
+                    L.circleMarker([pt.lat, pt.lng], {
+                      radius: pt.armas ? 4.5 : 3.5,
+                      color: pt.armas ? "#991b1b" : "#475569",
+                      weight: 1,
+                      fillColor: pt.armas ? "#ef4444" : "#64748b",
+                      fillOpacity: 0.85
+                    }).addTo(map1);
+                  }
+                });
+
+                if (bLayer.getBounds().isValid()) {
+                  map1.fitBounds(bLayer.getBounds(), { padding: [15, 15] });
+                }
+              } catch(e) {
+                console.error("Map 1 render error:", e);
+              }
             }
-          } catch(e) {
-            console.error("Map 1 render error:", e);
+
+            // 2. Heatmap (solo si el contenedor fue renderizado)
+            const mapEl2 = document.getElementById('pdf-heat-map');
+            if (mapEl2) {
+              try {
+                const map2 = L.map('pdf-heat-map', {
+                  center: ${JSON.stringify(defaultCenter)},
+                  zoom: 13,
+                  zoomControl: false,
+                  attributionControl: false
+                });
+
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                  maxZoom: 19
+                }).addTo(map2);
+
+                const bLayer2 = L.geoJSON(boundaryGeo, {
+                  style: { color: "${themeColor}", weight: 2.5, fillOpacity: 0 }
+                }).addTo(map2);
+
+                if (typeof L.heatLayer === 'function' && heatData.length > 0) {
+                  L.heatLayer(heatData, {
+                    radius: 26,
+                    blur: 16,
+                    maxZoom: 16,
+                    gradient: { 0.2: '#2563eb', 0.4: '#10b981', 0.6: '#f59e0b', 0.8: '#ef4444', 1.0: '#991b1b' }
+                  }).addTo(map2);
+                }
+
+                hotspots.forEach(function(h) {
+                  L.circleMarker([h.lat, h.lng], {
+                    radius: 5,
+                    color: "#ffffff",
+                    weight: 1.5,
+                    fillColor: "#0f172a",
+                    fillOpacity: 1
+                  }).addTo(map2);
+                });
+
+                if (bLayer2.getBounds().isValid()) {
+                  map2.fitBounds(bLayer2.getBounds(), { padding: [15, 15] });
+                }
+              } catch(e) {
+                console.error("Map 2 render error:", e);
+              }
+            }
           }
 
-          // 2. Heatmap
-          try {
-            const map2 = L.map('pdf-heat-map', {
-              center: ${JSON.stringify(defaultCenter)},
-              zoom: 13,
-              zoomControl: false,
-              attributionControl: false
-            });
-
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-              maxZoom: 19
-            }).addTo(map2);
-
-            const bLayer2 = L.geoJSON(boundaryGeo, {
-              style: { color: "${themeColor}", weight: 2.5, fillOpacity: 0 }
-            }).addTo(map2);
-
-            if (typeof L.heatLayer === 'function' && heatData.length > 0) {
-              L.heatLayer(heatData, {
-                radius: 26,
-                blur: 16,
-                maxZoom: 16,
-                gradient: { 0.2: '#2563eb', 0.4: '#10b981', 0.6: '#f59e0b', 0.8: '#ef4444', 1.0: '#991b1b' }
-              }).addTo(map2);
-            }
-
-            hotspots.forEach(function(h) {
-              L.circleMarker([h.lat, h.lng], {
-                radius: 5,
-                color: "#ffffff",
-                weight: 1.5,
-                fillColor: "#0f172a",
-                fillOpacity: 1
-              }).addTo(map2);
-            });
-
-            if (bLayer2.getBounds().isValid()) {
-              map2.fitBounds(bLayer2.getBounds(), { padding: [15, 15] });
-            }
-          } catch(e) {
-            console.error("Map 2 render error:", e);
-          }
-
+          const hasMaps = Boolean(document.getElementById('pdf-tactical-map') || document.getElementById('pdf-heat-map'));
           setTimeout(function() {
             window.print();
-          }, 1400);
+          }, hasMaps ? 1400 : 500);
         };
       </script>
     </body>

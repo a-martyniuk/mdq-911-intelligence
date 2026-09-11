@@ -95,6 +95,7 @@ export default function SectionDrogasSearch({ incidents = [] }: SectionDrogasSea
                     armas: filterArmas,
                     busqueda: searchTerm || undefined,
                   },
+                  reportType: "search",
                 });
               }}
               className="btn-logout"
