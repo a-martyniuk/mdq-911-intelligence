@@ -376,36 +376,6 @@ export default function Sidebar({
         </div>
       )}
 
-      {/* Tarjeta Institucional Oficial */}
-      <div style={{
-        marginTop: "1.75rem",
-        padding: "0.85rem",
-        background: "var(--bg-surface)",
-        border: "1px solid var(--border)",
-        borderRadius: "var(--radius-sm)",
-        display: "flex",
-        flexDirection: "column",
-        gap: "0.45rem"
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-          <img
-            src={getAssetPath("/images/institucional/logo_superintendencia.png")}
-            alt="Superintendencia"
-            style={{ height: "26px", width: "auto", objectFit: "contain" }}
-          />
-          <div>
-            <div style={{ fontWeight: 600, color: "var(--text-primary)", fontSize: "0.72rem", lineHeight: 1.2 }}>
-              Superintendencia de Investigaciones
-            </div>
-            <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: 500 }}>
-              Delitos Complejos y Crimen Organizado
-            </div>
-          </div>
-        </div>
-        <div style={{ borderTop: "1px solid var(--border-subtle)", paddingTop: "0.35rem", fontSize: "0.65rem", color: "var(--text-muted)", lineHeight: 1.35 }}>
-          Paseo del Bosque, La Plata · Reservado
-        </div>
-      </div>
     </aside>
   );
 }

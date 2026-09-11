@@ -46,7 +46,7 @@ export default function SectionQuality() {
           </button>
         </div>
 
-        <div className="metric-grid">
+        <div className="metric-grid-4">
           <MetricCard
             label="Registros Procesados"
             value="8.598"

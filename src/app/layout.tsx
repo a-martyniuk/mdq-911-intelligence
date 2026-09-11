@@ -1,24 +1,17 @@
 import type { Metadata } from "next";
-import { Chivo, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const chivo = Chivo({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-chivo",
-  display: "swap",
-  weight: ["400", "600", "700", "800", "900"],
-});
-
-const plusJakarta = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-inter-base",
   display: "swap",
   weight: ["400", "500", "600", "700"],
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-mono-base",
   display: "swap",
   weight: ["400", "500", "600", "700"],
 });
@@ -41,7 +34,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${chivo.variable} ${plusJakarta.variable} ${jetbrainsMono.variable}`}
+      className={`${inter.variable} ${jetbrainsMono.variable}`}
     >
       <head>
         <meta name="robots" content="noindex, nofollow" />

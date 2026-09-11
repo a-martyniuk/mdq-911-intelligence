@@ -1,27 +1,33 @@
 /* ─── Reset & Base ─────────────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+}
 
 :root {
-  /* ─── Typography Stacks ─────────────────────────────────────────────────── */
-  --font-display: var(--font-chivo), "Chivo", -apple-system, sans-serif;
-  --font-sans: var(--font-sans), "Plus Jakarta Sans", -apple-system, sans-serif;
-  --font-mono: var(--font-mono), "JetBrains Mono", monospace;
+  /* ─── Typography Stacks (Forced Modern Sans-Serif - Zero Serif Fallback) ─── */
+  --font-sans: var(--font-inter-base), 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-inter-base), 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-mono-base), "JetBrains Mono", "SF Mono", "Segoe UI Mono", "Roboto Mono", Menlo, Monaco, Consolas, monospace;
 
-  /* Legacy Font Variables (Aliased for compatibility) */
+  /* Legacy Font Variables (Aliased for full backward compatibility) */
   --font-inter: var(--font-sans);
-  --font-outfit: var(--font-display);
+  --font-outfit: var(--font-sans);
+  --font-chivo: var(--font-sans);
 
-  /* ─── Base Dark Matte Palette (Palantir Gotham / Linear / Dataminr) ───────── */
-  --bg-base:        #0f1117; /* Pure matte dark charcoal slate */
-  --bg-surface:     #171b22; /* Clean solid surface / Cards */
-  --bg-elevated:    #1e232d; /* Elevated headers, toolbars, popovers */
-  --bg-subtle:      #13171e; /* Inset panels & subtle backgrounds */
+  /* ─── High-Contrast State Intelligence Palette ───────────────────────────── */
+  --bg-base:        #0f141c; /* Professional neutral dark slate base */
+  --bg-surface:     #182230; /* High contrast solid card surface */
+  --bg-elevated:    #222f42; /* Elevated headers, toolbars, hovers */
+  --bg-subtle:      #131b26; /* Inset panels & table alternates */
   
-  /* ─── Ultra-Fine Structural Borders ─────────────────────────────────────── */
-  --border:         rgba(255, 255, 255, 0.08); /* Svelte 1px border */
-  --border-subtle:  rgba(255, 255, 255, 0.05); /* Inner subtle separator */
-  --border-light:   rgba(255, 255, 255, 0.14); /* Hover / active border */
-  --border-accent:  #2563eb;                    /* Sober corporate blue */
+  /* ─── Crisp 1px Borders ─────────────────────────────────────────────────── */
+  --border:         #283548; /* Crisp 1px structural border */
+  --border-subtle:  #1e293b; /* Subtle inner border */
+  --border-light:   #3b4c66; /* Hover / active border */
+  --border-accent:  #2563eb; /* Corporate blue active */
 
   /* ─── Official Institutional Accents (Sober / Non-fluorescent) ──────────── */
   --accent-pba-blue: #1a56db; /* Corporate Institutional Blue */
@@ -33,16 +39,17 @@
   --accent-red:      #ef4444; /* Discreet Red */
   --accent-amber:    #f59e0b; /* Discreet Amber */
   --accent-green:    #10b981; /* Discreet Green */
-  --accent-cyan:     #3b82f6; /* Telemetry Accent */
+  --accent-cyan:     #38bdf8; /* Telemetry Accent */
 
   /* Aliased for legacy code referencing old palette names */
   --accent-indigo:   #2563eb;
   --accent-purple:   #1a56db;
   --accent-pink:     #38bdf8;
 
-  /* ─── Text & Telemetry Contrast ─────────────────────────────────────────── */
-  --text-primary:    #f8fafc; /* Clean crisp white */
-  --text-secondary:  #94a3b8; /* Operational reading slate */
+  /* ─── Text & Telemetry Contrast (Crisp Whites & Readable Greys) ─────────── */
+  --text-primary:    #ffffff; /* Crisp Pure White for titles, metrics & numbers */
+  --text-light:      #e2e8f0; /* Very light slate for card headers / labels */
+  --text-secondary:  #94a3b8; /* Operational reading slate (min 14px paragraphs) */
   --text-muted:      #64748b; /* Metadata, timestamps, captions */
   --text-dim:        #475569; /* Inactive labels */
 
@@ -52,7 +59,7 @@
   --radius-md:       6px;
   --radius-lg:       8px;
 
-  /* ─── Shadows: Pure Structural (No Neon Halos) ──────────────────────────── */
+  /* ─── Shadows: Pure Structural ──────────────────────────────────────────── */
   --shadow-none:     none;
   --shadow-sm:       0 1px 2px rgba(0, 0, 0, 0.35);
   --shadow-md:       0 2px 6px rgba(0, 0, 0, 0.45);
@@ -61,7 +68,7 @@
 
 html, body {
   height: 100%;
-  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans) !important;
   background: var(--bg-base);
   color: var(--text-secondary);
   font-size: 14px;
@@ -71,8 +78,8 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6, .section-title, .sidebar-title, .brand-title {
-  font-family: var(--font-display), system-ui, -apple-system, sans-serif;
+h1, h2, h3, h4, h5, h6, .section-title, .sidebar-title, .brand-title, .card-title {
+  font-family: var(--font-sans) !important;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--text-primary);
@@ -81,16 +88,21 @@ h1, h2, h3, h4, h5, h6, .section-title, .sidebar-title, .brand-title {
 /* ─── Monospace & Tabular Data Figures ───────────────────────────────────────── */
 .font-mono,
 .font-mono-tabular,
-.metric-value,
-.metric-sub,
 .metric-kpi,
 .badge-mono,
-.badge,
-.user-badge,
 .timestamp,
 .coords,
 .plate-badge,
 .tag-mono,
+.data-table td.cell-mono,
+.data-table td.cell-num,
+.data-table td.cell-date,
+.data-table td.cell-coord {
+  font-family: var(--font-mono) !important;
+  font-feature-settings: "tnum" 1, "zero" 1;
+  font-variant-numeric: tabular-nums;
+}
+
 .data-table th,
 .data-table td {
   font-feature-settings: "tnum" 1, "zero" 1;
@@ -115,7 +127,7 @@ h1, h2, h3, h4, h5, h6, .section-title, .sidebar-title, .brand-title {
   height: 64px;
   padding: 0 1.5rem;
   border-bottom: 1px solid var(--border);
-  background: #11141a;
+  background: var(--bg-base);
   z-index: 20;
 }
 
@@ -277,56 +289,95 @@ h1, h2, h3, h4, h5, h6, .section-title, .sidebar-title, .brand-title {
   line-height: 1.6;
 }
 
-/* ─── Metric Cards ──────────────────────────────────────────────────────────── */
+/* ─── Metric Cards (Strict 3x2 Symmetrical Grid) ───────────────────────────── */
 .metric-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   margin-bottom: 1.5rem;
+  align-items: stretch;
+}
+
+@media (max-width: 1024px) {
+  .metric-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .metric-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.metric-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: stretch;
+}
+
+@media (max-width: 1024px) {
+  .metric-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .metric-grid-4 {
+    grid-template-columns: 1fr;
+  }
 }
 
 .metric-card {
   background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 1rem 1.15rem;
-  position: relative;
-  overflow: hidden;
-  transition: border-color 0.15s ease;
+  padding: 1.15rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 112px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
 .metric-card:hover {
   border-color: var(--border-light);
+  background: #1c2738;
 }
 
 .metric-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #94a3b8;
-  font-family: var(--font-sans);
-  font-size: 12.5px;
+  color: #e2e8f0;
+  font-family: var(--font-sans) !important;
+  font-size: 13px;
   font-weight: 500;
   text-transform: none;
   letter-spacing: normal;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
 }
 
 .metric-value {
-  font-family: var(--font-mono), monospace;
+  font-family: var(--font-mono), var(--font-sans) !important;
+  font-feature-settings: "tnum" 1, "zero" 1;
   font-variant-numeric: tabular-nums;
-  font-size: 26px;
-  font-weight: 600;
-  color: #f8fafc;
-  line-height: 1.2;
-  margin-bottom: 0.25rem;
-  letter-spacing: -0.01em;
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.15;
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.02em;
 }
 
 .metric-sub {
-  font-family: var(--font-sans);
-  font-size: 12px;
-  color: #64748b;
+  font-family: var(--font-sans) !important;
+  font-size: 12.5px;
+  color: #94a3b8;
+  line-height: 1.4;
 }
 
 /* ─── Form Controls & Search ─────────────────────────────────────────────────── */
