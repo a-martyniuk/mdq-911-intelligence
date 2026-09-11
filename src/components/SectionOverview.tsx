@@ -14,9 +14,11 @@ interface SectionOverviewProps {
     recoveriesCount: number;
     medianRecoveryHours: number;
   };
+  incidents?: any[];
+  recoveries?: any[];
 }
 
-export default function SectionOverview({ stats }: SectionOverviewProps) {
+export default function SectionOverview({ stats, incidents = [], recoveries = [] }: SectionOverviewProps) {
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1.5rem" }}>
@@ -32,6 +34,13 @@ export default function SectionOverview({ stats }: SectionOverviewProps) {
                 totalIncidents: stats.totalIncidents,
                 robosCount: 6524,
                 hallazgosCount: 1420,
+                incidentsSample: incidents,
+                recoveries: recoveries,
+                gangs: [
+                  { nombre: "Banda de la Moto Negra 110cc", hechosCount: 24, patron: "Conductor con visera y acompañante armado en moto 110cc sin patente", franja: "Noche (20 a 02 hs)", zona: "Comisaría 2da (Macrocentro)", explicacion: "Coincidencia de 24 despachos en 30 días." },
+                  { nombre: "Célula Fuga VW Gol Gris", hechosCount: 18, patron: "Auto de apoyo Gol Gris en robos de motocicletas", franja: "Madrugada (01 a 06 hs)", zona: "Comisaría 4ta (Pompeya)", explicacion: "Escape en convoy detectado por cámaras 911." },
+                  { nombre: "Grupo Desguace Periferia West", hechosCount: 15, patron: "Sustracción en Centro ➔ Desguace en < 6 hs en Batán/Las Heras", franja: "Tarde/Noche", zona: "Comisaría 8va y 11ra", explicacion: "Recuperaciones de chasis desarmados." }
+                ]
               });
             }}
             className="btn-logout"

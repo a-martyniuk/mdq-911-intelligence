@@ -355,7 +355,13 @@ export default function Dashboard() {
         {/* ======================================= */}
         {currentProject === "mdp" && (
           <>
-            {activeSection === "overview" && <SectionOverview stats={mdpStats} />}
+            {activeSection === "overview" && (
+              <SectionOverview
+                stats={mdpStats}
+                incidents={data?.incidents || data?.incidentsSample || data?.geoPoints || []}
+                recoveries={data?.recoveries || []}
+              />
+            )}
             {activeSection === "map" && <SectionMap geoPoints={data?.geoPoints || []} recoveries={data?.recoveries || []} />}
             {activeSection === "recovery-tracker" && <SectionRecoveryTracker recoveries={data?.recoveries || []} />}
             {activeSection === "gang-intelligence" && <SectionGangIntelligence incidents={data?.incidents || data?.incidentsSample || []} />}
