@@ -450,8 +450,8 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
                   totalUniverse: incidents.length,
                   georeferencedCount: filtered.filter((i) => i.lat && i.lng).length,
                   armasCount: armedCalls,
-                  cocainaCount: filtered.filter((i) => (i.sustancia || "").toUpperCase().includes("COCAÍNA")).length,
-                  marihuanaCount: filtered.filter((i) => (i.sustancia || "").toUpperCase().includes("MARIHUANA")).length,
+                  cocainaCount: filtered.filter((i) => (i.sustancia || "").toUpperCase().includes("COCA")).length,
+                  marihuanaCount: filtered.filter((i) => (i.sustancia || "").toUpperCase().includes("MARI")).length,
                   pacoCount: filtered.filter((i) => (i.sustancia || "").toUpperCase().includes("PACO")).length,
                   incidents: filtered,
                 });

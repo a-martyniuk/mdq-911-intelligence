@@ -85,8 +85,8 @@ export default function SectionDrogasSearch({ incidents = [] }: SectionDrogasSea
                   totalUniverse: incidents.length,
                   georeferencedCount: filtered.filter((r) => r.lat && r.lng).length,
                   armasCount: filtered.filter((r) => r.tieneArmas).length,
-                  cocainaCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("COCAÍNA")).length,
-                  marihuanaCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("MARIHUANA")).length,
+                  cocainaCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("COCA")).length,
+                  marihuanaCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("MARI")).length,
                   pacoCount: filtered.filter((r) => (r.sustancia || "").toUpperCase().includes("PACO")).length,
                   incidents: filtered,
                   activeFilters: {
