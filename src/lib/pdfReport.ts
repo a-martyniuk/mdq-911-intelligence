@@ -834,7 +834,7 @@ export function generateHotspotsPDF(data: {
 }) {
   const win = window.open("", "_blank");
   if (!win) {
-    alert("Por favor habilita las ventanas emergentes (pop-ups) para generar el informe de hotspots.");
+    alert("Por favor habilita las ventanas emergentes (pop-ups) para generar el informe de concentración delictiva.");
     return;
   }
 
@@ -853,7 +853,12 @@ export function generateHotspotsPDF(data: {
       const d = (inc.Dirección || inc.direccion || "").trim();
       if (d && d !== "NO ESPECIFICADO" && d !== "MDQ" && d !== "S/D") {
         if (!counts[d]) {
-          counts[d] = { count: 0, dir: d, jurisdiccion: inc.Jurisdiccion || inc.Barrio || "General Pueyrredón", armasCount: 0 };
+          counts[d] = {
+            count: 0,
+            dir: d,
+            jurisdiccion: inc.Jurisdiccion || inc.jurisdiccion || "General Pueyrredón",
+            armasCount: 0
+          };
         }
         counts[d].count += 1;
         if ((inc.Tipo || inc.origen || "").toUpperCase().includes("ARMA") || (inc.Tipo || inc.origen || "").toUpperCase().includes("DISPARO")) {
@@ -864,8 +869,8 @@ export function generateHotspotsPDF(data: {
     displayHotspots = Object.values(counts)
       .sort((a, b) => b.count - a.count)
       .slice(0, 10)
-      .map((item) => ({
-        address: item.dir,
+      .map(item => ({
+        name: item.dir,
         jurisdiction: item.jurisdiccion,
         riskLevel: item.count >= 8 ? "🔴 CRÍTICO ALTO" : item.count >= 4 ? "🟠 ALTO INTERMEDIO" : "🟡 MODERADO",
         dominantCrime: `${item.count} incidentes 911 ${item.armasCount > 0 ? `(${item.armasCount} con armas)` : ""}`
@@ -877,7 +882,7 @@ export function generateHotspotsPDF(data: {
     <html lang="es">
     <head>
       <meta charset="UTF-8">
-      <title>Informe Institucional de Hotspots Delictivos & Densidad Kernel (KDE) - MDQ 911</title>
+      <title>Informe Institucional de Concentración Delictiva & Densidad Kernel (KDE) - MDQ 911</title>
       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
       <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
       <style>
@@ -903,7 +908,7 @@ export function generateHotspotsPDF(data: {
       ${getInstitucionalHeaderHTML()}
       <div class="header">
         <div>
-          <div class="title">INFORME DE INTELIGENCIA DE HOTSPOTS & DENSIDAD KERNEL (KDE)</div>
+          <div class="title">INFORME DE INTELIGENCIA DE CONCENTRACIÓN DELICTIVA & DENSIDAD KERNEL (KDE)</div>
           <div class="subtitle">JEFATURA DEPARTAMENTAL GENERAL PUEYRREDÓN · DIVISIÓN 911</div>
         </div>
         <div class="badge">
@@ -913,7 +918,7 @@ export function generateHotspotsPDF(data: {
       </div>
 
       <button class="btn-print" onclick="window.print()">
-        🖨️ Imprimir / Descargar Informe de Hotspots (PDF)
+        🖨️ Imprimir / Descargar Informe de Concentración Delictiva (PDF)
       </button>
 
       <div style="background: #f1f5f9; border-left: 5px solid #ef4444; padding: 0.85rem; border-radius: 6px; margin-bottom: 1.5rem; font-size: 0.85rem; color: #334155;">
@@ -943,7 +948,7 @@ export function generateHotspotsPDF(data: {
         </div>
       </div>
 
-      <!-- Mapa Cartográfico de Hotspots -->
+      <!-- Mapa Cartográfico de Concentración Delictiva -->
       <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">
         🗺️ Distribución Geográfica de Concentración Espacial (Mapa Cartográfico Real):
       </h3>
@@ -951,7 +956,7 @@ export function generateHotspotsPDF(data: {
 
       <!-- Tabla de Corredores y Núcleos Delictivos -->
       <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">
-        🔥 Corredores Viales & Núcleos Delictivos de Máxima Densidad (Hotspots Reales):
+        🔥 Corredores Viales & Núcleos Delictivos de Máxima Densidad (Focos Reales):
       </h3>
       <table>
         <thead>

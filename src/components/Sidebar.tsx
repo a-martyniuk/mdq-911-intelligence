@@ -46,7 +46,7 @@ export default function Sidebar({
 }: SidebarProps) {
   // Sections for Mar del Plata (Vehicular & General 911)
   const mdpSections = [
-    { id: "overview", label: "Dashboard / Resumen Investigativo", icon: <LayoutDashboard size={18} /> },
+    { id: "overview", label: "Panel de Control / Resumen Investigativo", icon: <LayoutDashboard size={18} /> },
     { id: "map", label: "Mapeo & Geointeligencia", icon: <MapPin size={18} /> },
     { id: "recovery-tracker", label: "Trazabilidad Robo ➔ Hallazgo", icon: <Car size={18} /> },
     { id: "gang-intelligence", label: "Inteligencia de Bandas & M.O.", icon: <ShieldAlert size={18} /> },

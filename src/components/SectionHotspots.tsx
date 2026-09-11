@@ -191,7 +191,7 @@ export default function SectionHotspots({ incidents = [], geoPoints = [] }: Sect
           <div>
             <div className="card-title" style={{ gap: "0.5rem" }}>
               <Flame color="#ef4444" size={24} />
-              <span>🔥 Hotspots Delictivos y Mapa de Densidad Kernel (KDE)</span>
+              <span>🔥 Concentración Delictiva y Mapa de Densidad Kernel (KDE)</span>
             </div>
             <p className="card-subtitle" style={{ margin: "0.2rem 0 0" }}>
               Identificación de núcleos urbanos de alta concentración delictiva sobre mapa base con filtros dinámicos en vivo.
@@ -224,7 +224,7 @@ export default function SectionHotspots({ incidents = [], geoPoints = [] }: Sect
                 boxShadow: "0 2px 8px rgba(239,68,68,0.3)"
               }}
             >
-              <FileText size={15} /> 📄 Exportar Informe PDF Hotspots
+              <FileText size={15} /> 📄 Exportar Informe PDF Concentración Delictiva
             </button>
 
             <button
@@ -268,7 +268,7 @@ export default function SectionHotspots({ incidents = [], geoPoints = [] }: Sect
         <div style={{ background: "var(--bg-base)", padding: "1rem", borderRadius: "8px", border: "1px solid var(--border)", marginBottom: "1.25rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.85rem", fontWeight: 700, color: "var(--text-primary)" }}>
             <Filter size={16} color="var(--accent-indigo)" />
-            <span>Filtros Multidimensionales de Hotspots:</span>
+            <span>Filtros Multidimensionales de Concentración:</span>
             <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginLeft: "auto" }}>
               Mostrando <strong>{filteredIncidents.length.toLocaleString()}</strong> de {dataset.length.toLocaleString()} incidentes totales
             </span>
@@ -374,7 +374,7 @@ export default function SectionHotspots({ incidents = [], geoPoints = [] }: Sect
                 setFilterTipo("robos");
               }}
             >
-              <Car size={16} /> Hotspots de Robos Vehiculares
+              <Car size={16} /> Focos de Robos Vehiculares
             </button>
 
             <button
@@ -385,7 +385,7 @@ export default function SectionHotspots({ incidents = [], geoPoints = [] }: Sect
                 setFilterTipo("armas");
               }}
             >
-              <ShieldAlert size={16} /> Hotspots Armas & Disparos
+              <ShieldAlert size={16} /> Focos Armas & Disparos
             </button>
           </div>
 
@@ -418,21 +418,21 @@ export default function SectionHotspots({ incidents = [], geoPoints = [] }: Sect
                 <iframe
                   src={getApiUrl("/api/raw_html/05_mapa_hotspots_densidad.html")}
                   style={{ width: "100%", height: "650px", border: "none" }}
-                  title="Hotspots General"
+                  title="Concentración General"
                 />
               )}
               {activeTab === "robos" && (
                 <iframe
                   src={getApiUrl("/api/raw_html/05_mapa_hotspots_robos.html")}
                   style={{ width: "100%", height: "650px", border: "none" }}
-                  title="Hotspots Robos"
+                  title="Focos Robos"
                 />
               )}
               {activeTab === "armas" && (
                 <iframe
                   src={getApiUrl("/api/raw_html/05_mapa_hotspots_armas_disparos.html")}
                   style={{ width: "100%", height: "650px", border: "none" }}
-                  title="Hotspots Armas"
+                  title="Focos Armas"
                 />
               )}
             </>
