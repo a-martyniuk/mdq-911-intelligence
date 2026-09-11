@@ -22,6 +22,7 @@ import {
   Share2
 } from "lucide-react";
 import { FilterState } from "@/lib/types";
+import { getAssetPath } from "@/lib/apiUrl";
 
 interface SidebarProps {
   currentProject: "mdp" | "jcp" | "malvinas";
@@ -354,7 +355,7 @@ export default function Sidebar({
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
           <img
-            src="/images/institucional/logo_superintendencia.png"
+            src={getAssetPath("/images/institucional/logo_superintendencia.png")}
             alt="Superintendencia"
             style={{ height: "30px", width: "auto", objectFit: "contain" }}
           />

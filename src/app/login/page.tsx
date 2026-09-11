@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ShieldCheck, Lock, User, AlertCircle } from "lucide-react";
-import { getApiUrl, getAppPath } from "@/lib/apiUrl";
+import { getApiUrl, getAppPath, getAssetPath } from "@/lib/apiUrl";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -54,13 +54,13 @@ export default function LoginPage() {
             marginBottom: "1rem"
           }}>
             <img
-              src="/images/institucional/logo_ministerio.svg"
+              src={getAssetPath("/images/institucional/logo_ministerio.svg")}
               alt="Ministerio de Seguridad PBA"
               style={{ height: "44px", width: "auto" }}
             />
             <div style={{ width: "1px", height: "34px", background: "rgba(255, 255, 255, 0.2)" }} />
             <img
-              src="/images/institucional/logo_superintendencia.png"
+              src={getAssetPath("/images/institucional/logo_superintendencia.png")}
               alt="Superintendencia de Investigaciones"
               style={{ height: "42px", width: "auto" }}
             />

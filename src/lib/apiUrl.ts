@@ -24,3 +24,17 @@ export function getAppPath(path: string): string {
   }
   return path;
 }
+
+export function getAssetPath(path: string): string {
+  const cleanPath = path.startsWith("/") ? path : `/${path}`;
+  const basePath = "/mdq-911-intelligence";
+  if (typeof window !== "undefined") {
+    const pathname = window.location.pathname.replace(/\/$/, "");
+    if (pathname.includes(basePath)) {
+      return `${basePath}${cleanPath}`;
+    }
+  }
+  // En SSR o entorno por defecto bajo nextConfig.basePath
+  return `${basePath}${cleanPath}`;
+}
+

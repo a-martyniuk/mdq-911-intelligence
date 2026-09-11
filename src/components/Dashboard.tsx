@@ -41,7 +41,7 @@ import SectionMalvinasTemporal from "./SectionMalvinasTemporal";
 import SectionMalvinasETL from "./SectionMalvinasETL";
 
 import { FilterState } from "@/lib/types";
-import { getApiUrl, getAppPath } from "@/lib/apiUrl";
+import { getApiUrl, getAppPath, getAssetPath } from "@/lib/apiUrl";
 
 export default function Dashboard() {
   const [currentProject, setCurrentProject] = useState<"mdp" | "jcp" | "malvinas">("mdp");
@@ -176,13 +176,13 @@ export default function Dashboard() {
         <div className="header-brand" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", background: "rgba(255, 255, 255, 0.05)", padding: "4px 8px", borderRadius: "8px", border: "1px solid rgba(255, 255, 255, 0.1)" }}>
             <img
-              src="/images/institucional/logo_ministerio.svg"
+              src={getAssetPath("/images/institucional/logo_ministerio.svg")}
               alt="Ministerio de Seguridad PBA"
               style={{ height: "32px", width: "auto", objectFit: "contain" }}
             />
             <div style={{ width: "1px", height: "24px", background: "rgba(255, 255, 255, 0.2)" }} />
             <img
-              src="/images/institucional/logo_superintendencia.png"
+              src={getAssetPath("/images/institucional/logo_superintendencia.png")}
               alt="Superintendencia de Investigaciones"
               style={{ height: "32px", width: "auto", objectFit: "contain" }}
             />
@@ -423,9 +423,9 @@ export default function Dashboard() {
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: "1.25rem", flexWrap: "wrap" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", background: "rgba(255, 255, 255, 0.05)", padding: "6px 10px", borderRadius: "8px", border: "1px solid rgba(255, 255, 255, 0.1)" }}>
-            <img src="/images/institucional/logo_ministerio.svg" alt="Ministerio de Seguridad PBA" style={{ height: "36px", width: "auto" }} />
+            <img src={getAssetPath("/images/institucional/logo_ministerio.svg")} alt="Ministerio de Seguridad PBA" style={{ height: "36px", width: "auto" }} />
             <div style={{ width: "1px", height: "28px", background: "rgba(255, 255, 255, 0.2)" }} />
-            <img src="/images/institucional/logo_superintendencia.png" alt="Superintendencia de Investigaciones" style={{ height: "36px", width: "auto" }} />
+            <img src={getAssetPath("/images/institucional/logo_superintendencia.png")} alt="Superintendencia de Investigaciones" style={{ height: "36px", width: "auto" }} />
           </div>
           <div>
             <div style={{ fontWeight: 800, color: "var(--text-primary)", fontSize: "0.85rem" }}>
