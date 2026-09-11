@@ -24,8 +24,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ministerio de Seguridad PBA | Plataforma Táctica de Análisis 911",
-  description: "Inteligencia Táctica Estatal, NLP y Geospatial Analytics criminal aplicados a incidentes del 911 en la Provincia de Buenos Aires.",
+  title: "Ministerio de Seguridad PBA | Plataforma de Inteligencia y Análisis Delictual 911",
+  description: "Plataforma analítica de inteligencia criminal, procesamiento de lenguaje natural y análisis geoespacial sobre incidentes del Sistema 911 en la Provincia de Buenos Aires.",
   robots: {
     index: false,
     follow: false,

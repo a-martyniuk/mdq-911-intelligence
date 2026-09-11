@@ -31,10 +31,10 @@ export default function SectionOverview({ stats, incidents = [], recoveries = []
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1.5rem" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1.25rem" }}>
         <div>
-          <h2 className="card-title" style={{ fontSize: "1.5rem" }}>Resumen Ejecutivo del Proyecto</h2>
-          <p className="card-subtitle">Indicadores clave consolidados del análisis de llamadas al 911 en Mar del Plata.</p>
+          <h2 className="card-title" style={{ fontSize: "20px", fontWeight: 600 }}>Resumen Ejecutivo del Proyecto</h2>
+          <p className="card-subtitle">Indicadores clave consolidados del análisis de incidentes del 911 en Mar del Plata.</p>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
@@ -53,25 +53,9 @@ export default function SectionOverview({ stats, incidents = [], recoveries = []
                 ]
               });
             }}
-            className="btn-logout"
-            style={{
-              height: "36px",
-              padding: "0 0.9rem",
-              fontSize: "0.8rem",
-              fontWeight: 800,
-              fontFamily: "var(--font-display)",
-              letterSpacing: "0.02em",
-              background: "var(--accent-pba-blue)",
-              color: "#fff",
-              border: "1px solid var(--accent-pba-cyan)",
-              borderRadius: "var(--radius-md)",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.4rem"
-            }}
+            className="btn-export btn-pdf"
           >
-            <FileText size={15} /> 📄 Dossier Ejecutivo MDP (PDF)
+            <FileText size={14} /> Dossier MDP (PDF)
           </button>
 
           <button
@@ -86,24 +70,9 @@ export default function SectionOverview({ stats, incidents = [], recoveries = []
               ];
               exportToCSV("resumen_ejecutivo_mdp", data);
             }}
-            className="btn-logout"
-            style={{
-              height: "36px",
-              padding: "0 0.9rem",
-              fontSize: "0.8rem",
-              fontWeight: 700,
-              fontFamily: "var(--font-display)",
-              background: "rgba(16, 185, 129, 0.15)",
-              color: "#10b981",
-              border: "1px solid rgba(16, 185, 129, 0.4)",
-              borderRadius: "var(--radius-md)",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.4rem"
-            }}
+            className="btn-export btn-excel"
           >
-            <Download size={15} /> 📊 Exportar Resumen (Excel)
+            <Download size={14} /> Exportar Resumen (Excel)
           </button>
         </div>
       </div>
@@ -155,13 +124,13 @@ export default function SectionOverview({ stats, incidents = [], recoveries = []
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))", gap: "1.5rem", marginTop: "1.5rem" }}>
         <div className="card">
-          <div className="card-title">🔍 Aspectos Destacados de Ingeniería de Datos</div>
-          <ul style={{ paddingLeft: "1.2rem", display: "flex", flexDirection: "column", gap: "0.8rem", color: "var(--text-secondary)", fontSize: "0.9rem" }}>
+          <div className="card-title">Ingeniería de Datos & Normalización 911</div>
+          <ul style={{ paddingLeft: "1.2rem", display: "flex", flexDirection: "column", gap: "0.8rem", color: "var(--text-secondary)", fontSize: "14px", lineHeight: 1.6 }}>
             <li>
               <strong style={{ color: "var(--text-primary)" }}>{stats.georeferencedPct.toFixed(1)}% de Coordenadas Georreferenciadas:</strong> Se normalizó la georreferenciación de {stats.georeferencedCount.toLocaleString()} incidentes corrigiendo anomalías decimales del 911.
             </li>
             <li>
-              <strong style={{ color: "var(--text-primary)" }}>Matching de Patentes mediante NLP:</strong> Se logró vincular {stats.recoveriesCount} casos de vehículos robados con su posterior hallazgo analizando texto no estructurado de los relatos 911.
+              <strong style={{ color: "var(--text-primary)" }}>Matching de Patentes mediante NLP:</strong> Se vinculó {stats.recoveriesCount} casos de vehículos sustraídos con su posterior hallazgo analizando texto no estructurado de los relatos 911.
             </li>
             <li>
               <strong style={{ color: "var(--text-primary)" }}>Pico Nocturno:</strong> {stats.nightPct.toFixed(1)}% de los hechos ({stats.nightCount.toLocaleString()} despachos) ocurren en la franja de 18:00 a 24:00 hs, acentuándose los fines de semana.
@@ -170,10 +139,10 @@ export default function SectionOverview({ stats, incidents = [], recoveries = []
         </div>
 
         <div className="card">
-          <div className="card-title">🔐 Acceso Reservado & Autenticación de Servidor</div>
-          <div style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6 }}>
+          <div className="card-title">Seguridad Operativa & Control de Acceso</div>
+          <div style={{ color: "var(--text-secondary)", fontSize: "14px", lineHeight: 1.6 }}>
             <p style={{ marginBottom: "0.8rem" }}>
-              Esta aplicación cuenta con <strong style={{ color: "var(--accent-indigo)" }}>autenticación obligatoria del lado servidor</strong>, contraseñas hasheadas con <code style={{ background: "var(--bg-elevated)", padding: "0.2rem 0.4rem", borderRadius: "4px" }}>bcrypt</code> y cookies de sesión HTTPOnly.
+              Esta plataforma cuenta con <strong style={{ color: "var(--text-primary)" }}>autenticación estricta del lado servidor</strong>, contraseñas hasheadas con <code style={{ background: "var(--bg-elevated)", padding: "0.2rem 0.4rem", borderRadius: "4px" }}>bcrypt</code> y cookies de sesión HTTPOnly.
             </p>
             <p>
               El acceso es estrictamente reservado para usuarios autenticados mediante contraseña, garantizando la confidencialidad de la información y la protección de los endpoints de datos.

@@ -104,10 +104,10 @@ export default function Sidebar({
     <aside className="app-sidebar">
       {/* Project Switcher Selector */}
       <div style={{ marginBottom: "1.25rem", paddingBottom: "1rem", borderBottom: "1px solid var(--border)" }}>
-        <div style={{ fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: "0.5rem", fontFamily: "var(--font-display)" }}>
-          Jurisdicción / Proyecto Activo
+        <div style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: "0.5rem" }}>
+          Jurisdicción activa
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
           <button
             onClick={() => {
               resetFilters();
@@ -115,13 +115,13 @@ export default function Sidebar({
               setActiveSection("overview");
             }}
             style={{
-              padding: "0.55rem 0.75rem",
-              borderRadius: "var(--radius-md)",
-              border: currentProject === "mdp" ? "1px solid var(--accent-pba-cyan)" : "1px solid var(--border)",
-              background: currentProject === "mdp" ? "rgba(13, 92, 168, 0.22)" : "var(--bg-surface)",
-              color: currentProject === "mdp" ? "#ffffff" : "var(--text-primary)",
-              fontWeight: 700,
-              fontSize: "0.8rem",
+              padding: "0.6rem 0.75rem",
+              borderRadius: "var(--radius-sm)",
+              border: "1px solid " + (currentProject === "mdp" ? "rgba(255, 255, 255, 0.16)" : "var(--border)"),
+              borderLeft: currentProject === "mdp" ? "2px solid #3b82f6" : "2px solid transparent",
+              background: currentProject === "mdp" ? "#1f242d" : "var(--bg-surface)",
+              color: currentProject === "mdp" ? "#f8fafc" : "var(--text-secondary)",
+              fontSize: "0.82rem",
               display: "flex",
               alignItems: "center",
               gap: "0.6rem",
@@ -130,19 +130,19 @@ export default function Sidebar({
               transition: "all 0.15s ease"
             }}
           >
-            <Car size={18} style={{ flexShrink: 0, color: currentProject === "mdp" ? "var(--accent-pba-cyan)" : "var(--text-muted)" }} />
-            <div style={{ flex: 1 }}>
+            <Car size={16} style={{ flexShrink: 0, color: currentProject === "mdp" ? "#3b82f6" : "var(--text-muted)" }} />
+            <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.3rem" }}>
-                <span style={{ fontFamily: "var(--font-display)", fontWeight: 800 }}>Mar del Plata</span>
-                <span style={{ fontSize: "0.65rem", fontWeight: 700, fontFamily: "var(--font-mono)", background: "rgba(13, 92, 168, 0.3)", color: "#38bdf8", border: "1px solid rgba(0, 163, 224, 0.3)", padding: "1px 5px", borderRadius: "var(--radius-xs)" }}>
+                <span style={{ fontWeight: 600 }}>Mar del Plata</span>
+                <span style={{ fontSize: "0.65rem", fontWeight: 600, fontFamily: "var(--font-mono)", background: "rgba(255, 255, 255, 0.05)", color: "var(--text-secondary)", border: "1px solid var(--border)", padding: "1px 5px", borderRadius: "var(--radius-xs)" }}>
                   8.598
                 </span>
               </div>
-              <div style={{ fontSize: "0.67rem", fontWeight: 500, color: "var(--text-muted)", marginTop: "1px" }}>
+              <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "1px" }}>
                 Automotores & 911
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.63rem", fontFamily: "var(--font-mono)", color: currentProject === "mdp" ? "var(--accent-pba-cyan)" : "var(--text-muted)", marginTop: "2px", fontWeight: 600 }}>
-                <Calendar size={11} /> 01/01/2026 – 05/08/2026
+              <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.65rem", color: "var(--text-muted)", marginTop: "2px" }}>
+                <Calendar size={10} /> 01/01/2026 – 05/08/2026
               </div>
             </div>
           </button>
@@ -154,13 +154,13 @@ export default function Sidebar({
               setActiveSection("drogas-overview");
             }}
             style={{
-              padding: "0.55rem 0.75rem",
-              borderRadius: "var(--radius-md)",
-              border: currentProject === "jcp" ? "1px solid var(--accent-red)" : "1px solid var(--border)",
-              background: currentProject === "jcp" ? "rgba(239, 68, 68, 0.15)" : "var(--bg-surface)",
-              color: currentProject === "jcp" ? "#fca5a5" : "var(--text-primary)",
-              fontWeight: 700,
-              fontSize: "0.8rem",
+              padding: "0.6rem 0.75rem",
+              borderRadius: "var(--radius-sm)",
+              border: "1px solid " + (currentProject === "jcp" ? "rgba(255, 255, 255, 0.16)" : "var(--border)"),
+              borderLeft: currentProject === "jcp" ? "2px solid #3b82f6" : "2px solid transparent",
+              background: currentProject === "jcp" ? "#1f242d" : "var(--bg-surface)",
+              color: currentProject === "jcp" ? "#f8fafc" : "var(--text-secondary)",
+              fontSize: "0.82rem",
               display: "flex",
               alignItems: "center",
               gap: "0.6rem",
@@ -169,19 +169,19 @@ export default function Sidebar({
               transition: "all 0.15s ease"
             }}
           >
-            <Skull size={18} style={{ flexShrink: 0, color: currentProject === "jcp" ? "var(--accent-red)" : "var(--text-muted)" }} />
-            <div style={{ flex: 1 }}>
+            <Skull size={16} style={{ flexShrink: 0, color: currentProject === "jcp" ? "#3b82f6" : "var(--text-muted)" }} />
+            <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.3rem" }}>
-                <span style={{ fontFamily: "var(--font-display)", fontWeight: 800 }}>José C. Paz</span>
-                <span style={{ fontSize: "0.65rem", fontWeight: 700, fontFamily: "var(--font-mono)", background: "rgba(239, 68, 68, 0.2)", color: "#fca5a5", border: "1px solid rgba(239, 68, 68, 0.35)", padding: "1px 5px", borderRadius: "var(--radius-xs)" }}>
+                <span style={{ fontWeight: 600 }}>José C. Paz</span>
+                <span style={{ fontSize: "0.65rem", fontWeight: 600, fontFamily: "var(--font-mono)", background: "rgba(255, 255, 255, 0.05)", color: "var(--text-secondary)", border: "1px solid var(--border)", padding: "1px 5px", borderRadius: "var(--radius-xs)" }}>
                   1.770
                 </span>
               </div>
-              <div style={{ fontSize: "0.67rem", fontWeight: 500, color: "var(--text-muted)", marginTop: "1px" }}>
+              <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "1px" }}>
                 Drogas & Búnkers
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.63rem", fontFamily: "var(--font-mono)", color: currentProject === "jcp" ? "#ef4444" : "var(--text-muted)", marginTop: "2px", fontWeight: 600 }}>
-                <Calendar size={11} /> 01/01/2026 – 31/08/2026
+              <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.65rem", color: "var(--text-muted)", marginTop: "2px" }}>
+                <Calendar size={10} /> 01/01/2026 – 31/08/2026
               </div>
             </div>
           </button>
@@ -193,13 +193,13 @@ export default function Sidebar({
               setActiveSection("malvinas-overview");
             }}
             style={{
-              padding: "0.55rem 0.75rem",
-              borderRadius: "var(--radius-md)",
-              border: currentProject === "malvinas" ? "1px solid var(--accent-amber)" : "1px solid var(--border)",
-              background: currentProject === "malvinas" ? "rgba(245, 158, 11, 0.15)" : "var(--bg-surface)",
-              color: currentProject === "malvinas" ? "#fcd34d" : "var(--text-primary)",
-              fontWeight: 700,
-              fontSize: "0.8rem",
+              padding: "0.6rem 0.75rem",
+              borderRadius: "var(--radius-sm)",
+              border: "1px solid " + (currentProject === "malvinas" ? "rgba(255, 255, 255, 0.16)" : "var(--border)"),
+              borderLeft: currentProject === "malvinas" ? "2px solid #3b82f6" : "2px solid transparent",
+              background: currentProject === "malvinas" ? "#1f242d" : "var(--bg-surface)",
+              color: currentProject === "malvinas" ? "#f8fafc" : "var(--text-secondary)",
+              fontSize: "0.82rem",
               display: "flex",
               alignItems: "center",
               gap: "0.6rem",
@@ -208,19 +208,19 @@ export default function Sidebar({
               transition: "all 0.15s ease"
             }}
           >
-            <Crosshair size={18} style={{ flexShrink: 0, color: currentProject === "malvinas" ? "var(--accent-amber)" : "var(--text-muted)" }} />
-            <div style={{ flex: 1 }}>
+            <Crosshair size={16} style={{ flexShrink: 0, color: currentProject === "malvinas" ? "#3b82f6" : "var(--text-muted)" }} />
+            <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.3rem" }}>
-                <span style={{ fontFamily: "var(--font-display)", fontWeight: 800 }}>Malvinas Argentinas</span>
-                <span style={{ fontSize: "0.65rem", fontWeight: 700, fontFamily: "var(--font-mono)", background: "rgba(245, 158, 11, 0.2)", color: "#fcd34d", border: "1px solid rgba(245, 158, 11, 0.35)", padding: "1px 5px", borderRadius: "var(--radius-xs)" }}>
+                <span style={{ fontWeight: 600 }}>Malvinas Argentinas</span>
+                <span style={{ fontSize: "0.65rem", fontWeight: 600, fontFamily: "var(--font-mono)", background: "rgba(255, 255, 255, 0.05)", color: "var(--text-secondary)", border: "1px solid var(--border)", padding: "1px 5px", borderRadius: "var(--radius-xs)" }}>
                   1.471
                 </span>
               </div>
-              <div style={{ fontSize: "0.67rem", fontWeight: 500, color: "var(--text-muted)", marginTop: "1px" }}>
+              <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "1px" }}>
                 Drogas & Búnkers
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.63rem", fontFamily: "var(--font-mono)", color: currentProject === "malvinas" ? "#f59e0b" : "var(--text-muted)", marginTop: "2px", fontWeight: 600 }}>
-                <Calendar size={11} /> 01/01/2026 – 31/08/2026
+              <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.65rem", color: "var(--text-muted)", marginTop: "2px" }}>
+                <Calendar size={10} /> 01/01/2026 – 31/08/2026
               </div>
             </div>
           </button>
@@ -382,8 +382,7 @@ export default function Sidebar({
         padding: "0.85rem",
         background: "var(--bg-surface)",
         border: "1px solid var(--border)",
-        borderLeft: "3px solid var(--accent-pba-cyan)",
-        borderRadius: "var(--radius-md)",
+        borderRadius: "var(--radius-sm)",
         display: "flex",
         flexDirection: "column",
         gap: "0.45rem"
@@ -392,20 +391,19 @@ export default function Sidebar({
           <img
             src={getAssetPath("/images/institucional/logo_superintendencia.png")}
             alt="Superintendencia"
-            style={{ height: "28px", width: "auto", objectFit: "contain" }}
+            style={{ height: "26px", width: "auto", objectFit: "contain" }}
           />
           <div>
-            <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, color: "var(--text-primary)", fontSize: "0.72rem", lineHeight: 1.2 }}>
+            <div style={{ fontWeight: 600, color: "var(--text-primary)", fontSize: "0.72rem", lineHeight: 1.2 }}>
               Superintendencia de Investigaciones
             </div>
-            <div style={{ fontSize: "0.65rem", color: "var(--accent-pba-cyan)", fontWeight: 600 }}>
+            <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: 500 }}>
               Delitos Complejos y Crimen Organizado
             </div>
           </div>
         </div>
-        <div style={{ borderTop: "1px solid var(--border-subtle)", paddingTop: "0.35rem", fontSize: "0.65rem", fontFamily: "var(--font-mono)", color: "var(--text-muted)", lineHeight: 1.35 }}>
-          📍 Paseo del Bosque, La Plata (CP 1900)<br/>
-          📞 (0221) 423-1867/186 · RESERVADO
+        <div style={{ borderTop: "1px solid var(--border-subtle)", paddingTop: "0.35rem", fontSize: "0.65rem", color: "var(--text-muted)", lineHeight: 1.35 }}>
+          Paseo del Bosque, La Plata · Reservado
         </div>
       </div>
     </aside>

@@ -75,38 +75,22 @@ export default function SectionMalvinasOverview({ stats, incidents = [] }: Secti
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1.5rem" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1.25rem" }}>
         <div>
-          <h2 className="card-title" style={{ fontSize: "1.5rem" }}>
-            💊 Inteligencia Narcocriminal &amp; Puntos de Venta (Malvinas Argentinas)
+          <h2 className="card-title" style={{ fontSize: "20px", fontWeight: 600 }}>
+            Inteligencia Narcocriminal & Puntos de Venta (Malvinas Argentinas)
           </h2>
           <p className="card-subtitle">
-            Consolidación de {stats.totalIncidents.toLocaleString()} denuncias 911 sobre comercialización de estupefacientes, búnkers territoriales y conflictividad armada en las localidades del Partido de Malvinas Argentinas (Ene–Ago 2026).
+            Consolidación de {stats.totalIncidents.toLocaleString()} denuncias 911 sobre comercialización de estupefacientes, búnkers territoriales y conflictividad armada en el Partido de Malvinas Argentinas (Ene–Ago 2026).
           </p>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
           <button
             onClick={() => generateDrogasMalvinasPDF({ ...stats, incidents: malvinasOnlyIncidents })}
-            className="btn-logout"
-            style={{
-              height: "36px",
-              padding: "0 0.9rem",
-              fontSize: "0.8rem",
-              fontWeight: 800,
-              fontFamily: "var(--font-display)",
-              letterSpacing: "0.02em",
-              background: "#92400e",
-              color: "#fff",
-              border: "1px solid var(--accent-amber)",
-              borderRadius: "var(--radius-md)",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.4rem"
-            }}
+            className="btn-export btn-pdf"
           >
-            <FileText size={15} /> 📄 Informe Ejecutivo Malvinas (PDF)
+            <FileText size={14} /> Dossier Malvinas (PDF)
           </button>
 
           <button
@@ -120,24 +104,9 @@ export default function SectionMalvinasOverview({ stats, incidents = [] }: Secti
                 { Indicador: "Focos de Paco", Valor: stats.pacoCount },
               ]);
             }}
-            className="btn-logout"
-            style={{
-              height: "36px",
-              padding: "0 0.9rem",
-              fontSize: "0.8rem",
-              fontWeight: 700,
-              fontFamily: "var(--font-display)",
-              background: "rgba(16, 185, 129, 0.15)",
-              color: "#10b981",
-              border: "1px solid rgba(16, 185, 129, 0.4)",
-              borderRadius: "var(--radius-md)",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.4rem"
-            }}
+            className="btn-export btn-excel"
           >
-            <Download size={15} /> 📊 Exportar Indicadores (Excel)
+            <Download size={14} /> Exportar Indicadores (Excel)
           </button>
         </div>
       </div>
@@ -153,40 +122,40 @@ export default function SectionMalvinasOverview({ stats, incidents = [] }: Secti
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))", gap: "1.5rem", marginTop: "1.5rem" }}>
         <div className="card">
-          <div className="card-title">🔍 Patrones Delictuales en Relatos 911</div>
-          <ul style={{ paddingLeft: "1.2rem", display: "flex", flexDirection: "column", gap: "0.8rem", color: "var(--text-secondary)", fontSize: "0.9rem" }}>
-            <li><strong style={{ color: "var(--text-primary)" }}>Foco Territorial Principal:</strong> {barrioDistribution[0]?.loc || "Grand Bourg"} concentra el {barrioDistribution[0]?.pct || 36.8}% del total denunciado. Los corredores viales principales de Ruta 8 y Ruta 197 son ejes críticos de tránsito criminal.</li>
-            <li><strong style={{ color: "#ef4444" }}>Presencia Extensa de Armamento ({stats.armasPct.toFixed(0)}%):</strong> Alta tasa de hechos con mención explícita de armas de fuego o disparos ({stats.armasCount.toLocaleString()} denuncias con armamento).</li>
-            <li><strong style={{ color: "var(--text-primary)" }}>{polirubroPct}% Polirubro Sin Sustancia Declarada:</strong> Los denunciantes perciben la actividad (bultos, movimiento de personas, guardias armadas) sin identificar el producto exacto, patrón característico de intimidación vecinal.</li>
+          <div className="card-title">Patrones Delictuales en Relatos 911</div>
+          <ul style={{ paddingLeft: "1.2rem", display: "flex", flexDirection: "column", gap: "0.8rem", color: "var(--text-secondary)", fontSize: "14px", lineHeight: 1.6 }}>
+            <li><strong style={{ color: "var(--text-primary)" }}>Foco Territorial Principal:</strong> {barrioDistribution[0]?.loc || "Grand Bourg"} concentra el {barrioDistribution[0]?.pct || 36.8}% del total denunciado. Los corredores de Ruta 8 y Ruta 197 concentran la mayor densidad de reportes.</li>
+            <li><strong style={{ color: "var(--text-primary)" }}>Presencia de Armamento ({stats.armasPct.toFixed(0)}%):</strong> Alta tasa de hechos con mención explícita de armas de fuego o disparos ({stats.armasCount.toLocaleString()} denuncias con armamento).</li>
+            <li><strong style={{ color: "var(--text-primary)" }}>{polirubroPct}% Polirubro Sin Sustancia Declarada:</strong> Los denunciantes perciben la actividad ilícita (bultos, guardias armadas) sin precisar la sustancia, patrón usual de intimidación vecinal.</li>
           </ul>
         </div>
         <div className="card">
-          <div className="card-title">⚖️ Utilidad Operativa para Investigaciones</div>
-          <div style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6 }}>
+          <div className="card-title">Utilidad Operativa para Investigaciones</div>
+          <div style={{ color: "var(--text-secondary)", fontSize: "14px", lineHeight: 1.6 }}>
             <p style={{ marginBottom: "0.8rem" }}>Este módulo permite cruzar llamadas anónimas repetitivas sobre una misma ubicación, identificando la <strong>reincidencia espacial y temporal</strong> de puntos de venta activos en las localidades del distrito.</p>
-            <p>La georeferenciación del <strong>{stats.georeferencedPct.toFixed(1)}% de los hechos</strong> ({stats.georeferencedCount.toLocaleString()} de {stats.totalIncidents.toLocaleString()}) garantiza validez cartográfica para presentaciones judiciales y planes de saturación perimetral con las 4 comisarías del partido.</p>
+            <p>La georreferenciación del <strong>{stats.georeferencedPct.toFixed(1)}% de los hechos</strong> ({stats.georeferencedCount.toLocaleString()} de {stats.totalIncidents.toLocaleString()}) garantiza validez cartográfica para presentaciones judiciales y planes de saturación perimetral.</p>
           </div>
         </div>
         <div className="card">
-          <div className="card-title">🏙️ Distribución Territorial por Localidad &amp; Barrio</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+          <div className="card-title">Distribución Territorial por Localidad & Barrio</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             {barrioDistribution.map((item) => (
               <div key={item.loc}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", marginBottom: "2px" }}>
                   <span style={{ color: "var(--text-secondary)" }}>{item.loc}</span>
-                  <span style={{ fontWeight: 700, color: item.color }} className="font-mono">
+                  <span style={{ fontWeight: 600, color: "var(--text-primary)" }} className="font-mono">
                     {item.count} ({item.pct}%)
                   </span>
                 </div>
-                <div style={{ background: "var(--bg-base)", borderRadius: "4px", height: "6px", overflow: "hidden" }}>
-                  <div style={{ width: `${item.pct}%`, height: "100%", background: item.color, borderRadius: "4px" }} />
+                <div style={{ background: "var(--bg-base)", borderRadius: "2px", height: "5px", overflow: "hidden" }}>
+                  <div style={{ width: `${item.pct}%`, height: "100%", background: "#3b82f6", borderRadius: "2px" }} />
                 </div>
               </div>
             ))}
           </div>
         </div>
         <div className="card">
-          <div className="card-title">🗓️ Cobertura Temporal &amp; Fuentes</div>
+          <div className="card-title">Cobertura Temporal & Fuentes de Datos</div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
             {[
               { label: "Período", value: "Ene – Ago 2026" },

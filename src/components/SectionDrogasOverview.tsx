@@ -65,10 +65,10 @@ export default function SectionDrogasOverview({ stats, incidents = [] }: Section
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1.5rem" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1.25rem" }}>
         <div>
-          <h2 className="card-title" style={{ fontSize: "1.5rem" }}>
-            💊 Inteligencia Narcocriminal & Puntos de Venta (José C. Paz)
+          <h2 className="card-title" style={{ fontSize: "20px", fontWeight: 600 }}>
+            Inteligencia Narcocriminal & Puntos de Venta (José C. Paz)
           </h2>
           <p className="card-subtitle">
             Consolidación de denuncias 911 sobre comercialización de estupefacientes, búnkers territoriales y conflictividad armada en el Partido de José C. Paz.
@@ -78,25 +78,9 @@ export default function SectionDrogasOverview({ stats, incidents = [] }: Section
         <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
           <button
             onClick={() => generateDrogasJcpPDF({ ...stats, incidents: jcpOnlyIncidents })}
-            className="btn-logout"
-            style={{
-              height: "36px",
-              padding: "0 0.9rem",
-              fontSize: "0.8rem",
-              fontWeight: 800,
-              fontFamily: "var(--font-display)",
-              letterSpacing: "0.02em",
-              background: "#991b1b",
-              color: "#fff",
-              border: "1px solid var(--accent-red)",
-              borderRadius: "var(--radius-md)",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.4rem"
-            }}
+            className="btn-export btn-pdf"
           >
-            <FileText size={15} /> 📄 Informe Ejecutivo JCP (PDF)
+            <FileText size={14} /> Dossier JCP (PDF)
           </button>
 
           <button
@@ -111,24 +95,9 @@ export default function SectionDrogasOverview({ stats, incidents = [] }: Section
               ];
               exportToCSV("indicadores_narcocriminalidad_jcp", data);
             }}
-            className="btn-logout"
-            style={{
-              height: "36px",
-              padding: "0 0.9rem",
-              fontSize: "0.8rem",
-              fontWeight: 700,
-              fontFamily: "var(--font-display)",
-              background: "rgba(16, 185, 129, 0.15)",
-              color: "#10b981",
-              border: "1px solid rgba(16, 185, 129, 0.4)",
-              borderRadius: "var(--radius-md)",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.4rem"
-            }}
+            className="btn-export btn-excel"
           >
-            <Download size={15} /> 📊 Exportar Indicadores (Excel)
+            <Download size={14} /> Exportar Indicadores (Excel)
           </button>
         </div>
       </div>
@@ -180,43 +149,43 @@ export default function SectionDrogasOverview({ stats, incidents = [] }: Section
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))", gap: "1.5rem", marginTop: "1.5rem" }}>
         <div className="card">
-          <div className="card-title">🔍 Patrones Delictuales Detectados en Relatos 911</div>
-          <ul style={{ paddingLeft: "1.2rem", display: "flex", flexDirection: "column", gap: "0.8rem", color: "var(--text-secondary)", fontSize: "0.9rem" }}>
+          <div className="card-title">Patrones Delictuales en Relatos 911</div>
+          <ul style={{ paddingLeft: "1.2rem", display: "flex", flexDirection: "column", gap: "0.8rem", color: "var(--text-secondary)", fontSize: "14px", lineHeight: 1.6 }}>
             <li>
-              <strong style={{ color: "var(--text-primary)" }}>Búnkers, Casillas y Baldíos Ocupados:</strong> Frecuente reporte de casillas de chapa, baldíos tomados con cercos improvisados y "ventanitas" de expendio continuo con guardias permanentes.
+              <strong style={{ color: "var(--text-primary)" }}>Búnkers, Casillas y Baldíos Ocupados:</strong> Frecuente reporte de casillas de chapa, baldíos tomados con cercos improvisados y puntos de expendio con guardias permanentes.
             </li>
             <li>
-              <strong style={{ color: "#ef4444" }}>Presencia Extensiva de Armamento (77,3%):</strong> Alto índice de denuncias que reportan tiroteos al aire, intimidaciones vecinales y "soldaditos" armados custodiando las esquinas.
+              <strong style={{ color: "var(--text-primary)" }}>Presencia de Armamento (77.3%):</strong> Alto índice de denuncias que reportan disparos, intimidaciones vecinales y personas armadas custodiando esquinas.
             </li>
             <li>
-              <strong style={{ color: "var(--text-primary)" }}>Economía del Delito y Canje por Robos:</strong> Múltiples alertas señalan el intercambio directo de bienes sustraídos (bicicletas, celulares, herramientas) por dosis de estupefacientes en los puntos de venta.
+              <strong style={{ color: "var(--text-primary)" }}>Economía del Delito:</strong> Múltiples alertas señalan el canje directo de bienes sustraídos por dosis de estupefacientes en los puntos de venta.
             </li>
           </ul>
         </div>
 
         <div className="card">
-          <div className="card-title">⚖️ Utilidad Operativa para Investigaciones & Allanamientos</div>
-          <div style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6 }}>
+          <div className="card-title">Utilidad Operativa para Investigaciones</div>
+          <div style={{ color: "var(--text-secondary)", fontSize: "14px", lineHeight: 1.6 }}>
             <p style={{ marginBottom: "0.8rem" }}>
-              Este módulo permite a las fiscalías especializadas en Estupefacientes y a las fuerzas de seguridad cruzar llamadas anónimas repetitivas sobre una misma ubicación, identificando la <strong>reincidencia espacial y temporal</strong> de puntos de venta activos.
+              Este módulo permite a las fiscalías especializadas y a las fuerzas de seguridad cruzar llamadas anónimas repetitivas sobre una misma ubicación, identificando la <strong>reincidencia espacial y temporal</strong> de puntos de venta activos.
             </p>
             <p>
-              La normalización de coordenadas y el análisis NLP de alias habilitan la fundamentación pericial requerida para <strong>órdenes de allanamiento y desbaratamiento de búnkers</strong>.
+              La normalización de coordenadas y el análisis de alias habilitan la fundamentación pericial requerida para <strong>órdenes de allanamiento y desbaratamiento de búnkers</strong>.
             </p>
           </div>
         </div>
 
         <div className="card">
-          <div className="card-title">🏙️ Distribución Territorial por Barrio (José C. Paz)</div>
+          <div className="card-title">Distribución Territorial por Barrio (José C. Paz)</div>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             {barrioDistribution.map((item) => (
               <div key={item.loc}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", marginBottom: "2px" }}>
                   <span style={{ color: "var(--text-secondary)" }}>{item.loc}</span>
-                  <span style={{ fontWeight: 700, color: item.color }}>{item.pct}%</span>
+                  <span style={{ fontWeight: 600, color: "var(--text-primary)" }}>{item.pct}%</span>
                 </div>
-                <div style={{ background: "var(--bg-base)", borderRadius: "4px", height: "6px", overflow: "hidden" }}>
-                  <div style={{ width: `${item.pct}%`, height: "100%", background: item.color, borderRadius: "4px" }} />
+                <div style={{ background: "var(--bg-base)", borderRadius: "2px", height: "5px", overflow: "hidden" }}>
+                  <div style={{ width: `${item.pct}%`, height: "100%", background: "#3b82f6", borderRadius: "2px" }} />
                 </div>
               </div>
             ))}
@@ -224,7 +193,7 @@ export default function SectionDrogasOverview({ stats, incidents = [] }: Section
         </div>
 
         <div className="card">
-          <div className="card-title">🗓️ Cobertura Temporal & Fuentes</div>
+          <div className="card-title">Cobertura Temporal & Fuentes de Datos</div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
             {[
               { label: "Período", value: "Ene – Ago 2026" },

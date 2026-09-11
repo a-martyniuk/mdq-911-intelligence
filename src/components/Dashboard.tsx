@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { LogOut, Loader2, Car, Skull, Crosshair } from "lucide-react";
+import { LogOut, Loader2, Car, Skull, Crosshair, FileText } from "lucide-react";
 import Sidebar from "./Sidebar";
 import IntroBanner from "./IntroBanner";
 import SectionOverview from "./SectionOverview";
@@ -183,69 +183,48 @@ export default function Dashboard() {
 
   return (
     <div className="app-layout">
-      {/* Institutional Tactical Status Bar */}
-      <div className="tactical-statusbar">
-        <div className="status-left">
-          <span className="status-live">SISTEMA 911 OPERATIVO</span>
-          <span>//</span>
-          <span>MINISTERIO DE SEGURIDAD PBA · SUBSECRETARÍA DE INTELIGENCIA CRIMINAL</span>
-        </div>
-        <div className="status-right">
-          <span className="font-mono">DATUM: WGS-84 / EPSG:4326</span>
-          <span>//</span>
-          <span className="font-mono">AUDITORÍA FORENSE: LEY 13.482</span>
-          <span>//</span>
-          <span className="font-mono" style={{ color: "var(--accent-pba-cyan)" }}>TERMINAL: CR-911-PROV</span>
-        </div>
-      </div>
-
-      {/* Header */}
+      {/* Unified Institutional Header */}
       <header className="app-header">
-        <div className="header-brand" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", background: "var(--bg-elevated)", padding: "4px 8px", borderRadius: "var(--radius-md)", border: "1px solid var(--border)" }}>
+        <div className="header-brand">
+          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", background: "var(--bg-elevated)", padding: "4px 8px", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)" }}>
             <img
               src={getAssetPath("/images/institucional/logo_ministerio.svg")}
               alt="Ministerio de Seguridad PBA"
-              style={{ height: "30px", width: "auto", objectFit: "contain" }}
+              style={{ height: "26px", width: "auto", objectFit: "contain" }}
             />
-            <div style={{ width: "1px", height: "22px", background: "var(--border)" }} />
+            <div style={{ width: "1px", height: "18px", background: "var(--border)" }} />
             <img
               src={getAssetPath("/images/institucional/logo_superintendencia.png")}
               alt="Superintendencia de Investigaciones"
-              style={{ height: "30px", width: "auto", objectFit: "contain" }}
+              style={{ height: "26px", width: "auto", objectFit: "contain" }}
             />
           </div>
           <div>
-            <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem", flexWrap: "wrap" }}>
-              <h1 className="brand-title" style={{ margin: 0, fontSize: "0.95rem", letterSpacing: "0.02em" }}>
-                Superintendencia de Investigaciones de Delitos Complejos
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <h1 className="brand-title" style={{ margin: 0, fontSize: "0.92rem", fontWeight: 600 }}>
+                Superintendencia de Investigaciones de Delitos Complejos <span style={{ color: "var(--text-muted)", fontWeight: 400 }}>|</span> Sistema 911
               </h1>
-              <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)", fontWeight: 600 }}>
-                // GOBIERNO PBA
-              </span>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "0.15rem" }}>
-              <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em", fontFamily: "var(--font-display)", fontWeight: 700 }}>
-                Jurisdicción Activa:
+            <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", marginTop: "2px" }}>
+              <span style={{ fontSize: "0.72rem", color: "var(--text-muted)" }}>
+                Jurisdicción activa:
               </span>
-              {currentProject === "mdp" ? (
-                <span style={{ fontSize: "0.72rem", fontWeight: 700, fontFamily: "var(--font-mono)", background: "rgba(13, 92, 168, 0.2)", color: "#38bdf8", border: "1px solid rgba(0, 163, 224, 0.4)", padding: "1px 7px", borderRadius: "var(--radius-sm)", display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
-                  <Car size={12} /> MAR DEL PLATA [Automotores & Delito Calificado]
-                </span>
-              ) : currentProject === "jcp" ? (
-                <span style={{ fontSize: "0.72rem", fontWeight: 700, fontFamily: "var(--font-mono)", background: "rgba(239, 68, 68, 0.15)", color: "#fca5a5", border: "1px solid rgba(239, 68, 68, 0.4)", padding: "1px 7px", borderRadius: "var(--radius-sm)", display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
-                  <Skull size={12} /> JOSÉ C. PAZ [Narcocriminalidad & Búnkers]
-                </span>
-              ) : (
-                <span style={{ fontSize: "0.72rem", fontWeight: 700, fontFamily: "var(--font-mono)", background: "rgba(245, 158, 11, 0.15)", color: "#fcd34d", border: "1px solid rgba(245, 158, 11, 0.4)", padding: "1px 7px", borderRadius: "var(--radius-sm)", display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
-                  <Crosshair size={12} /> MALVINAS ARGENTINAS [Narcocriminalidad & Puntos de Venta]
-                </span>
-              )}
+              <span style={{
+                fontSize: "0.72rem",
+                fontWeight: 500,
+                color: "var(--text-secondary)",
+                background: "rgba(255, 255, 255, 0.04)",
+                border: "1px solid var(--border)",
+                padding: "1px 6px",
+                borderRadius: "var(--radius-xs)"
+              }}>
+                {currentProject === "mdp" ? "Mar del Plata · Delitos Calificados & Automotores" : currentProject === "jcp" ? "José C. Paz · Narcocriminalidad" : "Malvinas Argentinas · Narcocriminalidad"}
+              </span>
             </div>
           </div>
         </div>
 
-        <div className="header-user" style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+        <div className="header-user" style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
           {currentProject === "mdp" && (
             <button
               onClick={() => {
@@ -262,24 +241,11 @@ export default function Dashboard() {
                   });
                 });
               }}
-              style={{
-                height: "34px",
-                padding: "0 0.85rem",
-                fontSize: "0.78rem",
-                fontWeight: 800,
-                fontFamily: "var(--font-display)",
-                letterSpacing: "0.03em",
-                background: "var(--accent-pba-blue)",
-                color: "#fff",
-                border: "1px solid var(--accent-pba-cyan)",
-                borderRadius: "var(--radius-md)",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem",
-              }}
+              className="btn-export btn-pdf"
+              title="Descargar Dossier Ejecutivo en PDF"
             >
-              📄 Dossier MDP (PDF)
+              <FileText size={14} />
+              <span>Dossier PDF</span>
             </button>
           )}
 
@@ -303,24 +269,11 @@ export default function Dashboard() {
                   });
                 });
               }}
-              style={{
-                height: "34px",
-                padding: "0 0.85rem",
-                fontSize: "0.78rem",
-                fontWeight: 800,
-                fontFamily: "var(--font-display)",
-                letterSpacing: "0.03em",
-                background: "#991b1b",
-                color: "#fff",
-                border: "1px solid var(--accent-red)",
-                borderRadius: "var(--radius-md)",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem",
-              }}
+              className="btn-export btn-pdf"
+              title="Descargar Informe de Narcocriminalidad JCP en PDF"
             >
-              📄 Dossier Drogas JCP (PDF)
+              <FileText size={14} />
+              <span>Dossier PDF</span>
             </button>
           )}
 
@@ -347,34 +300,26 @@ export default function Dashboard() {
                   });
                 });
               }}
-              style={{
-                height: "34px",
-                padding: "0 0.85rem",
-                fontSize: "0.78rem",
-                fontWeight: 800,
-                fontFamily: "var(--font-display)",
-                letterSpacing: "0.03em",
-                background: "#92400e",
-                color: "#fff",
-                border: "1px solid var(--accent-amber)",
-                borderRadius: "var(--radius-md)",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem",
-              }}
+              className="btn-export btn-pdf"
+              title="Descargar Informe de Narcocriminalidad Malvinas en PDF"
             >
-              📄 Dossier Drogas Malvinas (PDF)
+              <FileText size={14} />
+              <span>Dossier PDF</span>
             </button>
           )}
 
+          <div className="badge">
+            <span className="badge-dot" />
+            <span>Operativo</span>
+          </div>
+
           <div className="user-badge">
-            <span className="user-dot"></span>
-            <span style={{ fontFamily: "var(--font-mono)" }}>OPERADOR: {user.toUpperCase()}</span>
+            <span style={{ color: "var(--text-muted)" }}>Operador:</span>
+            <span style={{ color: "var(--text-primary)", fontWeight: 600 }}>{user}</span>
           </div>
 
           <button onClick={handleLogout} className="btn-logout" title="Cerrar sesión">
-            <LogOut size={15} />
+            <LogOut size={14} />
             <span>Salir</span>
           </button>
         </div>

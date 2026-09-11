@@ -8,15 +8,15 @@ interface MetricCardProps {
   accentColor?: string;
 }
 
-export default function MetricCard({ label, value, sub, icon, accentColor }: MetricCardProps) {
+export default function MetricCard({ label, value, sub, icon }: MetricCardProps) {
   return (
-    <div className="metric-card" style={accentColor ? { borderLeft: `3px solid ${accentColor}` } : undefined}>
+    <div className="metric-card">
       <div className="metric-header">
         <span>{label}</span>
-        {icon && <span style={{ color: accentColor || "var(--accent-pba-cyan)", display: "flex", alignItems: "center" }}>{icon}</span>}
+        {icon && <span style={{ color: "var(--text-muted)", display: "flex", alignItems: "center" }}>{icon}</span>}
       </div>
       <div className="metric-value font-mono-tabular">{value}</div>
-      {sub && <div className="metric-sub font-mono-tabular">{sub}</div>}
+      {sub && <div className="metric-sub">{sub}</div>}
     </div>
   );
 }
