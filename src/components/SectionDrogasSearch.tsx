@@ -17,7 +17,11 @@ export default function SectionDrogasSearch({ incidents = [] }: SectionDrogasSea
   const [selectedIncident, setSelectedIncident] = useState<any | null>(null);
 
   const filtered = useMemo(() => {
-    let result = incidents;
+    let result = incidents.filter((i: any) => {
+      const p = (i.partido || "").toUpperCase();
+      if (p.includes("MALVINAS") || p.includes("GENERAL PUEYRREDON") || p.includes("MDP")) return false;
+      return true;
+    });
 
     if (filterOrigen !== "todos") {
       const f = filterOrigen.toUpperCase();

@@ -57,18 +57,26 @@ export default function SectionDrogasETL({ incidents = [] }: SectionDrogasETLPro
     });
   };
 
+  const jcpOnlyIncidents = React.useMemo(() => {
+    return incidents.filter((i: any) => {
+      const p = (i.partido || "").toUpperCase();
+      if (p.includes("MALVINAS") || p.includes("GENERAL PUEYRREDON") || p.includes("MDP")) return false;
+      return true;
+    });
+  }, [incidents]);
+
   const activeCount = Object.values(sections).filter(Boolean).length;
 
   const handleGenerateCustomPDF = () => {
     if (activeCount === 0) return;
     generateDrogasJcpPDF({
-      totalIncidents: incidents.length,
-      georeferencedCount: incidents.filter((r) => r.lat && r.lng).length,
-      armasCount: incidents.filter((r) => r.tieneArmas).length,
-      cocainaCount: incidents.filter((r) => (r.sustancia || "").toUpperCase().includes("COCA")).length,
-      marihuanaCount: incidents.filter((r) => (r.sustancia || "").toUpperCase().includes("MARI")).length,
-      pacoCount: incidents.filter((r) => (r.sustancia || "").toUpperCase().includes("PACO")).length,
-      incidents,
+      totalIncidents: jcpOnlyIncidents.length,
+      georeferencedCount: jcpOnlyIncidents.filter((r) => r.lat && r.lng).length,
+      armasCount: jcpOnlyIncidents.filter((r) => r.tieneArmas).length,
+      cocainaCount: jcpOnlyIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("COCA")).length,
+      marihuanaCount: jcpOnlyIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("MARI")).length,
+      pacoCount: jcpOnlyIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("PACO")).length,
+      incidents: jcpOnlyIncidents,
       reportType: "custom",
       includedSections: sections,
       reportTitle: `Informe Modular de Inteligencia Narcocriminal · José C. Paz`,
@@ -78,13 +86,13 @@ export default function SectionDrogasETL({ incidents = [] }: SectionDrogasETLPro
 
   const handleGenerateFullDossier = () => {
     generateDrogasJcpPDF({
-      totalIncidents: incidents.length,
-      georeferencedCount: incidents.filter((r) => r.lat && r.lng).length,
-      armasCount: incidents.filter((r) => r.tieneArmas).length,
-      cocainaCount: incidents.filter((r) => (r.sustancia || "").toUpperCase().includes("COCA")).length,
-      marihuanaCount: incidents.filter((r) => (r.sustancia || "").toUpperCase().includes("MARI")).length,
-      pacoCount: incidents.filter((r) => (r.sustancia || "").toUpperCase().includes("PACO")).length,
-      incidents,
+      totalIncidents: jcpOnlyIncidents.length,
+      georeferencedCount: jcpOnlyIncidents.filter((r) => r.lat && r.lng).length,
+      armasCount: jcpOnlyIncidents.filter((r) => r.tieneArmas).length,
+      cocainaCount: jcpOnlyIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("COCA")).length,
+      marihuanaCount: jcpOnlyIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("MARI")).length,
+      pacoCount: jcpOnlyIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("PACO")).length,
+      incidents: jcpOnlyIncidents,
       reportType: "dossier",
     });
   };
@@ -174,7 +182,7 @@ export default function SectionDrogasETL({ incidents = [] }: SectionDrogasETLPro
           <div>
             <div className="card-title" style={{ gap: "0.6rem", justifyContent: "flex-start" }}>
               <Sliders size={22} color="#ef4444" />
-              <span>Opción B: Generador Modular de Reportes de Inteligencia (A Medida)</span>
+              <span>Generador Modular de Reportes de Inteligencia (A Medida)</span>
               <span style={{ fontSize: "0.72rem", background: "#ef4444", color: "#fff", fontWeight: 800, padding: "2px 8px", borderRadius: "12px" }}>
                 PERSONALIZABLE
               </span>

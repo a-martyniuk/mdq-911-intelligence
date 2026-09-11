@@ -21,6 +21,16 @@ interface SectionMalvinasOverviewProps {
 }
 
 export default function SectionMalvinasOverview({ stats, incidents = [] }: SectionMalvinasOverviewProps) {
+  const malvinasOnlyIncidents = React.useMemo(() => {
+    return incidents.filter((i: any) => {
+      const p = (i.partido || "").toUpperCase();
+      if (p.includes("JOSÉ") || p.includes("JOSE") || p.includes("GENERAL PUEYRREDON") || p.includes("MDP")) return false;
+      const lat = Number(i.lat ?? i.Latitud_Clean ?? i.Latitud);
+      if (!isNaN(lat) && lat < -34.535) return false;
+      return true;
+    });
+  }, [incidents]);
+
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1.5rem" }}>
@@ -35,7 +45,7 @@ export default function SectionMalvinasOverview({ stats, incidents = [] }: Secti
 
         <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
           <button
-            onClick={() => generateDrogasMalvinasPDF({ ...stats, incidents })}
+            onClick={() => generateDrogasMalvinasPDF({ ...stats, incidents: malvinasOnlyIncidents })}
             className="btn-logout"
             style={{
               height: "38px",

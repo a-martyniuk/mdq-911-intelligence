@@ -264,7 +264,7 @@ export function generateCaseFilePrint(data: any) {
             attributionControl: false
           });
 
-          L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19
           }).addTo(map);
 
@@ -535,7 +535,7 @@ export function generateExecutiveDossierPDF(data: any) {
             attributionControl: false
           });
 
-          L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19
           }).addTo(map);
 
@@ -751,7 +751,7 @@ export function generateAllTrajectoriesPDF(rawRecoveries: any[], filterSummary?:
             attributionControl: false
           });
 
-          L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19
           }).addTo(map);
 
@@ -1004,7 +1004,7 @@ export function generateHotspotsPDF(data: {
             attributionControl: false
           });
 
-          L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19
           }).addTo(map);
 
@@ -1411,7 +1411,14 @@ export function generateDrogasJcpPDF(data: {
   const georefIncidents = incidents.filter((i: any) => {
     const lat = Number(i.lat ?? i.Latitud_Clean ?? i.Latitud);
     const lng = Number(i.lng ?? i.Longitud_Clean ?? i.Longitud);
-    return !isNaN(lat) && !isNaN(lng) && lat !== 0 && lng !== 0;
+    if (isNaN(lat) || isNaN(lng) || lat === 0 || lng === 0) return false;
+    // Boundary sanity check to avoid cross-jurisdiction leakage
+    if (isMalvinas) {
+      if (lat < -34.535 || lat > -34.39 || lng < -58.79 || lng > -58.62) return false;
+    } else {
+      if (lat < -34.58 || lat > -34.45 || lng < -58.84 || lng > -58.70) return false;
+    }
+    return true;
   });
   const finalGeoref = georefIncidents.length > 0 ? georefIncidents.length : georeferencedCount;
 
@@ -1928,7 +1935,7 @@ export function generateDrogasJcpPDF(data: {
                   attributionControl: false
                 });
 
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                   maxZoom: 19
                 }).addTo(map1);
 
@@ -2021,7 +2028,7 @@ export function generateDrogasJcpPDF(data: {
                   attributionControl: false
                 });
 
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                   maxZoom: 19
                 }).addTo(map2);
 
@@ -2385,7 +2392,7 @@ export function generateDrogasSuspectsPDF(data: {
                 dragging: false
               });
 
-              L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+              L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 18,
               }).addTo(map);
 

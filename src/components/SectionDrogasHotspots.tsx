@@ -49,6 +49,9 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
   // Filtered dataset
   const filtered = useMemo(() => {
     return incidents.filter((inc) => {
+      const p = (inc.partido || "").toUpperCase();
+      if (p.includes("MALVINAS") || p.includes("GENERAL PUEYRREDON") || p.includes("MDP")) return false;
+
       if (filterSustancia !== "todos") {
         const s = (inc.sustancia || "").toUpperCase();
         if (!s.includes(filterSustancia.toUpperCase())) return false;

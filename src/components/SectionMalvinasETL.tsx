@@ -57,18 +57,29 @@ export default function SectionMalvinasETL({ incidents = [] }: SectionMalvinasET
     });
   };
 
+  const malvinasOnlyIncidents = React.useMemo(() => {
+    return incidents.filter((i: any) => {
+      const p = (i.partido || "").toUpperCase();
+      if (p.includes("JOSÉ") || p.includes("JOSE") || p.includes("GENERAL PUEYRREDON") || p.includes("MDP")) return false;
+      const lat = Number(i.lat ?? i.Latitud_Clean ?? i.Latitud);
+      // Malvinas latitude is strictly north of -34.532
+      if (!isNaN(lat) && lat < -34.535) return false;
+      return true;
+    });
+  }, [incidents]);
+
   const activeCount = Object.values(sections).filter(Boolean).length;
 
   const handleGenerateCustomPDF = () => {
     if (activeCount === 0) return;
     generateDrogasMalvinasPDF({
-      totalIncidents: incidents.length,
-      georeferencedCount: incidents.filter((r) => r.lat && r.lng).length,
-      armasCount: incidents.filter((r) => r.tieneArmas).length,
-      cocainaCount: incidents.filter((r) => (r.sustancia || "").toUpperCase().includes("COCA")).length,
-      marihuanaCount: incidents.filter((r) => (r.sustancia || "").toUpperCase().includes("MARI")).length,
-      pacoCount: incidents.filter((r) => (r.sustancia || "").toUpperCase().includes("PACO")).length,
-      incidents,
+      totalIncidents: malvinasOnlyIncidents.length,
+      georeferencedCount: malvinasOnlyIncidents.filter((r) => r.lat && r.lng).length,
+      armasCount: malvinasOnlyIncidents.filter((r) => r.tieneArmas).length,
+      cocainaCount: malvinasOnlyIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("COCA")).length,
+      marihuanaCount: malvinasOnlyIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("MARI")).length,
+      pacoCount: malvinasOnlyIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("PACO")).length,
+      incidents: malvinasOnlyIncidents,
       reportType: "custom",
       includedSections: sections,
       reportTitle: `Informe Modular de Inteligencia Narcocriminal · Malvinas Argentinas`,
@@ -78,13 +89,13 @@ export default function SectionMalvinasETL({ incidents = [] }: SectionMalvinasET
 
   const handleGenerateFullDossier = () => {
     generateDrogasMalvinasPDF({
-      totalIncidents: incidents.length,
-      georeferencedCount: incidents.filter((r) => r.lat && r.lng).length,
-      armasCount: incidents.filter((r) => r.tieneArmas).length,
-      cocainaCount: incidents.filter((r) => (r.sustancia || "").toUpperCase().includes("COCA")).length,
-      marihuanaCount: incidents.filter((r) => (r.sustancia || "").toUpperCase().includes("MARI")).length,
-      pacoCount: incidents.filter((r) => (r.sustancia || "").toUpperCase().includes("PACO")).length,
-      incidents,
+      totalIncidents: malvinasOnlyIncidents.length,
+      georeferencedCount: malvinasOnlyIncidents.filter((r) => r.lat && r.lng).length,
+      armasCount: malvinasOnlyIncidents.filter((r) => r.tieneArmas).length,
+      cocainaCount: malvinasOnlyIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("COCA")).length,
+      marihuanaCount: malvinasOnlyIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("MARI")).length,
+      pacoCount: malvinasOnlyIncidents.filter((r) => (r.sustancia || "").toUpperCase().includes("PACO")).length,
+      incidents: malvinasOnlyIncidents,
       reportType: "dossier",
     });
   };
@@ -174,7 +185,7 @@ export default function SectionMalvinasETL({ incidents = [] }: SectionMalvinasET
           <div>
             <div className="card-title" style={{ gap: "0.6rem", justifyContent: "flex-start" }}>
               <Sliders size={22} color="#f59e0b" />
-              <span>Opción B: Generador Modular de Reportes de Inteligencia (A Medida)</span>
+              <span>Generador Modular de Reportes de Inteligencia (A Medida)</span>
               <span style={{ fontSize: "0.72rem", background: "#f59e0b", color: "#000", fontWeight: 800, padding: "2px 8px", borderRadius: "12px" }}>
                 PERSONALIZABLE
               </span>

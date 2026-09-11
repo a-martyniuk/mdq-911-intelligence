@@ -21,6 +21,14 @@ interface SectionDrogasOverviewProps {
 }
 
 export default function SectionDrogasOverview({ stats, incidents = [] }: SectionDrogasOverviewProps) {
+  const jcpOnlyIncidents = React.useMemo(() => {
+    return incidents.filter((i: any) => {
+      const p = (i.partido || "").toUpperCase();
+      if (p.includes("MALVINAS") || p.includes("GENERAL PUEYRREDON") || p.includes("MDP")) return false;
+      return true;
+    });
+  }, [incidents]);
+
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1.5rem" }}>
@@ -35,7 +43,7 @@ export default function SectionDrogasOverview({ stats, incidents = [] }: Section
 
         <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
           <button
-            onClick={() => generateDrogasJcpPDF({ ...stats, incidents })}
+            onClick={() => generateDrogasJcpPDF({ ...stats, incidents: jcpOnlyIncidents })}
             className="btn-logout"
             style={{
               height: "38px",

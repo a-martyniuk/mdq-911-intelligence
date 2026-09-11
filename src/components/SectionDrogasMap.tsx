@@ -38,6 +38,9 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
   // Filtered dataset
   const filteredIncidents = useMemo(() => {
     return incidents.filter((inc) => {
+      const p = (inc.partido || "").toUpperCase();
+      if (p.includes("MALVINAS") || p.includes("GENERAL PUEYRREDON") || p.includes("MDP")) return false;
+
       if (filterOrigen !== "todos") {
         const orig = (inc.origen || inc.Origen_Dataset || "").toUpperCase();
         const f = filterOrigen.toUpperCase();

@@ -89,6 +89,7 @@ export default function Dashboard() {
   // Fetch dataset according to active project & filters
   useEffect(() => {
     setLoading(true);
+    setData(null); // Limpiar datos de la jurisdicción anterior para evitar mezcla de coordenadas
     const query = new URLSearchParams();
     query.set("project", currentProject);
 
@@ -100,6 +101,7 @@ export default function Dashboard() {
       if (filters.origenDataset !== "todos") query.set("origenDataset", filters.origenDataset);
     }
 
+    let isSubscribed = true;
     fetch(getApiUrl(`/api/data/incidents?${query.toString()}`))
       .then((res) => {
         if (res.status === 401) {
@@ -109,10 +111,20 @@ export default function Dashboard() {
         return res.json();
       })
       .then((d) => {
-        if (d) setData(d);
+        if (isSubscribed && d) {
+          if (!d.project || d.project === currentProject) {
+            setData(d);
+          }
+        }
       })
       .catch((err) => console.error("Error loading data:", err))
-      .finally(() => setLoading(false));
+      .finally(() => {
+        if (isSubscribed) setLoading(false);
+      });
+
+    return () => {
+      isSubscribed = false;
+    };
   }, [currentProject, filters]);
 
   const handleLogout = async () => {
@@ -256,6 +268,11 @@ export default function Dashboard() {
             <button
               onClick={() => {
                 import("@/lib/pdfReport").then((mod) => {
+                  const rawIncidents = data?.project === "jcp" ? (data?.incidents || data?.geoPoints || []) : [];
+                  const jcpIncidents = rawIncidents.filter((i: any) => {
+                    const p = (i.partido || "").toUpperCase();
+                    return !p.includes("MALVINAS") && !p.includes("GENERAL PUEYRREDON") && !p.includes("MDP");
+                  });
                   mod.generateDrogasJcpPDF({
                     totalIncidents: jcpStats.totalIncidents,
                     georeferencedCount: jcpStats.georeferencedCount,
@@ -263,7 +280,7 @@ export default function Dashboard() {
                     cocainaCount: jcpStats.cocainaCount,
                     marihuanaCount: jcpStats.marihuanaCount,
                     pacoCount: jcpStats.pacoCount,
-                    incidents: data?.incidents || data?.geoPoints || [],
+                    incidents: jcpIncidents,
                   });
                 });
               }}
@@ -291,6 +308,14 @@ export default function Dashboard() {
             <button
               onClick={() => {
                 import("@/lib/pdfReport").then((mod) => {
+                  const rawIncidents = data?.project === "malvinas" ? (data?.incidents || data?.geoPoints || []) : [];
+                  const malvinasIncidents = rawIncidents.filter((i: any) => {
+                    const p = (i.partido || "").toUpperCase();
+                    if (p.includes("JOSÉ") || p.includes("JOSE") || p.includes("GENERAL PUEYRREDON") || p.includes("MDP")) return false;
+                    const lat = Number(i.lat ?? i.Latitud_Clean ?? i.Latitud);
+                    if (!isNaN(lat) && lat < -34.535) return false;
+                    return true;
+                  });
                   mod.generateDrogasMalvinasPDF({
                     totalIncidents: malvinasStats.totalIncidents,
                     georeferencedCount: malvinasStats.georeferencedCount,
@@ -298,7 +323,7 @@ export default function Dashboard() {
                     cocainaCount: malvinasStats.cocainaCount,
                     marihuanaCount: malvinasStats.marihuanaCount,
                     pacoCount: malvinasStats.pacoCount,
-                    incidents: data?.incidents || data?.geoPoints || [],
+                    incidents: malvinasIncidents,
                   });
                 });
               }}

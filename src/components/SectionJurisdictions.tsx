@@ -153,10 +153,10 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
       const map = L.map(mapContainerRef.current).setView([-38.0055, -57.552], 12);
       mapInstanceRef.current = map;
 
-      // Dark CartoDB basemap
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-        attribution: '&copy; OpenStreetMap &copy; CARTO',
-        maxZoom: 18,
+      // OpenStreetMap basemap
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        maxZoom: 19,
       }).addTo(map);
 
       // Render Police Jurisdiction GeoJSON Organic Polygons

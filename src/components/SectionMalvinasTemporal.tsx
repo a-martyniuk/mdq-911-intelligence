@@ -95,6 +95,11 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
   // Filtered dataset
   const filtered = useMemo(() => {
     return incidents.filter((inc) => {
+      const p = (inc.partido || "").toUpperCase();
+      if (p.includes("JOSÉ") || p.includes("JOSE") || p.includes("GENERAL PUEYRREDON") || p.includes("MDP")) return false;
+      const lat = Number(inc.lat ?? inc.Latitud_Clean ?? inc.Latitud);
+      if (!isNaN(lat) && lat < -34.535) return false;
+
       if (filterOrigen !== "todos") {
         const o = (inc.origen || inc.Origen_Dataset || "").toUpperCase();
         const f = filterOrigen.toUpperCase();
