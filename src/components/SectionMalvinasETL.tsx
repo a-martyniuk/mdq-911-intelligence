@@ -92,8 +92,8 @@ export default function SectionMalvinasETL({ incidents = [] }: SectionMalvinasET
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
       <div className="card">
-        <div className="card-title" style={{ gap: "0.5rem" }}>
-          <Database size={24} color="var(--accent-indigo)" />
+        <div className="card-title" style={{ gap: "0.6rem", justifyContent: "flex-start" }}>
+          <Database size={24} color="#f59e0b" />
           <span>Pipeline ETL: Metodología de Integración de Datos (Malvinas Argentinas)</span>
         </div>
         <p className="card-subtitle">
@@ -172,7 +172,7 @@ export default function SectionMalvinasETL({ incidents = [] }: SectionMalvinasET
       <div className="card" style={{ border: "1.5px solid #f59e0b", background: "linear-gradient(180deg, rgba(245,158,11,0.03) 0%, rgba(15,23,42,0.6) 100%)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem" }}>
           <div>
-            <div className="card-title" style={{ gap: "0.5rem" }}>
+            <div className="card-title" style={{ gap: "0.6rem", justifyContent: "flex-start" }}>
               <Sliders size={22} color="#f59e0b" />
               <span>Opción B: Generador Modular de Reportes de Inteligencia (A Medida)</span>
               <span style={{ fontSize: "0.72rem", background: "#f59e0b", color: "#000", fontWeight: 800, padding: "2px 8px", borderRadius: "12px" }}>

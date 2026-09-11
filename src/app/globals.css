@@ -240,7 +240,8 @@ h1, h2, h3, h4, h5, h6, .section-title, .sidebar-title, .gradient-text {
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 0.5rem;
 }
 
 .card-subtitle {
