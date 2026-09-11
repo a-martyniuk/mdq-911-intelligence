@@ -19,7 +19,8 @@ import {
   Crosshair,
   Brain,
   Database,
-  Share2
+  Share2,
+  Calendar
 } from "lucide-react";
 import { FilterState } from "@/lib/types";
 import { getAssetPath } from "@/lib/apiUrl";
@@ -123,15 +124,25 @@ export default function Sidebar({
               fontSize: "0.8rem",
               display: "flex",
               alignItems: "center",
-              gap: "0.5rem",
+              gap: "0.6rem",
               cursor: "pointer",
               textAlign: "left"
             }}
           >
-            <Car size={16} />
-            <div>
-              <div>Mar del Plata</div>
-              <span style={{ fontSize: "0.68rem", fontWeight: 500, color: "var(--text-muted)" }}>Automotores & 911 (8.598)</span>
+            <Car size={18} style={{ flexShrink: 0 }} />
+            <div style={{ flex: 1 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.3rem" }}>
+                <span>Mar del Plata</span>
+                <span style={{ fontSize: "0.65rem", fontWeight: 700, background: "rgba(99,102,241,0.2)", color: "#a5b4fc", padding: "1px 5px", borderRadius: "4px" }}>
+                  8.598
+                </span>
+              </div>
+              <div style={{ fontSize: "0.67rem", fontWeight: 500, color: "var(--text-muted)", marginTop: "1px" }}>
+                Automotores & 911
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.64rem", color: currentProject === "mdp" ? "var(--accent-indigo)" : "var(--text-muted)", marginTop: "2px", fontWeight: 600 }}>
+                <Calendar size={11} /> 01/01/2026 – 05/08/2026
+              </div>
             </div>
           </button>
 
@@ -151,15 +162,25 @@ export default function Sidebar({
               fontSize: "0.8rem",
               display: "flex",
               alignItems: "center",
-              gap: "0.5rem",
+              gap: "0.6rem",
               cursor: "pointer",
               textAlign: "left"
             }}
           >
-            <Skull size={16} />
-            <div>
-              <div>José C. Paz</div>
-              <span style={{ fontSize: "0.68rem", fontWeight: 500, color: "var(--text-muted)" }}>Drogas & Búnkers (1.770)</span>
+            <Skull size={18} style={{ flexShrink: 0 }} />
+            <div style={{ flex: 1 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.3rem" }}>
+                <span>José C. Paz</span>
+                <span style={{ fontSize: "0.65rem", fontWeight: 700, background: "rgba(239,68,68,0.2)", color: "#fca5a5", padding: "1px 5px", borderRadius: "4px" }}>
+                  1.770
+                </span>
+              </div>
+              <div style={{ fontSize: "0.67rem", fontWeight: 500, color: "var(--text-muted)", marginTop: "1px" }}>
+                Drogas & Búnkers
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.64rem", color: currentProject === "jcp" ? "#ef4444" : "var(--text-muted)", marginTop: "2px", fontWeight: 600 }}>
+                <Calendar size={11} /> 01/01/2026 – 31/08/2026
+              </div>
             </div>
           </button>
 
@@ -179,15 +200,25 @@ export default function Sidebar({
               fontSize: "0.8rem",
               display: "flex",
               alignItems: "center",
-              gap: "0.5rem",
+              gap: "0.6rem",
               cursor: "pointer",
               textAlign: "left"
             }}
           >
-            <Crosshair size={16} />
-            <div>
-              <div>Malvinas Argentinas</div>
-              <span style={{ fontSize: "0.68rem", fontWeight: 500, color: "var(--text-muted)" }}>Drogas & Búnkers (1.471)</span>
+            <Crosshair size={18} style={{ flexShrink: 0 }} />
+            <div style={{ flex: 1 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.3rem" }}>
+                <span>Malvinas Argentinas</span>
+                <span style={{ fontSize: "0.65rem", fontWeight: 700, background: "rgba(245,158,11,0.2)", color: "#fcd34d", padding: "1px 5px", borderRadius: "4px" }}>
+                  1.471
+                </span>
+              </div>
+              <div style={{ fontSize: "0.67rem", fontWeight: 500, color: "var(--text-muted)", marginTop: "1px" }}>
+                Drogas & Búnkers
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.64rem", color: currentProject === "malvinas" ? "#f59e0b" : "var(--text-muted)", marginTop: "2px", fontWeight: 600 }}>
+                <Calendar size={11} /> 01/01/2026 – 31/08/2026
+              </div>
             </div>
           </button>
         </div>
