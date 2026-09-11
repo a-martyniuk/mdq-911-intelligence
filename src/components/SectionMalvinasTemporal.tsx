@@ -185,7 +185,7 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
   // Slots counts
   const slotStats = useMemo(() => {
     const slots = {
-      Madrugada: { total: 0, armed: 0, label: "Madrugada (00-06 hs)", color: "#8b5cf6" },
+      Madrugada: { total: 0, armed: 0, label: "Madrugada (00-06 hs)", color: "#64748b" },
       Mañana: { total: 0, armed: 0, label: "Mañana (06-12 hs)", color: "#3b82f6" },
       Tarde: { total: 0, armed: 0, label: "Tarde (12-18 hs)", color: "#f59e0b" },
       Noche: { total: 0, armed: 0, label: "Noche (18-24 hs)", color: "#ef4444" },
@@ -417,9 +417,9 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
           <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>{slotStats.Noche.armed.toLocaleString()} hechos armados nocturnos</div>
         </div>
 
-        <div className="card" style={{ borderLeft: "4px solid #8b5cf6" }}>
+        <div className="card" style={{ borderLeft: "4px solid #3b82f6" }}>
           <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase" }}>Hora de Mayor Densidad</div>
-          <div style={{ fontSize: "1.6rem", fontWeight: 900, color: "#8b5cf6", margin: "0.2rem 0" }}>{peakHourIdx.toString().padStart(2, "0")}:00 hs</div>
+          <div style={{ fontSize: "1.6rem", fontWeight: 900, color: "#3b82f6", margin: "0.2rem 0" }}>{peakHourIdx.toString().padStart(2, "0")}:00 hs</div>
           <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>{hourlyData.totalByH[peakHourIdx] || 0} llamados registrados</div>
         </div>
       </div>
@@ -476,7 +476,7 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
               barmode: "group",
               paper_bgcolor: "transparent",
               plot_bgcolor: "transparent",
-              font: { color: "#9ca3af" },
+              font: { color: "#94a3b8" },
               margin: { l: 40, r: 20, t: 20, b: 40 },
               xaxis: { title: "Hora del Día", gridcolor: "#1f2937" },
               yaxis: { title: "Llamados 911", gridcolor: "#1f2937" },
@@ -496,7 +496,7 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
         {/* Day of Week */}
         <div className="card">
           <div className="card-title" style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>
-            <Calendar size={18} color="#8b5cf6" />
+            <Calendar size={18} color="#3b82f6" />
             <span>Frecuencia por Día de la Semana</span>
           </div>
           <Plot
@@ -506,7 +506,7 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
                 y: dailyData.totalByD,
                 type: "bar",
                 name: "Total Despachos",
-                marker: { color: "#8b5cf6" },
+                marker: { color: "#3b82f6" },
               },
               {
                 x: daysOrder,
@@ -521,7 +521,7 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
             layout={{
               paper_bgcolor: "transparent",
               plot_bgcolor: "transparent",
-              font: { color: "#9ca3af" },
+              font: { color: "#94a3b8" },
               margin: { l: 40, r: 20, t: 20, b: 40 },
               xaxis: { title: "Día de la Semana", gridcolor: "#1f2937" },
               yaxis: { title: "Cantidad", gridcolor: "#1f2937" },
@@ -558,7 +558,7 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
             layout={{
               paper_bgcolor: "transparent",
               plot_bgcolor: "transparent",
-              font: { color: "#9ca3af" },
+              font: { color: "#94a3b8" },
               margin: { l: 90, r: 20, t: 20, b: 40 },
               xaxis: { title: "Día", gridcolor: "#1f2937" },
               yaxis: { title: "Franja", gridcolor: "#1f2937" },
@@ -612,7 +612,7 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
             layout={{
               paper_bgcolor: "transparent",
               plot_bgcolor: "transparent",
-              font: { color: "#9ca3af" },
+              font: { color: "#94a3b8" },
               margin: { l: 120, r: 20, t: 20, b: 40 },
               xaxis: { title: "Franja Horaria", gridcolor: "#1f2937" },
               yaxis: { title: "Barrio", gridcolor: "#1f2937" },

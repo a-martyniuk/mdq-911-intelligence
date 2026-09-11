@@ -136,14 +136,14 @@ export default function SectionDrogasOverview({ stats, incidents = [] }: Section
           value={stats.marihuanaCount.toLocaleString()}
           sub="Venta / acopio verificado en relato"
           icon={<Flame size={20} />}
-          accentColor="#8b5cf6"
+          accentColor="#3b82f6"
         />
         <MetricCard
           label="Focos de Paco / Pasta Base"
           value={stats.pacoCount.toLocaleString()}
           sub="Zonas de alto deterioro social"
           icon={<ShieldAlert size={20} />}
-          accentColor="#ec4899"
+          accentColor="#dc2626"
         />
       </div>
 

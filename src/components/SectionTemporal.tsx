@@ -159,7 +159,7 @@ export default function SectionTemporal({ incidents = [] }: SectionTemporalProps
                   y: hourlyCounts,
                   type: "bar",
                   marker: {
-                    color: hours.map((h) => (h >= 18 ? "#f59e0b" : "#06b6d4")),
+                    color: hours.map((h) => (h >= 18 ? "#f59e0b" : "#3b82f6")),
                   },
                 } as any,
               ]}
@@ -168,7 +168,7 @@ export default function SectionTemporal({ incidents = [] }: SectionTemporalProps
                 height: 320,
                 paper_bgcolor: "transparent",
                 plot_bgcolor: "transparent",
-                font: { color: "#9ca3af" },
+                font: { color: "#94a3b8" },
                 margin: { l: 40, r: 20, t: 20, b: 40 },
                 xaxis: { gridcolor: "#1f2937" },
                 yaxis: { gridcolor: "#1f2937" },
@@ -188,7 +188,7 @@ export default function SectionTemporal({ incidents = [] }: SectionTemporalProps
                   y: dailyCounts,
                   type: "bar",
                   marker: {
-                    color: daysOrder.map((d) => (d === "Sábado" ? "#fbbf24" : "#10b981")),
+                    color: daysOrder.map((d) => (d === "Sábado" ? "#f59e0b" : "#3b82f6")),
                   },
                 } as any,
               ]}
@@ -197,7 +197,7 @@ export default function SectionTemporal({ incidents = [] }: SectionTemporalProps
                 height: 320,
                 paper_bgcolor: "transparent",
                 plot_bgcolor: "transparent",
-                font: { color: "#9ca3af" },
+                font: { color: "#94a3b8" },
                 margin: { l: 40, r: 20, t: 20, b: 40 },
                 xaxis: { gridcolor: "#1f2937" },
                 yaxis: { gridcolor: "#1f2937" },
@@ -228,7 +228,7 @@ export default function SectionTemporal({ incidents = [] }: SectionTemporalProps
               height: 380,
               paper_bgcolor: "transparent",
               plot_bgcolor: "transparent",
-              font: { color: "#9ca3af" },
+              font: { color: "#94a3b8" },
               margin: { l: 80, r: 20, t: 20, b: 40 },
             } as any}
             useResizeHandler

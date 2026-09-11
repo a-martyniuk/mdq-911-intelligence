@@ -128,7 +128,9 @@ h1, h2, h3, h4, h5, h6, .section-title, .sidebar-title, .brand-title, .card-titl
   padding: 0 1.5rem;
   border-bottom: 1px solid var(--border);
   background: var(--bg-base);
-  z-index: 20;
+  position: sticky;
+  top: 0;
+  z-index: 50;
 }
 
 .header-brand {
@@ -195,14 +197,15 @@ h1, h2, h3, h4, h5, h6, .section-title, .sidebar-title, .brand-title, .card-titl
 
 /* ─── Sidebar Navigation ────────────────────────────────────────────────────── */
 .app-sidebar {
-  background: #13171e;
+  background: #111722;
   border-right: 1px solid var(--border);
   padding: 1rem 0.75rem;
   overflow-y: auto;
   height: calc(100vh - 64px);
   position: sticky;
   top: 64px;
-  z-index: 10;
+  align-self: start;
+  z-index: 40;
 }
 
 .app-main {
@@ -362,13 +365,13 @@ h1, h2, h3, h4, h5, h6, .section-title, .sidebar-title, .brand-title, .card-titl
 }
 
 .metric-value {
-  font-family: var(--font-mono), var(--font-sans) !important;
+  font-family: var(--font-mono), monospace !important;
   font-feature-settings: "tnum" 1, "zero" 1;
   font-variant-numeric: tabular-nums;
-  font-size: 28px;
+  font-size: 31px;
   font-weight: 700;
   color: #ffffff;
-  line-height: 1.15;
+  line-height: 1.12;
   margin-bottom: 0.35rem;
   letter-spacing: -0.02em;
 }
@@ -496,10 +499,13 @@ h1, h2, h3, h4, h5, h6, .section-title, .sidebar-title, .brand-title, .card-titl
 /* ─── High Density Data Tables ───────────────────────────────────────────────── */
 .data-table-container {
   width: 100%;
+  max-height: 520px;
+  overflow-y: auto;
   overflow-x: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   background: var(--bg-surface);
+  position: relative;
 }
 
 .data-table {
@@ -517,9 +523,12 @@ h1, h2, h3, h4, h5, h6, .section-title, .sidebar-title, .brand-title, .card-titl
   font-size: 0.72rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  padding: 0.6rem 0.85rem;
+  padding: 0.65rem 0.85rem;
   border-bottom: 1px solid var(--border);
   white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 5;
 }
 
 .data-table td {
@@ -527,6 +536,14 @@ h1, h2, h3, h4, h5, h6, .section-title, .sidebar-title, .brand-title, .card-titl
   border-bottom: 1px solid var(--border-subtle);
   color: var(--text-secondary);
   font-family: var(--font-sans);
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .data-table td.cell-mono,

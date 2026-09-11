@@ -32,6 +32,8 @@ function checkIsAuto(c: any): boolean {
 export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProps) {
   const [selectedCategory, setSelectedCategory] = useState<"todos" | "autos" | "motos">("todos");
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const pageSize = 15;
 
   // Deduplicate recoveries by stolen vehicle ID_Robo
   const uniqueRecoveries = useMemo(() => {
@@ -45,9 +47,10 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
     return Array.from(map.values());
   }, [recoveries]);
 
-  // Reset expanded index when category changes
+  // Reset expanded index and page when category changes
   useEffect(() => {
     setExpandedIndex(null);
+    setCurrentPage(1);
   }, [selectedCategory]);
 
   const filteredRecoveries = useMemo(() => {
@@ -57,6 +60,12 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
       return true;
     });
   }, [uniqueRecoveries, selectedCategory]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredRecoveries.length / pageSize));
+  const paginatedRecoveries = useMemo(() => {
+    const start = (currentPage - 1) * pageSize;
+    return filteredRecoveries.slice(start, start + pageSize);
+  }, [filteredRecoveries, currentPage, pageSize]);
 
   const hoursList = filteredRecoveries.map((r) => r.Horas_Hasta_Hallazgo);
   const sortedHours = [...hoursList].filter((h) => typeof h === "number" && !isNaN(h) && h > 0).sort((a, b) => a - b);
@@ -169,7 +178,7 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
               {
                 x: hoursList,
                 type: "histogram" as const,
-                marker: { color: selectedCategory === "motos" ? "#f59e0b" : "#10b981" },
+                marker: { color: selectedCategory === "motos" ? "#f59e0b" : "#3b82f6" },
               } as any,
             ]}
             layout={{
@@ -177,7 +186,7 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
               height: 340,
               paper_bgcolor: "transparent",
               plot_bgcolor: "transparent",
-              font: { color: "#9ca3af" },
+              font: { color: "#94a3b8" },
               margin: { l: 40, r: 20, t: 20, b: 40 },
               xaxis: { title: "Horas transcurridas", gridcolor: "#1f2937" },
               yaxis: { title: "Cantidad de vehículos", gridcolor: "#1f2937" },
@@ -259,7 +268,7 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
           Haz clic en cualquier caso para desplegar los relatos policiales originales de la denuncia de robo y la planilla de hallazgo automotor.
         </p>
 
-        <div className="data-table-container" style={{ maxHeight: "500px", overflowY: "auto" }}>
+        <div className="data-table-container" style={{ maxHeight: "520px", overflowY: "auto" }}>
           <table className="data-table">
             <thead>
               <tr>
@@ -269,52 +278,68 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
                 <th>Fecha Robo</th>
                 <th>Fecha Hallazgo</th>
                 <th>Tiempo Transcurrido</th>
-                <th>Relato</th>
+                <th>Relato 911 (Robo)</th>
+                <th>Detalle</th>
               </tr>
             </thead>
             <tbody>
-              {filteredRecoveries.map((r, idx) => {
-                const isExpanded = expandedIndex === idx;
+              {paginatedRecoveries.map((r, idx) => {
+                const globalIdx = ((currentPage - 1) * pageSize) + idx;
+                const isExpanded = expandedIndex === globalIdx;
                 const hoursNum = typeof r.Horas_Hasta_Hallazgo === "number" ? r.Horas_Hasta_Hallazgo : parseFloat(r.Horas_Hasta_Hallazgo as any) || 0;
                 return (
-                  <React.Fragment key={`${r.ID_Robo}_${r.ID_Hallazgo}_${idx}`}>
+                  <React.Fragment key={`${r.ID_Robo}_${r.ID_Hallazgo}_${globalIdx}`}>
                     <tr
-                      onClick={() => setExpandedIndex(isExpanded ? null : idx)}
+                      onClick={() => setExpandedIndex(isExpanded ? null : globalIdx)}
                       style={{ cursor: "pointer", background: isExpanded ? "rgba(245,158,11,0.08)" : undefined }}
                     >
                       <td>
-                        <span className="badge" style={{ color: "var(--accent-indigo)", borderColor: "var(--accent-indigo)" }}>
+                        <span className="badge" style={{ color: "var(--accent-pba-cyan)", borderColor: "var(--border)" }}>
                           {r.Patente_Principal}
                         </span>
                       </td>
                       <td><strong>{r.Marca_Detectada || "NO ESPECIFICADA"}</strong></td>
                       <td>{checkIsMoto(r) ? "🏍️ MOTO" : "🚗 AUTO"}</td>
-                      <td>{r.Fecha_Robo}</td>
-                      <td>{r.Fecha_Hallazgo}</td>
+                      <td className="cell-date">{r.Fecha_Robo}</td>
+                      <td className="cell-date">{r.Fecha_Hallazgo}</td>
                       <td>
                         <strong style={{ color: "var(--accent-green)" }}>{formatTimeDifference(hoursNum)}</strong>
+                      </td>
+                      <td style={{ maxWidth: "300px", minWidth: "220px" }}>
+                        <div
+                          className="line-clamp-2"
+                          style={{
+                            fontSize: "0.78rem",
+                            color: "var(--text-secondary)",
+                            lineHeight: 1.45,
+                          }}
+                          title={r.Relato_Robo || "Sin relato disponible"}
+                        >
+                          {r.Relato_Robo || "Sin relato disponible"}
+                        </div>
                       </td>
                       <td>
                         <button
                           style={{
                             background: "none",
                             border: "none",
-                            color: "var(--accent-indigo)",
+                            color: "var(--accent-pba-cyan)",
                             cursor: "pointer",
                             display: "flex",
                             alignItems: "center",
                             gap: "0.3rem",
                             fontSize: "0.8rem",
-                            fontWeight: 600
+                            fontWeight: 600,
+                            whiteSpace: "nowrap"
                           }}
                         >
-                          <Eye size={14} /> {isExpanded ? "Ocultar" : "Ver Relatos"} {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                          <Eye size={14} /> {isExpanded ? "Ocultar" : "Ver"} {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                         </button>
                       </td>
                     </tr>
                     {isExpanded && (
                       <tr>
-                        <td colSpan={7} style={{ background: "#0b0f19", padding: "1.25rem", borderBottom: "2px solid var(--accent-indigo)" }}>
+                        <td colSpan={8} style={{ background: "#0b0f19", padding: "1.25rem", borderBottom: "2px solid var(--border-accent)" }}>
                           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem" }}>
                             {/* Robo Narrative Box */}
                             <div style={{ background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: "var(--radius-md)", padding: "1rem" }}>
@@ -350,6 +375,50 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
               })}
             </tbody>
           </table>
+        </div>
+
+        {/* Pagination Toolbar */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "0.85rem", fontSize: "0.8rem", color: "var(--text-muted)" }}>
+          <div>
+            Mostrando {filteredRecoveries.length === 0 ? 0 : ((currentPage - 1) * pageSize) + 1} a {Math.min(currentPage * pageSize, filteredRecoveries.length)} de {filteredRecoveries.length} casos
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+            <button
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              style={{
+                padding: "5px 12px",
+                borderRadius: "var(--radius-sm)",
+                border: "1px solid var(--border)",
+                background: currentPage === 1 ? "transparent" : "var(--bg-elevated)",
+                color: currentPage === 1 ? "var(--text-dim)" : "var(--text-primary)",
+                cursor: currentPage === 1 ? "not-allowed" : "pointer",
+                fontSize: "0.78rem",
+                fontWeight: 500,
+              }}
+            >
+              Anterior
+            </button>
+            <span style={{ fontWeight: 600, color: "var(--text-secondary)", fontSize: "0.78rem" }}>
+              Página {currentPage} de {totalPages}
+            </span>
+            <button
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+              style={{
+                padding: "5px 12px",
+                borderRadius: "var(--radius-sm)",
+                border: "1px solid var(--border)",
+                background: currentPage === totalPages ? "transparent" : "var(--bg-elevated)",
+                color: currentPage === totalPages ? "var(--text-dim)" : "var(--text-primary)",
+                cursor: currentPage === totalPages ? "not-allowed" : "pointer",
+                fontSize: "0.78rem",
+                fontWeight: 500,
+              }}
+            >
+              Siguiente
+            </button>
+          </div>
         </div>
       </div>
 

@@ -83,7 +83,7 @@ export default function SectionOverview({ stats, incidents = [], recoveries = []
           value={stats.totalIncidents.toLocaleString()}
           sub="Registros procesados 911"
           icon={<Database size={18} />}
-          accentColor="#00a3e0"
+          accentColor="#3b82f6"
         />
         <MetricCard
           label="Coordenadas Normalizadas"
@@ -97,14 +97,14 @@ export default function SectionOverview({ stats, incidents = [], recoveries = []
           value={stats.recoveriesCount}
           sub="Identificados por matching NLP"
           icon={<Car size={18} />}
-          accentColor="#0d5ca8"
+          accentColor="#3b82f6"
         />
         <MetricCard
           label="Mediana de Recuperación"
           value={`${stats.medianRecoveryHours.toFixed(1)} hs`}
           sub="0.2 días transcurridos promedio"
           icon={<Clock size={18} />}
-          accentColor="#00a3e0"
+          accentColor="#64748b"
         />
         <MetricCard
           label="Franja Horaria Crítica"
@@ -118,7 +118,7 @@ export default function SectionOverview({ stats, incidents = [], recoveries = []
           value="Sábado"
           sub="Concentración alta de nocturnidad"
           icon={<Calendar size={18} />}
-          accentColor="#38bdf8"
+          accentColor="#f59e0b"
         />
       </div>
 

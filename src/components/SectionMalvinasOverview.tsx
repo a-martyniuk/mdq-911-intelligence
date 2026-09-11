@@ -116,8 +116,8 @@ export default function SectionMalvinasOverview({ stats, incidents = [] }: Secti
         <MetricCard label="Georreferenciación Válida" value={stats.georeferencedCount.toLocaleString()} sub={`${stats.georeferencedPct.toFixed(1)}% georreferenciado`} icon={<MapPin size={20} />} accentColor="#10b981" />
         <MetricCard label="Conflictividad con Armas" value={stats.armasCount.toLocaleString()} sub={`${stats.armasPct.toFixed(1)}% con armas o disparos`} icon={<Crosshair size={20} />} accentColor="#dc2626" />
         <MetricCard label="Puntos de Cocaína" value={stats.cocainaCount.toLocaleString()} sub="Mención directa o combinada" icon={<Skull size={20} />} accentColor="#f59e0b" />
-        <MetricCard label="Puntos de Marihuana" value={stats.marihuanaCount.toLocaleString()} sub="Venta / acopio verificado en relato" icon={<Flame size={20} />} accentColor="#8b5cf6" />
-        <MetricCard label="Focos de Paco / Pasta Base" value={stats.pacoCount.toLocaleString()} sub="Zonas de alto deterioro social" icon={<ShieldAlert size={20} />} accentColor="#ec4899" />
+        <MetricCard label="Puntos de Marihuana" value={stats.marihuanaCount.toLocaleString()} sub="Venta / acopio verificado en relato" icon={<Flame size={20} />} accentColor="#3b82f6" />
+        <MetricCard label="Focos de Paco / Pasta Base" value={stats.pacoCount.toLocaleString()} sub="Zonas de alto deterioro social" icon={<ShieldAlert size={20} />} accentColor="#dc2626" />
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))", gap: "1.5rem", marginTop: "1.5rem" }}>
