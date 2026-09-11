@@ -45,22 +45,23 @@ export default function SectionOverview({ stats, incidents = [], recoveries = []
             }}
             className="btn-logout"
             style={{
-              height: "38px",
-              padding: "0 1rem",
-              fontSize: "0.825rem",
+              height: "36px",
+              padding: "0 0.9rem",
+              fontSize: "0.8rem",
               fontWeight: 800,
-              background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+              fontFamily: "var(--font-display)",
+              letterSpacing: "0.02em",
+              background: "var(--accent-pba-blue)",
               color: "#fff",
-              border: "none",
-              borderRadius: "6px",
+              border: "1px solid var(--accent-pba-cyan)",
+              borderRadius: "var(--radius-md)",
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
-              gap: "0.4rem",
-              boxShadow: "0 2px 8px rgba(16,185,129,0.3)"
+              gap: "0.4rem"
             }}
           >
-            <FileText size={16} /> 📄 Descargar Dossier Ejecutivo MDP (PDF)
+            <FileText size={15} /> 📄 Dossier Ejecutivo MDP (PDF)
           </button>
 
           <button
@@ -77,13 +78,15 @@ export default function SectionOverview({ stats, incidents = [], recoveries = []
             }}
             className="btn-logout"
             style={{
-              height: "38px",
+              height: "36px",
               padding: "0 0.9rem",
               fontSize: "0.8rem",
               fontWeight: 700,
+              fontFamily: "var(--font-display)",
               background: "rgba(16, 185, 129, 0.15)",
               color: "#10b981",
               border: "1px solid rgba(16, 185, 129, 0.4)",
+              borderRadius: "var(--radius-md)",
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
@@ -100,43 +103,43 @@ export default function SectionOverview({ stats, incidents = [], recoveries = []
           label="Total de Incidentes"
           value={stats.totalIncidents.toLocaleString()}
           sub="Registros procesados 911"
-          icon={<Database size={20} />}
-          accentColor="#f59e0b"
+          icon={<Database size={18} />}
+          accentColor="#00a3e0"
         />
         <MetricCard
           label="Coordenadas Normalizadas"
           value={stats.georeferencedCount.toLocaleString()}
           sub={`${stats.georeferencedPct.toFixed(1)}% georreferenciado`}
-          icon={<MapPin size={20} />}
+          icon={<MapPin size={18} />}
           accentColor="#10b981"
         />
         <MetricCard
           label="Vehículos Recuperados"
           value={stats.recoveriesCount}
           sub="Identificados por matching NLP"
-          icon={<Car size={20} />}
-          accentColor="#06b6d4"
+          icon={<Car size={18} />}
+          accentColor="#0d5ca8"
         />
         <MetricCard
           label="Mediana de Recuperación"
           value={`${stats.medianRecoveryHours.toFixed(1)} hs`}
           sub="0.2 días transcurridos promedio"
-          icon={<Clock size={20} />}
-          accentColor="#fbbf24"
+          icon={<Clock size={18} />}
+          accentColor="#00a3e0"
         />
         <MetricCard
           label="Franja Horaria Crítica"
           value="18:00 - 24:00"
           sub={`${stats.nightPct.toFixed(1)}% de incidentes (Noche)`}
-          icon={<ShieldAlert size={20} />}
+          icon={<ShieldAlert size={18} />}
           accentColor="#ef4444"
         />
         <MetricCard
           label="Día de Mayor Pico"
           value="Sábado"
           sub="Concentración alta de nocturnidad"
-          icon={<Calendar size={20} />}
-          accentColor="#8b5cf6"
+          icon={<Calendar size={18} />}
+          accentColor="#38bdf8"
         />
       </div>
 

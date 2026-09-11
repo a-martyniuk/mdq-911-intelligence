@@ -46,22 +46,23 @@ export default function SectionDrogasOverview({ stats, incidents = [] }: Section
             onClick={() => generateDrogasJcpPDF({ ...stats, incidents: jcpOnlyIncidents })}
             className="btn-logout"
             style={{
-              height: "38px",
-              padding: "0 1rem",
-              fontSize: "0.825rem",
+              height: "36px",
+              padding: "0 0.9rem",
+              fontSize: "0.8rem",
               fontWeight: 800,
-              background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
+              fontFamily: "var(--font-display)",
+              letterSpacing: "0.02em",
+              background: "#991b1b",
               color: "#fff",
-              border: "none",
-              borderRadius: "6px",
+              border: "1px solid var(--accent-red)",
+              borderRadius: "var(--radius-md)",
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
-              gap: "0.4rem",
-              boxShadow: "0 2px 8px rgba(239,68,68,0.3)"
+              gap: "0.4rem"
             }}
           >
-            <FileText size={16} /> 📄 Descargar Informe Ejecutivo JCP (PDF)
+            <FileText size={15} /> 📄 Informe Ejecutivo JCP (PDF)
           </button>
 
           <button
@@ -78,13 +79,15 @@ export default function SectionDrogasOverview({ stats, incidents = [] }: Section
             }}
             className="btn-logout"
             style={{
-              height: "38px",
+              height: "36px",
               padding: "0 0.9rem",
               fontSize: "0.8rem",
               fontWeight: 700,
+              fontFamily: "var(--font-display)",
               background: "rgba(16, 185, 129, 0.15)",
               color: "#10b981",
               border: "1px solid rgba(16, 185, 129, 0.4)",
+              borderRadius: "var(--radius-md)",
               cursor: "pointer",
               display: "flex",
               alignItems: "center",

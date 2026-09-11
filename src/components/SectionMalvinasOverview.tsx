@@ -48,22 +48,23 @@ export default function SectionMalvinasOverview({ stats, incidents = [] }: Secti
             onClick={() => generateDrogasMalvinasPDF({ ...stats, incidents: malvinasOnlyIncidents })}
             className="btn-logout"
             style={{
-              height: "38px",
-              padding: "0 1rem",
-              fontSize: "0.825rem",
+              height: "36px",
+              padding: "0 0.9rem",
+              fontSize: "0.8rem",
               fontWeight: 800,
-              background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+              fontFamily: "var(--font-display)",
+              letterSpacing: "0.02em",
+              background: "#92400e",
               color: "#fff",
-              border: "none",
-              borderRadius: "6px",
+              border: "1px solid var(--accent-amber)",
+              borderRadius: "var(--radius-md)",
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
-              gap: "0.4rem",
-              boxShadow: "0 2px 8px rgba(245,158,11,0.3)"
+              gap: "0.4rem"
             }}
           >
-            <FileText size={16} /> 📄 Descargar Informe Ejecutivo Malvinas (PDF)
+            <FileText size={15} /> 📄 Informe Ejecutivo Malvinas (PDF)
           </button>
 
           <button
@@ -78,9 +79,23 @@ export default function SectionMalvinasOverview({ stats, incidents = [] }: Secti
               ]);
             }}
             className="btn-logout"
-            style={{ height: "38px", padding: "0 0.9rem", fontSize: "0.8rem", fontWeight: 700, background: "rgba(16,185,129,0.15)", color: "#10b981", border: "1px solid rgba(16,185,129,0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.4rem" }}
+            style={{
+              height: "36px",
+              padding: "0 0.9rem",
+              fontSize: "0.8rem",
+              fontWeight: 700,
+              fontFamily: "var(--font-display)",
+              background: "rgba(16, 185, 129, 0.15)",
+              color: "#10b981",
+              border: "1px solid rgba(16, 185, 129, 0.4)",
+              borderRadius: "var(--radius-md)",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.4rem"
+            }}
           >
-            <Download size={15} /> 📊 Exportar Indicadores
+            <Download size={15} /> 📊 Exportar Indicadores (Excel)
           </button>
         </div>
       </div>

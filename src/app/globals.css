@@ -2,73 +2,178 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg-base:        #030712;
-  --bg-surface:     #111827;
-  --bg-elevated:    #1f2937;
-  --border:         #1f2937;
-  --border-accent:  #f59e0b;
-  --text-primary:   #f3f4f6;
-  --text-secondary: #9ca3af;
-  --text-muted:     #6b7280;
-  --accent-indigo:  #f59e0b; /* Amber Gold */
-  --accent-purple:  #d97706; /* Dark Amber */
-  --accent-pink:    #fbbf24; /* Yellow Gold */
-  --accent-cyan:    #06b6d4; /* Cyan accent */
-  --accent-green:   #10b981;
-  --accent-red:     #ef4444;
-  --radius-sm:      6px;
-  --radius-md:      10px;
-  --radius-lg:      16px;
-  --shadow-sm:      0 1px 3px rgba(0,0,0,.3);
-  --shadow-md:      0 4px 12px rgba(0,0,0,.4);
-  --shadow-glow:    0 0 20px rgba(245,158,11,.15);
+  /* ─── Typography Stacks ─────────────────────────────────────────────────── */
+  --font-display: var(--font-chivo), "Chivo", -apple-system, sans-serif;
+  --font-sans: var(--font-sans), "Plus Jakarta Sans", -apple-system, sans-serif;
+  --font-mono: var(--font-mono), "JetBrains Mono", monospace;
+
+  /* Legacy Font Variables (Aliased for compatibility) */
+  --font-inter: var(--font-sans);
+  --font-outfit: var(--font-display);
+
+  /* ─── Base Dark Steel Palette (PBA Civic Data Intelligence) ─────────────── */
+  --bg-base:        #0c1017; /* Dark Steel Slate Base */
+  --bg-surface:     #161d27; /* Tactical Surface / Cards */
+  --bg-elevated:    #1f2836; /* Elevated headers, toolbars, popovers */
+  --bg-subtle:      #121721; /* Inset panels & table alternate rows */
+  
+  /* ─── Crisp Structural Borders (No Fuzzy Glows) ─────────────────────────── */
+  --border:         #263344; /* Standard 1px structural border */
+  --border-subtle:  #1b2533; /* Inner subtle separator */
+  --border-light:   #34445c; /* Hover / highlighted border */
+  --border-accent:  #00a3e0; /* PBA Civic Cyan active border */
+
+  /* ─── Official Institutional PBA Accents ────────────────────────────────── */
+  --accent-pba-blue: #0d5ca8; /* Provincial Blue (Gobierno PBA) */
+  --accent-pba-cyan: #00a3e0; /* Civic Cyan (Institucional) */
+  --pba-blue:        #0d5ca8;
+  --pba-cyan:        #00a3e0;
+
+  /* ─── Incident & Operational Semantics ──────────────────────────────────── */
+  --accent-red:      #ef4444; /* Signal Red: armas, homicidios, criticidad */
+  --accent-amber:    #f59e0b; /* Tactical Amber: estupefacientes, búnkers */
+  --accent-green:    #10b981; /* Sober Green: recuperados, esclarecidos */
+  --accent-cyan:     #00a3e0; /* Telemetría & Coordenadas */
+
+  /* Aliased for legacy code referencing old palette names */
+  --accent-indigo:   #00a3e0; /* Replaced amber-gold with PBA Civic Cyan */
+  --accent-purple:   #0d5ca8; /* Replaced dark amber with PBA Provincial Blue */
+  --accent-pink:     #38bdf8; /* Replaced yellow gold with Tactical Sky */
+
+  /* ─── Text & Telemetry Contrast ─────────────────────────────────────────── */
+  --text-primary:    #f1f5f9; /* High-contrast technical white */
+  --text-secondary:  #94a3b8; /* Operational reading slate */
+  --text-muted:      #64748b; /* Metadata, timestamps, captions */
+  --text-dim:        #475569; /* Disabled or inactive labels */
+
+  /* ─── Strict Technical Radii ────────────────────────────────────────────── */
+  --radius-xs:       2px;
+  --radius-sm:       2px;
+  --radius-md:       4px;
+  --radius-lg:       6px;
+
+  /* ─── Shadows: Pure Structural (No Neon Halos) ──────────────────────────── */
+  --shadow-none:     none;
+  --shadow-sm:       0 1px 2px rgba(0, 0, 0, 0.45);
+  --shadow-md:       0 2px 6px rgba(0, 0, 0, 0.55);
+  --shadow-glow:     none; /* Eliminated fantasy SaaS glow completely */
 }
 
 html, body {
   height: 100%;
-  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   background: var(--bg-base);
   color: var(--text-secondary);
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 14px;
+  line-height: 1.55;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6, .section-title, .sidebar-title, .gradient-text {
-  font-family: var(--font-outfit), system-ui, -apple-system, sans-serif;
+h1, h2, h3, h4, h5, h6, .section-title, .sidebar-title, .brand-title {
+  font-family: var(--font-display), system-ui, -apple-system, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+}
+
+/* ─── Monospace & Tabular Data Figures ───────────────────────────────────────── */
+.font-mono,
+.font-mono-tabular,
+.metric-value,
+.metric-sub,
+.metric-kpi,
+.badge-mono,
+.badge,
+.user-badge,
+.timestamp,
+.coords,
+.plate-badge,
+.tag-mono,
+.data-table th,
+.data-table td {
+  font-feature-settings: "tnum" 1, "zero" 1;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ─── Layout ────────────────────────────────────────────────────────────────── */
 .app-layout {
   display: grid;
-  grid-template-columns: 300px 1fr;
-  grid-template-rows: auto 1fr;
+  grid-template-columns: 290px 1fr;
+  grid-template-rows: auto auto 1fr;
   min-height: 100vh;
   position: relative;
 }
 
-/* Grid overlay background matching the portfolio */
+/* Tactical grid background (Command / Radar GIS console overlay) */
 .app-layout::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.04;
+  opacity: 0.035;
   background-image: linear-gradient(to right, var(--border) 1px, transparent 1px),
                     linear-gradient(to bottom, var(--border) 1px, transparent 1px);
-  background-size: 48px 48px;
+  background-size: 32px 32px;
 }
 
+/* Institutional Status Bar */
+.tactical-statusbar {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #080b10;
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0.25rem 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  z-index: 25;
+}
+
+.tactical-statusbar .status-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.tactical-statusbar .status-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--accent-green);
+  font-weight: 700;
+}
+
+.tactical-statusbar .status-live::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--accent-green);
+  border-radius: 1px;
+}
+
+.tactical-statusbar .status-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Main Institutional Header */
 .app-header {
   grid-column: 1 / -1;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.25rem 2rem;
+  padding: 0.75rem 1.5rem;
   border-bottom: 1px solid var(--border);
-  background: linear-gradient(180deg, rgba(245,158,11,.05) 0%, rgba(3,7,18,0.95) 100%);
-  backdrop-filter: blur(12px);
+  background: #0f141c;
   z-index: 20;
 }
 
@@ -78,166 +183,193 @@ h1, h2, h3, h4, h5, h6, .section-title, .sidebar-title, .gradient-text {
   gap: 1rem;
 }
 
+.brand-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+}
+
 .brand-icon {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--accent-indigo), var(--accent-purple));
+  background: var(--accent-pba-blue);
+  border: 1px solid var(--accent-pba-cyan);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   font-weight: 800;
-  box-shadow: var(--shadow-glow);
 }
 
 .header-title h1 {
-  font-size: 1.35rem;
+  font-size: 1.2rem;
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
   color: var(--text-primary);
 }
 
 .header-title p {
   color: var(--text-muted);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
 }
 
+/* Crisp Institutional Text (Replaces fantasy rainbow gradients) */
 .gradient-text {
-  background: linear-gradient(90deg, #f59e0b 0%, #fbbf24 50%, #d97706 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text-primary);
+  background: none !important;
+  -webkit-text-fill-color: initial !important;
+  font-weight: 800;
+  letter-spacing: -0.015em;
 }
 
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
-.badge {
+.badge, .user-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font-size: 0.75rem;
-  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
   background: var(--bg-surface);
   border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-sm);
+  padding: 0.25rem 0.6rem;
 }
 
-.badge-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
+.badge-dot, .user-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
   background: var(--accent-green);
-  box-shadow: 0 0 8px var(--accent-green);
 }
 
 .btn-logout {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  font-weight: 600;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: var(--font-sans);
   color: var(--text-secondary);
-  background: var(--bg-elevated);
+  background: var(--bg-surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-md);
+  padding: 0.4rem 0.75rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .btn-logout:hover {
-  background: rgba(239, 68, 68, 0.15);
+  background: rgba(239, 68, 68, 0.12);
   border-color: var(--accent-red);
   color: var(--accent-red);
 }
 
+/* ─── Sidebar Navigation ────────────────────────────────────────────────────── */
 .app-sidebar {
   background: var(--bg-base);
   border-right: 1px solid var(--border);
-  padding: 1.5rem 1rem;
+  padding: 1rem 0.75rem;
   overflow-y: auto;
-  height: calc(100vh - 75px);
+  height: calc(100vh - 72px);
   position: sticky;
-  top: 75px;
+  top: 72px;
   z-index: 10;
 }
 
 .app-main {
-  padding: 2rem;
+  padding: 1.5rem 1.75rem;
   overflow-y: auto;
   min-width: 0;
   z-index: 1;
 }
 
-/* ─── Navigation Links ──────────────────────────────────────────────────────── */
 .nav-section-label {
-  font-size: 0.7rem;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-muted);
-  margin-top: 1.5rem;
-  margin-bottom: 0.6rem;
-  padding-left: 0.5rem;
+  margin-top: 1.15rem;
+  margin-bottom: 0.45rem;
+  padding-left: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.nav-section-label::before {
+  content: "//";
+  color: var(--accent-pba-cyan);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.68rem;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
   width: 100%;
-  padding: 0.6rem 0.8rem;
-  font-size: 0.85rem;
-  font-weight: 500;
+  padding: 0.48rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 600;
   color: var(--text-secondary);
   background: transparent;
   border: 1px solid transparent;
+  border-left: 2px solid transparent;
   border-radius: var(--radius-md);
   cursor: pointer;
   text-align: left;
-  transition: all 0.2s ease;
-  margin-bottom: 0.25rem;
+  transition: all 0.15s ease;
+  margin-bottom: 0.15rem;
 }
 
 .nav-item:hover {
   background: var(--bg-surface);
   color: var(--text-primary);
-  border-color: rgba(255,255,255,0.05);
+  border-color: var(--border);
 }
 
 .nav-item.active {
-  background: linear-gradient(90deg, rgba(245,158,11,0.12) 0%, transparent 100%);
-  color: var(--accent-indigo);
-  border-color: rgba(245,158,11,0.3);
-  font-weight: 600;
-  box-shadow: var(--shadow-sm);
+  background: rgba(13, 92, 168, 0.22);
+  color: #ffffff;
+  border-color: var(--border);
+  border-left: 3px solid var(--accent-pba-cyan);
+  font-weight: 700;
 }
 
-/* ─── Cards & Glassmorphism ─────────────────────────────────────────────────── */
+/* ─── Cards & High Density Surfaces ─────────────────────────────────────────── */
 .card {
   background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  box-shadow: var(--shadow-md);
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s ease;
 }
 
 .card:hover {
-  border-color: rgba(245,158,11,0.3);
+  border-color: var(--border-light);
 }
 
 .card-title {
+  font-family: var(--font-display);
   font-size: 1.1rem;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: -0.015em;
   color: var(--text-primary);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.35rem;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -245,26 +377,32 @@ h1, h2, h3, h4, h5, h6, .section-title, .sidebar-title, .gradient-text {
 }
 
 .card-subtitle {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--text-muted);
   margin-bottom: 1.25rem;
+  line-height: 1.45;
 }
 
 /* ─── Metric Cards ──────────────────────────────────────────────────────────── */
 .metric-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.25rem;
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .metric-card {
   background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 1.25rem;
+  padding: 1rem 1.15rem;
   position: relative;
   overflow: hidden;
+  transition: border-color 0.15s ease;
+}
+
+.metric-card:hover {
+  border-color: var(--border-light);
 }
 
 .metric-card::after {
@@ -272,9 +410,9 @@ h1, h2, h3, h4, h5, h6, .section-title, .sidebar-title, .gradient-text {
   position: absolute;
   top: 0;
   left: 0;
-  width: 4px;
+  width: 3px;
   height: 100%;
-  background: var(--accent-indigo);
+  background: var(--accent-pba-blue);
 }
 
 .metric-header {
@@ -282,53 +420,60 @@ h1, h2, h3, h4, h5, h6, .section-title, .sidebar-title, .gradient-text {
   align-items: center;
   justify-content: space-between;
   color: var(--text-muted);
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.5rem;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.35rem;
 }
 
 .metric-value {
-  font-family: var(--font-outfit), sans-serif;
-  font-size: 2rem;
+  font-family: var(--font-mono), monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 1.9rem;
   font-weight: 800;
   color: var(--text-primary);
   line-height: 1.1;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.02em;
 }
 
 .metric-sub {
-  font-size: 0.75rem;
+  font-family: var(--font-mono), monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.72rem;
   color: var(--text-muted);
 }
 
-/* ─── Form Controls ─────────────────────────────────────────────────────────── */
+/* ─── Form Controls & Search ─────────────────────────────────────────────────── */
 .form-label {
   display: block;
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.35rem;
 }
 
 .form-select, .form-input {
   width: 100%;
-  background: var(--bg-surface);
+  background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: var(--text-primary);
-  padding: 0.5rem 0.75rem;
-  font-size: 0.85rem;
+  padding: 0.45rem 0.7rem;
+  font-size: 0.82rem;
+  font-family: var(--font-sans);
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.15s ease;
 }
 
 .form-select:focus, .form-input:focus {
-  border-color: var(--accent-indigo);
-  box-shadow: 0 0 0 2px rgba(245,158,11,0.2);
+  border-color: var(--accent-pba-cyan);
+  box-shadow: 0 0 0 1px var(--accent-pba-cyan);
 }
 
 /* ─── Login Screen ──────────────────────────────────────────────────────────── */
@@ -344,66 +489,141 @@ h1, h2, h3, h4, h5, h6, .section-title, .sidebar-title, .gradient-text {
 
 .login-card {
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
   background: var(--bg-surface);
   border: 1px solid var(--border);
+  border-top: 3px solid var(--accent-pba-cyan);
   border-radius: var(--radius-lg);
-  padding: 2.5rem;
-  box-shadow: var(--shadow-md), var(--shadow-glow);
+  padding: 2.25rem;
+  box-shadow: var(--shadow-md);
   position: relative;
   z-index: 10;
 }
 
 .btn-primary {
   width: 100%;
-  padding: 0.75rem 1.25rem;
-  background: linear-gradient(135deg, var(--accent-indigo), var(--accent-purple));
+  padding: 0.65rem 1.15rem;
+  background: var(--accent-pba-blue);
   color: #fff;
-  border: none;
-  border-radius: var(--radius-sm);
-  font-weight: 700;
-  font-size: 0.9rem;
+  border: 1px solid rgba(0, 163, 224, 0.4);
+  border-radius: var(--radius-md);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: transform 0.15s ease, opacity 0.15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease;
 }
 
 .btn-primary:hover {
-  opacity: 0.95;
-  transform: translateY(-1px);
+  background: #094784;
+  border-color: var(--accent-pba-cyan);
 }
 
-/* ─── Tables ────────────────────────────────────────────────────────────────── */
+/* ─── High Density Data Tables ───────────────────────────────────────────────── */
 .data-table-container {
   width: 100%;
   overflow-x: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
+  background: var(--bg-surface);
 }
 
 .data-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   text-align: left;
 }
 
 .data-table th {
   background: var(--bg-elevated);
-  color: var(--text-primary);
-  font-weight: 600;
-  padding: 0.75rem 1rem;
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.6rem 0.85rem;
   border-bottom: 1px solid var(--border);
   white-space: nowrap;
 }
 
 .data-table td {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 0.85rem;
+  border-bottom: 1px solid var(--border-subtle);
   color: var(--text-secondary);
+  font-family: var(--font-sans);
+}
+
+.data-table td.cell-mono,
+.data-table td.cell-num,
+.data-table td.cell-date,
+.data-table td.cell-coord {
+  font-family: var(--font-mono), monospace;
+  font-variant-numeric: tabular-nums;
 }
 
 .data-table tr:hover td {
-  background: rgba(255,255,255,0.02);
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--text-primary);
+}
+
+/* ─── Tactical GIS Map Overrides (Leaflet) ─────────────────────────────────── */
+.leaflet-container {
+  background-color: var(--bg-base) !important;
+  font-family: var(--font-sans) !important;
+}
+
+.leaflet-bar {
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.leaflet-bar a {
+  background-color: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+.leaflet-bar a:hover {
+  background-color: var(--bg-elevated) !important;
+  color: var(--accent-pba-cyan) !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-md) !important;
+  color: var(--text-primary) !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+.leaflet-popup-tip {
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--border) !important;
+}
+
+/* ─── Tactical Scrollbars ──────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-base);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-light);
 }
 
 /* ─── Responsive Media Queries ──────────────────────────────────────────────── */
@@ -417,3 +637,4 @@ h1, h2, h3, h4, h5, h6, .section-title, .sidebar-title, .gradient-text {
     top: 0;
   }
 }
+

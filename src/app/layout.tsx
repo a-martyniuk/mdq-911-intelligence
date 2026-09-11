@@ -1,22 +1,31 @@
 import type { Metadata } from "next";
-import { Inter, Outfit } from "next/font/google";
+import { Chivo, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+const chivo = Chivo({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-chivo",
   display: "swap",
+  weight: ["400", "600", "700", "800", "900"],
 });
 
-const outfit = Outfit({
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-outfit",
+  variable: "--font-sans",
   display: "swap",
+  weight: ["400", "500", "600", "700"],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Plataforma de Análisis 911 | Mar del Plata",
-  description: "Data Engineering, NLP y Geospatial Analytics aplicados al análisis de incidentes urbanos del 911.",
+  title: "Ministerio de Seguridad PBA | Plataforma Táctica de Análisis 911",
+  description: "Inteligencia Táctica Estatal, NLP y Geospatial Analytics criminal aplicados a incidentes del 911 en la Provincia de Buenos Aires.",
   robots: {
     index: false,
     follow: false,
@@ -30,7 +39,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${inter.variable} ${outfit.variable}`}>
+    <html
+      lang="es"
+      className={`${chivo.variable} ${plusJakarta.variable} ${jetbrainsMono.variable}`}
+    >
       <head>
         <meta name="robots" content="noindex, nofollow" />
       </head>
@@ -38,3 +50,4 @@ export default function RootLayout({
     </html>
   );
 }
+

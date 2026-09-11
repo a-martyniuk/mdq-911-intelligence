@@ -47,33 +47,33 @@ export default function LoginPage() {
             alignItems: "center",
             justifyContent: "center",
             gap: "1rem",
-            background: "rgba(255, 255, 255, 0.05)",
-            border: "1px solid rgba(255, 255, 255, 0.12)",
-            borderRadius: "12px",
+            background: "var(--bg-elevated)",
+            border: "1px solid var(--border)",
+            borderRadius: "var(--radius-md)",
             padding: "8px 16px",
             marginBottom: "1rem"
           }}>
             <img
               src={getAssetPath("/images/institucional/logo_ministerio.svg")}
               alt="Ministerio de Seguridad PBA"
-              style={{ height: "44px", width: "auto" }}
+              style={{ height: "40px", width: "auto" }}
             />
-            <div style={{ width: "1px", height: "34px", background: "rgba(255, 255, 255, 0.2)" }} />
+            <div style={{ width: "1px", height: "30px", background: "var(--border)" }} />
             <img
               src={getAssetPath("/images/institucional/logo_superintendencia.png")}
               alt="Superintendencia de Investigaciones"
-              style={{ height: "42px", width: "auto" }}
+              style={{ height: "38px", width: "auto" }}
             />
           </div>
 
-          <div style={{ fontSize: "0.78rem", fontWeight: 700, color: "#38bdf8", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "0.25rem" }}>
+          <div style={{ fontSize: "0.75rem", fontWeight: 800, color: "var(--accent-pba-cyan)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "0.25rem", fontFamily: "var(--font-display)" }}>
             Superintendencia de Investigaciones de Delitos Complejos
           </div>
-          <h1 style={{ fontSize: "1.4rem", fontWeight: 800, marginBottom: "0.25rem" }} className="gradient-text">
+          <h1 style={{ fontSize: "1.35rem", fontWeight: 800, marginBottom: "0.25rem", color: "var(--text-primary)", fontFamily: "var(--font-display)", letterSpacing: "-0.015em" }}>
             Plataforma 911 & Geointeligencia Criminal
           </h1>
-          <p style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-            Ministerio de Seguridad · Provincia de Buenos Aires
+          <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
+            MINISTERIO DE SEGURIDAD · PROVINCIA DE BUENOS AIRES
           </p>
         </div>
 

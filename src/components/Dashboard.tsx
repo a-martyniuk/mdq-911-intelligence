@@ -183,44 +183,62 @@ export default function Dashboard() {
 
   return (
     <div className="app-layout">
+      {/* Institutional Tactical Status Bar */}
+      <div className="tactical-statusbar">
+        <div className="status-left">
+          <span className="status-live">SISTEMA 911 OPERATIVO</span>
+          <span>//</span>
+          <span>MINISTERIO DE SEGURIDAD PBA · SUBSECRETARÍA DE INTELIGENCIA CRIMINAL</span>
+        </div>
+        <div className="status-right">
+          <span className="font-mono">DATUM: WGS-84 / EPSG:4326</span>
+          <span>//</span>
+          <span className="font-mono">AUDITORÍA FORENSE: LEY 13.482</span>
+          <span>//</span>
+          <span className="font-mono" style={{ color: "var(--accent-pba-cyan)" }}>TERMINAL: CR-911-PROV</span>
+        </div>
+      </div>
+
       {/* Header */}
       <header className="app-header">
         <div className="header-brand" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", background: "rgba(255, 255, 255, 0.05)", padding: "4px 8px", borderRadius: "8px", border: "1px solid rgba(255, 255, 255, 0.1)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", background: "var(--bg-elevated)", padding: "4px 8px", borderRadius: "var(--radius-md)", border: "1px solid var(--border)" }}>
             <img
               src={getAssetPath("/images/institucional/logo_ministerio.svg")}
               alt="Ministerio de Seguridad PBA"
-              style={{ height: "32px", width: "auto", objectFit: "contain" }}
+              style={{ height: "30px", width: "auto", objectFit: "contain" }}
             />
-            <div style={{ width: "1px", height: "24px", background: "rgba(255, 255, 255, 0.2)" }} />
+            <div style={{ width: "1px", height: "22px", background: "var(--border)" }} />
             <img
               src={getAssetPath("/images/institucional/logo_superintendencia.png")}
               alt="Superintendencia de Investigaciones"
-              style={{ height: "32px", width: "auto", objectFit: "contain" }}
+              style={{ height: "30px", width: "auto", objectFit: "contain" }}
             />
           </div>
           <div>
             <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem", flexWrap: "wrap" }}>
-              <h1 className="brand-title" style={{ margin: 0, fontSize: "1.05rem" }}>
+              <h1 className="brand-title" style={{ margin: 0, fontSize: "0.95rem", letterSpacing: "0.02em" }}>
                 Superintendencia de Investigaciones de Delitos Complejos
               </h1>
-              <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontWeight: 600 }}>
-                · Ministerio de Seguridad PBA
+              <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)", fontWeight: 600 }}>
+                // GOBIERNO PBA
               </span>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "0.15rem" }}>
-              <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Jurisdicción Operacional:</span>
+              <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em", fontFamily: "var(--font-display)", fontWeight: 700 }}>
+                Jurisdicción Activa:
+              </span>
               {currentProject === "mdp" ? (
-                <span style={{ fontSize: "0.75rem", fontWeight: 700, background: "rgba(99,102,241,0.2)", color: "#a5b4fc", padding: "1px 7px", borderRadius: "4px", display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
-                  <Car size={12} /> Mar del Plata (Automotores & Delito Calificado)
+                <span style={{ fontSize: "0.72rem", fontWeight: 700, fontFamily: "var(--font-mono)", background: "rgba(13, 92, 168, 0.2)", color: "#38bdf8", border: "1px solid rgba(0, 163, 224, 0.4)", padding: "1px 7px", borderRadius: "var(--radius-sm)", display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
+                  <Car size={12} /> MAR DEL PLATA [Automotores & Delito Calificado]
                 </span>
               ) : currentProject === "jcp" ? (
-                <span style={{ fontSize: "0.75rem", fontWeight: 700, background: "rgba(239,68,68,0.2)", color: "#fca5a5", padding: "1px 7px", borderRadius: "4px", display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
-                  <Skull size={12} /> José C. Paz (Narcocriminalidad & Puntos de Venta)
+                <span style={{ fontSize: "0.72rem", fontWeight: 700, fontFamily: "var(--font-mono)", background: "rgba(239, 68, 68, 0.15)", color: "#fca5a5", border: "1px solid rgba(239, 68, 68, 0.4)", padding: "1px 7px", borderRadius: "var(--radius-sm)", display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
+                  <Skull size={12} /> JOSÉ C. PAZ [Narcocriminalidad & Búnkers]
                 </span>
               ) : (
-                <span style={{ fontSize: "0.75rem", fontWeight: 700, background: "rgba(245,158,11,0.2)", color: "#fcd34d", padding: "1px 7px", borderRadius: "4px", display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
-                  <Crosshair size={12} /> Malvinas Argentinas (Narcocriminalidad & Puntos de Venta)
+                <span style={{ fontSize: "0.72rem", fontWeight: 700, fontFamily: "var(--font-mono)", background: "rgba(245, 158, 11, 0.15)", color: "#fcd34d", border: "1px solid rgba(245, 158, 11, 0.4)", padding: "1px 7px", borderRadius: "var(--radius-sm)", display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
+                  <Crosshair size={12} /> MALVINAS ARGENTINAS [Narcocriminalidad & Puntos de Venta]
                 </span>
               )}
             </div>
@@ -245,19 +263,20 @@ export default function Dashboard() {
                 });
               }}
               style={{
-                height: "36px",
-                padding: "0 1rem",
-                fontSize: "0.8rem",
+                height: "34px",
+                padding: "0 0.85rem",
+                fontSize: "0.78rem",
                 fontWeight: 800,
-                background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                fontFamily: "var(--font-display)",
+                letterSpacing: "0.03em",
+                background: "var(--accent-pba-blue)",
                 color: "#fff",
-                border: "none",
-                borderRadius: "6px",
+                border: "1px solid var(--accent-pba-cyan)",
+                borderRadius: "var(--radius-md)",
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
                 gap: "0.4rem",
-                boxShadow: "0 2px 8px rgba(16,185,129,0.3)"
               }}
             >
               📄 Dossier MDP (PDF)
@@ -285,19 +304,20 @@ export default function Dashboard() {
                 });
               }}
               style={{
-                height: "36px",
-                padding: "0 1rem",
-                fontSize: "0.8rem",
+                height: "34px",
+                padding: "0 0.85rem",
+                fontSize: "0.78rem",
                 fontWeight: 800,
-                background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
+                fontFamily: "var(--font-display)",
+                letterSpacing: "0.03em",
+                background: "#991b1b",
                 color: "#fff",
-                border: "none",
-                borderRadius: "6px",
+                border: "1px solid var(--accent-red)",
+                borderRadius: "var(--radius-md)",
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
                 gap: "0.4rem",
-                boxShadow: "0 2px 8px rgba(239,68,68,0.3)"
               }}
             >
               📄 Dossier Drogas JCP (PDF)
@@ -328,19 +348,20 @@ export default function Dashboard() {
                 });
               }}
               style={{
-                height: "36px",
-                padding: "0 1rem",
-                fontSize: "0.8rem",
+                height: "34px",
+                padding: "0 0.85rem",
+                fontSize: "0.78rem",
                 fontWeight: 800,
-                background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+                fontFamily: "var(--font-display)",
+                letterSpacing: "0.03em",
+                background: "#92400e",
                 color: "#fff",
-                border: "none",
-                borderRadius: "6px",
+                border: "1px solid var(--accent-amber)",
+                borderRadius: "var(--radius-md)",
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
                 gap: "0.4rem",
-                boxShadow: "0 2px 8px rgba(245,158,11,0.3)"
               }}
             >
               📄 Dossier Drogas Malvinas (PDF)
@@ -349,11 +370,11 @@ export default function Dashboard() {
 
           <div className="user-badge">
             <span className="user-dot"></span>
-            <span>Usuario: {user}</span>
+            <span style={{ fontFamily: "var(--font-mono)" }}>OPERADOR: {user.toUpperCase()}</span>
           </div>
 
           <button onClick={handleLogout} className="btn-logout" title="Cerrar sesión">
-            <LogOut size={16} />
+            <LogOut size={15} />
             <span>Salir</span>
           </button>
         </div>
