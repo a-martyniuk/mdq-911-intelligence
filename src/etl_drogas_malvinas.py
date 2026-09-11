@@ -99,18 +99,65 @@ def extract_tipo_lugar(text, comment=''):
     if 'CASA' in combined or 'FINCA' in combined or 'PROPIEDAD' in combined or 'DEPARTAMENTO' in combined: return 'Finca / Vivienda'
     return 'Lugar No Especificado'
 
-def extract_barrio(comment, addr=''):
-    combined = (str(comment) + ' ' + str(addr)).upper()
-    barrios = [
-        'GRAND BOURG', 'PABLO NOGUES', 'NOGUES', 'LOS POLVORINES', 'POLVORINES',
-        'TORTUGUITAS', 'VILLA DE MAYO', 'MAYO', 'SOURDEAUX', 'ADOLFO SOURDEAUX',
-        'BARRIO EL SOL', 'EL SOL', 'LOMA VERDE', 'BARRIO LAS CASITAS', 'LAS CASITAS',
-        'PALERMO', 'SANTA ROSA', 'SAN BLAS', 'BARRIO INFICO', 'INFICO',
-        'BARRIO UNION', 'LA CAVA', 'EL RINCON'
-    ]
-    for b in barrios:
-        if b in combined: return b.title()
-    return 'Malvinas Argentinas (General)'
+LOCALITY_CENTROIDS = {
+    "Grand Bourg": (-34.4810, -58.7190),
+    "Los Polvorines": (-34.5070, -58.7190),
+    "Pablo Nogués": (-34.4740, -58.7000),
+    "Tortuguitas": (-34.4760, -58.6930),
+    "Villa de Mayo": (-34.4940, -58.7360),
+    "Adolfo Sourdeaux": (-34.4680, -58.7100),
+    "Tierras Altas": (-34.4850, -58.7280)
+}
+
+def extract_smart_barrio(comment, addr='', relato='', calle='', raw_loc='', lat=None, lng=None):
+    comb = f"{str(comment)} {str(addr)} {str(relato)} {str(calle)}".upper()
+    
+    # 1. Direct text match for specific neighborhoods and settlements
+    if "EL SOL" in comb or "BARRIO EL SOL" in comb: return "Barrio El Sol"
+    if "CASITAS" in comb or "LAS CASITAS" in comb: return "Barrio Las Casitas"
+    if "LOMA VERDE" in comb: return "Loma Verde"
+    if "PRIMAVERAL" in comb: return "Barrio El Primaveral"
+    if "EATON" in comb: return "Barrio Eaton"
+    if "LA CAVA" in comb or "CARUMBE" in comb: return "La Cava / Carumbé"
+    if "RINCON" in comb or "RINCÓN" in comb: return "El Rincón"
+    if "GUADALUPE" in comb: return "Barrio Guadalupe"
+    if "INFICO" in comb: return "Barrio Infico"
+    if "TIERRAS ALTAS" in comb: return "Tierras Altas"
+    if "SAN BLAS" in comb: return "San Blas"
+    if "SANTA ROSA" in comb: return "Santa Rosa"
+    
+    # 2. Check raw Localidad asignada
+    loc_u = str(raw_loc).strip().upper() if pd.notnull(raw_loc) else ''
+    if "GRAND BOURG" in loc_u:
+        return "Grand Bourg"
+    elif "PABLO NOGUES" in loc_u or "NOGUES" in loc_u:
+        return "Pablo Nogués"
+    elif "TORTUGUITAS" in loc_u:
+        return "Tortuguitas"
+    elif "LOS POLVORINES" in loc_u or "POLVORINES" in loc_u:
+        return "Los Polvorines"
+    elif "VILLA DE MAYO" in loc_u or "MAYO" in loc_u:
+        return "Villa de Mayo"
+    elif "SOURDEAUX" in loc_u:
+        return "Adolfo Sourdeaux"
+    elif "TIERRAS ALTAS" in loc_u:
+        return "Tierras Altas"
+
+    # 3. Spatial proximity fallback for unassigned records
+    if pd.notnull(lat) and pd.notnull(lng):
+        try:
+            lat_f = float(lat)
+            lng_f = float(lng)
+            if lat_f != 0 and lng_f != 0:
+                closest = min(
+                    LOCALITY_CENTROIDS.keys(),
+                    key=lambda k: (lat_f - LOCALITY_CENTROIDS[k][0])**2 + (lng_f - LOCALITY_CENTROIDS[k][1])**2
+                )
+                return closest
+        except:
+            pass
+
+    return "Malvinas Argentinas (Sin Georreferenciar)"
 
 def get_franja(h):
     if 0 <= h < 6: return 'Madrugada (00-06 hs)'
@@ -268,12 +315,22 @@ df_clean['Sustancia_Detectada'] = df_clean['Relato'].apply(extract_sustancias)
 df_clean['Tiene_Armas'] = df_clean['Relato'].apply(check_armas)
 df_clean['Tipo_Punto_Venta'] = df_clean.apply(lambda r: extract_tipo_lugar(r['Relato'], r.get('comentario', '')), axis=1)
 df_clean['Alias_Identificados'] = df_clean['Relato'].apply(extract_smart_aliases)
-df_clean['Barrio_Detectado'] = df_clean.apply(lambda r: extract_barrio(r.get('comentario', ''), r.get('Direccion', r.get('Direcci\u00f3n', ''))), axis=1)
+df_clean['Barrio_Detectado'] = df_clean.apply(lambda r: extract_smart_barrio(
+    comment=r.get('comentario', ''),
+    addr=r.get('Direccion', r.get('Dirección', '')),
+    relato=r.get('Relato', ''),
+    calle=r.get('calle', ''),
+    raw_loc=r.get('Localidad asignada', ''),
+    lat=r.get('Latitud_Clean'),
+    lng=r.get('Longitud_Clean')
+), axis=1)
 df_clean['Partido'] = 'MALVINAS ARGENTINAS'
 
 records = []
 col_dir = 'Direccion' if 'Direccion' in df_clean.columns else 'Direcci\u00f3n'
 for _, r in df_clean.iterrows():
+    raw_l = str(r.get('Localidad asignada', '')).strip() if pd.notnull(r.get('Localidad asignada')) else ''
+    clean_l = raw_l if raw_l and raw_l.upper() not in ['INDEFINIDA', 'NAN', ''] else str(r['Barrio_Detectado'])
     rec = {
         'id': int(r['ID']) if pd.notnull(r['ID']) else 0,
         'ID': int(r['ID']) if pd.notnull(r['ID']) else 0,
@@ -313,7 +370,7 @@ for _, r in df_clean.iterrows():
         'barrio': str(r['Barrio_Detectado']),
         'Barrio_Detectado': str(r['Barrio_Detectado']),
         'partido': 'MALVINAS ARGENTINAS',
-        'localidad': str(r.get('Localidad asignada', '')) if pd.notnull(r.get('Localidad asignada')) else '',
+        'localidad': clean_l,
     }
     records.append(rec)
 

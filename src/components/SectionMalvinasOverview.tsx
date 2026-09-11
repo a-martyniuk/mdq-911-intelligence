@@ -31,6 +31,48 @@ export default function SectionMalvinasOverview({ stats, incidents = [] }: Secti
     });
   }, [incidents]);
 
+  const barrioDistribution = React.useMemo(() => {
+    const counts: Record<string, number> = {};
+    malvinasOnlyIncidents.forEach((i: any) => {
+      const b = i.barrio || i.Barrio_Detectado || "Sin Determinar";
+      counts[b] = (counts[b] || 0) + 1;
+    });
+    const total = malvinasOnlyIncidents.length || 1;
+    const colors = ["#ef4444", "#f59e0b", "#8b5cf6", "#3b82f6", "#10b981", "#06b6d4", "#ec4899", "#64748b"];
+    return Object.entries(counts)
+      .map(([barrio, count], idx) => ({
+        loc: barrio,
+        count,
+        pct: Number(((count / total) * 100).toFixed(1)),
+        color: colors[idx % colors.length]
+      }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 8);
+  }, [malvinasOnlyIncidents]);
+
+  const formalesCount = React.useMemo(() => {
+    return malvinasOnlyIncidents.filter((i: any) => {
+      const o = (i.origen || i.Origen_Dataset || "").toUpperCase();
+      return o.includes("FORMAL") || o.includes("DROGAS_ILICITAS");
+    }).length;
+  }, [malvinasOnlyIncidents]);
+
+  const vecinalCount = React.useMemo(() => {
+    return malvinasOnlyIncidents.filter((i: any) => {
+      const o = (i.origen || i.Origen_Dataset || "").toUpperCase();
+      return o.includes("INFORMACION") || o.includes("RELATO") || o.includes("KEYWORD");
+    }).length;
+  }, [malvinasOnlyIncidents]);
+
+  const polirubroPct = React.useMemo(() => {
+    const total = malvinasOnlyIncidents.length || 1;
+    const count = malvinasOnlyIncidents.filter((i: any) => {
+      const s = (i.sustancia || i.SubTipo || "").toUpperCase();
+      return s.includes("NO ESPECIFICADA") || s.includes("POLIRUBRO");
+    }).length;
+    return ((count / total) * 100).toFixed(0);
+  }, [malvinasOnlyIncidents]);
+
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1.5rem" }}>
@@ -39,7 +81,7 @@ export default function SectionMalvinasOverview({ stats, incidents = [] }: Secti
             💊 Inteligencia Narcocriminal &amp; Puntos de Venta (Malvinas Argentinas)
           </h2>
           <p className="card-subtitle">
-            Consolidación de 1.471 denuncias 911 sobre comercialización de estupefacientes, búnkers territoriales y conflictividad armada en las seis localidades del Partido de Malvinas Argentinas (Ene–Ago 2026).
+            Consolidación de {stats.totalIncidents.toLocaleString()} denuncias 911 sobre comercialización de estupefacientes, búnkers territoriales y conflictividad armada en las localidades del Partido de Malvinas Argentinas (Ene–Ago 2026).
           </p>
         </div>
 
@@ -113,34 +155,28 @@ export default function SectionMalvinasOverview({ stats, incidents = [] }: Secti
         <div className="card">
           <div className="card-title">🔍 Patrones Delictuales en Relatos 911</div>
           <ul style={{ paddingLeft: "1.2rem", display: "flex", flexDirection: "column", gap: "0.8rem", color: "var(--text-secondary)", fontSize: "0.9rem" }}>
-            <li><strong style={{ color: "var(--text-primary)" }}>Alta Fragmentación Territorial (6 Localidades):</strong> Grand Bourg concentra el 33% del total. Los corredores de Ruta 8 y Ruta 197 son ejes de distribución y escape hacia el conurbano noroeste.</li>
-            <li><strong style={{ color: "#ef4444" }}>Presencia Extensa de Armamento (72%):</strong> Alta tasa de hechos con armas o disparos, con particular concentración en la zona de Grand Bourg y la frontera con José C. Paz.</li>
-            <li><strong style={{ color: "var(--text-primary)" }}>55% Polirubro Sin Sustancia Declarada:</strong> Los denunciantes perciben la actividad (bultos, movimiento de personas, guardias armadas) sin identificar el producto, patrón típico de zonas de alta intimidación vecinal.</li>
+            <li><strong style={{ color: "var(--text-primary)" }}>Foco Territorial Principal:</strong> {barrioDistribution[0]?.loc || "Grand Bourg"} concentra el {barrioDistribution[0]?.pct || 36.8}% del total denunciado. Los corredores viales principales de Ruta 8 y Ruta 197 son ejes críticos de tránsito criminal.</li>
+            <li><strong style={{ color: "#ef4444" }}>Presencia Extensa de Armamento ({stats.armasPct.toFixed(0)}%):</strong> Alta tasa de hechos con mención explícita de armas de fuego o disparos ({stats.armasCount.toLocaleString()} denuncias con armamento).</li>
+            <li><strong style={{ color: "var(--text-primary)" }}>{polirubroPct}% Polirubro Sin Sustancia Declarada:</strong> Los denunciantes perciben la actividad (bultos, movimiento de personas, guardias armadas) sin identificar el producto exacto, patrón característico de intimidación vecinal.</li>
           </ul>
         </div>
         <div className="card">
           <div className="card-title">⚖️ Utilidad Operativa para Investigaciones</div>
           <div style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6 }}>
-            <p style={{ marginBottom: "0.8rem" }}>Este módulo permite cruzar llamadas anónimas repetitivas sobre una misma ubicación, identificando la <strong>reincidencia espacial y temporal</strong> de puntos de venta activos en las seis localidades.</p>
-            <p>La georeferenciación del <strong>98.6% de los hechos</strong> (1.451 de 1.471) garantiza validez cartográfica para presentaciones judiciales y planes de saturación perimetral con las 4 comisarías del partido.</p>
+            <p style={{ marginBottom: "0.8rem" }}>Este módulo permite cruzar llamadas anónimas repetitivas sobre una misma ubicación, identificando la <strong>reincidencia espacial y temporal</strong> de puntos de venta activos en las localidades del distrito.</p>
+            <p>La georeferenciación del <strong>{stats.georeferencedPct.toFixed(1)}% de los hechos</strong> ({stats.georeferencedCount.toLocaleString()} de {stats.totalIncidents.toLocaleString()}) garantiza validez cartográfica para presentaciones judiciales y planes de saturación perimetral con las 4 comisarías del partido.</p>
           </div>
         </div>
         <div className="card">
-          <div className="card-title">🏙️ Distribución por Localidad</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-            {[
-              { loc: "Grand Bourg", pct: 33.4, color: "#ef4444" },
-              { loc: "Pablo Nogués", pct: 14.0, color: "#f59e0b" },
-              { loc: "Tortuguitas", pct: 11.3, color: "#8b5cf6" },
-              { loc: "Los Polvorines", pct: 10.5, color: "#3b82f6" },
-              { loc: "Villa de Mayo", pct: 3.9, color: "#10b981" },
-              { loc: "Adolfo Sourdeaux", pct: 3.5, color: "#06b6d4" },
-              { loc: "Sin Localidad Asignada", pct: 23.4, color: "#64748b" },
-            ].map((item) => (
+          <div className="card-title">🏙️ Distribución Territorial por Localidad &amp; Barrio</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+            {barrioDistribution.map((item) => (
               <div key={item.loc}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", marginBottom: "2px" }}>
                   <span style={{ color: "var(--text-secondary)" }}>{item.loc}</span>
-                  <span style={{ fontWeight: 700, color: item.color }}>{item.pct}%</span>
+                  <span style={{ fontWeight: 700, color: item.color }} className="font-mono">
+                    {item.count} ({item.pct}%)
+                  </span>
                 </div>
                 <div style={{ background: "var(--bg-base)", borderRadius: "4px", height: "6px", overflow: "hidden" }}>
                   <div style={{ width: `${item.pct}%`, height: "100%", background: item.color, borderRadius: "4px" }} />
@@ -150,19 +186,19 @@ export default function SectionMalvinasOverview({ stats, incidents = [] }: Secti
           </div>
         </div>
         <div className="card">
-          <div className="card-title">🗓️ Cobertura Temporal</div>
+          <div className="card-title">🗓️ Cobertura Temporal &amp; Fuentes</div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
             {[
               { label: "Período", value: "Ene – Ago 2026" },
-              { label: "Drogas Ilícitas Formales", value: "802 hechos" },
-              { label: "Info Vecinal (Relato)", value: "669 alertas" },
+              { label: "Drogas Ilícitas Formales", value: `${formalesCount.toLocaleString()} hechos` },
+              { label: "Info Vecinal (Relato)", value: `${vecinalCount.toLocaleString()} alertas` },
               { label: "Duplicados Eliminados", value: "0 (IDs únicos)" },
-              { label: "Cobertura Geo", value: "98.6%" },
-              { label: "Con Armas Reportadas", value: "72.0%" },
+              { label: "Cobertura Geo", value: `${stats.georeferencedPct.toFixed(1)}%` },
+              { label: "Con Armas Reportadas", value: `${stats.armasPct.toFixed(1)}%` },
             ].map((item) => (
               <div key={item.label} style={{ background: "var(--bg-base)", padding: "0.5rem 0.75rem", borderRadius: "6px" }}>
                 <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontWeight: 700, textTransform: "uppercase" }}>{item.label}</div>
-                <div style={{ fontSize: "0.9rem", fontWeight: 800, color: "var(--text-primary)", marginTop: "2px" }}>{item.value}</div>
+                <div style={{ fontSize: "0.9rem", fontWeight: 800, color: "var(--text-primary)", marginTop: "2px" }} className="font-mono">{item.value}</div>
               </div>
             ))}
           </div>

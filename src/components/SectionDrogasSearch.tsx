@@ -59,6 +59,7 @@ export default function SectionDrogasSearch({ incidents = [] }: SectionDrogasSea
         (r.relato || "").toLowerCase().includes(q) ||
         (r.direccion || "").toLowerCase().includes(q) ||
         (r.comentario || "").toLowerCase().includes(q) ||
+        (r.barrio || r.Barrio_Detectado || "").toLowerCase().includes(q) ||
         (r.id?.toString() || "").includes(q) ||
         (r.alias || []).some((a: string) => a.toLowerCase().includes(q))
       );

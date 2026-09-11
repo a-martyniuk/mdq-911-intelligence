@@ -61,6 +61,8 @@ export default function SectionMalvinasSearch({ incidents = [] }: SectionMalvina
         (r.relato || "").toLowerCase().includes(q) ||
         (r.direccion || "").toLowerCase().includes(q) ||
         (r.comentario || "").toLowerCase().includes(q) ||
+        (r.barrio || "").toLowerCase().includes(q) ||
+        (r.localidad || "").toLowerCase().includes(q) ||
         (r.id?.toString() || "").includes(q) ||
         (r.alias || []).some((a: string) => a.toLowerCase().includes(q))
       );

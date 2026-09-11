@@ -24,7 +24,7 @@ interface SectionMalvinasETLProps {
 }
 
 export default function SectionMalvinasETL({ incidents = [] }: SectionMalvinasETLProps) {
-  // Estado para la Opción B: Selector Modular de Secciones para Informe PDF
+  // Selector Modular de Secciones para Informe PDF
   const [sections, setSections] = useState({
     tacticalMap: true,
     heatMap: true,
@@ -178,7 +178,7 @@ export default function SectionMalvinasETL({ incidents = [] }: SectionMalvinasET
       </div>
 
       {/* ========================================================================= */}
-      {/* OPCIÓN B: GENERADOR MODULAR DE REPORTES DE INTELIGENCIA (SELECTOR PERSONALIZADO) */}
+      {/* GENERADOR MODULAR DE REPORTES DE INTELIGENCIA (SELECTOR PERSONALIZADO) */}
       {/* ========================================================================= */}
       <div className="card" style={{ border: "1.5px solid #f59e0b", background: "linear-gradient(180deg, rgba(245,158,11,0.03) 0%, rgba(15,23,42,0.6) 100%)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem" }}>

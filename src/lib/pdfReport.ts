@@ -364,13 +364,13 @@ export function generateExecutiveDossierPDF(data: any) {
 
   const robosCount = data.robosCount || (incidentsList.length > 0
     ? incidentsList.filter((i: any) => (i.Origen_Dataset || i.origen || i.Tipo || "").toUpperCase().includes("ROBO")).length
-    : 6524);
+    : 4207);
 
   const hallazgosCount = data.hallazgosCount || (incidentsList.length > 0
     ? incidentsList.filter((i: any) => (i.Origen_Dataset || i.origen || i.Tipo || "").toUpperCase().includes("HALLAZGO")).length
-    : 1420);
+    : 2586);
 
-  const recoveryRate = robosCount > 0 ? ((hallazgosCount / robosCount) * 100).toFixed(1) : "21.8";
+  const recoveryRate = robosCount > 0 ? ((hallazgosCount / robosCount) * 100).toFixed(1) : "61.5";
 
   const todayStr = new Date().toLocaleDateString("es-AR", { year: "numeric", month: "long", day: "numeric" });
 

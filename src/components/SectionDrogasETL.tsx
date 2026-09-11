@@ -24,7 +24,7 @@ interface SectionDrogasETLProps {
 }
 
 export default function SectionDrogasETL({ incidents = [] }: SectionDrogasETLProps) {
-  // Estado para la Opción B: Selector Modular de Secciones para Informe PDF
+  // Selector Modular de Secciones para Informe PDF
   const [sections, setSections] = useState({
     tacticalMap: true,
     heatMap: true,
@@ -175,7 +175,7 @@ export default function SectionDrogasETL({ incidents = [] }: SectionDrogasETLPro
       </div>
 
       {/* ========================================================================= */}
-      {/* OPCIÓN B: GENERADOR MODULAR DE REPORTES DE INTELIGENCIA (SELECTOR PERSONALIZADO) */}
+      {/* GENERADOR MODULAR DE REPORTES DE INTELIGENCIA (SELECTOR PERSONALIZADO) */}
       {/* ========================================================================= */}
       <div className="card" style={{ border: "1.5px solid #dc2626", background: "linear-gradient(180deg, rgba(220,38,38,0.03) 0%, rgba(15,23,42,0.6) 100%)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem" }}>

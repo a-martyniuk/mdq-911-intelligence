@@ -22,8 +22,8 @@ export default function SectionInvestigativeValue() {
               onClick={() => {
                 generateExecutiveDossierPDF({
                   totalIncidents: 8598,
-                  robosCount: 6524,
-                  hallazgosCount: 1420,
+                  robosCount: 4207,
+                  hallazgosCount: 2586,
                   gangs: [
                     { nombre: "Banda de la Moto Negra 110cc", hechosCount: 24, patron: "Conductor con visera y acompañante armado en moto 110cc", franja: "Noche (20 a 02 hs)", zona: "Comisaría 2da (Macrocentro)", explicacion: "Coincidencia de 24 despachos en 30 días." },
                     { nombre: "Célula Fuga VW Gol Gris", hechosCount: 18, patron: "Auto de apoyo Gol Gris en robos de motovehículos", franja: "Madrugada (01 a 06 hs)", zona: "Comisaría 4ta (Pompeya)", explicacion: "Escape coordinado por avenidas principales." },

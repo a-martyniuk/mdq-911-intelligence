@@ -271,6 +271,27 @@ export default function SectionGangIntelligence({ incidents = [] }: SectionGangI
     });
   }, [incidents, selectedGang]);
 
+  // Compute dynamic counts for all gang cards
+  const gangCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    GANG_PROFILES.forEach((g) => {
+      if (!incidents || incidents.length === 0) {
+        counts[g.id] = g.linkedIncidentsCount;
+        return;
+      }
+      counts[g.id] = incidents.filter((inc) => {
+        const rel = (inc.Relato || inc.relato || "").toLowerCase();
+        const mar = (inc.Marca_Detectada || "").toLowerCase();
+        const tipo = (inc.Tipo || "").toLowerCase();
+        const subtipo = (inc.SubTipo || "").toLowerCase();
+        return g.matchPatternKeywords.some(
+          (kw) => rel.includes(kw) || mar.includes(kw) || tipo.includes(kw) || subtipo.includes(kw)
+        );
+      }).length;
+    });
+    return counts;
+  }, [incidents]);
+
   // Dynamically extract weapons actually mentioned in linked incidents
   const detectedWeapons = useMemo(() => {
     if (!linkedIncidents || linkedIncidents.length === 0) return selectedGang.weaponsUsed;
@@ -345,7 +366,7 @@ export default function SectionGangIntelligence({ incidents = [] }: SectionGangI
                 {gang.shortDesc}
               </p>
               <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--accent-indigo)", display: "flex", alignItems: "center", gap: "0.2rem" }}>
-                <span>{gang.linkedIncidentsCount} Hechos Coincidentes</span> <ChevronRight size={14} />
+                <span>{gangCounts[gang.id] ?? gang.linkedIncidentsCount} Hechos Coincidentes</span> <ChevronRight size={14} />
               </div>
             </div>
           );

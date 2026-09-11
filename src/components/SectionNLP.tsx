@@ -33,8 +33,8 @@ export default function SectionNLP() {
             onClick={() => {
               generateExecutiveDossierPDF({
                 totalIncidents: 8598,
-                robosCount: 6524,
-                hallazgosCount: 1420,
+                robosCount: 4207,
+                hallazgosCount: 2586,
               });
             }}
             className="btn-logout"
