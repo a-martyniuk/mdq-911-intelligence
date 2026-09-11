@@ -107,21 +107,22 @@ export default function SectionMalvinasSearch({ incidents = [] }: SectionMalvina
               className="btn-logout"
               style={{
                 height: "36px",
-                padding: "0 1rem",
+                padding: "0 0.9rem",
                 fontSize: "0.8rem",
                 fontWeight: 800,
-                background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
+                fontFamily: "var(--font-display)",
+                letterSpacing: "0.02em",
+                background: "#92400e",
                 color: "#fff",
-                border: "none",
-                borderRadius: "6px",
+                border: "1px solid var(--accent-amber)",
+                borderRadius: "var(--radius-md)",
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
                 gap: "0.4rem",
-                boxShadow: "0 2px 8px rgba(239,68,68,0.3)",
               }}
             >
-              <FileText size={15} /> 📄 Descargar Informe Búsqueda (PDF)
+              <FileText size={15} /> 📄 Informe Búsqueda (PDF)
             </button>
 
             <button
@@ -145,10 +146,12 @@ export default function SectionMalvinasSearch({ incidents = [] }: SectionMalvina
                 height: "36px",
                 padding: "0 0.85rem",
                 fontSize: "0.8rem",
-                fontWeight: 800,
+                fontWeight: 700,
+                fontFamily: "var(--font-display)",
                 background: "rgba(16, 185, 129, 0.15)",
                 color: "#10b981",
                 border: "1px solid rgba(16, 185, 129, 0.4)",
+                borderRadius: "var(--radius-md)",
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
@@ -161,7 +164,7 @@ export default function SectionMalvinasSearch({ incidents = [] }: SectionMalvina
         </div>
 
         {/* Search & Filter Bar */}
-        <div style={{ background: "var(--bg-base)", padding: "1rem", borderRadius: "8px", border: "1px solid var(--border)", marginBottom: "1.25rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+        <div style={{ background: "var(--bg-base)", padding: "0.85rem", borderRadius: "var(--radius-md)", border: "1px solid var(--border)", marginBottom: "1.25rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 190px 170px 170px", gap: "0.75rem" }}>
             <input
               type="text"
