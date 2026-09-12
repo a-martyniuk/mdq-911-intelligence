@@ -46,23 +46,23 @@ export default function LoginPage() {
             display: "inline-flex",
             alignItems: "center",
             justifyContent: "center",
-            gap: "1rem",
+            gap: "1.1rem",
             background: "var(--bg-elevated)",
             border: "1px solid var(--border)",
             borderRadius: "var(--radius-md)",
-            padding: "8px 16px",
-            marginBottom: "1rem"
+            padding: "10px 18px",
+            marginBottom: "1.25rem"
           }}>
             <img
               src={getAssetPath("/images/institucional/logo_ministerio.svg")}
               alt="Ministerio de Seguridad PBA"
-              style={{ height: "40px", width: "auto" }}
+              style={{ height: "48px", width: "auto", objectFit: "contain" }}
             />
-            <div style={{ width: "1px", height: "30px", background: "var(--border)" }} />
+            <div style={{ width: "1px", height: "36px", background: "var(--border)" }} />
             <img
               src={getAssetPath("/images/institucional/logo_superintendencia.png")}
               alt="Superintendencia de Investigaciones"
-              style={{ height: "38px", width: "auto" }}
+              style={{ height: "46px", width: "auto", objectFit: "contain" }}
             />
           </div>
 

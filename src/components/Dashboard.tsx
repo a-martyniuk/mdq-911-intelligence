@@ -169,9 +169,9 @@ export default function Dashboard() {
           <div style={{
             display: "flex",
             alignItems: "center",
-            gap: "0.6rem",
+            gap: "0.85rem",
             background: "var(--bg-surface)",
-            padding: "5px 9px",
+            padding: "6px 14px",
             borderRadius: "var(--radius-sm)",
             border: "1px solid var(--border)",
             boxShadow: "var(--shadow-sm)"
@@ -179,32 +179,32 @@ export default function Dashboard() {
             <img
               src={getAssetPath("/images/institucional/logo_ministerio.svg")}
               alt="Ministerio de Seguridad PBA"
-              style={{ height: "24px", width: "auto", objectFit: "contain" }}
+              style={{ height: "46px", width: "auto", objectFit: "contain" }}
             />
-            <div style={{ width: "1px", height: "16px", background: "var(--border)" }} />
+            <div style={{ width: "1px", height: "36px", background: "var(--border)" }} />
             <img
               src={getAssetPath("/images/institucional/logo_superintendencia.png")}
               alt="Superintendencia de Investigaciones"
-              style={{ height: "24px", width: "auto", objectFit: "contain" }}
+              style={{ height: "48px", width: "auto", objectFit: "contain" }}
             />
           </div>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <h1 className="brand-title" style={{ margin: 0, fontSize: "0.9rem", fontWeight: 600, color: "var(--text-primary)" }}>
+              <h1 className="brand-title" style={{ margin: 0, fontSize: "0.98rem", fontWeight: 700, color: "var(--text-primary)", letterSpacing: "-0.015em" }}>
                 Superintendencia de Investigaciones de Delitos Complejos <span style={{ color: "var(--text-muted)", fontWeight: 400 }}>·</span> <span style={{ color: "var(--accent-pba-blue)" }}>Sistema 911</span>
               </h1>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", marginTop: "1px" }}>
-              <span style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.45rem", marginTop: "3px" }}>
+              <span style={{ fontSize: "0.74rem", color: "var(--text-muted)" }}>
                 Jurisdicción activa:
               </span>
               <span style={{
-                fontSize: "0.7rem",
+                fontSize: "0.74rem",
                 fontWeight: 600,
                 color: currentProject === "mdp" ? "#0d5ca8" : currentProject === "jcp" ? "#b91c1c" : "#b45309",
                 background: currentProject === "mdp" ? "#eff6ff" : currentProject === "jcp" ? "#fef2f2" : "#fffbeb",
                 border: "1px solid " + (currentProject === "mdp" ? "#bfdbfe" : currentProject === "jcp" ? "#fecaca" : "#fde68a"),
-                padding: "1px 7px",
+                padding: "2px 8px",
                 borderRadius: "var(--radius-xs)",
                 fontFamily: "var(--font-sans)"
               }}>
