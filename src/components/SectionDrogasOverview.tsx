@@ -90,7 +90,7 @@ export default function SectionDrogasOverview({ stats, incidents = [] }: Section
             Inteligencia Narcocriminal & Puntos de Venta (José C. Paz)
           </h2>
           <p className="card-subtitle">
-            Consolidación de denuncias 911 sobre comercialización de estupefacientes, búnkers territoriales y conflictividad armada en el Partido de José C. Paz.
+            Consolidación de {stats.totalIncidents.toLocaleString()} denuncias 911 sobre comercialización de estupefacientes, búnkers territoriales y conflictividad armada en el Partido de José C. Paz (Ene–Ago 2026).
           </p>
         </div>
 

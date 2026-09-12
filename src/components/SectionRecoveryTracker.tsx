@@ -617,7 +617,7 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
                   onChange={(e) => setShowAllTrajectories(e.target.checked)}
                   style={{ width: "15px", height: "15px", accentColor: "var(--accent-indigo)" }}
                 />
-                🌐 Ver Todos los Vectores (58 Casos Cruzados)
+                🌐 Ver Todos los Vectores ({filteredCases.length} Casos Cruzados)
               </label>
 
               <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.8rem", fontWeight: 700, color: "#ea580c", cursor: "pointer" }}>

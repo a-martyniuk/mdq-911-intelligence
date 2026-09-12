@@ -45,7 +45,7 @@ export default function IntroBanner({ currentProject = "mdp" }: IntroBannerProps
               Malvinas Argentinas · UFI Drogas Ilícitas
             </span>
             <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
-              AUDITORÍA 2026
+              PERIODO: 01/01/2026 – 31/08/2026
             </span>
           </div>
           <h2 style={{ fontSize: "19px", fontWeight: 600, color: "var(--text-primary)", margin: "0 0 0.35rem 0", letterSpacing: "-0.015em" }}>
@@ -111,7 +111,7 @@ export default function IntroBanner({ currentProject = "mdp" }: IntroBannerProps
               José C. Paz · UFI Narcocriminalidad
             </span>
             <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
-              AUDITORÍA 2026
+              PERIODO: 01/01/2026 – 31/08/2026
             </span>
           </div>
           <h2 style={{ fontSize: "19px", fontWeight: 600, color: "var(--text-primary)", margin: "0 0 0.35rem 0", letterSpacing: "-0.015em" }}>

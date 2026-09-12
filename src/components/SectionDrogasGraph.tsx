@@ -652,6 +652,7 @@ export default function SectionDrogasGraph({ incidents = [] }: SectionDrogasGrap
 
     generateDrogasGraphPDF({
       cliqueName: activeCliqueLabel,
+      partido: "José C. Paz",
       nodes: displayNodes.map((n) => ({
         id: n.id,
         label: n.label,
