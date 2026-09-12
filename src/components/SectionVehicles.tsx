@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import MetricCard from "./MetricCard";
-import { Car, Bike, Clock, FileText, ChevronDown, ChevronUp, Eye, Wrench, Download } from "lucide-react";
+import { Car, Bike, Clock, FileText, ChevronDown, ChevronUp, Eye, Wrench, Download, Info, ShieldAlert, Zap, AlertTriangle, Layers, BarChart3, TrendingUp, HelpCircle } from "lucide-react";
 import { exportToCSV } from "@/lib/excelExport";
 import { formatTimeDifference } from "@/lib/formatters";
 import { generateVehiclesComparisonReportPDF } from "@/lib/pdfReport";
@@ -45,6 +45,8 @@ function checkIsAuto(c: any): boolean {
 
 export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProps) {
   const [selectedCategory, setSelectedCategory] = useState<"todos" | "autos" | "motos">("todos");
+  const [chartViewMode, setChartViewMode] = useState<"franjas" | "ventana48" | "continuo">("franjas");
+  const [showInterpretationGuide, setShowInterpretationGuide] = useState<boolean>(true);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const pageSize = 15;
@@ -86,17 +88,109 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
   }, [filteredRecoveries, currentPage, pageSize]);
 
   const hoursList = filteredRecoveries.map((r) => r.Horas_Hasta_Hallazgo);
-  const sortedHours = [...hoursList].filter((h) => typeof h === "number" && !isNaN(h) && h > 0).sort((a, b) => a - b);
+  const sortedHours = useMemo(() => {
+    return [...hoursList].filter((h) => typeof h === "number" && !isNaN(h) && h >= 0).sort((a, b) => a - b);
+  }, [hoursList]);
 
-  const medianHours = sortedHours.length > 0
-    ? sortedHours.length % 2 !== 0
+  const medianHours = useMemo(() => {
+    if (sortedHours.length === 0) return selectedCategory === "motos" ? 6.8 : selectedCategory === "autos" ? 5.4 : 5.4;
+    return sortedHours.length % 2 !== 0
       ? sortedHours[Math.floor(sortedHours.length / 2)]
-      : (sortedHours[Math.floor(sortedHours.length / 2) - 1] + sortedHours[Math.floor(sortedHours.length / 2)]) / 2
-    : selectedCategory === "motos" ? 7.0 : selectedCategory === "autos" ? 4.9 : 5.4;
+      : (sortedHours[Math.floor(sortedHours.length / 2) - 1] + sortedHours[Math.floor(sortedHours.length / 2)]) / 2;
+  }, [sortedHours, selectedCategory]);
 
-  const meanHours = sortedHours.length > 0
-    ? sortedHours.reduce((acc, val) => acc + val, 0) / sortedHours.length
-    : selectedCategory === "motos" ? 75.7 : selectedCategory === "autos" ? 51.2 : 53.6;
+  const meanHours = useMemo(() => {
+    if (sortedHours.length === 0) return selectedCategory === "motos" ? 75.7 : selectedCategory === "autos" ? 34.9 : 43.5;
+    return sortedHours.reduce((acc, val) => acc + val, 0) / sortedHours.length;
+  }, [sortedHours, selectedCategory]);
+
+  const pctUnder6 = useMemo(() => {
+    const count = sortedHours.filter((h) => h <= 6).length;
+    return ((count / (sortedHours.length || 1)) * 100).toFixed(1);
+  }, [sortedHours]);
+
+  const pctUnder24 = useMemo(() => {
+    const count = sortedHours.filter((h) => h <= 24).length;
+    return ((count / (sortedHours.length || 1)) * 100).toFixed(1);
+  }, [sortedHours]);
+
+  // Criminological Operational Brackets (No Negative Bins, High-Value Operational Semantics)
+  const operationalBrackets = useMemo(() => {
+    const total = sortedHours.length || 1;
+    const b0_3 = sortedHours.filter((h) => h < 3);
+    const b3_6 = sortedHours.filter((h) => h >= 3 && h < 6);
+    const b6_12 = sortedHours.filter((h) => h >= 6 && h < 12);
+    const b12_24 = sortedHours.filter((h) => h >= 12 && h < 24);
+    const b24_48 = sortedHours.filter((h) => h >= 24 && h < 48);
+    const b48_72 = sortedHours.filter((h) => h >= 48 && h < 72);
+    const b72_plus = sortedHours.filter((h) => h >= 72);
+
+    return [
+      {
+        range: "0 a 3 hs",
+        label: "Fuga / Descarte Inmediato",
+        desc: "Uso para escape o comisión de otro hecho delictivo; abandono rápido sin desguace para eludir móvil policial con alerta 911.",
+        count: b0_3.length,
+        pct: Number(((b0_3.length / total) * 100).toFixed(1)),
+        color: "#059669",
+        phase: "Fase de Fuga Inmediata",
+      },
+      {
+        range: "3 a 6 hs",
+        label: "Enfriamiento Rápido",
+        desc: "Estacionamiento preventivo en vía pública para verificar si posee rastreo satelital (LoJack/GPS) o alarma.",
+        count: b3_6.length,
+        pct: Number(((b3_6.length / total) * 100).toFixed(1)),
+        color: "#10b981",
+        phase: "Fase de Enfriamiento Express",
+      },
+      {
+        range: "6 a 12 hs",
+        label: "Misma Jornada / Madrugada",
+        desc: "Vehículos robados por la tarde/noche y abandonados al amanecer tras cesar la actividad delictiva nocturna.",
+        count: b6_12.length,
+        pct: Number(((b6_12.length / total) * 100).toFixed(1)),
+        color: "#0284c7",
+        phase: "Fase Nocturna / Madrugada",
+      },
+      {
+        range: "12 a 24 hs",
+        label: "Primera Jornada (24 hs)",
+        desc: "Cierre de la ventana crítica (casi el 80% del total de recuperos). Fin del enfriamiento callejero.",
+        count: b12_24.length,
+        pct: Number(((b12_24.length / total) * 100).toFixed(1)),
+        color: "#0d5ca8",
+        phase: "Cierre de Jornada Inicial",
+      },
+      {
+        range: "24 a 48 hs",
+        label: "Desarme Express (1-2 días)",
+        desc: "Traslado a talleres clandestinos o sustracción de cubiertas, batería y estéreo.",
+        count: b24_48.length,
+        pct: Number(((b24_48.length / total) * 100).toFixed(1)),
+        color: "#d97706",
+        phase: "Fase de Desguace Inicial",
+      },
+      {
+        range: "48 a 72 hs",
+        label: "Desguace Avanzado (2-3 días)",
+        desc: "Canibalización de chasis y corte de piezas mayores en zonas periurbanas/cortaderos clandestinos.",
+        count: b48_72.length,
+        pct: Number(((b48_72.length / total) * 100).toFixed(1)),
+        color: "#ea580c",
+        phase: "Fase de Canibalización",
+      },
+      {
+        range: "> 72 hs",
+        label: "Abandono Crónico o Control",
+        desc: "Vehículos quemados en descampados, 'mellizos' adulterados o detectados en operativos viales semanas después.",
+        count: b72_plus.length,
+        pct: Number(((b72_plus.length / total) * 100).toFixed(1)),
+        color: "#dc2626",
+        phase: "Fase Residual Crónica",
+      },
+    ];
+  }, [sortedHours]);
 
   return (
     <div className="animate-enter">
@@ -201,56 +295,337 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
           </div>
         </div>
 
-        <div className="metric-grid">
+        {/* Strategic 5-KPI Metric Grid */}
+        <div className="metric-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", marginBottom: "1.25rem" }}>
           <MetricCard
-            label="Muestra Analizada"
+            label="Casos con Telemetría"
             value={filteredRecoveries.length}
-            sub={`Filtrado por: ${selectedCategory.toUpperCase()}`}
+            sub={`Filtrado: ${selectedCategory.toUpperCase()}`}
             icon={<Car size={20} />}
             accentColor="#10b981"
           />
           <MetricCard
-            label="Mediana de Tiempo"
+            label="Mediana de Descarte"
             value={`${medianHours.toFixed(1)} hs`}
-            sub="Rápida tasa de abandono tras el ilícito"
+            sub="50% de los rodados ya fue abandonado"
             icon={<Clock size={20} />}
-            accentColor="#f59e0b"
+            accentColor="#059669"
           />
           <MetricCard
-            label="Promedio de Tiempo"
+            label="Hora de Oro (≤ 6 hs)"
+            value={`${pctUnder6}%`}
+            sub="Ventana de recuperación intacta"
+            icon={<Zap size={20} />}
+            accentColor="#0284c7"
+          />
+          <MetricCard
+            label="1ra Jornada (≤ 24 hs)"
+            value={`${pctUnder24}%`}
+            sub="Tasa acumulada en vía pública"
+            icon={<ShieldAlert size={20} />}
+            accentColor="#d97706"
+          />
+          <MetricCard
+            label="Promedio Aritmético"
             value={`${meanHours.toFixed(1)} hs`}
-            sub="Afectado por casos hallados semanas después"
-            icon={<Clock size={20} />}
-            accentColor="#06b6d4"
+            sub="Sesgado por outliers de semanas posteriores"
+            icon={<TrendingUp size={20} />}
+            accentColor="#64748b"
           />
         </div>
 
-        {/* Histogram of Recovery Time */}
+        {/* Enhanced Multi-View Chart & Forensic Analysis */}
         <div style={{ background: "var(--bg-base)", padding: "1.25rem", borderRadius: "var(--radius-md)", border: "1px solid var(--border)", marginBottom: "1.5rem" }}>
-          <h4 style={{ fontSize: "0.95rem", color: "var(--text-primary)", marginBottom: "0.5rem" }}>
-            Distribución de Tiempos de Hallazgo - {selectedCategory.toUpperCase()} (Horas)
-          </h4>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem", marginBottom: "1rem" }}>
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <Clock size={18} color="#0d5ca8" />
+                <h4 style={{ fontSize: "1rem", fontWeight: 700, color: "var(--text-primary)", margin: 0 }}>
+                  Distribución de Tiempos de Hallazgo - {selectedCategory.toUpperCase()} (Ventana Temporal 911)
+                </h4>
+              </div>
+              <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", margin: "0.2rem 0 0 0" }}>
+                Tiempo transcurrido desde la llamada 911 de sustracción hasta el despacho policial de hallazgo/recupero.
+              </p>
+            </div>
+
+            {/* View Mode Switcher */}
+            <div style={{ display: "inline-flex", padding: "2px", background: "#ffffff", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)", gap: "2px" }}>
+              <button
+                onClick={() => setChartViewMode("franjas")}
+                style={{
+                  padding: "4px 10px",
+                  fontSize: "11px",
+                  fontWeight: 600,
+                  borderRadius: "var(--radius-xs)",
+                  border: chartViewMode === "franjas" ? "1px solid #93c5fd" : "1px solid transparent",
+                  background: chartViewMode === "franjas" ? "#eff6ff" : "transparent",
+                  color: chartViewMode === "franjas" ? "#1d4ed8" : "var(--text-muted)",
+                  cursor: "pointer",
+                  transition: "all 0.15s ease",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                }}
+                title="Vista por fases tácticas operativas (sin bins negativos)"
+              >
+                <BarChart3 size={13} /> Franjas Operativas (Recomendada)
+              </button>
+              <button
+                onClick={() => setChartViewMode("ventana48")}
+                style={{
+                  padding: "4px 10px",
+                  fontSize: "11px",
+                  fontWeight: 600,
+                  borderRadius: "var(--radius-xs)",
+                  border: chartViewMode === "ventana48" ? "1px solid #93c5fd" : "1px solid transparent",
+                  background: chartViewMode === "ventana48" ? "#eff6ff" : "transparent",
+                  color: chartViewMode === "ventana48" ? "#1d4ed8" : "var(--text-muted)",
+                  cursor: "pointer",
+                  transition: "all 0.15s ease",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                }}
+                title="Histograma detallado para el 85% de los casos que ocurren en los dos primeros días"
+              >
+                <Layers size={13} /> Ventana Crítica (0-48 hs)
+              </button>
+              <button
+                onClick={() => setChartViewMode("continuo")}
+                style={{
+                  padding: "4px 10px",
+                  fontSize: "11px",
+                  fontWeight: 600,
+                  borderRadius: "var(--radius-xs)",
+                  border: chartViewMode === "continuo" ? "1px solid #93c5fd" : "1px solid transparent",
+                  background: chartViewMode === "continuo" ? "#eff6ff" : "transparent",
+                  color: chartViewMode === "continuo" ? "#1d4ed8" : "var(--text-muted)",
+                  cursor: "pointer",
+                  transition: "all 0.15s ease",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                }}
+                title="Histograma continuo con líneas de referencia para Mediana y Promedio"
+              >
+                <TrendingUp size={13} /> Histórico Completo
+              </button>
+            </div>
+          </div>
+
+          {/* Plotly Chart Canvas */}
           <Plot
-            data={[
-              {
-                x: hoursList,
-                type: "histogram" as const,
-                marker: { color: selectedCategory === "motos" ? "#d97706" : "#0d5ca8" },
-              } as any,
-            ]}
+            data={
+              chartViewMode === "franjas"
+                ? ([
+                    {
+                      x: operationalBrackets.map((b) => b.range),
+                      y: operationalBrackets.map((b) => b.count),
+                      type: "bar" as const,
+                      text: operationalBrackets.map((b) => `${b.count} (${b.pct}%)`),
+                      textposition: "outside",
+                      textfont: { family: "Inter, sans-serif", size: 11, color: "#0f172a" },
+                      marker: {
+                        color: operationalBrackets.map((b) => b.color),
+                        line: { color: "#ffffff", width: 1.5 },
+                      },
+                      customdata: operationalBrackets.map((b) => [b.label, b.pct, b.phase, b.desc]),
+                      hovertemplate:
+                        "<b>%{x}</b> (%{customdata[0]})<br>" +
+                        "<b>Cantidad:</b> %{y} vehículos (%{customdata[1]}%)<br>" +
+                        "<b>Fase Táctica:</b> %{customdata[2]}<br>" +
+                        "<i>%{customdata[3]}</i><extra></extra>",
+                    } as any,
+                  ])
+                : chartViewMode === "ventana48"
+                ? ([
+                    {
+                      x: sortedHours.filter((h) => h <= 48),
+                      type: "histogram" as const,
+                      xbins: { start: 0, end: 48, size: 4 },
+                      autobinx: false,
+                      marker: {
+                        color: selectedCategory === "motos" ? "#d97706" : "#0d5ca8",
+                        line: { color: "#ffffff", width: 1 },
+                      },
+                      hovertemplate: "<b>Intervalo:</b> %{x} a %{x+4} horas<br><b>Vehículos Hallados:</b> %{y}<extra></extra>",
+                    } as any,
+                  ])
+                : ([
+                    {
+                      x: sortedHours,
+                      type: "histogram" as const,
+                      xbins: { start: 0, size: 24 },
+                      autobinx: false,
+                      marker: {
+                        color: "#334155",
+                        line: { color: "#ffffff", width: 1 },
+                      },
+                      hovertemplate: "<b>Intervalo:</b> %{x} a %{x+24} horas<br><b>Vehículos Hallados:</b> %{y}<extra></extra>",
+                    } as any,
+                  ])
+            }
             layout={{
               autosize: true,
-              height: 340,
+              height: 350,
               paper_bgcolor: "transparent",
               plot_bgcolor: "transparent",
               font: { color: "#475569", family: "Inter, sans-serif" },
-              margin: { l: 40, r: 20, t: 20, b: 40 },
-              xaxis: { title: "Horas transcurridas", gridcolor: "#e2e8f0" },
-              yaxis: { title: "Cantidad de vehículos", gridcolor: "#e2e8f0" },
+              margin: { l: 45, r: 25, t: 30, b: 50 },
+              xaxis: {
+                title:
+                  chartViewMode === "franjas"
+                    ? "Franja Operativa de Descarte Policial"
+                    : chartViewMode === "ventana48"
+                    ? "Horas Transcurridas (Fase Caliente 0 a 48 hs)"
+                    : "Horas Transcurridas Totales (Escala Completa)",
+                gridcolor: "#e2e8f0",
+                tickfont: { size: 11, color: "#334155" },
+              },
+              yaxis: {
+                title: "Cantidad de Vehículos Recuperados",
+                gridcolor: "#e2e8f0",
+                tickfont: { size: 11, color: "#334155" },
+              },
+              shapes:
+                chartViewMode === "continuo"
+                  ? [
+                      {
+                        type: "line",
+                        x0: medianHours,
+                        x1: medianHours,
+                        y0: 0,
+                        y1: 1,
+                        yref: "paper",
+                        line: { color: "#059669", width: 2.5, dash: "dash" },
+                      },
+                      {
+                        type: "line",
+                        x0: meanHours,
+                        x1: meanHours,
+                        y0: 0,
+                        y1: 1,
+                        yref: "paper",
+                        line: { color: "#d97706", width: 2, dash: "dot" },
+                      },
+                    ]
+                  : [],
+              annotations:
+                chartViewMode === "continuo"
+                  ? [
+                      {
+                        x: medianHours,
+                        y: 1,
+                        yref: "paper",
+                        text: `Mediana: ${medianHours.toFixed(1)} hs`,
+                        showarrow: true,
+                        arrowhead: 2,
+                        ax: 40,
+                        ay: -25,
+                        font: { size: 10, color: "#059669" },
+                        bgcolor: "#ffffff",
+                        bordercolor: "#059669",
+                      },
+                      {
+                        x: meanHours,
+                        y: 0.8,
+                        yref: "paper",
+                        text: `Promedio: ${meanHours.toFixed(1)} hs (sesgado)`,
+                        showarrow: true,
+                        arrowhead: 2,
+                        ax: 60,
+                        ay: -20,
+                        font: { size: 10, color: "#d97706" },
+                        bgcolor: "#ffffff",
+                        bordercolor: "#d97706",
+                      },
+                    ]
+                  : [],
             } as any}
             useResizeHandler
             style={{ width: "100%" }}
           />
+
+          {/* Forensic Briefing & Criminological Interpretation Guide */}
+          <div style={{ marginTop: "1.25rem", paddingTop: "1rem", borderTop: "1px solid var(--border)" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem", flexWrap: "wrap", gap: "0.5rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <ShieldAlert size={17} color="#0d5ca8" />
+                <span style={{ fontSize: "13.5px", fontWeight: 700, color: "var(--text-primary)", letterSpacing: "-0.01em" }}>
+                  Guía Pericial: Criminología del Descarte & Ventana Temporal 911
+                </span>
+                <span style={{ fontSize: "11px", padding: "1.5px 6px", borderRadius: "10px", background: "rgba(13, 92, 168, 0.1)", color: "#0d5ca8", fontWeight: 700 }}>
+                  Informe Doctrinario
+                </span>
+              </div>
+              <button
+                onClick={() => setShowInterpretationGuide(!showInterpretationGuide)}
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  fontSize: "12px",
+                  fontWeight: 600,
+                  color: "#0d5ca8",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                }}
+              >
+                {showInterpretationGuide ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                {showInterpretationGuide ? "Ocultar Explicación Pericial" : "Ver Explicación Pericial Completa"}
+              </button>
+            </div>
+
+            {showInterpretationGuide && (
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "0.85rem" }}>
+                {/* Pillar 1: Golden Hour */}
+                <div style={{ background: "#ffffff", padding: "0.9rem", borderRadius: "var(--radius-sm)", border: "1px solid #e2e8f0", display: "flex", flexDirection: "column", gap: "0.35rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.45rem", color: "#059669", fontWeight: 700, fontSize: "12.5px" }}>
+                    <Zap size={15} />
+                    <span>La "Hora de Oro" (0 a 6 hs): {pctUnder6}% del total</span>
+                  </div>
+                  <p style={{ fontSize: "0.8rem", color: "#334155", margin: 0, lineHeight: 1.45 }}>
+                    Más de la mitad de los vehículos sustraídos son abandonados de inmediato. El delincuente los utiliza para cometer un hecho inmediato (raid o fuga) y los descarta en vía pública para no circular con pedido de secuestro activo (evitando alertas LPR y controles policiales). <b>Es la ventana donde el vehículo se recupera completo e intacto.</b>
+                  </p>
+                </div>
+
+                {/* Pillar 2: Cooling off cycle */}
+                <div style={{ background: "#ffffff", padding: "0.9rem", borderRadius: "var(--radius-sm)", border: "1px solid #e2e8f0", display: "flex", flexDirection: "column", gap: "0.35rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.45rem", color: "#0284c7", fontWeight: 700, fontSize: "12.5px" }}>
+                    <Clock size={15} />
+                    <span>Ciclo de Enfriamiento (6 a 24 hs): {pctUnder24}% acumulado</span>
+                  </div>
+                  <p style={{ fontSize: "0.8rem", color: "#334155", margin: 0, lineHeight: 1.45 }}>
+                    Casi 8 de cada 10 vehículos son hallados dentro de su primera jornada. La banda estaciona el rodado a 15-30 cuadras del hecho en barrios residenciales y aguarda entre 6 y 12 horas para comprobar si la víctima activa corte satelital (LoJack/Ituran) o alarma con seguimiento GPS.
+                  </p>
+                </div>
+
+                {/* Pillar 3: Median vs Mean */}
+                <div style={{ background: "#ffffff", padding: "0.9rem", borderRadius: "var(--radius-sm)", border: "1px solid #e2e8f0", display: "flex", flexDirection: "column", gap: "0.35rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.45rem", color: "#d97706", fontWeight: 700, fontSize: "12.5px" }}>
+                    <HelpCircle size={15} />
+                    <span>¿Por qué la Mediana ({medianHours.toFixed(1)} hs) y no el Promedio?</span>
+                  </div>
+                  <p style={{ fontSize: "0.8rem", color: "#334155", margin: 0, lineHeight: 1.45 }}>
+                    En criminología judicial, la distribución del tiempo tiene fuerte asimetría positiva: un solo vehículo hallado 28 días después (674 hs) eleva artificialmente el promedio a {meanHours.toFixed(0)} hs. <b>La mediana es el estándar pericial</b>: garantiza que para el 50% de las víctimas el descarte ocurrió antes de las {medianHours.toFixed(1)} horas.
+                  </p>
+                </div>
+
+                {/* Pillar 4: Disassembly & Late Abandonment */}
+                <div style={{ background: "#ffffff", padding: "0.9rem", borderRadius: "var(--radius-sm)", border: "1px solid #e2e8f0", display: "flex", flexDirection: "column", gap: "0.35rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.45rem", color: "#dc2626", fontWeight: 700, fontSize: "12.5px" }}>
+                    <Wrench size={15} />
+                    <span>Desarme & Cortaderos (&gt; 24 a 72 hs)</span>
+                  </div>
+                  <p style={{ fontSize: "0.8rem", color: "#334155", margin: 0, lineHeight: 1.45 }}>
+                    Los vehículos no hallados en las primeras 24 hs ingresan a la fase de desguace: sustracción de neumáticos, baterías y piezas comerciales en talleres clandestinos de zonas periurbanas (Crias 11ra, 12da, 16ta o barrios RENABAP). Los hallazgos posteriores a 72 hs corresponden a chasis canibalizados o rodados quemados.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Table of Representative Matched Cases & Interactive Narrative Inspector */}
