@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Search, Filter, ShieldAlert, Car, MapPin, Clock, Tag, Download, Zap } from "lucide-react";
+import { Search, Filter, ShieldAlert, Car, MapPin, Clock, Tag, Download, Zap, FileText } from "lucide-react";
 import { extractEntities, highlightRelato } from "@/lib/nlpExtractor";
 import { exportToCSV } from "@/lib/excelExport";
+import { generateExecutiveDossierPDF } from "@/lib/pdfReport";
 import { findSimilarIncidents, SimilarIncidentResult } from "@/lib/nlpSimilarity";
 
 interface SectionSearchProps {
@@ -149,6 +150,34 @@ export default function SectionSearch({ incidents = [] }: SectionSearchProps) {
               Limpiar búsqueda
             </button>
           )}
+
+          <button
+            onClick={() => {
+              generateExecutiveDossierPDF({
+                totalIncidents: incidents.length,
+                incidentsSample: filteredIncidents,
+                robosCount: filteredIncidents.filter((i) => (i.Origen_Dataset || i.Tipo || "").toUpperCase().includes("ROBO")).length,
+                hallazgosCount: filteredIncidents.filter((i) => (i.Origen_Dataset || i.Tipo || "").toUpperCase().includes("HALLAZGO")).length,
+              });
+            }}
+            className="btn-logout"
+            style={{
+              height: "32px",
+              padding: "0 0.75rem",
+              fontSize: "0.775rem",
+              fontWeight: 700,
+              background: "rgba(99, 102, 241, 0.15)",
+              color: "#818cf8",
+              border: "1px solid rgba(99, 102, 241, 0.4)",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.3rem",
+            }}
+            title="Exportar incidentes filtrados a Dossier PDF"
+          >
+            <FileText size={14} /> Dossier PDF
+          </button>
 
           <button
             onClick={() => {

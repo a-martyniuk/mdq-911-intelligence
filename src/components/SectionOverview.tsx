@@ -34,7 +34,7 @@ export default function SectionOverview({ stats, incidents = [], recoveries = []
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1.25rem" }}>
         <div>
           <h2 className="card-title" style={{ fontSize: "20px", fontWeight: 600 }}>Resumen Ejecutivo del Proyecto</h2>
-          <p className="card-subtitle">Indicadores clave consolidados del análisis de incidentes del 911 en Mar del Plata.</p>
+          <p className="card-subtitle">Indicadores clave consolidados del análisis de incidentes del 911 en General Pueyrredón (01/01/2026 – 05/08/2026).</p>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
@@ -61,7 +61,7 @@ export default function SectionOverview({ stats, incidents = [], recoveries = []
           <button
             onClick={() => {
               const data = [
-                { Indicador: "Total Incidentes 911", Valor: stats.totalIncidents, Detalle: "Llamados procesados en General Pueyrredón" },
+                { Indicador: "Total Incidentes 911", Valor: stats.totalIncidents, Detalle: "Llamados procesados en General Pueyrredón (01/01 a 05/08/2026)" },
                 { Indicador: "Coordenadas Normalizadas", Valor: stats.georeferencedCount, Detalle: `${stats.georeferencedPct.toFixed(1)}% georreferenciado` },
                 { Indicador: "Vehículos Recuperados", Valor: stats.recoveriesCount, Detalle: "Identificados por matching de patentes" },
                 { Indicador: "Mediana de Recuperación", Valor: `${stats.medianRecoveryHours.toFixed(1)} hs`, Detalle: "Tasa de abandono rápida" },

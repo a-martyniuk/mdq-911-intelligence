@@ -76,7 +76,7 @@ export default function IntroBanner({ currentProject = "mdp" }: IntroBannerProps
         Mar del Plata — Sustracción Automotor & Delito Calificado 911
       </h2>
       <p style={{ fontSize: "14px", color: "var(--text-secondary)", lineHeight: 1.6, margin: 0, maxWidth: "980px" }}>
-        Análisis relacional sobre <strong style={{ color: "var(--text-primary)", fontWeight: 600 }}>8.598 eventos del 911</strong>. Vinculación de robos con hallazgos mediante NLP de dominios, análisis de patrones de armamento y reconstrucción cronológica de bandas delictivas.
+        Análisis relacional sobre <strong style={{ color: "var(--text-primary)", fontWeight: 600 }}>8.598 eventos del 911</strong> (01/01/2026 – 05/08/2026). Vinculación de robos con hallazgos mediante NLP de dominios, análisis de patrones de armamento y reconstrucción cronológica de bandas delictivas.
       </p>
     </div>
   );

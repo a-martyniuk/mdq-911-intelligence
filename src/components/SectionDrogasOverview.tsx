@@ -29,20 +29,38 @@ export default function SectionDrogasOverview({ stats, incidents = [] }: Section
     });
   }, [incidents]);
 
+  const formalesCount = React.useMemo(() => {
+    return (
+      jcpOnlyIncidents.filter((i: any) => {
+        const o = (i.origen || i.Origen_Dataset || "").toUpperCase();
+        return o.includes("DROGAS_ILICITAS") || o.includes("FORMAL");
+      }).length || 989
+    );
+  }, [jcpOnlyIncidents]);
+
+  const vecinalCount = React.useMemo(() => {
+    return (
+      jcpOnlyIncidents.filter((i: any) => {
+        const o = (i.origen || i.Origen_Dataset || "").toUpperCase();
+        return o.includes("KEYWORD") || o.includes("INFORMACION") || o.includes("VECINAL") || o.includes("RELATO");
+      }).length || 781
+    );
+  }, [jcpOnlyIncidents]);
+
   const barrioDistribution = React.useMemo(() => {
     const list = jcpOnlyIncidents.length > 0 ? jcpOnlyIncidents : incidents;
     if (!list || list.length === 0) {
       return [
-        { loc: "San Atilio / Granaderos", pct: 20.6, color: "#ef4444" },
-        { loc: "Sol y Verde / Croacia", pct: 18.1, color: "#f59e0b" },
-        { loc: "Barrio Frino / Castelli", pct: 15.0, color: "#8b5cf6" },
-        { loc: "El Ceibo / Providencia", pct: 10.2, color: "#3b82f6" },
-        { loc: "Barrio León / Alfonso", pct: 7.9, color: "#10b981" },
-        { loc: "Vucetich / Salvatori", pct: 7.7, color: "#06b6d4" },
-        { loc: "Barrio La Paz", pct: 4.7, color: "#ec4899" },
-        { loc: "Piñero / San Martín", pct: 4.6, color: "#a855f7" },
-        { loc: "Barrio Lamas / Casitas", pct: 4.1, color: "#14b8a6" },
-        { loc: "Yapeyú / San Roque", pct: 3.9, color: "#eab308" },
+        { loc: "San Atilio / Granaderos", count: 364, pct: 20.6, color: "#ef4444" },
+        { loc: "Sol y Verde / Croacia", count: 320, pct: 18.1, color: "#f59e0b" },
+        { loc: "Barrio Frino / Castelli", count: 265, pct: 15.0, color: "#8b5cf6" },
+        { loc: "El Ceibo / Providencia", count: 181, pct: 10.2, color: "#3b82f6" },
+        { loc: "Barrio León / Alfonso", count: 140, pct: 7.9, color: "#10b981" },
+        { loc: "Vucetich / Salvatori", count: 136, pct: 7.7, color: "#06b6d4" },
+        { loc: "Barrio La Paz", count: 83, pct: 4.7, color: "#ec4899" },
+        { loc: "Piñero / San Martín", count: 81, pct: 4.6, color: "#a855f7" },
+        { loc: "Barrio Lamas / Casitas", count: 73, pct: 4.1, color: "#14b8a6" },
+        { loc: "Yapeyú / San Roque", count: 69, pct: 3.9, color: "#eab308" },
       ];
     }
     const counts: Record<string, number> = {};
@@ -58,6 +76,7 @@ export default function SectionDrogasOverview({ stats, incidents = [] }: Section
       .slice(0, 10)
       .map(([loc, count], idx) => ({
         loc,
+        count,
         pct: Number(((count / total) * 100).toFixed(1)),
         color: colors[idx % colors.length]
       }));
@@ -155,7 +174,7 @@ export default function SectionDrogasOverview({ stats, incidents = [] }: Section
               <strong style={{ color: "var(--text-primary)" }}>Búnkers, Casillas y Baldíos Ocupados:</strong> Frecuente reporte de casillas de chapa, baldíos tomados con cercos improvisados y puntos de expendio con guardias permanentes.
             </li>
             <li>
-              <strong style={{ color: "var(--text-primary)" }}>Presencia de Armamento (77.3%):</strong> Alto índice de denuncias que reportan disparos, intimidaciones vecinales y personas armadas custodiando esquinas.
+              <strong style={{ color: "var(--text-primary)" }}>Presencia de Armamento ({stats.armasPct.toFixed(1)}%):</strong> Alto índice de denuncias que reportan disparos, intimidaciones vecinales y personas armadas custodiando esquinas.
             </li>
             <li>
               <strong style={{ color: "var(--text-primary)" }}>Economía del Delito:</strong> Múltiples alertas señalan el canje directo de bienes sustraídos por dosis de estupefacientes en los puntos de venta.
@@ -170,7 +189,7 @@ export default function SectionDrogasOverview({ stats, incidents = [] }: Section
               Este módulo permite a las fiscalías especializadas y a las fuerzas de seguridad cruzar llamadas anónimas repetitivas sobre una misma ubicación, identificando la <strong>reincidencia espacial y temporal</strong> de puntos de venta activos.
             </p>
             <p>
-              La normalización de coordenadas y el análisis de alias habilitan la fundamentación pericial requerida para <strong>órdenes de allanamiento y desbaratamiento de búnkers</strong>.
+              La normalización de coordenadas ({stats.georeferencedPct.toFixed(1)}% georreferenciado) y el análisis de alias habilitan la fundamentación pericial requerida para <strong>órdenes de allanamiento y desbaratamiento de búnkers</strong>.
             </p>
           </div>
         </div>
@@ -182,7 +201,9 @@ export default function SectionDrogasOverview({ stats, incidents = [] }: Section
               <div key={item.loc}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", marginBottom: "2px" }}>
                   <span style={{ color: "var(--text-secondary)" }}>{item.loc}</span>
-                  <span style={{ fontWeight: 600, color: "var(--text-primary)" }}>{item.pct}%</span>
+                  <span style={{ fontWeight: 600, color: "var(--text-primary)" }} className="font-mono">
+                    {item.count ? `${item.count} (${item.pct}%)` : `${item.pct}%`}
+                  </span>
                 </div>
                 <div style={{ background: "var(--bg-base)", borderRadius: "2px", height: "5px", overflow: "hidden" }}>
                   <div style={{ width: `${item.pct}%`, height: "100%", background: "#3b82f6", borderRadius: "2px" }} />
@@ -197,15 +218,15 @@ export default function SectionDrogasOverview({ stats, incidents = [] }: Section
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
             {[
               { label: "Período", value: "Ene – Ago 2026" },
-              { label: "Drogas Ilícitas Formales", value: "989 hechos" },
-              { label: "Info Vecinal (Relatos)", value: "781 alertas" },
-              { label: "Duplicados Eliminados", value: "1 (ID coincidente)" },
-              { label: "Cobertura Geo", value: "99.6%" },
-              { label: "Con Armas Reportadas", value: "77.3%" },
+              { label: "Drogas Ilícitas Formales", value: `${formalesCount.toLocaleString()} hechos` },
+              { label: "Info Vecinal (Relatos)", value: `${vecinalCount.toLocaleString()} alertas` },
+              { label: "Duplicados Eliminados", value: "0 (IDs únicos)" },
+              { label: "Cobertura Geo", value: `${stats.georeferencedPct.toFixed(1)}%` },
+              { label: "Con Armas Reportadas", value: `${stats.armasPct.toFixed(1)}%` },
             ].map((item) => (
               <div key={item.label} style={{ background: "var(--bg-base)", padding: "0.5rem 0.75rem", borderRadius: "6px" }}>
                 <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontWeight: 700, textTransform: "uppercase" }}>{item.label}</div>
-                <div style={{ fontSize: "0.9rem", fontWeight: 800, color: "var(--text-primary)", marginTop: "2px" }}>{item.value}</div>
+                <div style={{ fontSize: "0.9rem", fontWeight: 800, color: "var(--text-primary)", marginTop: "2px" }} className="font-mono">{item.value}</div>
               </div>
             ))}
           </div>

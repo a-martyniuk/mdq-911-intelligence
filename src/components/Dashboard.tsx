@@ -289,10 +289,7 @@ export default function Dashboard() {
                   const rawIncidents = data?.project === "malvinas" ? (data?.incidents || data?.geoPoints || []) : [];
                   const malvinasIncidents = rawIncidents.filter((i: any) => {
                     const p = (i.partido || "").toUpperCase();
-                    if (p.includes("JOSÉ") || p.includes("JOSE") || p.includes("GENERAL PUEYRREDON") || p.includes("MDP")) return false;
-                    const lat = Number(i.lat ?? i.Latitud_Clean ?? i.Latitud);
-                    if (!isNaN(lat) && lat < -34.535) return false;
-                    return true;
+                    return !p.includes("JOSÉ") && !p.includes("JOSE") && !p.includes("GENERAL PUEYRREDON") && !p.includes("MDP");
                   });
                   mod.generateDrogasMalvinasPDF({
                     totalIncidents: malvinasStats.totalIncidents,
