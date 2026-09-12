@@ -20,8 +20,36 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
   const renabapLayerRef = useRef<any>(null);
   const comisariasLayerRef = useRef<any>(null);
   const [showHeatmap, setShowHeatmap] = useState(true);
+  const [heatIntensity, setHeatIntensity] = useState<"suave" | "medio" | "intenso">("medio");
   const [showComisarias, setShowComisarias] = useState(true);
   const [showRenabap, setShowRenabap] = useState(true);
+
+  const HEAT_CALIBRATIONS = {
+    suave: {
+      radius: 13,
+      blur: 12,
+      max: 5.0,
+      weightNormal: 0.08,
+      weightHigh: 0.16,
+      opacity: "0.45",
+    },
+    medio: {
+      radius: 16,
+      blur: 14,
+      max: 3.5,
+      weightNormal: 0.12,
+      weightHigh: 0.22,
+      opacity: "0.58",
+    },
+    intenso: {
+      radius: 20,
+      blur: 16,
+      max: 2.2,
+      weightNormal: 0.18,
+      weightHigh: 0.32,
+      opacity: "0.72",
+    },
+  };
 
   // Compute EXACT numeric counts for Sustracciones (Robos) and Hallazgos (Descartes) per Comisaría
   const jurisdictionStats = useMemo(() => {
@@ -188,6 +216,7 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
             await import("leaflet.heat");
           }
 
+          const cal = HEAT_CALIBRATIONS[heatIntensity];
           const heatPoints: [number, number, number][] = [];
           incidents.forEach((inc) => {
             const rawLat = inc.Latitud_Clean ?? inc.Latitud ?? 0;
@@ -199,25 +228,30 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
               const origen = (inc.Origen_Dataset || "").toUpperCase();
               const tipo = (inc.Tipo || "").toLowerCase();
               const isHallazgo = origen.includes("HALLAZGO") || tipo.includes("hallazgo") || tipo.includes("recuperado");
-              heatPoints.push([lat, lon, isHallazgo ? 0.75 : 0.45]);
+              heatPoints.push([lat, lon, isHallazgo ? cal.weightHigh : cal.weightNormal]);
             }
           });
 
           if (typeof (L as any).heatLayer === "function" && heatPoints.length > 0) {
             const heat = (L as any).heatLayer(heatPoints, {
-              radius: 25,
-              blur: 18,
-              maxZoom: 16,
-              max: 0.85,
+              radius: cal.radius,
+              blur: cal.blur,
+              maxZoom: 15,
+              max: cal.max,
+              minOpacity: 0.1,
               gradient: {
-                0.2: "#3b82f6",
-                0.4: "#06b6d4",
-                0.6: "#eab308",
-                0.8: "#f97316",
-                1.0: "#ef4444",
+                0.15: "#0284c7",
+                0.35: "#06b6d4",
+                0.55: "#10b981",
+                0.70: "#f59e0b",
+                0.85: "#f97316",
+                1.00: "#ef4444",
               },
             });
             heat.addTo(map);
+            if (heat._canvas) {
+              heat._canvas.style.opacity = cal.opacity;
+            }
             heatLayerRef.current = heat;
           }
         } catch (err) {
@@ -309,7 +343,7 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
         renabapLayerRef.current = null;
       }
     };
-  }, [jurisdictionStats, showHeatmap, showComisarias, showRenabap, incidents]);
+  }, [jurisdictionStats, showHeatmap, heatIntensity, showComisarias, showRenabap, incidents]);
 
   return (
     <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
@@ -421,15 +455,52 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
             </h3>
 
             <div style={{ display: "flex", alignItems: "center", gap: "0.85rem", flexWrap: "wrap" }}>
-              <label style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "12px", fontWeight: 600, color: "#ef4444", cursor: "pointer" }}>
-                <input
-                  type="checkbox"
-                  checked={showHeatmap}
-                  onChange={(e) => setShowHeatmap(e.target.checked)}
-                  style={{ width: "14px", height: "14px", accentColor: "#ef4444", cursor: "pointer" }}
-                />
-                <Flame size={13} /> Heatmap 911
-              </label>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
+                <label style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "12px", fontWeight: 600, color: "#ef4444", cursor: "pointer" }}>
+                  <input
+                    type="checkbox"
+                    checked={showHeatmap}
+                    onChange={(e) => setShowHeatmap(e.target.checked)}
+                    style={{ width: "14px", height: "14px", accentColor: "#ef4444", cursor: "pointer" }}
+                  />
+                  <Flame size={13} /> Heatmap 911
+                </label>
+
+                {showHeatmap && (
+                  <div
+                    style={{
+                      display: "inline-flex",
+                      padding: "1px",
+                      background: "var(--bg-base)",
+                      borderRadius: "var(--radius-xs)",
+                      border: "1px solid var(--border)",
+                      gap: "1px",
+                      marginLeft: "0.2rem",
+                    }}
+                  >
+                    {(["suave", "medio", "intenso"] as const).map((lvl) => (
+                      <button
+                        key={lvl}
+                        onClick={() => setHeatIntensity(lvl)}
+                        style={{
+                          padding: "2px 6px",
+                          fontSize: "10px",
+                          fontWeight: 700,
+                          borderRadius: "3px",
+                          border: "none",
+                          background: heatIntensity === lvl ? "rgba(239, 68, 68, 0.25)" : "transparent",
+                          color: heatIntensity === lvl ? "#f87171" : "var(--text-muted)",
+                          cursor: "pointer",
+                          transition: "all 0.15s ease",
+                        }}
+                        title={`Calibración ${lvl === "suave" ? "suave (baja densidad)" : lvl === "medio" ? "media (equilibrada)" : "alta densidad"}`}
+                      >
+                        {lvl === "suave" ? "Suave" : lvl === "medio" ? "Media" : "Alta"}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
 
               <label style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "12px", fontWeight: 600, color: "#38bdf8", cursor: "pointer" }}>
                 <input

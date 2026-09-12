@@ -643,6 +643,12 @@ button:active,
   font-family: var(--font-sans) !important;
 }
 
+.leaflet-heatmap-layer {
+  opacity: 0.62;
+  transition: opacity var(--duration-normal) var(--ease-out);
+  pointer-events: none;
+}
+
 .leaflet-bar {
   border: 1px solid var(--border) !important;
   border-radius: var(--radius-sm) !important;

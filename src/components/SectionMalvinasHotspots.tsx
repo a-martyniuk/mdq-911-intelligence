@@ -326,26 +326,30 @@ export default function SectionMalvinasHotspots({ incidents = [] }: SectionMalvi
           const hasArmas = inc.tieneArmas || inc.armas === true || inc.armas === "SI";
           const isBunker = String(inc.tipoLugar || "").includes("Búnker");
           
-          let weight = 0.5;
+          let weight = 0.2;
           if (heatMode === "armas") {
-            weight = hasArmas ? 1.0 : (isBunker ? 0.8 : 0.1);
+            weight = hasArmas ? 0.6 : (isBunker ? 0.4 : 0.08);
           } else {
-            weight = hasArmas ? 0.9 : (isBunker ? 0.8 : 0.4);
+            weight = hasArmas ? 0.45 : (isBunker ? 0.35 : 0.18);
           }
           return [inc.lat, inc.lng, weight];
         });
 
         if (typeof (L as any).heatLayer === "function") {
           const heat = (L as any).heatLayer(heatPoints, {
-            radius: heatMode === "armas" ? 32 : 26,
-            blur: heatMode === "armas" ? 22 : 18,
-            maxZoom: 16,
-            max: heatMode === "armas" ? 1.2 : 0.9,
+            radius: heatMode === "armas" ? 22 : 18,
+            blur: heatMode === "armas" ? 16 : 14,
+            maxZoom: 15,
+            max: heatMode === "armas" ? 2.2 : 2.6,
+            minOpacity: 0.12,
             gradient: heatMode === "armas" 
               ? { 0.2: "#ef4444", 0.5: "#b91c1c", 0.7: "#7f1d1d", 1.0: "#450a0a" }
-              : { 0.2: "#3b82f6", 0.4: "#06b6d4", 0.6: "#eab308", 0.8: "#f97316", 1.0: "#ef4444" }
+              : { 0.15: "#0284c7", 0.35: "#06b6d4", 0.55: "#10b981", 0.7: "#f59e0b", 0.85: "#f97316", 1.0: "#ef4444" }
           });
           heat.addTo(map);
+          if (heat._canvas) {
+            heat._canvas.style.opacity = "0.62";
+          }
           heatLayerRef.current = heat;
         }
       } catch (err) {
