@@ -296,6 +296,7 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
                   totalIncidents: incidents.length,
                   allIncidents: incidents,
                   selectedSuspect: selectedSuspect,
+                  partido: "José C. Paz",
                 });
               }}
               className="btn-export btn-pdf"
@@ -314,6 +315,7 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
                     totalIncidents: incidents.length,
                     allIncidents: incidents,
                     selectedSuspect: null,
+                    partido: "José C. Paz",
                   });
                 }}
                 className="btn-export btn-pdf"

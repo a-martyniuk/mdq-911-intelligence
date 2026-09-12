@@ -48,7 +48,7 @@ export default function SectionInvestigativeValue({ incidents = [], recoveries =
                   { Vinculo: "Robo ➔ Hallazgo Automotor", Patron: "Mediana de abandono en 4,9 hs (Autos)", Hipotesis: "Uso del auto robado como unidad de apoyo/fuga efímera", Evidencia: "52 vehículos vinculados con trayectoria (50 patentes únicas en 58 pares pareados)" },
                   { Vinculo: "Robo ➔ Motocicletas", Patron: "Baja recuperación pareada (21,2% motos vs 78,8% autos)", Hipotesis: "Ingreso inmediato a redes de desguace y venta de repuestos", Evidencia: "400 robos concentrados en Honda" },
                   { Vinculo: "Violencia ➔ Armas de Fuego", Patron: "67 IDs coincidentes en despacho", Hipotesis: "Escalada de violencia en áreas de disputa territorial", Evidencia: "Solapamiento entre Armas y Disparos" },
-                  { Vinculo: "Nocturnidad ➔ Concentración", Patron: "39.5% de incidentes entre 18 y 24 hs", Hipotesis: "Sincronización horaria de bandas dedicadas a sustracción", Evidencia: "Pico de 185 robos/hora a las 20:00 hs" },
+                  { Vinculo: "Nocturnidad ➔ Concentración", Patron: "39.5% de incidentes entre 18 y 24 hs", Hipotesis: "Sincronización horaria de bandas dedicadas a sustracción", Evidencia: "Pico de 185 robos de automotores a las 20:00 hs (y 182 motos a las 19:00 hs)" },
                   { Vinculo: "Descarte ➔ Asentamientos RENABAP", Patron: "82.7% de hallazgos a < 350m", Hipotesis: "Zonas de enfriamiento y transbordo periférico", Evidencia: "Cruce espacial con Polígonos SISU RENABAP" }
                 ];
                 exportToCSV("matriz_hipotesis_investigacion_forense", exportData);
@@ -111,7 +111,7 @@ export default function SectionInvestigativeValue({ incidents = [], recoveries =
             <span>Hallazgo Clave: Correlación Espacial RENABAP & Zonas de Enfriamiento (82.7%)</span>
           </div>
           <p style={{ fontSize: "13.5px", color: "var(--text-primary)", lineHeight: 1.6, margin: "0 0 0.75rem" }}>
-            Al superponer los 124 barrios oficiales y los 14 asentamientos vulnerables del <strong>RENABAP (Registro Nacional de Barrios Populares - SISU)</strong> (<em>La Herradura, Belisario Roldán, Autódromo, Las Heras, Don Emilio / Parque Palermo, El Martillo, Monolito, San Antonio, Félix U. Camet, etc.</em>) con las trayectorias de sustracción y hallazgo:
+            Al superponer los 124 barrios oficiales y los 58 asentamientos oficiales del <strong>RENABAP (Registro Nacional de Barrios Populares - SISU)</strong> (<em>La Herradura, Belisario Roldán, Autódromo, Las Heras, Don Emilio / Parque Palermo, El Martillo, Monolito, San Antonio, Félix U. Camet, etc.</em>) con las trayectorias de sustracción y hallazgo:
           </p>
           <div style={{ background: "var(--bg-base)", padding: "0.75rem 1rem", borderRadius: "var(--radius-xs)", border: "1px solid var(--border)", fontSize: "13.5px", color: "#fcd34d", fontWeight: 600, marginBottom: "0.6rem", fontFamily: "var(--font-mono)" }}>
             82.7% de los hallazgos/descartes periféricos de automóviles y motovehículos robados en el Macrocentro ocurren dentro o en un radio menor a 350 metros del perímetro de estos asentamientos RENABAP.

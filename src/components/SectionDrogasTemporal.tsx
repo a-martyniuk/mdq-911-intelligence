@@ -268,6 +268,7 @@ export default function SectionDrogasTemporal({ incidents = [] }: SectionDrogasT
                   sustancia: filterSustancia,
                   armas: filterArmas,
                   barrio: filterBarrio,
+                  partido: "José C. Paz",
                 });
               }}
               className="btn-export btn-pdf"

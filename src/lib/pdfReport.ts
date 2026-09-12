@@ -497,7 +497,7 @@ export function generateExecutiveDossierPDF(data: any) {
       <!-- Sección 3: Hallazgo Estratégico Espacial RENABAP -->
       <div class="section-title">3. Hallazgo Estratégico: Correlación Directa RENABAP & Zonas de Enfriamiento (82.7%)</div>
       <div style="background: #fff7ed; border-left: 5px solid #ea580c; border: 1px solid #ffedd5; border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem; font-size: 0.85rem; color: #1c1917;">
-        <strong style="color: #ea580c; font-size: 0.95rem;">📍 Superposición Espacial de 124 Barrios Oficiales y 14 Asentamientos Vulnerables RENABAP:</strong>
+        <strong style="color: #ea580c; font-size: 0.95rem;">📍 Superposición Espacial de 124 Barrios Oficiales y 58 Asentamientos Oficiales RENABAP:</strong>
         <p style="margin: 0.4rem 0 0.6rem; line-height: 1.5;">
           Al analizar la totalidad de las trayectorias de sustracción y hallazgo cruzadas con los polígonos del <strong>Registro Nacional de Barrios Populares (RENABAP / SISU)</strong> (<i>La Herradura, Belisario Roldán, Autódromo, Las Heras, Don Emilio / Parque Palermo, El Martillo, Monolito, San Antonio, Félix U. Camet, etc.</i>):
         </p>
