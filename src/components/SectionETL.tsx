@@ -3,7 +3,12 @@
 import React, { useState } from "react";
 import { Workflow, CheckCircle, ShieldCheck, Database, Layers, FileSpreadsheet, Cpu, Sparkles } from "lucide-react";
 
-export default function SectionETL() {
+interface SectionETLProps {
+  incidents?: any[];
+  recoveries?: any[];
+}
+
+export default function SectionETL({ incidents = [], recoveries = [] }: SectionETLProps) {
   const [selectedRule, setSelectedRule] = useState<number>(0);
 
   const rules = [
@@ -17,13 +22,13 @@ export default function SectionETL() {
       title: "Extracción NLP de Patentes y Entidades",
       icon: "🏷️",
       desc: "Minería de texto sobre los relatos libres de despacho utilizando expresiones regulares avanzadas para detectar matrículas de formato Mercosur (AA123BB) y Tradicional (AAA123).",
-      impact: "Identificó 53 casos con 51 patentes únicas para trazabilidad de robos y hallazgos.",
+      impact: "Identificó 52 casos con 51 patentes únicas para trazabilidad de robos y hallazgos.",
     },
     {
       title: "Cruce Relacional Robo ➔ Hallazgo",
       icon: "🔀",
       desc: "Algoritmo de vinculación por clave única de patente y marca entre la base de denuncias de sustracción y el registro de vehículos hallados/abandonados.",
-      impact: "Permitió medir el tiempo de recuperación (mediana 4,9 hs autos / 7,0 hs motos) y la prevalencia de autos (83,0%) vs motos (17,0%) en recuperos pareados.",
+      impact: "Permitió medir el tiempo de recuperación (mediana 4,9 hs autos / 7,0 hs motos) y la prevalencia de autos (78,8%) vs motos (21,2%) en recuperos pareados.",
     },
     {
       title: "Enriquecimiento Espacio-Temporal",
@@ -86,7 +91,7 @@ export default function SectionETL() {
         <div className="card" style={{ borderLeft: "4px solid var(--accent-amber)" }}>
           <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase" }}>Relaciones Cruzadas</span>
           <div style={{ fontSize: "1.6rem", fontWeight: 800, color: "var(--accent-amber)", margin: "0.3rem 0" }}>
-            53 Vehículos
+            52 Vehículos
           </div>
           <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>Trazabilidad deduplicada Robo ➔ Hallazgo</span>
         </div>

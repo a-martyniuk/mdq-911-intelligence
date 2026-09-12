@@ -17,12 +17,26 @@ interface SectionVehiclesProps {
 function checkIsMoto(c: any): boolean {
   const sub = (c.SubTipo || "").toUpperCase();
   const mar = (c.Marca_Detectada || "").toUpperCase();
+  const mod = (c.Modelo_Detectado || "").toUpperCase();
+  const rel = `${c.Relato_Robo || ""} ${c.Relato_Hallazgo || ""}`.toUpperCase();
 
   if (sub.includes("MOTO") || sub.includes("CICLOMOTOR")) return true;
-  if (["HONDA", "ZANELLA", "YAMAHA", "MOTOMEL", "GILERA", "CORVEN", "KTM", "BAJAJ", "SIAM"].some((m) => mar.includes(m))) {
-    return true;
+  if (sub.includes("AUTO") || sub.includes("VEHICUL") || sub.includes("CAMIONETA")) {
+    if (!["ZANELLA", "MOTOMEL", "CORVEN", "GILERA", "BAJAJ", "KTM"].some((m) => mar.includes(m))) {
+      return false;
+    }
   }
-  return false;
+
+  if (mar.includes("HONDA")) {
+    if (["FIT", "CIVIC", "CITY", "CRV", "CR-V", "HRV", "HR-V", "ACCORD", "AUTO", "VEHICULO"].some((x) => mod.includes(x) || rel.includes(x))) {
+      return false;
+    }
+    if (["WAVE", "TORNADO", "XR", "TITAN", "TWISTER", "CG", "CB", "BIZ", "MOTO"].some((x) => mod.includes(x) || rel.includes(x))) {
+      return true;
+    }
+  }
+
+  return ["ZANELLA", "YAMAHA", "MOTOMEL", "GILERA", "CORVEN", "KTM", "BAJAJ", "SIAM", "GUERRERO", "MONDIAL", "BRAVA"].some((m) => mar.includes(m));
 }
 
 function checkIsAuto(c: any): boolean {
@@ -35,10 +49,14 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
   const [currentPage, setCurrentPage] = useState<number>(1);
   const pageSize = 15;
 
-  // Deduplicate recoveries by stolen vehicle ID_Robo
+  // Deduplicate recoveries by stolen vehicle ID_Robo, excluding self-matched records
   const uniqueRecoveries = useMemo(() => {
     const map = new Map<number, any>();
     recoveries.forEach((c) => {
+      // Exclude self-matches where theft dispatch ID equals recovery dispatch ID or location & time are identical
+      if (c.ID_Robo && c.ID_Hallazgo && c.ID_Robo === c.ID_Hallazgo) return;
+      if (c.Dirección_Robo && c.Dirección_Hallazgo && c.Dirección_Robo === c.Dirección_Hallazgo && c.Horas_Hasta_Hallazgo === 0) return;
+
       const existing = map.get(c.ID_Robo);
       if (!existing || c.Horas_Hasta_Hallazgo < existing.Horas_Hasta_Hallazgo) {
         map.set(c.ID_Robo, c);

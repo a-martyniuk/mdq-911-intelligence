@@ -158,7 +158,7 @@ export default function Dashboard() {
     georeferencedPct: data?.georeferencedPct || 93.0,
     nightCount: data?.nightCount || 3397,
     nightPct: data?.nightPct || 39.5,
-    recoveriesCount: data?.recoveries ? new Set(data.recoveries.map((r: any) => r.ID_Robo)).size : 53,
+    recoveriesCount: data?.recoveries ? new Set(data.recoveries.filter((r: any) => !(r.ID_Robo && r.ID_Hallazgo && r.ID_Robo === r.ID_Hallazgo)).map((r: any) => r.ID_Robo)).size : 52,
     medianRecoveryHours: 5.4,
   };
 
@@ -364,10 +364,10 @@ export default function Dashboard() {
             {activeSection === "hotspots" && <SectionHotspots incidents={data?.incidents || data?.incidentsSample || []} geoPoints={data?.geoPoints || []} />}
             {activeSection === "temporal" && <SectionTemporal incidents={data?.incidents || data?.incidentsSample || []} />}
             {activeSection === "vehicles" && <SectionVehicles recoveries={data?.recoveries || []} />}
-            {activeSection === "nlp" && <SectionNLP />}
-            {activeSection === "investigative" && <SectionInvestigativeValue />}
-            {activeSection === "etl" && <SectionETL />}
-            {activeSection === "dictionary" && <SectionDictionary />}
+            {activeSection === "nlp" && <SectionNLP incidents={data?.incidents || data?.incidentsSample || []} recoveries={data?.recoveries || []} />}
+            {activeSection === "investigative" && <SectionInvestigativeValue incidents={data?.incidents || data?.incidentsSample || []} recoveries={data?.recoveries || []} />}
+            {activeSection === "etl" && <SectionETL incidents={data?.incidents || data?.incidentsSample || []} recoveries={data?.recoveries || []} />}
+            {activeSection === "dictionary" && <SectionDictionary currentProject={currentProject} />}
           </>
         )}
 
@@ -384,6 +384,7 @@ export default function Dashboard() {
             {activeSection === "drogas-hotspots" && <SectionDrogasHotspots incidents={data?.incidents || data?.geoPoints || []} />}
             {activeSection === "drogas-search" && <SectionDrogasSearch incidents={data?.incidents || []} />}
             {activeSection === "drogas-etl" && <SectionDrogasETL incidents={data?.incidents || data?.geoPoints || []} stats={jcpStats} />}
+            {activeSection === "dictionary" && <SectionDictionary currentProject={currentProject} />}
           </>
         )}
 
@@ -400,6 +401,7 @@ export default function Dashboard() {
             {activeSection === "malvinas-hotspots" && <SectionMalvinasHotspots incidents={data?.incidents || data?.geoPoints || []} />}
             {activeSection === "malvinas-search" && <SectionMalvinasSearch incidents={data?.incidents || []} />}
             {activeSection === "malvinas-etl" && <SectionMalvinasETL incidents={data?.incidents || data?.geoPoints || []} stats={malvinasStats} />}
+            {activeSection === "dictionary" && <SectionDictionary currentProject={currentProject} />}
           </>
         )}
       </main>

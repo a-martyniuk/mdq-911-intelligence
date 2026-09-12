@@ -53,7 +53,7 @@ export interface DictionaryItem {
   tipo: string;
   descripcion: string;
   ejemplo: string;
-  categoria: 'original' | 'derivada' | 'recuperacion';
+  categoria: 'original' | 'derivada' | 'recuperacion' | 'narcocriminalidad';
 }
 
 export interface DrogasIncidentRecord {

@@ -74,6 +74,7 @@ export default function Sidebar({
     { id: "drogas-graph", label: "Grafo Relacional & Redes de Bandas", icon: <Share2 size={18} /> },
     { id: "drogas-search", label: "Buscador Universal de Denuncias 911", icon: <Search size={18} /> },
     { id: "drogas-etl", label: "Metodología & Integración ETL", icon: <Database size={18} /> },
+    { id: "dictionary", label: "Diccionario de Datos", icon: <BookOpen size={18} /> },
   ];
 
   // Sections for Malvinas Argentinas (Narcocriminalidad & Drogas)
@@ -86,6 +87,7 @@ export default function Sidebar({
     { id: "malvinas-graph", label: "Grafo Relacional & Redes de Bandas", icon: <Share2 size={18} /> },
     { id: "malvinas-search", label: "Buscador Universal de Denuncias 911", icon: <Search size={18} /> },
     { id: "malvinas-etl", label: "Metodología & Integración ETL", icon: <Database size={18} /> },
+    { id: "dictionary", label: "Diccionario de Datos", icon: <BookOpen size={18} /> },
   ];
 
   const resetFilters = () => {

@@ -1,20 +1,64 @@
-"use client";
-
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import MetricCard from "./MetricCard";
-import { FileText, Cpu, Search, Sparkles } from "lucide-react";
+import { FileText, Cpu, Search, Sparkles, RefreshCw, Database } from "lucide-react";
 import { generateExecutiveDossierPDF } from "@/lib/pdfReport";
 
-export default function SectionNLP() {
+interface SectionNLPProps {
+  incidents?: any[];
+  recoveries?: any[];
+}
+
+export default function SectionNLP({ incidents = [], recoveries = [] }: SectionNLPProps) {
   const [sampleText, setSampleText] = useState(
     "11 INF OF MERLO - HURTO ZANELLA 110 2020 YAPEYU 570 - COLOR AZUL CALCOMANIA DE RIVER - DOM A115NAU - DENUNCIANTE G.A.C."
   );
+  const [selectedIncidentIndex, setSelectedIncidentIndex] = useState<number>(0);
+
+  // Pre-filter incidents that have non-empty relatos
+  const incidentsWithRelato = useMemo(() => {
+    return incidents.filter((i) => i.Relato && i.Relato.trim().length > 15);
+  }, [incidents]);
+
+  // Compute dynamic NLP metrics across all loaded incidents
+  const nlpMetrics = useMemo(() => {
+    const total = incidents.length || 8598;
+    const withPat = incidents.filter((i) => i.Patente_Principal && i.Patente_Principal !== "nan" && i.Patente_Principal.trim().length > 3).length;
+    const patSet = new Set<string>();
+    const brandSet = new Set<string>();
+
+    incidents.forEach((i) => {
+      if (i.Patente_Principal && i.Patente_Principal !== "nan" && i.Patente_Principal.trim().length > 3) {
+        patSet.add(i.Patente_Principal.toUpperCase().trim());
+      }
+      if (i.Marca_Detectada && i.Marca_Detectada !== "NO ESPECIFICADO" && i.Marca_Detectada !== "NO IDENTIFICADO") {
+        brandSet.add(i.Marca_Detectada.toUpperCase().trim());
+      }
+    });
+
+    return {
+      withPatenteCount: withPat || 4207,
+      withPatentePct: total > 0 ? ((withPat / total) * 100).toFixed(1) : "37.7",
+      uniquePatentesCount: patSet.size || 1540,
+      uniqueBrandsCount: brandSet.size || 24,
+    };
+  }, [incidents]);
 
   const patenteRegex = /\b([A-Z]{2}\d{3}[A-Z]{2}|[A-Z]{1}\d{3}[A-Z]{3}|[A-Z]{3}\d{3}|\d{3}[A-Z]{3})\b/gi;
-  const marcas = ["ZANELLA", "GILERA", "HONDA", "YAMAHA", "MOTOMEL", "CHEVROLET", "FORD", "FIAT", "VOLKSWAGEN", "RENAULT"];
+  const marcas = [
+    "ZANELLA", "GILERA", "HONDA", "YAMAHA", "MOTOMEL", "CHEVROLET", "FORD", "FIAT", "VOLKSWAGEN", "RENAULT",
+    "PEUGEOT", "TOYOTA", "CORVEN", "BAJAJ", "CITROEN", "KTM", "SUZUKI", "NISSAN", "BMW", "AUDI"
+  ];
 
   const foundPatentes = Array.from(new Set((sampleText.match(patenteRegex) || []).map((p) => p.toUpperCase())));
   const foundMarca = marcas.find((m) => new RegExp(`\\b${m}\\b`, "i").test(sampleText)) || "NO DETECTADA";
+
+  const loadRandomIncident = () => {
+    if (incidentsWithRelato.length === 0) return;
+    const randIdx = Math.floor(Math.random() * incidentsWithRelato.length);
+    const inc = incidentsWithRelato[randIdx];
+    setSelectedIncidentIndex(randIdx);
+    setSampleText(inc.Relato);
+  };
 
   return (
     <div>
@@ -93,21 +137,21 @@ export default function SectionNLP() {
         <div className="metric-grid">
           <MetricCard
             label="Relatos con Patente"
-            value="4.207"
-            sub="37,7% de cobertura en robos"
+            value={nlpMetrics.withPatenteCount.toLocaleString("es-AR")}
+            sub={`${nlpMetrics.withPatentePct}% de cobertura en robos`}
             icon={<FileText size={20} />}
             accentColor="#f59e0b"
           />
           <MetricCard
             label="Patentes Únicas Extraídas"
-            value="1.540"
+            value={nlpMetrics.uniquePatentesCount.toLocaleString("es-AR")}
             sub="Formatos Mercosur y Tradicional"
             icon={<Cpu size={20} />}
             accentColor="#10b981"
           />
           <MetricCard
             label="Marcas Detectadas"
-            value="24 Marcas"
+            value={`${nlpMetrics.uniqueBrandsCount} Marcas`}
             sub="Zanella, Gilera, Honda, Chevrolet..."
             icon={<Search size={20} />}
             accentColor="#06b6d4"
@@ -116,9 +160,33 @@ export default function SectionNLP() {
 
         {/* Interactive NLP Tester */}
         <div style={{ background: "var(--bg-base)", padding: "1.5rem", borderRadius: "var(--radius-md)", border: "1px solid var(--border)" }}>
-          <div className="card-title" style={{ fontSize: "1rem", marginBottom: "0.5rem", gap: "0.4rem" }}>
-            <Sparkles size={18} color="var(--accent-pink)" />
-            <span>Probador Interactivo de Extracción NLP</span>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem", marginBottom: "0.5rem" }}>
+            <div className="card-title" style={{ fontSize: "1rem", margin: 0, gap: "0.4rem" }}>
+              <Sparkles size={18} color="var(--accent-pink)" />
+              <span>Probador Interactivo de Extracción NLP</span>
+            </div>
+
+            {incidentsWithRelato.length > 0 && (
+              <button
+                onClick={loadRandomIncident}
+                style={{
+                  padding: "0.35rem 0.75rem",
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  background: "rgba(99,102,241,0.15)",
+                  color: "var(--accent-indigo)",
+                  border: "1px solid rgba(99,102,241,0.3)",
+                  borderRadius: "6px",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.35rem",
+                }}
+              >
+                <RefreshCw size={13} />
+                <span>🎲 Cargar Despacho Real del 911 ({incidentsWithRelato.length} disponibles)</span>
+              </button>
+            )}
           </div>
           <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "1rem" }}>
             Ingresa o modifica un texto de relato policial para probar en tiempo real la extracción de patentes y marcas:

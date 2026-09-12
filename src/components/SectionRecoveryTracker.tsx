@@ -25,6 +25,7 @@ interface RecoveryCase {
   Latitud_Clean_Hallazgo?: number;
   Longitud_Clean_Hallazgo?: number;
   Marca_Detectada: string;
+  Modelo_Detectado?: string;
   Horas_Hasta_Hallazgo: number;
   Relato_Robo?: string;
   Relato_Hallazgo?: string;
@@ -34,16 +35,30 @@ interface SectionRecoveryTrackerProps {
   recoveries: RecoveryCase[];
 }
 
-// Helper functions for strict vehicle type discrimination
+// Helper functions for strict vehicle type discrimination (Honda Fit is Auto, Honda Wave is Moto)
 function checkIsMoto(c: RecoveryCase): boolean {
   const sub = (c.SubTipo || "").toUpperCase();
   const mar = (c.Marca_Detectada || "").toUpperCase();
+  const mod = (c.Modelo_Detectado || "").toUpperCase();
+  const rel = `${c.Relato_Robo || ""} ${c.Relato_Hallazgo || ""}`.toUpperCase();
 
   if (sub.includes("MOTO") || sub.includes("CICLOMOTOR")) return true;
-  if (["HONDA", "ZANELLA", "YAMAHA", "MOTOMEL", "GILERA", "CORVEN", "KTM", "BAJAJ", "SIAM"].some((m) => mar.includes(m))) {
-    return true;
+  if (sub.includes("AUTO") || sub.includes("VEHICUL") || sub.includes("CAMIONETA")) {
+    if (!["ZANELLA", "MOTOMEL", "CORVEN", "GILERA", "BAJAJ", "KTM"].some((m) => mar.includes(m))) {
+      return false;
+    }
   }
-  return false;
+
+  if (mar.includes("HONDA")) {
+    if (["FIT", "CIVIC", "CITY", "CRV", "CR-V", "HRV", "HR-V", "ACCORD", "AUTO", "VEHICULO"].some((x) => mod.includes(x) || rel.includes(x))) {
+      return false;
+    }
+    if (["WAVE", "TORNADO", "XR", "TITAN", "TWISTER", "CG", "CB", "BIZ", "MOTO"].some((x) => mod.includes(x) || rel.includes(x))) {
+      return true;
+    }
+  }
+
+  return ["ZANELLA", "YAMAHA", "MOTOMEL", "GILERA", "CORVEN", "KTM", "BAJAJ", "SIAM", "GUERRERO", "MONDIAL", "BRAVA"].some((m) => mar.includes(m));
 }
 
 function checkIsAuto(c: RecoveryCase): boolean {
