@@ -40,7 +40,6 @@ import SectionMalvinasGraph from "./SectionMalvinasGraph";
 import SectionMalvinasTemporal from "./SectionMalvinasTemporal";
 import SectionMalvinasETL from "./SectionMalvinasETL";
 
-import { FilterState } from "@/lib/types";
 import { getApiUrl, getAppPath, getAssetPath } from "@/lib/apiUrl";
 
 export default function Dashboard() {
@@ -50,14 +49,6 @@ export default function Dashboard() {
   const [data, setData] = useState<any>(null);
   const [user, setUser] = useState<string>("admin");
   const router = useRouter();
-
-  const [filters, setFilters] = useState<FilterState>({
-    tipo: "todos",
-    subtipo: "todos",
-    franjaHoraria: "todos",
-    diaSemana: "todos",
-    origenDataset: "todos",
-  });
 
   // Keep active section in sync with active project
   useEffect(() => {
@@ -86,25 +77,12 @@ export default function Dashboard() {
       });
   }, []);
 
-  // Fetch dataset according to active project & filters
+  // Fetch dataset according to active project
   useEffect(() => {
     setLoading(true);
     setData(null); // Limpiar datos de la jurisdicción anterior para evitar mezcla de coordenadas
     const query = new URLSearchParams();
     query.set("project", currentProject);
-
-    if (currentProject === "mdp") {
-      if (filters.tipo !== "todos") query.set("tipo", filters.tipo);
-      if (filters.subtipo !== "todos") query.set("subtipo", filters.subtipo);
-      if (filters.franjaHoraria !== "todos") query.set("franjaHoraria", filters.franjaHoraria);
-      if (filters.diaSemana !== "todos") query.set("diaSemana", filters.diaSemana);
-      if (filters.origenDataset !== "todos") query.set("origenDataset", filters.origenDataset);
-    } else {
-      if (filters.subtipo !== "todos") query.set("sustancia", filters.subtipo);
-      if (filters.franjaHoraria !== "todos") query.set("franjaHoraria", filters.franjaHoraria);
-      if (filters.diaSemana !== "todos") query.set("diaSemana", filters.diaSemana);
-      if (filters.origenDataset !== "todos") query.set("origen", filters.origenDataset);
-    }
 
     let isSubscribed = true;
     fetch(getApiUrl(`/api/data/incidents?${query.toString()}`))
@@ -130,15 +108,12 @@ export default function Dashboard() {
     return () => {
       isSubscribed = false;
     };
-  }, [currentProject, filters]);
+  }, [currentProject]);
 
   const handleLogout = async () => {
     await fetch(getApiUrl("/api/auth/logout"), { method: "POST" });
     window.location.href = getAppPath("/login");
   };
-
-  const availableTipos = ["ROBO AUTOMOTOR", "DISPAROS", "VIOLENCIA", "DROGAS ILÍCITAS", "HALLAZGO", "SOSPECHOSOS"];
-  const availableSubtipos = ["MOTOS", "VEHÍCULOS", "PERSONAS", "NO FAMILIAR", "VEHICULAR", "DISPAROS", "VENTA/ELABORACIÓN"];
 
   if (loading && !data) {
     return (
@@ -343,10 +318,6 @@ export default function Dashboard() {
         setCurrentProject={setCurrentProject}
         activeSection={activeSection}
         setActiveSection={setActiveSection}
-        filters={filters}
-        setFilters={setFilters}
-        availableTipos={availableTipos}
-        availableSubtipos={availableSubtipos}
       />
 
       {/* Main Content Area */}

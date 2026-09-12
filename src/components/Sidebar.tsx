@@ -11,8 +11,6 @@ import {
   Workflow,
   BookOpen,
   Search,
-  Filter,
-  RotateCcw,
   ShieldAlert,
   Building2,
   Skull,
@@ -22,7 +20,6 @@ import {
   Share2,
   Calendar
 } from "lucide-react";
-import { FilterState } from "@/lib/types";
 import { getAssetPath } from "@/lib/apiUrl";
 
 interface SidebarProps {
@@ -30,10 +27,10 @@ interface SidebarProps {
   setCurrentProject: (proj: "mdp" | "jcp" | "malvinas") => void;
   activeSection: string;
   setActiveSection: (sec: string) => void;
-  filters: FilterState;
-  setFilters: React.Dispatch<React.SetStateAction<FilterState>>;
-  availableTipos: string[];
-  availableSubtipos: string[];
+  filters?: any;
+  setFilters?: any;
+  availableTipos?: any;
+  availableSubtipos?: any;
 }
 
 export default function Sidebar({
@@ -41,10 +38,6 @@ export default function Sidebar({
   setCurrentProject,
   activeSection,
   setActiveSection,
-  filters,
-  setFilters,
-  availableTipos,
-  availableSubtipos,
 }: SidebarProps) {
   // Categorized Navigation for Mar del Plata
   const mdpGroups = [
@@ -155,17 +148,6 @@ export default function Sidebar({
     }
   ];
 
-  const resetFilters = () => {
-    setFilters({
-      tipo: "todos",
-      subtipo: "todos",
-      franjaHoraria: "todos",
-      diaSemana: "todos",
-      origenDataset: "todos",
-    });
-  };
-
-  const activeFiltersCount = Object.values(filters).filter((v) => v !== "todos").length;
   const currentGroups = currentProject === "mdp" ? mdpGroups : currentProject === "jcp" ? jcpGroups : malvinasGroups;
 
   return (
@@ -179,7 +161,6 @@ export default function Sidebar({
           {/* Mar del Plata */}
           <button
             onClick={() => {
-              resetFilters();
               setCurrentProject("mdp");
               setActiveSection("overview");
             }}
@@ -231,7 +212,6 @@ export default function Sidebar({
           {/* José C. Paz */}
           <button
             onClick={() => {
-              resetFilters();
               setCurrentProject("jcp");
               setActiveSection("drogas-overview");
             }}
@@ -283,7 +263,6 @@ export default function Sidebar({
           {/* Malvinas Argentinas */}
           <button
             onClick={() => {
-              resetFilters();
               setCurrentProject("malvinas");
               setActiveSection("malvinas-overview");
             }}
@@ -353,241 +332,26 @@ export default function Sidebar({
         </div>
       ))}
 
-      {/* MDP Specific Filters */}
+      {/* MDP Specific Source Distinction Box */}
       {currentProject === "mdp" && (
-        <div style={{
-          marginTop: "1.25rem",
-          padding: "0.85rem",
-          background: "var(--bg-surface)",
-          border: "1px solid var(--border)",
-          borderRadius: "var(--radius-sm)",
-          boxShadow: "var(--shadow-sm)"
-        }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.85rem" }}>
-            <span style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-light)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-              <Filter size={13} style={{ color: "var(--accent-pba-cyan)" }} />
-              <span>Filtros Operativos</span>
-              {activeFiltersCount > 0 && (
-                <span style={{
-                  fontSize: "0.65rem",
-                  fontWeight: 700,
-                  fontFamily: "var(--font-mono)",
-                  background: "#1d4ed8",
-                  color: "#ffffff",
-                  padding: "0.5px 5px",
-                  borderRadius: "10px"
-                }}>
-                  {activeFiltersCount}
-                </span>
-              )}
-            </span>
-            <button
-              onClick={resetFilters}
-              style={{
-                background: "none",
-                border: "none",
-                color: activeFiltersCount > 0 ? "var(--accent-pba-cyan)" : "var(--text-muted)",
-                cursor: activeFiltersCount > 0 ? "pointer" : "default",
-                fontSize: "0.72rem",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.25rem",
-                fontWeight: 500,
-                opacity: activeFiltersCount > 0 ? 1 : 0.6
-              }}
-              title="Resetear filtros"
-            >
-              <RotateCcw size={11} /> Limpiar
-            </button>
+        <div style={{ marginTop: "1.5rem", paddingTop: "1rem", borderTop: "1px solid var(--border)", fontSize: "0.75rem", color: "var(--text-secondary)" }}>
+          <div style={{ fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "0.5rem", fontSize: "0.68rem" }}>
+            Fuentes Integradas Mar del Plata
           </div>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-            <div>
-              <label className="form-label">Origen Dataset</label>
-              <select
-                className="form-select"
-                value={filters.origenDataset}
-                onChange={(e) => setFilters((f) => ({ ...f, origenDataset: e.target.value }))}
-              >
-                <option value="todos">Todos los Orígenes</option>
-                <option value="ROBO_AUTO_MOTO">Robo Auto-Moto</option>
-                <option value="HALLAZGO_AUTOMOTOR">Hallazgo Automotor</option>
-                <option value="DISPAROS_PERSONAS">Disparos a Personas</option>
-                <option value="ARMA_FUEGO">Armas de Fuego</option>
-              </select>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem" }}>
+            <div style={{ background: "rgba(59, 130, 246, 0.08)", padding: "0.55rem 0.75rem", borderRadius: "var(--radius-sm)", border: "1px solid rgba(59, 130, 246, 0.25)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2px" }}>
+                <strong style={{ color: "#38bdf8", fontSize: "0.74rem" }}>ROBOS AUTOMOTOR</strong>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: "#ffffff", fontWeight: 700 }}>7.973</span>
+              </div>
+              <div style={{ fontSize: "0.68rem", color: "var(--text-muted)" }}>Despacho formal 911 / Sustracciones</div>
             </div>
-
-            <div>
-              <label className="form-label">Tipo de Incidente</label>
-              <select
-                className="form-select"
-                value={filters.tipo}
-                onChange={(e) => setFilters((f) => ({ ...f, tipo: e.target.value }))}
-              >
-                <option value="todos">Todos los Tipos</option>
-                {availableTipos.map((t) => (
-                  <option key={t} value={t}>{t}</option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="form-label">Subtipo</label>
-              <select
-                className="form-select"
-                value={filters.subtipo}
-                onChange={(e) => setFilters((f) => ({ ...f, subtipo: e.target.value }))}
-              >
-                <option value="todos">Todos los Subtipos</option>
-                {availableSubtipos.map((st) => (
-                  <option key={st} value={st}>{st}</option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="form-label">Franja Horaria</label>
-              <select
-                className="form-select"
-                value={filters.franjaHoraria}
-                onChange={(e) => setFilters((f) => ({ ...f, franjaHoraria: e.target.value }))}
-              >
-                <option value="todos">Todas las Franjas</option>
-                <option value="Madrugada">Madrugada (00:00 - 06:00)</option>
-                <option value="Mañana">Mañana (06:00 - 12:00)</option>
-                <option value="Tarde">Tarde (12:00 - 18:00)</option>
-                <option value="Noche">Noche (18:00 - 24:00)</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="form-label">Día de la Semana</label>
-              <select
-                className="form-select"
-                value={filters.diaSemana}
-                onChange={(e) => setFilters((f) => ({ ...f, diaSemana: e.target.value }))}
-              >
-                <option value="todos">Todos los Días</option>
-                <option value="Lunes">Lunes</option>
-                <option value="Martes">Martes</option>
-                <option value="Miércoles">Miércoles</option>
-                <option value="Jueves">Jueves</option>
-                <option value="Viernes">Viernes</option>
-                <option value="Sábado">Sábado</option>
-                <option value="Domingo">Domingo</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* JCP / Malvinas Specific Filters */}
-      {(currentProject === "jcp" || currentProject === "malvinas") && (
-        <div style={{
-          marginTop: "1.25rem",
-          padding: "0.85rem",
-          background: "var(--bg-surface)",
-          border: "1px solid var(--border)",
-          borderRadius: "var(--radius-sm)",
-          boxShadow: "var(--shadow-sm)"
-        }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.85rem" }}>
-            <span style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-light)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-              <Filter size={13} style={{ color: currentProject === "jcp" ? "var(--accent-red)" : "var(--accent-amber)" }} />
-              <span>Filtros {currentProject === "jcp" ? "JCP" : "Malvinas"}</span>
-              {activeFiltersCount > 0 && (
-                <span style={{
-                  fontSize: "0.65rem",
-                  fontWeight: 700,
-                  fontFamily: "var(--font-mono)",
-                  background: currentProject === "jcp" ? "#b91c1c" : "#d97706",
-                  color: "#ffffff",
-                  padding: "0.5px 5px",
-                  borderRadius: "10px"
-                }}>
-                  {activeFiltersCount}
-                </span>
-              )}
-            </span>
-            <button
-              onClick={resetFilters}
-              style={{
-                background: "none",
-                border: "none",
-                color: activeFiltersCount > 0 ? (currentProject === "jcp" ? "var(--accent-red)" : "var(--accent-amber)") : "var(--text-muted)",
-                cursor: activeFiltersCount > 0 ? "pointer" : "default",
-                fontSize: "0.72rem",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.25rem",
-                fontWeight: 500,
-                opacity: activeFiltersCount > 0 ? 1 : 0.6
-              }}
-              title="Resetear filtros"
-            >
-              <RotateCcw size={11} /> Limpiar
-            </button>
-          </div>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-            <div>
-              <label className="form-label">Origen de Datos</label>
-              <select
-                className="form-select"
-                value={filters.origenDataset}
-                onChange={(e) => setFilters((f) => ({ ...f, origenDataset: e.target.value }))}
-              >
-                <option value="todos">Todos los Orígenes</option>
-                <option value="DROGAS_ILICITAS_FORMAL">Tipificación Formal 911</option>
-                <option value="INFORMACION_VECINAL_KEYWORDS">Información Vecinal (Relatos)</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="form-label">Sustancia</label>
-              <select
-                className="form-select"
-                value={filters.subtipo}
-                onChange={(e) => setFilters((f) => ({ ...f, subtipo: e.target.value }))}
-              >
-                <option value="todos">Todas las Sustancias</option>
-                <option value="cocaina">Cocaína / Clorhidrato</option>
-                <option value="paco">Paco / Pasta Base</option>
-                <option value="marihuana">Marihuana / Flores</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="form-label">Franja Horaria</label>
-              <select
-                className="form-select"
-                value={filters.franjaHoraria}
-                onChange={(e) => setFilters((f) => ({ ...f, franjaHoraria: e.target.value }))}
-              >
-                <option value="todos">Todas las Franjas</option>
-                <option value="Madrugada">Madrugada (00:00 - 06:00)</option>
-                <option value="Mañana">Mañana (06:00 - 12:00)</option>
-                <option value="Tarde">Tarde (12:00 - 18:00)</option>
-                <option value="Noche">Noche (18:00 - 24:00)</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="form-label">Día de la Semana</label>
-              <select
-                className="form-select"
-                value={filters.diaSemana}
-                onChange={(e) => setFilters((f) => ({ ...f, diaSemana: e.target.value }))}
-              >
-                <option value="todos">Todos los Días</option>
-                <option value="Lunes">Lunes</option>
-                <option value="Martes">Martes</option>
-                <option value="Miércoles">Miércoles</option>
-                <option value="Jueves">Jueves</option>
-                <option value="Viernes">Viernes</option>
-                <option value="Sábado">Sábado</option>
-                <option value="Domingo">Domingo</option>
-              </select>
+            <div style={{ background: "rgba(16, 185, 129, 0.08)", padding: "0.55rem 0.75rem", borderRadius: "var(--radius-sm)", border: "1px solid rgba(16, 185, 129, 0.25)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2px" }}>
+                <strong style={{ color: "#34d399", fontSize: "0.74rem" }}>HALLAZGOS / DESCARTES</strong>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: "#ffffff", fontWeight: 700 }}>625</span>
+              </div>
+              <div style={{ fontSize: "0.68rem", color: "var(--text-muted)" }}>Recuperos y vehículos abandonados</div>
             </div>
           </div>
         </div>
