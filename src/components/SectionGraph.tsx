@@ -33,7 +33,7 @@ import {
   AlertTriangle
 } from "lucide-react";
 import { exportToCSV } from "@/lib/excelExport";
-import { generateDrogasGraphPDF } from "@/lib/pdfReport";
+import { generateMdpGraphPDF } from "@/lib/pdfReport";
 
 export interface GraphNode {
   id: string;
@@ -913,7 +913,7 @@ export default function SectionGraph({ incidents = [], recoveries = [] }: Sectio
     const activeCliqueLabel = CLIQUE_PRESETS.find((c) => c.id === selectedClique)?.label || "Red General";
     const sampleCalls = activeSelectedNode ? activeSelectedNode.incidents : displayNodes.flatMap((n) => n.incidents).slice(0, 30);
 
-    generateDrogasGraphPDF({
+    generateMdpGraphPDF({
       cliqueName: activeCliqueLabel,
       partido: "General Pueyrredón / Mar del Plata",
       nodes: displayNodes.map((n) => ({

@@ -99,6 +99,11 @@ export default function Dashboard() {
       if (filters.franjaHoraria !== "todos") query.set("franjaHoraria", filters.franjaHoraria);
       if (filters.diaSemana !== "todos") query.set("diaSemana", filters.diaSemana);
       if (filters.origenDataset !== "todos") query.set("origenDataset", filters.origenDataset);
+    } else {
+      if (filters.subtipo !== "todos") query.set("sustancia", filters.subtipo);
+      if (filters.franjaHoraria !== "todos") query.set("franjaHoraria", filters.franjaHoraria);
+      if (filters.diaSemana !== "todos") query.set("diaSemana", filters.diaSemana);
+      if (filters.origenDataset !== "todos") query.set("origen", filters.origenDataset);
     }
 
     let isSubscribed = true;
@@ -149,11 +154,11 @@ export default function Dashboard() {
   // MDP Stats
   const mdpStats = {
     totalIncidents: data?.totalIncidents || 8598,
-    georeferencedCount: data?.georeferencedCount || 8035,
-    georeferencedPct: data?.georeferencedPct || 93.5,
+    georeferencedCount: data?.georeferencedCount || 8000,
+    georeferencedPct: data?.georeferencedPct || 93.0,
     nightCount: data?.nightCount || 3397,
     nightPct: data?.nightPct || 39.5,
-    recoveriesCount: data?.recoveries ? new Set(data.recoveries.map((r: any) => r.ID_Robo)).size : 58,
+    recoveriesCount: data?.recoveries ? new Set(data.recoveries.map((r: any) => r.ID_Robo)).size : 53,
     medianRecoveryHours: 5.4,
   };
 

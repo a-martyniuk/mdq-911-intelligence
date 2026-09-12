@@ -11,19 +11,19 @@ export default function SectionETL() {
       title: "Reparación y Normalización Geográfica",
       icon: "🌐",
       desc: "Reparación automatizada de puntos con coma/punto desplazado en las coordenadas originales del 911. Ajuste a la caja delimitadora (Bounding Box) oficial de General Pueyrredón (-38.25 a -37.75 Lat / -57.75 a -57.35 Lng).",
-      impact: "Alcanzó el 93.5% de georreferenciación limpia (8.035 casos sobre mapa).",
+      impact: "Alcanzó el 93.0% de georreferenciación limpia (8.000 casos geocodificados sobre mapa).",
     },
     {
       title: "Extracción NLP de Patentes y Entidades",
       icon: "🏷️",
       desc: "Minería de texto sobre los relatos libres de despacho utilizando expresiones regulares avanzadas para detectar matrículas de formato Mercosur (AA123BB) y Tradicional (AAA123).",
-      impact: "Identificó 58 patentes cruzadas para trazabilidad de robos y hallazgos.",
+      impact: "Identificó 53 casos con 51 patentes únicas para trazabilidad de robos y hallazgos.",
     },
     {
       title: "Cruce Relacional Robo ➔ Hallazgo",
       icon: "🔀",
       desc: "Algoritmo de vinculación por clave única de patente y marca entre la base de denuncias de sustracción y el registro de vehículos hallados/abandonados.",
-      impact: "Permitió medir el tiempo exacto de recuperación y la divergencia entre autos (64.9% recuperados) y motos (19.7%).",
+      impact: "Permitió medir el tiempo de recuperación (mediana 4,9 hs autos / 7,0 hs motos) y la prevalencia de autos (83,0%) vs motos (17,0%) en recuperos pareados.",
     },
     {
       title: "Enriquecimiento Espacio-Temporal",
@@ -78,17 +78,17 @@ export default function SectionETL() {
         <div className="card" style={{ borderLeft: "4px solid #10b981" }}>
           <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase" }}>Calidad Geográfica</span>
           <div style={{ fontSize: "1.6rem", fontWeight: 800, color: "#10b981", margin: "0.3rem 0" }}>
-            93.5% Validados
+            93.0% Validados
           </div>
-          <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>8.035 puntos en Bounding Box MDP</span>
+          <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>8.000 puntos en Bounding Box MDP</span>
         </div>
 
         <div className="card" style={{ borderLeft: "4px solid var(--accent-amber)" }}>
           <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase" }}>Relaciones Cruzadas</span>
           <div style={{ fontSize: "1.6rem", fontWeight: 800, color: "var(--accent-amber)", margin: "0.3rem 0" }}>
-            58 Vehículos
+            53 Vehículos
           </div>
-          <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>Trazabilidad completa Robo ➔ Hallazgo</span>
+          <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>Trazabilidad deduplicada Robo ➔ Hallazgo</span>
         </div>
       </div>
 

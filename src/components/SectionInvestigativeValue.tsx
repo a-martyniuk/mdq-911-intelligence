@@ -54,8 +54,8 @@ export default function SectionInvestigativeValue() {
             <button
               onClick={() => {
                 const exportData = [
-                  { Vinculo: "Robo ➔ Hallazgo Automotor", Patron: "Abandono promedio en 4.9 hs", Hipotesis: "Uso del auto robado como unidad de apoyo/fuga efímera", Evidencia: "58 patentes cruzadas en relatos 911" },
-                  { Vinculo: "Robo ➔ Motocicletas", Patron: "Baja tasa de hallazgo (19.7%)", Hipotesis: "Ingreso inmediato a redes de desguace y venta de repuestos", Evidencia: "400 robos concentrados en Honda" },
+                  { Vinculo: "Robo ➔ Hallazgo Automotor", Patron: "Mediana de abandono en 4,9 hs (Autos)", Hipotesis: "Uso del auto robado como unidad de apoyo/fuga efímera", Evidencia: "53 vehículos vinculados (51 patentes únicas en relatos 911)" },
+                  { Vinculo: "Robo ➔ Motocicletas", Patron: "Baja recuperación pareada (17,0% motos vs 83,0% autos)", Hipotesis: "Ingreso inmediato a redes de desguace y venta de repuestos", Evidencia: "400 robos concentrados en Honda" },
                   { Vinculo: "Violencia ➔ Armas de Fuego", Patron: "67 IDs coincidentes en despacho", Hipotesis: "Escalada de violencia en áreas de disputa territorial", Evidencia: "Solapamiento entre Armas y Disparos" },
                   { Vinculo: "Nocturnidad ➔ Concentración", Patron: "39.5% de incidentes entre 18 y 24 hs", Hipotesis: "Sincronización horaria de bandas dedicadas a sustracción", Evidencia: "Pico de 185 robos/hora a las 20:00 hs" },
                   { Vinculo: "Descarte ➔ Asentamientos RENABAP", Patron: "82.7% de hallazgos a < 350m", Hipotesis: "Zonas de enfriamiento y transbordo periférico", Evidencia: "Cruce espacial con Polígonos SISU RENABAP" }
@@ -90,7 +90,7 @@ export default function SectionInvestigativeValue() {
               <span>1. Trazabilidad de Vehículos (Cruce de Patentes)</span>
             </div>
             <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", lineHeight: 1.6 }}>
-              Se identificaron <strong style={{ color: "var(--text-primary)" }}>58 vehículos robados efectivamente vinculados con su hallazgo</strong> mediante minería de relatos 911. La mediana de abandono es de **4,9 horas para autos**, revelando su empleo como vehículo de apoyo temporal en otros ilícitos.
+              Se identificaron <strong style={{ color: "var(--text-primary)" }}>53 vehículos robados efectivamente vinculados con su hallazgo</strong> mediante minería de relatos 911 (44 autos y 9 motos con 51 patentes únicas). La mediana de abandono es de **4,9 horas para autos** (y 7,0 hs para motos), revelando su empleo como vehículo de apoyo temporal en otros ilícitos antes del descarte.
             </p>
           </div>
 
@@ -110,7 +110,7 @@ export default function SectionInvestigativeValue() {
               <span>3. Desguace vs Abandono de Apoyo</span>
             </div>
             <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", lineHeight: 1.6 }}>
-              El desbalance entre hallazgos de autos (**64.9%**) y motos (**19.7%**) revela un patrón investigativo clave: **las motos ingresan inmediatamente a circuitos clandestinos de despiece**, mientras que los automóviles reaparecen abandonados en la vía pública.
+              El marcado predominio de hallazgos de autos (**83.0%**, 44 casos) frente a motos (**17.0%**, 9 casos) en los recuperos pareados revela un patrón investigativo clave: **las motos sustraídas ingresan inmediatamente a circuitos clandestinos de desguace y corte**, mientras que los automóviles son empleados para apoyo de fuga y luego abandonados en la vía pública.
             </p>
           </div>
 

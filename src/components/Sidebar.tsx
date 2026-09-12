@@ -338,6 +338,86 @@ export default function Sidebar({
         </div>
       )}
 
+      {/* JCP / Malvinas Specific Filters */}
+      {(currentProject === "jcp" || currentProject === "malvinas") && (
+        <div style={{ marginTop: "1.5rem", paddingTop: "1.25rem", borderTop: "1px solid var(--border)" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
+            <span style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-muted)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+              <Filter size={14} /> Filtros {currentProject === "jcp" ? "JCP" : "Malvinas"}
+            </span>
+            <button
+              onClick={resetFilters}
+              style={{ background: "none", border: "none", color: "var(--accent-pba-cyan)", cursor: "pointer", fontSize: "0.75rem", display: "flex", alignItems: "center", gap: "0.2rem" }}
+              title="Resetear filtros"
+            >
+              <RotateCcw size={12} /> Limpiar
+            </button>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
+            <div>
+              <label className="form-label">Origen de Datos</label>
+              <select
+                className="form-select"
+                value={filters.origenDataset}
+                onChange={(e) => setFilters((f) => ({ ...f, origenDataset: e.target.value }))}
+              >
+                <option value="todos">Todos los Orígenes</option>
+                <option value="DROGAS_ILICITAS_FORMAL">Tipificación Formal 911</option>
+                <option value="INFORMACION_VECINAL_KEYWORDS">Información Vecinal (Relatos)</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="form-label">Sustancia</label>
+              <select
+                className="form-select"
+                value={filters.subtipo}
+                onChange={(e) => setFilters((f) => ({ ...f, subtipo: e.target.value }))}
+              >
+                <option value="todos">Todas las Sustancias</option>
+                <option value="cocaina">Cocaína / Clorhidrato</option>
+                <option value="paco">Paco / Pasta Base</option>
+                <option value="marihuana">Marihuana / Flores</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="form-label">Franja Horaria</label>
+              <select
+                className="form-select"
+                value={filters.franjaHoraria}
+                onChange={(e) => setFilters((f) => ({ ...f, franjaHoraria: e.target.value }))}
+              >
+                <option value="todos">Todas las Franjas</option>
+                <option value="Madrugada">Madrugada (00:00 - 06:00)</option>
+                <option value="Mañana">Mañana (06:00 - 12:00)</option>
+                <option value="Tarde">Tarde (12:00 - 18:00)</option>
+                <option value="Noche">Noche (18:00 - 24:00)</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="form-label">Día de la Semana</label>
+              <select
+                className="form-select"
+                value={filters.diaSemana}
+                onChange={(e) => setFilters((f) => ({ ...f, diaSemana: e.target.value }))}
+              >
+                <option value="todos">Todos los Días</option>
+                <option value="Lunes">Lunes</option>
+                <option value="Martes">Martes</option>
+                <option value="Miércoles">Miércoles</option>
+                <option value="Jueves">Jueves</option>
+                <option value="Viernes">Viernes</option>
+                <option value="Sábado">Sábado</option>
+                <option value="Domingo">Domingo</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* JCP Specific Source Distinction Box */}
       {currentProject === "jcp" && (
         <div style={{ marginTop: "2rem", paddingTop: "1.25rem", borderTop: "1px solid var(--border)", fontSize: "0.75rem", color: "var(--text-secondary)" }}>
