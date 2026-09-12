@@ -99,37 +99,76 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
     : selectedCategory === "motos" ? 75.7 : selectedCategory === "autos" ? 51.2 : 53.6;
 
   return (
-    <div>
-      <div className="card" style={{ marginBottom: "1.5rem" }}>
+    <div className="animate-enter">
+      <div className="card" style={{ marginBottom: "1.25rem" }}>
         <div className="card-title">
-          <span>🚗 vs 🏍️ Análisis Separado: Robos y Hallazgos de Autos vs Motos</span>
+          <span>Análisis Separado: Robos y Hallazgos de Autos vs Motos</span>
         </div>
         <p className="card-subtitle">
           Evaluación comparativa de patrones de sustracción, tasa de abandono y tiempos de recuperación por tipo de vehículo.
         </p>
 
         {/* Category Switcher Tabs */}
-        <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.5rem" }}>
+        <div style={{ display: "inline-flex", padding: "3px", background: "var(--bg-base)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)", gap: "2px", marginBottom: "1.25rem" }}>
           <button
-            className={`btn-logout ${selectedCategory === "todos" ? "active" : ""}`}
-            style={selectedCategory === "todos" ? { background: "var(--accent-indigo)", color: "#fff", borderColor: "var(--accent-indigo)" } : undefined}
+            style={{
+              padding: "5px 14px",
+              borderRadius: "var(--radius-xs)",
+              fontSize: "12.5px",
+              fontWeight: 600,
+              cursor: "pointer",
+              border: "1px solid",
+              transition: "all var(--duration-fast) var(--ease-out)",
+              background: selectedCategory === "todos" ? "var(--bg-elevated)" : "transparent",
+              color: selectedCategory === "todos" ? "var(--text-primary)" : "var(--text-muted)",
+              borderColor: selectedCategory === "todos" ? "var(--border-focus)" : "transparent",
+              boxShadow: selectedCategory === "todos" ? "0 1px 3px rgba(0,0,0,0.3)" : "none",
+            }}
             onClick={() => setSelectedCategory("todos")}
           >
             Vista Consolidada (Todos: {uniqueRecoveries.length})
           </button>
           <button
-            className={`btn-logout ${selectedCategory === "autos" ? "active" : ""}`}
-            style={selectedCategory === "autos" ? { background: "var(--accent-indigo)", color: "#fff", borderColor: "var(--accent-indigo)" } : undefined}
+            style={{
+              padding: "5px 14px",
+              borderRadius: "var(--radius-xs)",
+              fontSize: "12.5px",
+              fontWeight: 600,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              border: "1px solid",
+              transition: "all var(--duration-fast) var(--ease-out)",
+              background: selectedCategory === "autos" ? "var(--bg-elevated)" : "transparent",
+              color: selectedCategory === "autos" ? "var(--text-primary)" : "var(--text-muted)",
+              borderColor: selectedCategory === "autos" ? "var(--border-focus)" : "transparent",
+              boxShadow: selectedCategory === "autos" ? "0 1px 3px rgba(0,0,0,0.3)" : "none",
+            }}
             onClick={() => setSelectedCategory("autos")}
           >
-            <Car size={16} /> Autos ({uniqueRecoveries.filter(checkIsAuto).length})
+            <Car size={14} /> Autos ({uniqueRecoveries.filter(checkIsAuto).length})
           </button>
           <button
-            className={`btn-logout ${selectedCategory === "motos" ? "active" : ""}`}
-            style={selectedCategory === "motos" ? { background: "var(--accent-indigo)", color: "#fff", borderColor: "var(--accent-indigo)" } : undefined}
+            style={{
+              padding: "5px 14px",
+              borderRadius: "var(--radius-xs)",
+              fontSize: "12.5px",
+              fontWeight: 600,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              border: "1px solid",
+              transition: "all var(--duration-fast) var(--ease-out)",
+              background: selectedCategory === "motos" ? "var(--bg-elevated)" : "transparent",
+              color: selectedCategory === "motos" ? "var(--text-primary)" : "var(--text-muted)",
+              borderColor: selectedCategory === "motos" ? "var(--border-focus)" : "transparent",
+              boxShadow: selectedCategory === "motos" ? "0 1px 3px rgba(0,0,0,0.3)" : "none",
+            }}
             onClick={() => setSelectedCategory("motos")}
           >
-            <Bike size={16} /> Motos ({uniqueRecoveries.filter(checkIsMoto).length})
+            <Bike size={14} /> Motos ({uniqueRecoveries.filter(checkIsMoto).length})
           </button>
         </div>
 
@@ -251,10 +290,10 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
                   selectedCategory: selectedCategory,
                 });
               }}
-              className="btn-logout"
-              style={{ height: "32px", padding: "0 0.85rem", fontSize: "0.775rem", fontWeight: 800, background: "rgba(99,102,241,0.18)", color: "var(--accent-indigo)", border: "1px solid rgba(99,102,241,0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
+              className="btn-export btn-pdf"
+              style={{ padding: "6px 12px" }}
             >
-              <FileText size={14} /> 📄 Descargar Informe Pericial (PDF)
+              <FileText size={14} /> Informe Pericial (PDF)
             </button>
 
             <button
@@ -275,10 +314,10 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
                 }));
                 exportToCSV(`informe_vehiculos_recuperados_${selectedCategory}`, exportData);
               }}
-              className="btn-logout"
-              style={{ height: "32px", padding: "0 0.75rem", fontSize: "0.775rem", fontWeight: 700, background: "rgba(16, 185, 129, 0.15)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
+              className="btn-export btn-excel"
+              style={{ padding: "6px 12px" }}
             >
-              <Download size={14} /> Exportar Tabla a Excel
+              <Download size={14} /> Exportar Tabla (Excel)
             </button>
           </div>
         </div>

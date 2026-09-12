@@ -69,7 +69,7 @@ export default function SectionSearch({ incidents = [] }: SectionSearchProps) {
   }, [incidents, searchTerm, entityFilter]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+    <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
       {/* Header Banner */}
       <div className="card" style={{ background: "var(--bg-surface)", border: "1px solid var(--border)", borderLeft: "4px solid var(--accent-pba-cyan)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "0.5rem" }}>
@@ -138,7 +138,7 @@ export default function SectionSearch({ incidents = [] }: SectionSearchProps) {
       {/* Metrics & Export Bar */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.5rem", fontSize: "0.85rem", color: "var(--text-muted)" }}>
         <span>
-          Mostrando <strong style={{ color: "var(--text-primary)" }}>{filteredIncidents.length}</strong> incidentes coincidentes de {incidents.length} totales
+          Mostrando <strong style={{ color: "var(--text-primary)", fontFamily: "var(--font-mono)", fontVariantNumeric: "tabular-nums" }}>{filteredIncidents.length.toLocaleString("es-AR")}</strong> incidentes coincidentes de <span style={{ fontFamily: "var(--font-mono)", fontVariantNumeric: "tabular-nums" }}>{incidents.length.toLocaleString("es-AR")}</span> totales
         </span>
 
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
@@ -160,20 +160,7 @@ export default function SectionSearch({ incidents = [] }: SectionSearchProps) {
                 hallazgosCount: filteredIncidents.filter((i) => (i.Origen_Dataset || i.Tipo || "").toUpperCase().includes("HALLAZGO")).length,
               });
             }}
-            className="btn-logout"
-            style={{
-              height: "32px",
-              padding: "0 0.75rem",
-              fontSize: "0.775rem",
-              fontWeight: 700,
-              background: "rgba(99, 102, 241, 0.15)",
-              color: "#818cf8",
-              border: "1px solid rgba(99, 102, 241, 0.4)",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.3rem",
-            }}
+            className="btn-export btn-pdf"
             title="Exportar incidentes filtrados a Dossier PDF"
           >
             <FileText size={14} /> Dossier PDF
@@ -196,10 +183,9 @@ export default function SectionSearch({ incidents = [] }: SectionSearchProps) {
               }));
               exportToCSV("informe_busqueda_universal_911", exportData);
             }}
-            className="btn-logout"
-            style={{ height: "32px", padding: "0 0.75rem", fontSize: "0.775rem", fontWeight: 700, background: "rgba(16, 185, 129, 0.15)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
+            className="btn-export btn-excel"
           >
-            <Download size={14} /> Exportar Resultados a Excel
+            <Download size={14} /> Exportar Excel
           </button>
         </div>
       </div>
@@ -267,8 +253,22 @@ export default function SectionSearch({ incidents = [] }: SectionSearchProps) {
 
                 <button
                   onClick={() => setSelectedTwinIncident(inc)}
-                  className="btn-logout"
-                  style={{ height: "24px", padding: "0 0.5rem", fontSize: "0.7rem", fontWeight: 700, fontFamily: "var(--font-display)", background: "rgba(13, 92, 168, 0.2)", color: "#38bdf8", border: "1px solid rgba(0, 163, 224, 0.4)", borderRadius: "var(--radius-xs)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.25rem" }}
+                  style={{
+                    height: "26px",
+                    padding: "0 0.55rem",
+                    fontSize: "0.72rem",
+                    fontWeight: 700,
+                    fontFamily: "var(--font-display)",
+                    background: "rgba(14, 165, 233, 0.12)",
+                    color: "var(--accent-pba-cyan)",
+                    border: "1px solid rgba(14, 165, 233, 0.3)",
+                    borderRadius: "var(--radius-xs)",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.25rem",
+                    transition: "all 0.15s ease",
+                  }}
                 >
                   <Zap size={11} /> Casos Gemelos NLP
                 </button>

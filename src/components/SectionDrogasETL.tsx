@@ -98,23 +98,23 @@ export default function SectionDrogasETL({ incidents = [] }: SectionDrogasETLPro
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+    <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
       <div className="card">
         <div className="card-title" style={{ gap: "0.6rem", justifyContent: "flex-start" }}>
-          <Database size={24} color="#dc2626" />
+          <Database size={20} color="#ef4444" />
           <span>Pipeline ETL: Metodología de Integración de Datos (José C. Paz)</span>
         </div>
         <p className="card-subtitle">
           Proceso de consolidación, deduplicación y rescate de inteligencia a partir de planillas 911 de narcocriminalidad.
         </p>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.25rem", marginTop: "1.5rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.25rem", marginTop: "1.25rem" }}>
           {/* Dataset 1 */}
           <div style={{ background: "var(--bg-base)", padding: "1.25rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
               <FileSpreadsheet size={20} color="#ef4444" />
               <strong style={{ fontSize: "0.95rem", color: "var(--text-primary)" }}>
-                DROGAS ILICITAS JOSE C PAZ.xlsx
+                DROGAS ILICITAS.xlsx
               </strong>
             </div>
             <span style={{ fontSize: "0.75rem", fontWeight: 700, padding: "2px 8px", borderRadius: "4px", background: "rgba(239,68,68,0.15)", color: "#ef4444" }}>
@@ -143,9 +143,9 @@ export default function SectionDrogasETL({ incidents = [] }: SectionDrogasETLPro
         </div>
 
         {/* Normalization & NLP Box */}
-        <div style={{ marginTop: "1.5rem", background: "var(--bg-base)", padding: "1.25rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
+        <div style={{ marginTop: "1.25rem", background: "var(--bg-base)", padding: "1.25rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
           <h4 style={{ fontSize: "1rem", fontWeight: 700, margin: "0 0 0.75rem", color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <Cpu size={18} color="var(--accent-purple)" />
+            <Cpu size={18} color="#a855f7" />
             Normalización Geográfica y Enriquecimiento NLP
           </h4>
 
@@ -177,7 +177,7 @@ export default function SectionDrogasETL({ incidents = [] }: SectionDrogasETLPro
       {/* ========================================================================= */}
       {/* GENERADOR MODULAR DE REPORTES DE INTELIGENCIA (SELECTOR PERSONALIZADO) */}
       {/* ========================================================================= */}
-      <div className="card" style={{ border: "1.5px solid #dc2626", background: "linear-gradient(180deg, rgba(220,38,38,0.03) 0%, rgba(15,23,42,0.6) 100%)" }}>
+      <div className="card" style={{ borderLeft: "3px solid #ef4444", background: "var(--bg-surface)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem" }}>
           <div>
             <div className="card-title" style={{ gap: "0.6rem", justifyContent: "flex-start" }}>
@@ -362,51 +362,34 @@ export default function SectionDrogasETL({ incidents = [] }: SectionDrogasETLPro
             <button
               onClick={handleGenerateCustomPDF}
               disabled={activeCount === 0}
-              className="btn-logout"
+              className="btn-export btn-pdf"
               style={{
-                height: "40px",
-                padding: "0 1.25rem",
-                fontSize: "0.82rem",
-                fontWeight: 800,
-                background: activeCount > 0 ? "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)" : "rgba(255,255,255,0.05)",
-                color: "#fff",
-                border: "none",
-                borderRadius: "6px",
+                height: "38px",
+                padding: "0 1.15rem",
+                opacity: activeCount > 0 ? 1 : 0.4,
                 cursor: activeCount > 0 ? "pointer" : "not-allowed",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                boxShadow: activeCount > 0 ? "0 2px 10px rgba(239,68,68,0.3)" : "none",
-                transition: "all 0.15s ease",
               }}
             >
-              <FileText size={16} />
+              <FileText size={15} />
               <span>
                 {activeCount > 0
-                  ? `📄 Generar Reporte Personalizado (${activeCount} ${activeCount === 1 ? "módulo" : "módulos"})`
+                  ? `Reporte Personalizado (${activeCount} ${activeCount === 1 ? "módulo" : "módulos"})`
                   : "Seleccione al menos 1 módulo"}
               </span>
             </button>
 
             <button
               onClick={handleGenerateFullDossier}
-              className="btn-logout"
+              className="btn-export"
               style={{
-                height: "40px",
-                padding: "0 1.1rem",
-                fontSize: "0.82rem",
-                fontWeight: 700,
-                background: "rgba(255,255,255,0.08)",
-                color: "var(--text-primary)",
-                border: "1px solid var(--border)",
-                borderRadius: "6px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
+                height: "38px",
+                padding: "0 1.15rem",
+                background: "rgba(59, 130, 246, 0.12)",
+                color: "#38bdf8",
+                border: "1px solid rgba(59, 130, 246, 0.35)",
               }}
             >
-              <Sparkles size={15} color="#ef4444" />
+              <Sparkles size={14} color="#38bdf8" />
               <span>Dossier Completo (5 Módulos)</span>
             </button>
           </div>

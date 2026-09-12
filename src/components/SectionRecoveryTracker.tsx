@@ -541,8 +541,7 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
                   }));
                   exportToCSV(`informe_trazabilidad_vehicular_${vehicleType}`, exportData);
                 }}
-                className="btn-logout"
-                style={{ height: "34px", padding: "0 0.75rem", fontSize: "0.775rem", fontWeight: 700, background: "rgba(16, 185, 129, 0.15)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
+                className="btn-export btn-excel"
               >
                 <Download size={14} /> Excel
               </button>
@@ -677,10 +676,9 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
                   Relato_Hallazgo: selectedCase.Relato_Hallazgo || "",
                 });
               }}
-              className="btn-logout"
-              style={{ height: "34px", padding: "0 0.85rem", fontSize: "0.8rem", fontWeight: 800, background: "rgba(99,102,241,0.18)", color: "var(--accent-indigo)", border: "1px solid rgba(99,102,241,0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.35rem" }}
+              className="btn-export btn-pdf"
             >
-              <FileText size={15} /> 📄 Exportar Ficha Policial (PDF)
+              <FileText size={15} /> Exportar Ficha Policial (PDF)
             </button>
 
             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "var(--bg-base)", padding: "0.4rem 0.8rem", borderRadius: "6px", border: "1px solid var(--border)" }}>

@@ -53,12 +53,12 @@ export default function SectionTemporal({ incidents = [] }: SectionTemporalProps
   const nightPct = safeIncidents.length > 0 ? (nightCases / safeIncidents.length) * 100 : 0;
 
   return (
-    <div>
-      <div className="card" style={{ marginBottom: "1.5rem" }}>
+    <div className="animate-enter">
+      <div className="card" style={{ marginBottom: "1.25rem" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem" }}>
           <div>
             <div className="card-title">
-              <span>⏰ Análisis de Patrones Temporales y Nocturnidad</span>
+              <span>Análisis de Patrones Temporales y Nocturnidad</span>
             </div>
             <p className="card-subtitle">
               Distribución cronológica de incidentes 911 por hora del día, día de la semana y matriz de correlación temporal.
@@ -77,24 +77,10 @@ export default function SectionTemporal({ incidents = [] }: SectionTemporalProps
                   weekdayCount
                 });
               }}
-              className="btn-logout"
-              style={{
-                height: "36px",
-                padding: "0 1rem",
-                fontSize: "0.8rem",
-                fontWeight: 800,
-                background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
-                color: "#fff",
-                border: "none",
-                borderRadius: "6px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem",
-                boxShadow: "0 2px 8px rgba(245,158,11,0.3)"
-              }}
+              className="btn-export btn-pdf"
+              style={{ padding: "7px 14px" }}
             >
-              <FileText size={15} /> 📄 Descargar Informe Crono-Delictual (PDF)
+              <FileText size={14} /> Informe Crono-Delictual (PDF)
             </button>
 
             <button
@@ -107,22 +93,10 @@ export default function SectionTemporal({ incidents = [] }: SectionTemporalProps
                 }));
                 exportToCSV("patrones_temporales_horarios_911", exportData);
               }}
-              className="btn-logout"
-              style={{
-                height: "36px",
-                padding: "0 0.9rem",
-                fontSize: "0.8rem",
-                fontWeight: 700,
-                background: "rgba(16, 185, 129, 0.15)",
-                color: "#10b981",
-                border: "1px solid rgba(16, 185, 129, 0.4)",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem"
-              }}
+              className="btn-export btn-excel"
+              style={{ padding: "7px 14px" }}
             >
-              <Download size={15} /> 📊 Exportar Horarios (Excel)
+              <Download size={14} /> Exportar Horarios (Excel)
             </button>
           </div>
         </div>
@@ -131,13 +105,14 @@ export default function SectionTemporal({ incidents = [] }: SectionTemporalProps
           display: "flex",
           alignItems: "center",
           gap: "1rem",
-          background: "rgba(245,158,11,0.12)",
-          border: "1px solid var(--accent-indigo)",
-          borderRadius: "var(--radius-md)",
+          background: "var(--bg-base)",
+          border: "1px solid var(--border)",
+          borderLeft: "3px solid #f59e0b",
+          borderRadius: "var(--radius-sm)",
           padding: "1rem 1.25rem",
-          marginBottom: "1.5rem"
+          marginBottom: "1.25rem"
         }}>
-          <AlertTriangle size={24} color="var(--accent-indigo)" />
+          <AlertTriangle size={20} color="#f59e0b" />
           <div>
             <strong style={{ color: "var(--text-primary)", fontSize: "0.95rem" }}>
               Hallazgo Crítico: Picos de Nocturnidad y Fin de Semana

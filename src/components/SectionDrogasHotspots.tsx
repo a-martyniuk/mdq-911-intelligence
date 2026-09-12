@@ -431,14 +431,14 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
   }, [showNodes, mapReady, activeTab]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+    <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
       {/* Strategic Header Banner */}
-      <div className="card" style={{ background: "linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(245, 158, 11, 0.05) 100%)", border: "1px solid rgba(239, 68, 68, 0.25)" }}>
+      <div className="card" style={{ background: "linear-gradient(90deg, #101623 0%, #131c2d 100%)", borderColor: "var(--border)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem" }}>
           <div>
             <div className="card-title" style={{ gap: "0.5rem" }}>
-              <Flame color="#ef4444" size={24} />
-              <span>🔥 Concentración Territorial & Nodos Crónicos de Resistencia Criminal (José C. Paz)</span>
+              <Flame color="#ef4444" size={20} />
+              <span>Concentración Territorial & Nodos Crónicos de Resistencia Criminal (José C. Paz)</span>
             </div>
             <p className="card-subtitle" style={{ margin: "0.25rem 0 0" }}>
               Macro-análisis geoespacial de saturación delictual, densidad térmica continua (KDE) y núcleos consolidados de resistencia armada.
@@ -464,24 +464,11 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
                   reportType: "hotspots",
                 });
               }}
-              className="btn-logout"
-              style={{
-                height: "38px",
-                padding: "0 1rem",
-                fontSize: "0.8rem",
-                fontWeight: 800,
-                background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
-                color: "#fff",
-                border: "none",
-                borderRadius: "6px",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                cursor: "pointer",
-              }}
+              className="btn-export btn-pdf"
+              style={{ padding: "7px 14px" }}
             >
-              <FileText size={16} />
-              <span>Descargar Informe Estratégico (PDF)</span>
+              <FileText size={14} />
+              <span>Informe Estratégico (PDF)</span>
             </button>
           </div>
         </div>
@@ -1111,22 +1098,11 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
                     })
                   });
                 }}
-                style={{
-                  background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
-                  border: "none",
-                  color: "#fff",
-                  padding: "0.5rem 1rem",
-                  borderRadius: "6px",
-                  fontSize: "0.8rem",
-                  fontWeight: 700,
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.4rem"
-                }}
+                className="btn-export btn-pdf"
+                style={{ padding: "7px 14px" }}
               >
-                <FileText size={16} />
-                <span>Imprimir Expediente Táctico (PDF)</span>
+                <FileText size={14} />
+                <span>Expediente Táctico (PDF)</span>
               </button>
             </div>
           </div>

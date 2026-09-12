@@ -101,17 +101,17 @@ export default function SectionMalvinasETL({ incidents = [] }: SectionMalvinasET
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+    <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
       <div className="card">
         <div className="card-title" style={{ gap: "0.6rem", justifyContent: "flex-start" }}>
-          <Database size={24} color="#f59e0b" />
+          <Database size={20} color="#f59e0b" />
           <span>Pipeline ETL: Metodología de Integración de Datos (Malvinas Argentinas)</span>
         </div>
         <p className="card-subtitle">
           Proceso de consolidación, deduplicación y rescate de inteligencia a partir de planillas 911 de narcocriminalidad.
         </p>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.25rem", marginTop: "1.5rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.25rem", marginTop: "1.25rem" }}>
           {/* Dataset 1 */}
           <div style={{ background: "var(--bg-base)", padding: "1.25rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
@@ -137,7 +137,7 @@ export default function SectionMalvinasETL({ incidents = [] }: SectionMalvinasET
               </strong>
             </div>
             <span style={{ fontSize: "0.75rem", fontWeight: 700, padding: "2px 8px", borderRadius: "4px", background: "rgba(16,185,129,0.15)", color: "#10b981" }}>
-              Filtro de Inteligencia por Palabras Clave (669 registros)
+              Filtro de Inteligencia por Palabras Clave (670 registros)
             </span>
             <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.75rem", lineHeight: 1.5 }}>
               Llamados al 911 registrados inicialmente bajo otras tipificaciones (conflictos vecinales, cartas de información, robos o armas), pero donde un filtrado por palabras clave en el relato (<strong>"cocaína", "marihuana", "venta", "bunkers", "transa"</strong>) rescató denuncias con valiosa información sobre narcotráfico.
@@ -146,9 +146,9 @@ export default function SectionMalvinasETL({ incidents = [] }: SectionMalvinasET
         </div>
 
         {/* Normalization & NLP Box */}
-        <div style={{ marginTop: "1.5rem", background: "var(--bg-base)", padding: "1.25rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
+        <div style={{ marginTop: "1.25rem", background: "var(--bg-base)", padding: "1.25rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
           <h4 style={{ fontSize: "1rem", fontWeight: 700, margin: "0 0 0.75rem", color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <Cpu size={18} color="var(--accent-purple)" />
+            <Cpu size={18} color="#a855f7" />
             Normalización Geográfica y Enriquecimiento NLP
           </h4>
 
@@ -156,7 +156,7 @@ export default function SectionMalvinasETL({ incidents = [] }: SectionMalvinasET
             <div style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem" }}>
               <CheckCircle2 size={16} color="#10b981" style={{ marginTop: "3px", flexShrink: 0 }} />
               <div>
-                <strong style={{ color: "var(--text-primary)" }}>Corrección Decimal y Georreferenciación Automática:</strong> Se solucionó la escala decimal de las variables y se completó la geocodificación de intersecciones y barrios, situando a <strong>1.451 hechos (98,6%)</strong> con coordenadas espaciales validadas dentro del Partido de Malvinas Argentinas.
+                <strong style={{ color: "var(--text-primary)" }}>Corrección Decimal y Georreferenciación Automática:</strong> Se solucionó la escala exponencial de las variables exportadas y se completó la geocodificación de intersecciones y barrios, situando a <strong>1.464 hechos (99,52%)</strong> con coordenadas espaciales validadas dentro del Partido de Malvinas Argentinas.
               </div>
             </div>
 
@@ -170,7 +170,7 @@ export default function SectionMalvinasETL({ incidents = [] }: SectionMalvinasET
             <div style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem" }}>
               <CheckCircle2 size={16} color="#10b981" style={{ marginTop: "3px", flexShrink: 0 }} />
               <div>
-                <strong style={{ color: "var(--text-primary)" }}>Complementariedad Total:</strong> Se verificó que ambas planillas son 100% complementarias sin superposición de IDs, sumando un universo consolidado de <strong>1.471 denuncias únicas</strong> de alto valor judicial.
+                <strong style={{ color: "var(--text-primary)" }}>Complementariedad Total:</strong> Se verificó que entre ambas planillas existe únicamente 1 ID coincidente, sumando un universo consolidado de <strong>1.471 denuncias únicas</strong> de alto valor judicial.
               </div>
             </div>
           </div>
@@ -180,7 +180,7 @@ export default function SectionMalvinasETL({ incidents = [] }: SectionMalvinasET
       {/* ========================================================================= */}
       {/* GENERADOR MODULAR DE REPORTES DE INTELIGENCIA (SELECTOR PERSONALIZADO) */}
       {/* ========================================================================= */}
-      <div className="card" style={{ border: "1.5px solid #f59e0b", background: "linear-gradient(180deg, rgba(245,158,11,0.03) 0%, rgba(15,23,42,0.6) 100%)" }}>
+      <div className="card" style={{ borderLeft: "3px solid #f59e0b", background: "var(--bg-surface)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem" }}>
           <div>
             <div className="card-title" style={{ gap: "0.6rem", justifyContent: "flex-start" }}>
@@ -365,51 +365,34 @@ export default function SectionMalvinasETL({ incidents = [] }: SectionMalvinasET
             <button
               onClick={handleGenerateCustomPDF}
               disabled={activeCount === 0}
-              className="btn-logout"
+              className="btn-export btn-pdf"
               style={{
-                height: "40px",
-                padding: "0 1.25rem",
-                fontSize: "0.82rem",
-                fontWeight: 800,
-                background: activeCount > 0 ? "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)" : "rgba(255,255,255,0.05)",
-                color: activeCount > 0 ? "#000" : "var(--text-muted)",
-                border: "none",
-                borderRadius: "6px",
+                height: "38px",
+                padding: "0 1.15rem",
+                opacity: activeCount > 0 ? 1 : 0.4,
                 cursor: activeCount > 0 ? "pointer" : "not-allowed",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                boxShadow: activeCount > 0 ? "0 2px 10px rgba(245,158,11,0.3)" : "none",
-                transition: "all 0.15s ease",
               }}
             >
-              <FileText size={16} />
+              <FileText size={15} />
               <span>
                 {activeCount > 0
-                  ? `📄 Generar Reporte Personalizado (${activeCount} ${activeCount === 1 ? "módulo" : "módulos"})`
+                  ? `Reporte Personalizado (${activeCount} ${activeCount === 1 ? "módulo" : "módulos"})`
                   : "Seleccione al menos 1 módulo"}
               </span>
             </button>
 
             <button
               onClick={handleGenerateFullDossier}
-              className="btn-logout"
+              className="btn-export"
               style={{
-                height: "40px",
-                padding: "0 1.1rem",
-                fontSize: "0.82rem",
-                fontWeight: 700,
-                background: "rgba(255,255,255,0.08)",
-                color: "var(--text-primary)",
-                border: "1px solid var(--border)",
-                borderRadius: "6px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
+                height: "38px",
+                padding: "0 1.15rem",
+                background: "rgba(245, 158, 11, 0.12)",
+                color: "#fcd34d",
+                border: "1px solid rgba(245, 158, 11, 0.35)",
               }}
             >
-              <Sparkles size={15} color="#f59e0b" />
+              <Sparkles size={14} color="#f59e0b" />
               <span>Dossier Completo (5 Módulos)</span>
             </button>
           </div>

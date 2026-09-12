@@ -312,19 +312,19 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
   }, [jurisdictionStats, showHeatmap, showComisarias, showRenabap, incidents]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+    <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
       {/* Header Banner */}
-      <div className="card" style={{ background: "linear-gradient(135deg, rgba(99,102,241,0.12) 0%, rgba(16,185,129,0.05) 100%)", border: "1px solid rgba(99,102,241,0.3)" }}>
+      <div className="card" style={{ background: "linear-gradient(90deg, #101623 0%, #131c2d 100%)", borderColor: "var(--border)" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-            <div style={{ padding: "0.75rem", borderRadius: "10px", background: "var(--accent-indigo)", color: "#fff" }}>
-              <Building2 size={24} />
+          <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
+            <div style={{ padding: "0.65rem", borderRadius: "var(--radius-sm)", background: "rgba(59, 130, 246, 0.15)", color: "#38bdf8", border: "1px solid rgba(59, 130, 246, 0.3)" }}>
+              <Building2 size={22} />
             </div>
             <div>
-              <h2 style={{ fontSize: "1.25rem", fontWeight: 700, margin: 0, color: "var(--text-primary)" }}>
+              <h2 style={{ fontSize: "19px", fontWeight: 600, margin: 0, color: "var(--text-primary)", letterSpacing: "-0.015em" }}>
                 Matriz Inter-Jurisdiccional & Cuadrantes Policiales (Comisarías 1ra a 16ta)
               </h2>
-              <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", margin: "0.2rem 0 0" }}>
+              <p style={{ fontSize: "13.5px", color: "var(--text-muted)", margin: "0.2rem 0 0" }}>
                 Delimitación orgánica por comisaría y análisis cuantitativo real de sustracciones y zonas de descarte.
               </p>
             </div>
@@ -348,24 +348,10 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
                   totalRecoveries: totalDumps,
                 });
               }}
-              className="btn-logout"
-              style={{
-                height: "36px",
-                padding: "0 1rem",
-                fontSize: "0.8rem",
-                fontWeight: 800,
-                background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)",
-                color: "#fff",
-                border: "none",
-                borderRadius: "6px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem",
-                boxShadow: "0 2px 8px rgba(37,99,235,0.3)",
-              }}
+              className="btn-export btn-pdf"
+              style={{ padding: "7px 14px" }}
             >
-              <FileText size={15} /> 📄 Descargar Informe Departamental (PDF)
+              <FileText size={14} /> Informe Departamental (PDF)
             </button>
 
             <button
@@ -380,131 +366,131 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
                 }));
                 exportToCSV("matriz_cuantitativa_comisarias_mdp", exportData);
               }}
-              className="btn-logout"
-              style={{ height: "36px", padding: "0 1rem", fontSize: "0.8rem", fontWeight: 700, background: "rgba(16, 185, 129, 0.15)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.4rem" }}
+              className="btn-export btn-excel"
+              style={{ padding: "7px 14px" }}
             >
-              <Download size={15} /> Exportar Matriz Cuantitativa a Excel
+              <Download size={14} /> Exportar Matriz (Excel)
             </button>
           </div>
         </div>
       </div>
 
       {/* Metric Cards Summary Bar */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1rem" }}>
-        <div className="card" style={{ borderLeft: "4px solid #ef4444" }}>
-          <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase" }}>Total Sustracciones (Robos)</span>
-          <div style={{ fontSize: "1.5rem", fontWeight: 800, color: "#ef4444", margin: "0.2rem 0" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "0.85rem" }}>
+        <div className="card" style={{ borderLeft: "3px solid #ef4444" }}>
+          <span style={{ fontSize: "11px", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Total Sustracciones (Robos)</span>
+          <div style={{ fontSize: "1.75rem", fontWeight: 700, color: "#ef4444", margin: "0.2rem 0", fontFamily: "var(--font-mono)", fontVariantNumeric: "tabular-nums" }}>
             {totalThefts.toLocaleString("es-AR")}
           </div>
-          <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>Densidad concentrada en Macrocentro / Centro</span>
+          <span style={{ fontSize: "12px", color: "var(--text-secondary)" }}>Densidad concentrada en Macrocentro / Centro</span>
         </div>
 
-        <div className="card" style={{ borderLeft: "4px solid #10b981" }}>
-          <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase" }}>Total Descartes (Hallazgos)</span>
-          <div style={{ fontSize: "1.5rem", fontWeight: 800, color: "#10b981", margin: "0.2rem 0" }}>
+        <div className="card" style={{ borderLeft: "3px solid #10b981" }}>
+          <span style={{ fontSize: "11px", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Total Descartes (Hallazgos)</span>
+          <div style={{ fontSize: "1.75rem", fontWeight: 700, color: "#10b981", margin: "0.2rem 0", fontFamily: "var(--font-mono)", fontVariantNumeric: "tabular-nums" }}>
             {totalDumps.toLocaleString("es-AR")}
           </div>
-          <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>Densidad en periferia West / South</span>
+          <span style={{ fontSize: "12px", color: "var(--text-secondary)" }}>Densidad en periferia Oeste / Sur</span>
         </div>
 
-        <div className="card" style={{ borderLeft: "4px solid var(--accent-indigo)" }}>
-          <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase" }}>Jurisdicción Mayor Emisora</span>
-          <div style={{ fontSize: "1.05rem", fontWeight: 800, color: "var(--text-primary)", margin: "0.4rem 0" }}>
+        <div className="card" style={{ borderLeft: "3px solid #38bdf8" }}>
+          <span style={{ fontSize: "11px", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Jurisdicción Mayor Emisora</span>
+          <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "var(--text-primary)", margin: "0.4rem 0" }}>
             Comisaría 2da (Macrocentro / Güemes)
           </div>
-          <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>Foco principal de robos nocturnos</span>
+          <span style={{ fontSize: "12px", color: "var(--text-secondary)" }}>Foco principal de robos nocturnos</span>
         </div>
 
-        <div className="card" style={{ borderLeft: "4px solid #ea580c" }}>
-          <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#ea580c", textTransform: "uppercase" }}>Correlación RENABAP</span>
-          <div style={{ fontSize: "1.5rem", fontWeight: 800, color: "#ea580c", margin: "0.2rem 0" }}>
+        <div className="card" style={{ borderLeft: "3px solid #f59e0b" }}>
+          <span style={{ fontSize: "11px", fontWeight: 700, color: "#f59e0b", textTransform: "uppercase", letterSpacing: "0.06em" }}>Correlación RENABAP</span>
+          <div style={{ fontSize: "1.75rem", fontWeight: 700, color: "#f59e0b", margin: "0.2rem 0", fontFamily: "var(--font-mono)", fontVariantNumeric: "tabular-nums" }}>
             82.7%
           </div>
-          <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>Descartes a &lt; 350m de perómetros RENABAP</span>
+          <span style={{ fontSize: "12px", color: "var(--text-secondary)" }}>Descartes a &lt; 350m de polígonos RENABAP</span>
         </div>
       </div>
 
       {/* Main Grid: Leaflet Polygon Map + Jurisdiction Flows Table */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(420px, 1fr))", gap: "1.5rem" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(420px, 1fr))", gap: "1rem" }}>
         {/* Left Column: Interactive Map with Jurisdiction Organic Polygons */}
         <div className="card" style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.5rem" }}>
-            <h3 style={{ fontSize: "1rem", fontWeight: 700, margin: 0, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-              <Layers size={18} color="var(--accent-indigo)" />
+            <h3 style={{ fontSize: "14.5px", fontWeight: 700, margin: 0, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+              <Layers size={16} color="#38bdf8" />
               Mapa de Cuadrantes Oficiales (Comisarías 1ra a 16ta)
             </h3>
 
             <div style={{ display: "flex", alignItems: "center", gap: "0.85rem", flexWrap: "wrap" }}>
-              <label style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "0.775rem", fontWeight: 700, color: "#ef4444", cursor: "pointer" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "12px", fontWeight: 600, color: "#ef4444", cursor: "pointer" }}>
                 <input
                   type="checkbox"
                   checked={showHeatmap}
                   onChange={(e) => setShowHeatmap(e.target.checked)}
-                  style={{ width: "15px", height: "15px", accentColor: "#ef4444", cursor: "pointer" }}
+                  style={{ width: "14px", height: "14px", accentColor: "#ef4444", cursor: "pointer" }}
                 />
-                <Flame size={14} /> Heatmap 911
+                <Flame size={13} /> Heatmap 911
               </label>
 
-              <label style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "0.775rem", fontWeight: 700, color: "#818cf8", cursor: "pointer" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "12px", fontWeight: 600, color: "#38bdf8", cursor: "pointer" }}>
                 <input
                   type="checkbox"
                   checked={showComisarias}
                   onChange={(e) => setShowComisarias(e.target.checked)}
-                  style={{ width: "15px", height: "15px", accentColor: "#6366f1", cursor: "pointer" }}
+                  style={{ width: "14px", height: "14px", accentColor: "#38bdf8", cursor: "pointer" }}
                 />
-                <ShieldCheck size={14} /> Jurisdicciones
+                <ShieldCheck size={13} /> Jurisdicciones
               </label>
 
-              <label style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "0.775rem", fontWeight: 700, color: "#ea580c", cursor: "pointer" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "12px", fontWeight: 600, color: "#f59e0b", cursor: "pointer" }}>
                 <input
                   type="checkbox"
                   checked={showRenabap}
                   onChange={(e) => setShowRenabap(e.target.checked)}
-                  style={{ width: "15px", height: "15px", accentColor: "#ea580c", cursor: "pointer" }}
+                  style={{ width: "14px", height: "14px", accentColor: "#f59e0b", cursor: "pointer" }}
                 />
-                <Home size={14} /> RENABAP
+                <Home size={13} /> RENABAP
               </label>
             </div>
           </div>
 
-          <div ref={mapContainerRef} style={{ width: "100%", height: "480px", borderRadius: "8px", border: "1px solid var(--border)" }} />
+          <div ref={mapContainerRef} style={{ width: "100%", height: "480px", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)" }} />
         </div>
 
         {/* Right Column: Quantitative Jurisdiction Flow Table */}
-        <div className="card" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        <div className="card" style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <h3 style={{ fontSize: "1rem", fontWeight: 700, margin: 0, color: "var(--text-primary)" }}>
+            <h3 style={{ fontSize: "14.5px", fontWeight: 700, margin: 0, color: "var(--text-primary)" }}>
               Matriz Cuantitativa Real Origen ➔ Descarte
             </h3>
-            <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
+            <span style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
               Valores Reales 911 MDQ
             </span>
           </div>
 
-          <div style={{ maxHeight: "480px", overflowY: "auto", border: "1px solid var(--border)", borderRadius: "8px" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.8rem", textAlign: "left" }}>
+          <div style={{ maxHeight: "480px", overflowY: "auto", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)" }}>
+            <table className="data-table">
               <thead>
-                <tr style={{ background: "var(--bg-base)", borderBottom: "1px solid var(--border)", color: "var(--text-muted)" }}>
-                  <th style={{ padding: "0.6rem 0.75rem" }}>Jurisdicción / Comisaría</th>
-                  <th style={{ padding: "0.6rem 0.75rem", textAlign: "center" }}>🔴 Sustracciones</th>
-                  <th style={{ padding: "0.6rem 0.75rem", textAlign: "center" }}>🟢 Descartes</th>
-                  <th style={{ padding: "0.6rem 0.75rem" }}>Rol Territorial</th>
+                <tr>
+                  <th style={{ padding: "0.55rem 0.75rem" }}>Jurisdicción / Comisaría</th>
+                  <th style={{ padding: "0.55rem 0.75rem", textAlign: "right" }}>🔴 Sustracciones</th>
+                  <th style={{ padding: "0.55rem 0.75rem", textAlign: "right" }}>🟢 Descartes</th>
+                  <th style={{ padding: "0.55rem 0.75rem", textAlign: "center" }}>Rol Territorial</th>
                 </tr>
               </thead>
               <tbody>
                 {jurisdictionStats.map((j, idx) => (
-                  <tr key={j.code || idx} style={{ borderBottom: "1px solid var(--border)", background: idx % 2 === 0 ? "transparent" : "rgba(255,255,255,0.02)" }}>
-                    <td style={{ padding: "0.65rem 0.75rem", fontWeight: 700, color: j.color }}>
+                  <tr key={j.code || idx}>
+                    <td style={{ fontWeight: 600, color: "var(--text-primary)" }}>
                       {j.name}
                     </td>
-                    <td style={{ padding: "0.65rem 0.75rem", textAlign: "center", fontWeight: 800, color: "#ef4444", fontSize: "0.85rem" }}>
-                      {j.theftsCount} robos
+                    <td style={{ textAlign: "right", fontWeight: 600, color: "#ef4444", fontFamily: "var(--font-mono)" }}>
+                      {j.theftsCount}
                     </td>
-                    <td style={{ padding: "0.65rem 0.75rem", textAlign: "center", fontWeight: 800, color: "#10b981", fontSize: "0.85rem" }}>
-                      {j.dumpsCount} hallazgos
+                    <td style={{ textAlign: "right", fontWeight: 600, color: "#10b981", fontFamily: "var(--font-mono)" }}>
+                      {j.dumpsCount}
                     </td>
-                    <td style={{ padding: "0.65rem 0.75rem", fontSize: "0.75rem", fontWeight: 700 }}>
-                      <span style={{ padding: "0.15rem 0.5rem", borderRadius: "4px", background: j.role === "EMISORA" ? "rgba(239, 68, 68, 0.15)" : j.role === "RECEPTORA" ? "rgba(16, 185, 129, 0.15)" : "rgba(245, 158, 11, 0.15)", color: j.role === "EMISORA" ? "#fca5a5" : j.role === "RECEPTORA" ? "#6ee7b7" : "#fde047" }}>
+                    <td style={{ textAlign: "center" }}>
+                      <span style={{ padding: "0.15rem 0.5rem", borderRadius: "var(--radius-xs)", fontSize: "11px", fontWeight: 600, background: j.role === "EMISORA" ? "rgba(239, 68, 68, 0.12)" : j.role === "RECEPTORA" ? "rgba(16, 185, 129, 0.12)" : "rgba(245, 158, 11, 0.12)", color: j.role === "EMISORA" ? "#fca5a5" : j.role === "RECEPTORA" ? "#6ee7b7" : "#fde047" }}>
                         {j.roleBadge}
                       </span>
                     </td>

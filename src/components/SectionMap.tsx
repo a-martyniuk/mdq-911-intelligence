@@ -390,46 +390,46 @@ export default function SectionMap({ geoPoints = [], recoveries = [] }: SectionM
   };
 
   return (
-    <div>
-      <div className="card" style={{ marginBottom: "1.5rem" }}>
-        <div className="card-title">📍 Mapeo Geográfico & Geointeligencia Avanzada 911</div>
+    <div className="animate-enter">
+      <div className="card" style={{ marginBottom: "1.25rem" }}>
+        <div className="card-title">Mapeo Geográfico & Geointeligencia Avanzada 911</div>
         <p className="card-subtitle">
-          Exploración espacial de {geoPoints.length.toLocaleString()} incidentes georreferenciados con time-slider animado de 24 horas y vectores de flujo (Robo $\rightarrow$ Hallazgo).
+          Exploración espacial de {geoPoints.length.toLocaleString()} incidentes georreferenciados con time-slider animado de 24 horas y vectores de flujo (Robo &rarr; Hallazgo).
         </p>
 
         {/* UNIFIED MAP LAYER SELECTOR PANEL */}
-        <div style={{ background: "linear-gradient(135deg, rgba(30,41,59,0.9) 0%, rgba(15,23,42,0.95) 100%)", padding: "1.1rem", borderRadius: "10px", border: "1px solid var(--accent-indigo)", marginBottom: "1rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
+        <div style={{ background: "var(--bg-surface)", padding: "1rem", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)", marginBottom: "1rem", display: "flex", flexDirection: "column", gap: "0.85rem" }}>
           
           {/* Header & Quick Presets Bar */}
-          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "0.75rem", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.75rem" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#fff", fontWeight: 800, fontSize: "0.95rem" }}>
-              <Layers size={20} color="var(--accent-indigo)" />
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "0.75rem", borderBottom: "1px solid var(--border)", paddingBottom: "0.75rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-primary)", fontWeight: 600, fontSize: "14px" }}>
+              <Layers size={18} color="#38bdf8" />
               <span>Selector Global de Capas del Mapa</span>
             </div>
 
             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
-              <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 700, textTransform: "uppercase" }}>Modos Rápidos:</span>
+              <span style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>Modos Rápidos:</span>
               <button
                 onClick={() => applyPreset("all")}
-                style={{ padding: "0.3rem 0.65rem", fontSize: "0.75rem", fontWeight: 700, borderRadius: "5px", border: "1px solid var(--accent-indigo)", background: "rgba(99,102,241,0.2)", color: "#a5b4fc", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
+                style={{ padding: "0.3rem 0.65rem", fontSize: "12px", fontWeight: 600, borderRadius: "var(--radius-xs)", border: "1px solid rgba(56, 189, 248, 0.4)", background: "rgba(56, 189, 248, 0.12)", color: "#38bdf8", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
               >
-                <Zap size={12} /> Activar Todas las Capas
+                <Zap size={12} /> Todas las Capas
               </button>
               <button
                 onClick={() => applyPreset("renabap")}
-                style={{ padding: "0.3rem 0.65rem", fontSize: "0.75rem", fontWeight: 700, borderRadius: "5px", border: "1px solid #ea580c", background: "rgba(234,88,12,0.2)", color: "#fdba74", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
+                style={{ padding: "0.3rem 0.65rem", fontSize: "12px", fontWeight: 600, borderRadius: "var(--radius-xs)", border: "1px solid rgba(245, 158, 11, 0.4)", background: "rgba(245, 158, 11, 0.12)", color: "#fcd34d", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
               >
-                <Home size={12} /> Modo Enfriamiento RENABAP
+                <Home size={12} /> Enfriamiento RENABAP
               </button>
               <button
                 onClick={() => applyPreset("jurisdictions")}
-                style={{ padding: "0.3rem 0.65rem", fontSize: "0.75rem", fontWeight: 700, borderRadius: "5px", border: "1px solid #8b5cf6", background: "rgba(139,92,246,0.2)", color: "#c4b5fd", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
+                style={{ padding: "0.3rem 0.65rem", fontSize: "12px", fontWeight: 600, borderRadius: "var(--radius-xs)", border: "1px solid rgba(168, 85, 247, 0.4)", background: "rgba(168, 85, 247, 0.12)", color: "#d8b4fe", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
               >
-                <Layers size={12} /> Modo Comisarías
+                <Layers size={12} /> Comisarías
               </button>
               <button
                 onClick={() => applyPreset("points_only")}
-                style={{ padding: "0.3rem 0.65rem", fontSize: "0.75rem", fontWeight: 700, borderRadius: "5px", border: "1px solid var(--border)", background: "var(--bg-card)", color: "var(--text-secondary)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
+                style={{ padding: "0.3rem 0.65rem", fontSize: "12px", fontWeight: 600, borderRadius: "var(--radius-xs)", border: "1px solid var(--border)", background: "var(--bg-base)", color: "var(--text-secondary)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
               >
                 <Eye size={12} /> Solo Puntos 911
               </button>

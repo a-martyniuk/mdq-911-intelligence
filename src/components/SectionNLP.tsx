@@ -61,12 +61,12 @@ export default function SectionNLP({ incidents = [], recoveries = [] }: SectionN
   };
 
   return (
-    <div>
-      <div className="card" style={{ marginBottom: "1.5rem" }}>
+    <div className="animate-enter">
+      <div className="card" style={{ marginBottom: "1.25rem" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem" }}>
           <div>
             <div className="card-title">
-              <span>📝 Procesamiento de Lenguaje Natural (NLP) sobre Relatos 911</span>
+              <span>Procesamiento de Lenguaje Natural (NLP) sobre Relatos 911</span>
             </div>
             <p className="card-subtitle">
               Transformación de relatos telefónicos no estructurados en variables analíticas estructuradas (patentes, marcas vehiculares y entidades de seguridad).
@@ -81,24 +81,10 @@ export default function SectionNLP({ incidents = [], recoveries = [] }: SectionN
                 hallazgosCount: 2586,
               });
             }}
-            className="btn-logout"
-            style={{
-              height: "36px",
-              padding: "0 1rem",
-              fontSize: "0.8rem",
-              fontWeight: 800,
-              background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
-              color: "#fff",
-              border: "none",
-              borderRadius: "6px",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.4rem",
-              boxShadow: "0 2px 8px rgba(99,102,241,0.3)"
-            }}
+            className="btn-export btn-pdf"
+            style={{ padding: "7px 14px" }}
           >
-            <FileText size={15} /> 📄 Descargar Dossier de Inteligencia (PDF)
+            <FileText size={14} /> Dossier de Inteligencia (PDF)
           </button>
         </div>
 

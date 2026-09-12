@@ -963,44 +963,44 @@ export default function SectionGraph({ incidents = [], recoveries = [] }: Sectio
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+    <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
       {/* ─── HEADER BANNER ─── */}
       <div
         className="card"
         style={{
-          background: "linear-gradient(135deg, rgba(99,102,241,0.12) 0%, rgba(239,68,68,0.06) 100%)",
-          border: "1px solid rgba(99,102,241,0.3)",
-          padding: "1.25rem 1.5rem"
+          background: "linear-gradient(90deg, #101623 0%, #131c2d 100%)",
+          borderColor: "var(--border)",
+          padding: "1.1rem 1.35rem"
         }}
       >
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
             <div
               style={{
-                width: "48px",
-                height: "48px",
-                borderRadius: "10px",
-                background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
+                width: "42px",
+                height: "42px",
+                borderRadius: "var(--radius-sm)",
+                background: "rgba(59, 130, 246, 0.15)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "#fff",
-                boxShadow: "0 4px 12px rgba(99,102,241,0.4)"
+                color: "#38bdf8",
+                border: "1px solid rgba(59, 130, 246, 0.3)"
               }}
             >
-              <Share2 size={24} />
+              <Share2 size={22} />
             </div>
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                <h2 style={{ fontSize: "1.3rem", fontWeight: 800, margin: 0, color: "var(--text-primary)" }}>
+                <h2 style={{ fontSize: "19px", fontWeight: 600, margin: 0, color: "var(--text-primary)", letterSpacing: "-0.015em" }}>
                   Grafo Relacional & Topología de Redes Criminales
                 </h2>
-                <span style={{ fontSize: "0.72rem", background: "rgba(99,102,241,0.2)", color: "#818cf8", padding: "2px 8px", borderRadius: "12px", fontWeight: 800 }}>
+                <span style={{ fontSize: "11px", background: "rgba(56, 189, 248, 0.12)", color: "#38bdf8", border: "1px solid rgba(56, 189, 248, 0.25)", padding: "2px 8px", borderRadius: "var(--radius-xs)", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
                   EJE FORENSE · MAR DEL PLATA
                 </span>
               </div>
-              <p style={{ margin: "0.25rem 0 0", fontSize: "0.82rem", color: "var(--text-muted)" }}>
-                Modelado relacional de co-ocurrencia: Células Operativas ↔ Rodados/Patentes Bisagra ↔ Hubs de Descarte/Desguace ↔ Armamento ↔ Blancos Vehiculares (10.000+ llamados 911).
+              <p style={{ margin: "0.25rem 0 0", fontSize: "13.5px", color: "var(--text-muted)" }}>
+                Modelado relacional de co-ocurrencia: Células Operativas &harr; Rodados/Patentes Bisagra &harr; Hubs de Descarte/Desguace &harr; Armamento &harr; Blancos Vehiculares (10.000+ llamados 911).
               </p>
             </div>
           </div>
@@ -1008,43 +1008,20 @@ export default function SectionGraph({ incidents = [], recoveries = [] }: Sectio
           <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
             <button
               onClick={handleExportCSV}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem",
-                padding: "0.5rem 0.9rem",
-                fontSize: "0.78rem",
-                fontWeight: 700,
-                borderRadius: "6px",
-                background: "var(--bg-elevated)",
-                border: "1px solid var(--border)",
-                color: "var(--text-primary)",
-                cursor: "pointer"
-              }}
+              className="btn-export btn-excel"
+              style={{ padding: "7px 14px" }}
             >
-              <Download size={15} />
+              <Download size={14} />
               Exportar Red (CSV)
             </button>
 
             <button
               onClick={handleExportPDF}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem",
-                padding: "0.5rem 1rem",
-                fontSize: "0.78rem",
-                fontWeight: 800,
-                borderRadius: "6px",
-                background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
-                border: "none",
-                color: "#fff",
-                cursor: "pointer",
-                boxShadow: "0 2px 8px rgba(239,68,68,0.3)"
-              }}
+              className="btn-export btn-pdf"
+              style={{ padding: "7px 14px" }}
             >
-              <FileText size={15} />
-              📄 Expediente Pericial de Red (PDF)
+              <FileText size={14} />
+              Expediente Pericial (PDF)
             </button>
           </div>
         </div>

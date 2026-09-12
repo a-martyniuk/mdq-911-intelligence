@@ -184,14 +184,14 @@ export default function SectionHotspots({ incidents = [], geoPoints = [] }: Sect
   }, [filterTipo, filterFranja, filterDia]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+    <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
       {/* Main Card Header */}
       <div className="card">
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem" }}>
           <div>
             <div className="card-title" style={{ gap: "0.5rem" }}>
-              <Flame color="#ef4444" size={24} />
-              <span>🔥 Concentración Delictiva y Mapa de Densidad Kernel (KDE)</span>
+              <Flame color="#ef4444" size={20} />
+              <span>Concentración Delictiva y Mapa de Densidad Kernel (KDE)</span>
             </div>
             <p className="card-subtitle" style={{ margin: "0.2rem 0 0" }}>
               Identificación de núcleos urbanos de alta concentración delictiva sobre mapa base con filtros dinámicos en vivo.
@@ -207,24 +207,10 @@ export default function SectionHotspots({ incidents = [], geoPoints = [] }: Sect
                   filterSummary,
                 });
               }}
-              className="btn-logout"
-              style={{
-                height: "36px",
-                padding: "0 0.85rem",
-                fontSize: "0.8rem",
-                fontWeight: 800,
-                background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
-                color: "#fff",
-                border: "none",
-                borderRadius: "6px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem",
-                boxShadow: "0 2px 8px rgba(239,68,68,0.3)"
-              }}
+              className="btn-export btn-pdf"
+              style={{ padding: "7px 14px" }}
             >
-              <FileText size={15} /> 📄 Exportar Informe PDF Concentración Delictiva
+              <FileText size={14} /> Informe PDF KDE
             </button>
 
             <button
@@ -244,22 +230,10 @@ export default function SectionHotspots({ incidents = [], geoPoints = [] }: Sect
                 }));
                 exportToCSV("informe_hotspots_kde_filtrado", exportData);
               }}
-              className="btn-logout"
-              style={{
-                height: "36px",
-                padding: "0 0.85rem",
-                fontSize: "0.8rem",
-                fontWeight: 800,
-                background: "rgba(16, 185, 129, 0.15)",
-                color: "#10b981",
-                border: "1px solid rgba(16, 185, 129, 0.4)",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem"
-              }}
+              className="btn-export btn-excel"
+              style={{ padding: "7px 14px" }}
             >
-              <Download size={15} /> 📊 Exportar Muestra Excel
+              <Download size={14} /> Exportar Muestra (Excel)
             </button>
           </div>
         </div>
@@ -343,8 +317,8 @@ export default function SectionHotspots({ incidents = [], geoPoints = [] }: Sect
                   setFilterDia("todos");
                   setActiveTab("general");
                 }}
-                className="btn-logout"
-                style={{ height: "36px", padding: "0 0.75rem", fontSize: "0.75rem", fontWeight: 700, width: "100%" }}
+                className="btn-export"
+                style={{ height: "36px", padding: "0 0.75rem", fontSize: "12px", fontWeight: 600, width: "100%", justifyContent: "center" }}
               >
                 Limpiar Filtros
               </button>
@@ -354,56 +328,120 @@ export default function SectionHotspots({ incidents = [], geoPoints = [] }: Sect
 
         {/* Tab Presets & Map View Mode Selector */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem", marginBottom: "1.25rem" }}>
-          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+          <div style={{ display: "inline-flex", padding: "3px", background: "var(--bg-base)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)", gap: "2px", flexWrap: "wrap" }}>
             <button
-              className={`btn-logout ${activeTab === "general" ? "active" : ""}`}
-              style={activeTab === "general" ? { background: "var(--accent-indigo)", color: "#fff", borderColor: "var(--accent-indigo)" } : undefined}
+              style={{
+                padding: "5px 12px",
+                borderRadius: "var(--radius-xs)",
+                fontSize: "12px",
+                fontWeight: 600,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
+                border: "1px solid",
+                transition: "all var(--duration-fast) var(--ease-out)",
+                background: activeTab === "general" ? "var(--bg-elevated)" : "transparent",
+                color: activeTab === "general" ? "var(--text-primary)" : "var(--text-muted)",
+                borderColor: activeTab === "general" ? "var(--border-focus)" : "transparent",
+                boxShadow: activeTab === "general" ? "0 1px 3px rgba(0,0,0,0.3)" : "none",
+              }}
               onClick={() => {
                 setActiveTab("general");
                 setFilterTipo("todos");
               }}
             >
-              <Flame size={16} /> Densidad General (8.598 Casos)
+              <Flame size={14} color="#ef4444" /> Densidad General (8.598 Casos)
             </button>
 
             <button
-              className={`btn-logout ${activeTab === "robos" ? "active" : ""}`}
-              style={activeTab === "robos" ? { background: "var(--accent-indigo)", color: "#fff", borderColor: "var(--accent-indigo)" } : undefined}
+              style={{
+                padding: "5px 12px",
+                borderRadius: "var(--radius-xs)",
+                fontSize: "12px",
+                fontWeight: 600,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
+                border: "1px solid",
+                transition: "all var(--duration-fast) var(--ease-out)",
+                background: activeTab === "robos" ? "var(--bg-elevated)" : "transparent",
+                color: activeTab === "robos" ? "var(--text-primary)" : "var(--text-muted)",
+                borderColor: activeTab === "robos" ? "var(--border-focus)" : "transparent",
+                boxShadow: activeTab === "robos" ? "0 1px 3px rgba(0,0,0,0.3)" : "none",
+              }}
               onClick={() => {
                 setActiveTab("robos");
                 setFilterTipo("robos");
               }}
             >
-              <Car size={16} /> Focos de Robos Vehiculares
+              <Car size={14} color="#38bdf8" /> Focos de Robos Vehiculares
             </button>
 
             <button
-              className={`btn-logout ${activeTab === "armas" ? "active" : ""}`}
-              style={activeTab === "armas" ? { background: "var(--accent-indigo)", color: "#fff", borderColor: "var(--accent-indigo)" } : undefined}
+              style={{
+                padding: "5px 12px",
+                borderRadius: "var(--radius-xs)",
+                fontSize: "12px",
+                fontWeight: 600,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
+                border: "1px solid",
+                transition: "all var(--duration-fast) var(--ease-out)",
+                background: activeTab === "armas" ? "var(--bg-elevated)" : "transparent",
+                color: activeTab === "armas" ? "var(--text-primary)" : "var(--text-muted)",
+                borderColor: activeTab === "armas" ? "var(--border-focus)" : "transparent",
+                boxShadow: activeTab === "armas" ? "0 1px 3px rgba(0,0,0,0.3)" : "none",
+              }}
               onClick={() => {
                 setActiveTab("armas");
                 setFilterTipo("armas");
               }}
             >
-              <ShieldAlert size={16} /> Focos Armas & Disparos
+              <ShieldAlert size={14} color="#f59e0b" /> Focos Armas & Disparos
             </button>
           </div>
 
-          <div style={{ display: "flex", gap: "0.4rem" }}>
+          <div style={{ display: "inline-flex", padding: "3px", background: "var(--bg-base)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)", gap: "2px" }}>
             <button
               onClick={() => setMapMode("interactive")}
-              className={`btn-logout ${mapMode === "interactive" ? "active" : ""}`}
-              style={mapMode === "interactive" ? { background: "#10b981", color: "#fff" } : undefined}
+              style={{
+                padding: "5px 12px",
+                borderRadius: "var(--radius-xs)",
+                fontSize: "12px",
+                fontWeight: 600,
+                cursor: "pointer",
+                border: "1px solid",
+                transition: "all var(--duration-fast) var(--ease-out)",
+                background: mapMode === "interactive" ? "var(--bg-elevated)" : "transparent",
+                color: mapMode === "interactive" ? "#38bdf8" : "var(--text-muted)",
+                borderColor: mapMode === "interactive" ? "rgba(56, 189, 248, 0.4)" : "transparent",
+                boxShadow: mapMode === "interactive" ? "0 1px 3px rgba(0,0,0,0.3)" : "none",
+              }}
             >
-              🗺️ Mapa Dinámico (Filtros en Vivo)
+              Mapa Dinámico (Filtros en Vivo)
             </button>
 
             <button
               onClick={() => setMapMode("kde_hd")}
-              className={`btn-logout ${mapMode === "kde_hd" ? "active" : ""}`}
-              style={mapMode === "kde_hd" ? { background: "#8b5cf6", color: "#fff" } : undefined}
+              style={{
+                padding: "5px 12px",
+                borderRadius: "var(--radius-xs)",
+                fontSize: "12px",
+                fontWeight: 600,
+                cursor: "pointer",
+                border: "1px solid",
+                transition: "all var(--duration-fast) var(--ease-out)",
+                background: mapMode === "kde_hd" ? "var(--bg-elevated)" : "transparent",
+                color: mapMode === "kde_hd" ? "#a855f7" : "var(--text-muted)",
+                borderColor: mapMode === "kde_hd" ? "rgba(168, 85, 247, 0.4)" : "transparent",
+                boxShadow: mapMode === "kde_hd" ? "0 1px 3px rgba(0,0,0,0.3)" : "none",
+              }}
             >
-              🖼️ Capa KDE HD Pre-Calculada
+              Capa KDE HD Pre-Calculada
             </button>
           </div>
         </div>

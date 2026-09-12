@@ -259,19 +259,19 @@ export default function SectionMalvinasNLP({ incidents = [] }: SectionMalvinasNL
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+    <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
       {/* Header Banner */}
-      <div className="card" style={{ background: "linear-gradient(135deg, rgba(239,68,68,0.08) 0%, rgba(139,92,246,0.05) 100%)", border: "1px solid rgba(239,68,68,0.25)" }}>
+      <div className="card" style={{ background: "linear-gradient(90deg, #101623 0%, #131c2d 100%)", borderColor: "var(--border)" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-            <div style={{ padding: "0.75rem", borderRadius: "10px", background: "linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)", color: "#fff" }}>
-              <Brain size={24} />
+          <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
+            <div style={{ padding: "0.65rem", borderRadius: "var(--radius-sm)", background: "rgba(239, 68, 68, 0.12)", color: "#ef4444", border: "1px solid rgba(239, 68, 68, 0.25)" }}>
+              <Brain size={22} />
             </div>
             <div>
-              <h2 style={{ fontSize: "1.25rem", fontWeight: 700, margin: 0, color: "var(--text-primary)" }}>
-                🧬 Inteligencia de Redes, Alias & Modus Operandi Narcocriminal (NLP)
+              <h2 style={{ fontSize: "19px", fontWeight: 600, margin: 0, color: "var(--text-primary)", letterSpacing: "-0.015em" }}>
+                Inteligencia de Redes, Alias & Modus Operandi Narcocriminal (NLP)
               </h2>
-              <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", margin: "0.2rem 0 0" }}>
+              <p style={{ fontSize: "13.5px", color: "var(--text-muted)", margin: "0.2rem 0 0" }}>
                 Extracción algorítmica de apodos de transas, estructura de búnkers y léxico delictual en 1.471 despachos de Malvinas Argentinas.
               </p>
             </div>
@@ -281,8 +281,8 @@ export default function SectionMalvinasNLP({ incidents = [] }: SectionMalvinasNL
             {selectedSuspect && (
               <button
                 onClick={() => setSelectedSuspect(null)}
-                className="btn-logout"
-                style={{ height: "36px", padding: "0 0.85rem", fontSize: "0.75rem", fontWeight: 700, background: "rgba(239,68,68,0.15)", color: "#ef4444", border: "1px solid rgba(239,68,68,0.3)" }}
+                className="btn-export"
+                style={{ padding: "6px 12px", border: "1px solid rgba(239, 68, 68, 0.4)", background: "rgba(239, 68, 68, 0.12)", color: "#f87171" }}
               >
                 Quitar filtro: {selectedSuspect} ✕
               </button>
@@ -299,25 +299,11 @@ export default function SectionMalvinasNLP({ incidents = [] }: SectionMalvinasNL
                   partido: "Malvinas Argentinas",
                 });
               }}
-              className="btn-logout"
-              style={{
-                height: "36px",
-                padding: "0 1rem",
-                fontSize: "0.8rem",
-                fontWeight: 800,
-                background: selectedSuspect ? "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)" : "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)",
-                color: "#fff",
-                border: "none",
-                borderRadius: "6px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem",
-                boxShadow: selectedSuspect ? "0 2px 8px rgba(239,68,68,0.3)" : "0 2px 8px rgba(139,92,246,0.3)"
-              }}
+              className="btn-export btn-pdf"
+              style={{ padding: "7px 14px" }}
               title={selectedSuspect ? `Descargar dossier con todos los llamados de ${selectedSuspect} sin truncar y con mapa` : "Descargar dossier judicial completo de sospechosos"}
             >
-              <FileText size={15} /> {selectedSuspect ? `📑 Dossier Judicial: ${selectedSuspect} (PDF)` : "📑 Descargar Dossier Judicial (PDF)"}
+              <FileText size={14} /> {selectedSuspect ? `Dossier: ${selectedSuspect} (PDF)` : "Dossier Judicial (PDF)"}
             </button>
 
             {selectedSuspect && (
@@ -332,20 +318,8 @@ export default function SectionMalvinasNLP({ incidents = [] }: SectionMalvinasNL
                     partido: "Malvinas Argentinas",
                   });
                 }}
-                className="btn-logout"
-                style={{
-                  height: "36px",
-                  padding: "0 0.85rem",
-                  fontSize: "0.78rem",
-                  fontWeight: 700,
-                  background: "rgba(139,92,246,0.15)",
-                  color: "#8b5cf6",
-                  border: "1px solid rgba(139,92,246,0.35)",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.35rem"
-                }}
+                className="btn-export btn-pdf"
+                style={{ padding: "7px 14px" }}
                 title="Descargar dossier general con todos los sospechosos agrupados y mapas"
               >
                 <FileText size={14} /> Dossier General (Todos)
@@ -365,22 +339,10 @@ export default function SectionMalvinasNLP({ incidents = [] }: SectionMalvinasNL
                 }));
                 exportToCSV("sospechosos_alias_malvinas_argentinas", exportData);
               }}
-              className="btn-logout"
-              style={{
-                height: "36px",
-                padding: "0 0.9rem",
-                fontSize: "0.8rem",
-                fontWeight: 700,
-                background: "rgba(16, 185, 129, 0.15)",
-                color: "#10b981",
-                border: "1px solid rgba(16, 185, 129, 0.4)",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem"
-              }}
+              className="btn-export btn-excel"
+              style={{ padding: "7px 14px" }}
             >
-              <Download size={14} /> 📊 Exportar Sospechosos (Excel)
+              <Download size={14} /> Exportar Sospechosos (Excel)
             </button>
           </div>
         </div>
@@ -538,7 +500,6 @@ export default function SectionMalvinasNLP({ incidents = [] }: SectionMalvinasNL
 
               <button
                 onClick={reCenterMap}
-                className="btn-logout"
                 title="Recentrar y encuadrar todos los puntos en el mapa"
                 style={{
                   display: "flex",
@@ -547,11 +508,13 @@ export default function SectionMalvinasNLP({ incidents = [] }: SectionMalvinasNL
                   fontSize: "0.72rem",
                   fontWeight: 700,
                   height: "30px",
-                  padding: "0 0.6rem",
-                  background: "var(--bg-base)",
+                  padding: "0 0.65rem",
+                  background: "var(--bg-elevated)",
                   border: "1px solid var(--border)",
+                  borderRadius: "var(--radius-sm)",
                   color: "var(--text-secondary)",
                   cursor: "pointer",
+                  transition: "all 0.15s ease",
                 }}
               >
                 <Crosshair size={13} />

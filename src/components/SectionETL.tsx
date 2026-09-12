@@ -52,18 +52,18 @@ export default function SectionETL({ incidents = [], recoveries = [] }: SectionE
   ];
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+    <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
       {/* Header Banner */}
-      <div className="card" style={{ background: "linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(16,185,129,0.08) 100%)", border: "1px solid rgba(99,102,241,0.3)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <div style={{ padding: "0.75rem", borderRadius: "10px", background: "var(--accent-indigo)", color: "#fff" }}>
-            <Workflow size={24} />
+      <div className="card" style={{ background: "linear-gradient(90deg, #101623 0%, #131c2d 100%)", borderColor: "var(--border)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
+          <div style={{ padding: "0.65rem", borderRadius: "var(--radius-sm)", background: "rgba(59, 130, 246, 0.15)", color: "#38bdf8", border: "1px solid rgba(59, 130, 246, 0.3)" }}>
+            <Workflow size={22} />
           </div>
           <div>
-            <h2 style={{ fontSize: "1.25rem", fontWeight: 700, margin: 0, color: "var(--text-primary)" }}>
+            <h2 style={{ fontSize: "19px", fontWeight: 600, margin: 0, color: "var(--text-primary)", letterSpacing: "-0.015em" }}>
               Ingeniería de Datos & Pipeline de Ingestión 911
             </h2>
-            <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", margin: "0.2rem 0 0" }}>
+            <p style={{ fontSize: "13.5px", color: "var(--text-muted)", margin: "0.2rem 0 0" }}>
               Arquitectura del pipeline automatizado de procesamiento, limpieza, corrección geográfica y enriquecimiento relacional.
             </p>
           </div>
@@ -71,29 +71,29 @@ export default function SectionETL({ incidents = [], recoveries = [] }: SectionE
       </div>
 
       {/* Metrics Quality Header */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1rem" }}>
-        <div className="card" style={{ borderLeft: "4px solid var(--accent-indigo)" }}>
-          <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase" }}>Datos Ingestados</span>
-          <div style={{ fontSize: "1.6rem", fontWeight: 800, color: "var(--text-primary)", margin: "0.3rem 0" }}>
-            8.598 Registros
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "0.85rem" }}>
+        <div className="card" style={{ borderLeft: "3px solid #38bdf8" }}>
+          <span style={{ fontSize: "11px", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Datos Ingestados</span>
+          <div style={{ fontSize: "1.75rem", fontWeight: 700, color: "var(--text-primary)", margin: "0.2rem 0", fontFamily: "var(--font-mono)", fontVariantNumeric: "tabular-nums" }}>
+            8.598
           </div>
-          <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>100% procesados desde planillas 911</span>
+          <span style={{ fontSize: "12px", color: "var(--text-secondary)" }}>100% procesados desde planillas 911</span>
         </div>
 
-        <div className="card" style={{ borderLeft: "4px solid #10b981" }}>
-          <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase" }}>Calidad Geográfica</span>
-          <div style={{ fontSize: "1.6rem", fontWeight: 800, color: "#10b981", margin: "0.3rem 0" }}>
-            93.0% Validados
+        <div className="card" style={{ borderLeft: "3px solid #10b981" }}>
+          <span style={{ fontSize: "11px", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Calidad Geográfica</span>
+          <div style={{ fontSize: "1.75rem", fontWeight: 700, color: "#10b981", margin: "0.2rem 0", fontFamily: "var(--font-mono)", fontVariantNumeric: "tabular-nums" }}>
+            93.0%
           </div>
-          <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>8.000 puntos en Bounding Box MDP</span>
+          <span style={{ fontSize: "12px", color: "var(--text-secondary)" }}>8.000 puntos en Bounding Box MDP</span>
         </div>
 
-        <div className="card" style={{ borderLeft: "4px solid var(--accent-amber)" }}>
-          <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase" }}>Relaciones Cruzadas</span>
-          <div style={{ fontSize: "1.6rem", fontWeight: 800, color: "var(--accent-amber)", margin: "0.3rem 0" }}>
+        <div className="card" style={{ borderLeft: "3px solid #f59e0b" }}>
+          <span style={{ fontSize: "11px", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Relaciones Cruzadas</span>
+          <div style={{ fontSize: "1.75rem", fontWeight: 700, color: "#f59e0b", margin: "0.2rem 0", fontFamily: "var(--font-mono)", fontVariantNumeric: "tabular-nums" }}>
             52 Vehículos
           </div>
-          <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>Trazabilidad deduplicada Robo ➔ Hallazgo</span>
+          <span style={{ fontSize: "12px", color: "var(--text-secondary)" }}>Trazabilidad deduplicada Robo ➔ Hallazgo</span>
         </div>
       </div>
 

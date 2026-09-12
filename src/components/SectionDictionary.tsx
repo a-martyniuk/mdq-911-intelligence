@@ -67,10 +67,10 @@ export default function SectionDictionary({ currentProject = "mdp" }: SectionDic
   });
 
   return (
-    <div>
-      <div className="card" style={{ marginBottom: "1.5rem" }}>
+    <div className="animate-enter">
+      <div className="card" style={{ marginBottom: "1.25rem" }}>
         <div className="card-title">
-          <span>📖 Diccionario de Datos del Proyecto</span>
+          <span>Diccionario de Datos del Proyecto</span>
         </div>
         <p className="card-subtitle">
           Especificación completa de variables originales del 911, atributos enriquecidos por el ETL y métricas vehiculares.
@@ -78,34 +78,93 @@ export default function SectionDictionary({ currentProject = "mdp" }: SectionDic
 
         {/* Filters & Search */}
         <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" }}>
-          <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
+          <div style={{ display: "inline-flex", padding: "3px", background: "var(--bg-base)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)", gap: "2px", flexWrap: "wrap" }}>
             <button
-              className={`btn-logout ${activeTab === "todas" ? "active" : ""}`}
+              style={{
+                padding: "5px 12px",
+                borderRadius: "var(--radius-xs)",
+                fontSize: "12px",
+                fontWeight: 600,
+                cursor: "pointer",
+                border: "1px solid",
+                transition: "all var(--duration-fast) var(--ease-out)",
+                background: activeTab === "todas" ? "var(--bg-elevated)" : "transparent",
+                color: activeTab === "todas" ? "var(--text-primary)" : "var(--text-muted)",
+                borderColor: activeTab === "todas" ? "var(--border-focus)" : "transparent",
+                boxShadow: activeTab === "todas" ? "0 1px 3px rgba(0,0,0,0.3)" : "none",
+              }}
               onClick={() => setActiveTab("todas")}
             >
               Todas ({dictionaryData.length})
             </button>
             <button
-              className={`btn-logout ${activeTab === "original" ? "active" : ""}`}
+              style={{
+                padding: "5px 12px",
+                borderRadius: "var(--radius-xs)",
+                fontSize: "12px",
+                fontWeight: 600,
+                cursor: "pointer",
+                border: "1px solid",
+                transition: "all var(--duration-fast) var(--ease-out)",
+                background: activeTab === "original" ? "var(--bg-elevated)" : "transparent",
+                color: activeTab === "original" ? "var(--text-primary)" : "var(--text-muted)",
+                borderColor: activeTab === "original" ? "var(--border-focus)" : "transparent",
+                boxShadow: activeTab === "original" ? "0 1px 3px rgba(0,0,0,0.3)" : "none",
+              }}
               onClick={() => setActiveTab("original")}
             >
               Originales 911 MDP ({dictionaryData.filter(d => d.categoria === "original").length})
             </button>
             <button
-              className={`btn-logout ${activeTab === "narcocriminalidad" ? "active" : ""}`}
+              style={{
+                padding: "5px 12px",
+                borderRadius: "var(--radius-xs)",
+                fontSize: "12px",
+                fontWeight: 600,
+                cursor: "pointer",
+                border: "1px solid",
+                transition: "all var(--duration-fast) var(--ease-out)",
+                background: activeTab === "narcocriminalidad" ? "var(--bg-elevated)" : "transparent",
+                color: activeTab === "narcocriminalidad" ? "#f87171" : "var(--text-muted)",
+                borderColor: activeTab === "narcocriminalidad" ? "rgba(239, 68, 68, 0.4)" : "transparent",
+                boxShadow: activeTab === "narcocriminalidad" ? "0 1px 3px rgba(0,0,0,0.3)" : "none",
+              }}
               onClick={() => setActiveTab("narcocriminalidad")}
-              style={{ color: activeTab === "narcocriminalidad" ? "#fff" : "#ef4444" }}
             >
               Narcocriminalidad JCP / Malvinas ({dictionaryData.filter(d => d.categoria === "narcocriminalidad").length})
             </button>
             <button
-              className={`btn-logout ${activeTab === "derivada" ? "active" : ""}`}
+              style={{
+                padding: "5px 12px",
+                borderRadius: "var(--radius-xs)",
+                fontSize: "12px",
+                fontWeight: 600,
+                cursor: "pointer",
+                border: "1px solid",
+                transition: "all var(--duration-fast) var(--ease-out)",
+                background: activeTab === "derivada" ? "var(--bg-elevated)" : "transparent",
+                color: activeTab === "derivada" ? "var(--text-primary)" : "var(--text-muted)",
+                borderColor: activeTab === "derivada" ? "var(--border-focus)" : "transparent",
+                boxShadow: activeTab === "derivada" ? "0 1px 3px rgba(0,0,0,0.3)" : "none",
+              }}
               onClick={() => setActiveTab("derivada")}
             >
               Derivadas ETL ({dictionaryData.filter(d => d.categoria === "derivada").length})
             </button>
             <button
-              className={`btn-logout ${activeTab === "recuperacion" ? "active" : ""}`}
+              style={{
+                padding: "5px 12px",
+                borderRadius: "var(--radius-xs)",
+                fontSize: "12px",
+                fontWeight: 600,
+                cursor: "pointer",
+                border: "1px solid",
+                transition: "all var(--duration-fast) var(--ease-out)",
+                background: activeTab === "recuperacion" ? "var(--bg-elevated)" : "transparent",
+                color: activeTab === "recuperacion" ? "var(--text-primary)" : "var(--text-muted)",
+                borderColor: activeTab === "recuperacion" ? "var(--border-focus)" : "transparent",
+                boxShadow: activeTab === "recuperacion" ? "0 1px 3px rgba(0,0,0,0.3)" : "none",
+              }}
               onClick={() => setActiveTab("recuperacion")}
             >
               Recuperación ({dictionaryData.filter(d => d.categoria === "recuperacion").length})

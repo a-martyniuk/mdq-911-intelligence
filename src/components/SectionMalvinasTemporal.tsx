@@ -263,13 +263,13 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
   }, [filtered, selectedHour]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+    <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
       {/* Header Banner */}
-      <div className="card" style={{ background: "linear-gradient(135deg, rgba(239,68,68,0.08) 0%, rgba(139,92,246,0.05) 100%)", border: "1px solid rgba(239,68,68,0.25)" }}>
+      <div className="card" style={{ background: "linear-gradient(90deg, #101623 0%, #131c2d 100%)", borderColor: "var(--border)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem" }}>
           <div>
             <div className="card-title" style={{ gap: "0.5rem" }}>
-              <Clock color="#ef4444" size={24} />
+              <Clock color="#ef4444" size={20} />
               <span>Patrones Temporales & Cronometría del Narcomenudeo (Malvinas Argentinas)</span>
             </div>
             <p className="card-subtitle" style={{ margin: "0.25rem 0 0" }}>
@@ -288,24 +288,10 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
                   partido: "Malvinas Argentinas",
                 });
               }}
-              className="btn-logout"
-              style={{
-                height: "38px",
-                padding: "0 1rem",
-                fontSize: "0.8rem",
-                fontWeight: 800,
-                background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
-                color: "#fff",
-                border: "none",
-                borderRadius: "6px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem",
-                boxShadow: "0 2px 8px rgba(239,68,68,0.3)",
-              }}
+              className="btn-export btn-pdf"
+              style={{ padding: "7px 14px" }}
             >
-              <FileText size={15} /> 📄 Descargar Informe Cronológico (PDF)
+              <FileText size={14} /> Informe Cronológico (PDF)
             </button>
 
             <button
@@ -325,22 +311,10 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
                 }));
                 exportToCSV("cronometria_drogas_malvinas_argentinas", csvData);
               }}
-              className="btn-logout"
-              style={{
-                height: "38px",
-                padding: "0 0.9rem",
-                fontSize: "0.8rem",
-                fontWeight: 800,
-                background: "rgba(16, 185, 129, 0.15)",
-                color: "#10b981",
-                border: "1px solid rgba(16, 185, 129, 0.4)",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem",
-              }}
+              className="btn-export btn-excel"
+              style={{ padding: "7px 14px" }}
             >
-              <Download size={15} /> 📊 Exportar Distribución Horaria (CSV)
+              <Download size={14} /> Exportar Horarios (CSV)
             </button>
           </div>
         </div>

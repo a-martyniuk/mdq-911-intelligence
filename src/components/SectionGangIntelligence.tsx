@@ -318,18 +318,18 @@ export default function SectionGangIntelligence({ incidents = [] }: SectionGangI
   }, [linkedIncidents, selectedGang]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+    <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
       {/* Banner */}
-      <div className="card" style={{ background: "linear-gradient(135deg, rgba(239,68,68,0.12) 0%, rgba(99,102,241,0.08) 100%)", border: "1px solid rgba(239,68,68,0.3)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <div style={{ padding: "0.75rem", borderRadius: "10px", background: "var(--accent-red, #ef4444)", color: "#fff" }}>
-            <ShieldAlert size={24} />
+      <div className="card" style={{ background: "linear-gradient(90deg, #101623 0%, #131c2d 100%)", borderColor: "var(--border)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
+          <div style={{ padding: "0.65rem", borderRadius: "var(--radius-sm)", background: "rgba(239, 68, 68, 0.12)", color: "#ef4444", border: "1px solid rgba(239, 68, 68, 0.25)" }}>
+            <ShieldAlert size={22} />
           </div>
           <div>
-            <h2 style={{ fontSize: "1.25rem", fontWeight: 700, margin: 0, color: "var(--text-primary)" }}>
+            <h2 style={{ fontSize: "19px", fontWeight: 600, margin: 0, color: "var(--text-primary)", letterSpacing: "-0.015em" }}>
               Inteligencia de Bandas & Modus Operandi Serial
             </h2>
-            <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", margin: "0.2rem 0 0" }}>
+            <p style={{ fontSize: "13.5px", color: "var(--text-muted)", margin: "0.2rem 0 0" }}>
               Identificación de firmas delictivas reincidentes, agrupamiento de patrones seriales y radio de operación territorial.
             </p>
           </div>
@@ -400,10 +400,10 @@ export default function SectionGangIntelligence({ incidents = [] }: SectionGangI
                 preferredTargets: selectedGang.vehicleTargets || [],
                 incidentsSample: linkedIncidents
               })}
-              className="btn-logout"
-              style={{ height: "34px", padding: "0 0.85rem", fontSize: "0.8rem", fontWeight: 800, background: "rgba(99,102,241,0.18)", color: "var(--accent-indigo)", border: "1px solid rgba(99,102,241,0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.35rem" }}
+              className="btn-export btn-pdf"
+              style={{ padding: "7px 14px" }}
             >
-              <FileText size={15} /> 📄 Exportar Expediente de Banda (PDF)
+              <FileText size={14} /> Exportar Expediente (PDF)
             </button>
           </div>
         </div>
@@ -507,22 +507,22 @@ export default function SectionGangIntelligence({ incidents = [] }: SectionGangI
                 }));
                 exportToCSV(`informe_bandas_${selectedGang.id}`, exportData);
               }}
-              className="btn-logout"
-              style={{ height: "32px", padding: "0 0.75rem", fontSize: "0.775rem", fontWeight: 700, background: "rgba(16, 185, 129, 0.15)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.4)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.3rem" }}
+              className="btn-export btn-excel"
+              style={{ padding: "6px 12px" }}
             >
-              <Download size={14} /> Exportar a Excel
+              <Download size={13} /> Exportar Hechos (Excel)
             </button>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", maxHeight: "550px", overflowY: "auto", paddingRight: "0.3rem" }}>
             {linkedIncidents.length > 0 ? (
               linkedIncidents.map((inc, idx) => (
-                <div key={`${inc.ID}_${idx}`} style={{ background: "var(--bg-base)", padding: "0.75rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
+                <div key={`${inc.ID}_${idx}`} style={{ background: "var(--bg-base)", padding: "0.75rem", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)" }}>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.3rem", fontSize: "0.8rem" }}>
-                    <span style={{ fontWeight: 800, color: "var(--accent-indigo)" }}>
-                      ID #{inc.ID} - {inc.Tipo} ({inc.SubTipo})
+                    <span style={{ fontWeight: 700, color: "#38bdf8", fontFamily: "var(--font-mono)" }}>
+                      #{inc.ID} · {inc.Tipo} ({inc.SubTipo})
                     </span>
-                    <span style={{ color: "var(--text-muted)", fontSize: "0.75rem" }}>
+                    <span style={{ color: "var(--text-muted)", fontSize: "12px", fontFamily: "var(--font-mono)" }}>
                       {inc.Fecha} ({inc.Franja_Horaria})
                     </span>
                   </div>

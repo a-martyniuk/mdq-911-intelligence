@@ -373,14 +373,14 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
   }, [filteredIncidents, showPoints, onlyBunkers, mapReady]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+    <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
       {/* Header Card */}
       <div className="card">
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem" }}>
           <div>
             <div className="card-title" style={{ gap: "0.5rem" }}>
-              <MapPin color="#ef4444" size={24} />
-              <span>🗺️ Mapa Táctico Multicapa de Puntos de Venta & Búnkers (José C. Paz)</span>
+              <MapPin color="#ef4444" size={20} />
+              <span>Mapa Táctico Multicapa de Puntos de Venta & Búnkers (José C. Paz)</span>
             </div>
             <p className="card-subtitle" style={{ margin: "0.2rem 0 0" }}>
               Localización espacial integrada con capas policiales y asentamientos RENABAP oficiales.
@@ -409,24 +409,10 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
                   reportType: "map",
                 });
               }}
-              className="btn-logout"
-              style={{
-                height: "36px",
-                padding: "0 1rem",
-                fontSize: "0.8rem",
-                fontWeight: 800,
-                background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
-                color: "#fff",
-                border: "none",
-                borderRadius: "6px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem",
-                boxShadow: "0 2px 8px rgba(239,68,68,0.3)",
-              }}
+              className="btn-export btn-pdf"
+              style={{ padding: "7px 14px" }}
             >
-              <FileText size={15} /> 📄 Descargar Informe Táctico (PDF)
+              <FileText size={14} /> Informe Táctico (PDF)
             </button>
 
             <button
@@ -450,22 +436,10 @@ export default function SectionDrogasMap({ incidents = [] }: SectionDrogasMapPro
                 }));
                 exportToCSV("puntos_venta_drogas_jose_c_paz", exportData);
               }}
-              className="btn-logout"
-              style={{
-                height: "36px",
-                padding: "0 0.9rem",
-                fontSize: "0.8rem",
-                fontWeight: 800,
-                background: "rgba(16, 185, 129, 0.15)",
-                color: "#10b981",
-                border: "1px solid rgba(16, 185, 129, 0.4)",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem",
-              }}
+              className="btn-export btn-excel"
+              style={{ padding: "7px 14px" }}
             >
-              <Download size={15} /> 📊 Exportar Puntos (Excel)
+              <Download size={14} /> Exportar Puntos (Excel)
             </button>
           </div>
         </div>

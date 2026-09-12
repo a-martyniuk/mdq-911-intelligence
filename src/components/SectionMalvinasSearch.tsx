@@ -72,7 +72,7 @@ export default function SectionMalvinasSearch({ incidents = [] }: SectionMalvina
   }, [incidents, searchTerm, filterOrigen, filterSustancia, filterArmas]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+    <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
       <div className="card">
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem" }}>
           <div>
@@ -106,25 +106,9 @@ export default function SectionMalvinasSearch({ incidents = [] }: SectionMalvina
                   reportType: "search",
                 });
               }}
-              className="btn-logout"
-              style={{
-                height: "36px",
-                padding: "0 0.9rem",
-                fontSize: "0.8rem",
-                fontWeight: 800,
-                fontFamily: "var(--font-display)",
-                letterSpacing: "0.02em",
-                background: "#92400e",
-                color: "#fff",
-                border: "1px solid var(--accent-amber)",
-                borderRadius: "var(--radius-md)",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem",
-              }}
+              className="btn-export btn-pdf"
             >
-              <FileText size={15} /> 📄 Informe Búsqueda (PDF)
+              <FileText size={15} /> Informe Búsqueda (PDF)
             </button>
 
             <button
@@ -143,24 +127,9 @@ export default function SectionMalvinasSearch({ incidents = [] }: SectionMalvina
                 }));
                 exportToCSV("auditoria_911_malvinas_argentinas", exportData);
               }}
-              className="btn-logout"
-              style={{
-                height: "36px",
-                padding: "0 0.85rem",
-                fontSize: "0.8rem",
-                fontWeight: 700,
-                fontFamily: "var(--font-display)",
-                background: "rgba(16, 185, 129, 0.15)",
-                color: "#10b981",
-                border: "1px solid rgba(16, 185, 129, 0.4)",
-                borderRadius: "var(--radius-md)",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem"
-              }}
+              className="btn-export btn-excel"
             >
-              <Download size={15} /> 📊 Exportar Resultados ({filtered.length.toLocaleString()})
+              <Download size={15} /> Exportar Excel (<span style={{ fontFamily: "var(--font-mono)", fontVariantNumeric: "tabular-nums" }}>{filtered.length.toLocaleString("es-AR")}</span>)
             </button>
           </div>
         </div>
