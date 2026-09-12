@@ -202,7 +202,7 @@ export default function SectionSearch({ incidents = [] }: SectionSearchProps) {
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
                 <div>
                   <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                    <span style={{ fontSize: "0.72rem", fontWeight: 700, fontFamily: "var(--font-mono)", color: "#38bdf8", background: "rgba(13, 92, 168, 0.25)", border: "1px solid rgba(0, 163, 224, 0.3)", padding: "0.1rem 0.45rem", borderRadius: "var(--radius-xs)" }}>
+                    <span style={{ fontSize: "0.72rem", fontWeight: 700, fontFamily: "var(--font-mono)", color: "var(--accent-pba-blue)", background: "#eff6ff", border: "1px solid #bfdbfe", padding: "0.1rem 0.45rem", borderRadius: "var(--radius-xs)" }}>
                       #{inc.ID}
                     </span>
                     <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-secondary)", fontFamily: "var(--font-display)" }}>
@@ -215,7 +215,7 @@ export default function SectionSearch({ incidents = [] }: SectionSearchProps) {
                 </div>
 
                 {inc.Patente_Principal && (
-                  <span style={{ fontSize: "0.75rem", fontWeight: 800, fontFamily: "var(--font-mono)", letterSpacing: "0.05em", padding: "0.2rem 0.5rem", borderRadius: "var(--radius-xs)", background: "rgba(16, 185, 129, 0.15)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.4)" }}>
+                  <span style={{ fontSize: "0.75rem", fontWeight: 800, fontFamily: "var(--font-mono)", letterSpacing: "0.05em", padding: "0.2rem 0.5rem", borderRadius: "var(--radius-xs)", background: "#ecfdf5", color: "#047857", border: "1px solid #a7f3d0" }}>
                     🏷️ {inc.Patente_Principal}
                   </span>
                 )}
@@ -224,17 +224,17 @@ export default function SectionSearch({ incidents = [] }: SectionSearchProps) {
               {/* Entity Badges Summary */}
               <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem" }}>
                 {inc.Marca_Detectada && inc.Marca_Detectada !== "NO ESPECIFICADO" && (
-                  <span style={{ fontSize: "0.68rem", fontWeight: 700, padding: "0.1rem 0.4rem", borderRadius: "var(--radius-xs)", background: "rgba(13, 92, 168, 0.2)", color: "#38bdf8", border: "1px solid rgba(0, 163, 224, 0.25)" }}>
+                  <span style={{ fontSize: "0.68rem", fontWeight: 700, padding: "0.1rem 0.4rem", borderRadius: "var(--radius-xs)", background: "#eff6ff", color: "var(--accent-pba-blue)", border: "1px solid #bfdbfe" }}>
                     🚘 {inc.Marca_Detectada}
                   </span>
                 )}
                 {entities.weapons.map((w, idx) => (
-                  <span key={idx} style={{ fontSize: "0.68rem", fontWeight: 700, padding: "0.1rem 0.4rem", borderRadius: "var(--radius-xs)", background: "rgba(239, 68, 68, 0.15)", color: "#fca5a5", border: "1px solid rgba(239, 68, 68, 0.3)" }}>
+                  <span key={idx} style={{ fontSize: "0.68rem", fontWeight: 700, padding: "0.1rem 0.4rem", borderRadius: "var(--radius-xs)", background: "#fef2f2", color: "#dc2626", border: "1px solid #fecaca" }}>
                     🔫 {w}
                   </span>
                 ))}
                 {entities.modusOperandi.map((m, idx) => (
-                  <span key={idx} style={{ fontSize: "0.68rem", fontWeight: 700, padding: "0.1rem 0.4rem", borderRadius: "var(--radius-xs)", background: "rgba(245, 158, 11, 0.15)", color: "#fcd34d", border: "1px solid rgba(245, 158, 11, 0.3)" }}>
+                  <span key={idx} style={{ fontSize: "0.68rem", fontWeight: 700, padding: "0.1rem 0.4rem", borderRadius: "var(--radius-xs)", background: "#fffbeb", color: "#d97706", border: "1px solid #fde68a" }}>
                     ⚡ {m}
                   </span>
                 ))}
@@ -259,9 +259,9 @@ export default function SectionSearch({ incidents = [] }: SectionSearchProps) {
                     fontSize: "0.72rem",
                     fontWeight: 700,
                     fontFamily: "var(--font-display)",
-                    background: "rgba(14, 165, 233, 0.12)",
-                    color: "var(--accent-pba-cyan)",
-                    border: "1px solid rgba(14, 165, 233, 0.3)",
+                    background: "#eff6ff",
+                    color: "var(--accent-pba-blue)",
+                    border: "1px solid #bfdbfe",
                     borderRadius: "var(--radius-xs)",
                     cursor: "pointer",
                     display: "flex",
@@ -280,11 +280,11 @@ export default function SectionSearch({ incidents = [] }: SectionSearchProps) {
 
       {/* Twin Cases Modal / Drawer */}
       {selectedTwinIncident && (
-        <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", padding: "1.5rem" }}>
-          <div className="card" style={{ maxWidth: "750px", width: "100%", maxHeight: "85vh", overflowY: "auto", border: "1px solid var(--accent-indigo)", background: "var(--bg-card)" }}>
+        <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(15, 23, 42, 0.5)", backdropFilter: "blur(4px)", display: "flex", alignItems: "center", justifyContent: "center", padding: "1.5rem" }}>
+          <div className="card" style={{ maxWidth: "750px", width: "100%", maxHeight: "85vh", overflowY: "auto", border: "1px solid var(--border)", background: "#ffffff", boxShadow: "var(--shadow-xl)" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid var(--border)", paddingBottom: "0.75rem", marginBottom: "1rem" }}>
               <div>
-                <span style={{ fontSize: "0.75rem", fontWeight: 800, color: "#f59e0b", textTransform: "uppercase" }}>
+                <span style={{ fontSize: "0.75rem", fontWeight: 800, color: "#d97706", textTransform: "uppercase" }}>
                   Buscador de Casos Gemelos · Algoritmo NLP
                 </span>
                 <h3 style={{ fontSize: "1.1rem", fontWeight: 800, margin: "0.2rem 0 0", color: "var(--text-primary)" }}>

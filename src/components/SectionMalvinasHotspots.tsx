@@ -439,11 +439,11 @@ export default function SectionMalvinasHotspots({ incidents = [] }: SectionMalvi
   return (
     <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
       {/* Strategic Header Banner */}
-      <div className="card" style={{ background: "linear-gradient(90deg, #101623 0%, #131c2d 100%)", borderColor: "var(--border)" }}>
+      <div className="card" style={{ background: "var(--bg-surface)", borderColor: "var(--border)", borderLeft: "4px solid #d97706" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem" }}>
           <div>
             <div className="card-title" style={{ gap: "0.5rem" }}>
-              <Flame color="#ef4444" size={20} />
+              <Flame color="#d97706" size={20} />
               <span>Concentración Territorial & Nodos Crónicos de Resistencia Criminal (Malvinas Argentinas)</span>
             </div>
             <p className="card-subtitle" style={{ margin: "0.25rem 0 0" }}>

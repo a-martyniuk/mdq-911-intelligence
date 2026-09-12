@@ -105,27 +105,27 @@ export default function SectionTemporal({ incidents = [] }: SectionTemporalProps
           display: "flex",
           alignItems: "center",
           gap: "1rem",
-          background: "var(--bg-base)",
-          border: "1px solid var(--border)",
-          borderLeft: "3px solid #f59e0b",
+          background: "#fffbeb",
+          border: "1px solid #fde68a",
+          borderLeft: "3px solid #d97706",
           borderRadius: "var(--radius-sm)",
           padding: "1rem 1.25rem",
           marginBottom: "1.25rem"
         }}>
-          <AlertTriangle size={20} color="#f59e0b" />
+          <AlertTriangle size={20} color="#d97706" />
           <div>
             <strong style={{ color: "var(--text-primary)", fontSize: "0.95rem" }}>
               Hallazgo Crítico: Picos de Nocturnidad y Fin de Semana
             </strong>
             <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.2rem" }}>
-              La franja de <strong style={{ color: "var(--accent-indigo)" }}>18:00 a 24:00 hs concentra el {nightPct.toFixed(1)}% de los incidentes</strong> ({nightCases.toLocaleString()} casos). Asimismo, los <strong style={{ color: "var(--accent-pink)" }}>sábados por la noche</strong> registran la mayor densidad semanal de llamados al 911.
+              La franja de <strong style={{ color: "var(--accent-pba-blue)" }}>18:00 a 24:00 hs concentra el {nightPct.toFixed(1)}% de los incidentes</strong> ({nightCases.toLocaleString()} casos). Asimismo, los <strong style={{ color: "#d97706" }}>sábados por la noche</strong> registran la mayor densidad semanal de llamados al 911.
             </p>
           </div>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(450px, 1fr))", gap: "1.5rem", marginBottom: "1.5rem" }}>
           {/* Chart 1: Hourly Distribution */}
-          <div style={{ background: "var(--bg-base)", padding: "1rem", borderRadius: "var(--radius-md)", border: "1px solid var(--border)" }}>
+          <div style={{ background: "#ffffff", padding: "1rem", borderRadius: "var(--radius-md)", border: "1px solid var(--border)", boxShadow: "var(--shadow-sm)" }}>
             <h4 style={{ fontSize: "0.9rem", color: "var(--text-primary)", marginBottom: "0.5rem" }}>Incidentes por Hora del Día (00-23 hs)</h4>
             <Plot
               data={[
@@ -134,7 +134,7 @@ export default function SectionTemporal({ incidents = [] }: SectionTemporalProps
                   y: hourlyCounts,
                   type: "bar",
                   marker: {
-                    color: hours.map((h) => (h >= 18 ? "#f59e0b" : "#3b82f6")),
+                    color: hours.map((h) => (h >= 18 ? "#d97706" : "#0d5ca8")),
                   },
                 } as any,
               ]}
@@ -143,10 +143,10 @@ export default function SectionTemporal({ incidents = [] }: SectionTemporalProps
                 height: 320,
                 paper_bgcolor: "transparent",
                 plot_bgcolor: "transparent",
-                font: { color: "#94a3b8" },
+                font: { color: "#475569", family: "Inter, sans-serif" },
                 margin: { l: 40, r: 20, t: 20, b: 40 },
-                xaxis: { gridcolor: "#1f2937" },
-                yaxis: { gridcolor: "#1f2937" },
+                xaxis: { gridcolor: "#e2e8f0" },
+                yaxis: { gridcolor: "#e2e8f0" },
               } as any}
               useResizeHandler
               style={{ width: "100%" }}
@@ -154,7 +154,7 @@ export default function SectionTemporal({ incidents = [] }: SectionTemporalProps
           </div>
 
           {/* Chart 2: Day of Week */}
-          <div style={{ background: "var(--bg-base)", padding: "1rem", borderRadius: "var(--radius-md)", border: "1px solid var(--border)" }}>
+          <div style={{ background: "#ffffff", padding: "1rem", borderRadius: "var(--radius-md)", border: "1px solid var(--border)", boxShadow: "var(--shadow-sm)" }}>
             <h4 style={{ fontSize: "0.9rem", color: "var(--text-primary)", marginBottom: "0.5rem" }}>Incidentes por Día de la Semana</h4>
             <Plot
               data={[
@@ -163,7 +163,7 @@ export default function SectionTemporal({ incidents = [] }: SectionTemporalProps
                   y: dailyCounts,
                   type: "bar",
                   marker: {
-                    color: daysOrder.map((d) => (d === "Sábado" ? "#f59e0b" : "#3b82f6")),
+                    color: daysOrder.map((d) => (d === "Sábado" ? "#d97706" : "#0d5ca8")),
                   },
                 } as any,
               ]}
@@ -172,10 +172,10 @@ export default function SectionTemporal({ incidents = [] }: SectionTemporalProps
                 height: 320,
                 paper_bgcolor: "transparent",
                 plot_bgcolor: "transparent",
-                font: { color: "#94a3b8" },
+                font: { color: "#475569", family: "Inter, sans-serif" },
                 margin: { l: 40, r: 20, t: 20, b: 40 },
-                xaxis: { gridcolor: "#1f2937" },
-                yaxis: { gridcolor: "#1f2937" },
+                xaxis: { gridcolor: "#e2e8f0" },
+                yaxis: { gridcolor: "#e2e8f0" },
               } as any}
               useResizeHandler
               style={{ width: "100%" }}
@@ -184,7 +184,7 @@ export default function SectionTemporal({ incidents = [] }: SectionTemporalProps
         </div>
 
         {/* Chart 3: 2D Crosstab Heatmap */}
-        <div style={{ background: "var(--bg-base)", padding: "1rem", borderRadius: "var(--radius-md)", border: "1px solid var(--border)" }}>
+        <div style={{ background: "#ffffff", padding: "1rem", borderRadius: "var(--radius-md)", border: "1px solid var(--border)", boxShadow: "var(--shadow-sm)" }}>
           <h4 style={{ fontSize: "0.95rem", color: "var(--text-primary)", marginBottom: "0.5rem" }}>
             Matriz de Calor Temporal 2D (Día de la Semana × Hora del Día)
           </h4>
@@ -203,7 +203,7 @@ export default function SectionTemporal({ incidents = [] }: SectionTemporalProps
               height: 380,
               paper_bgcolor: "transparent",
               plot_bgcolor: "transparent",
-              font: { color: "#94a3b8" },
+              font: { color: "#475569", family: "Inter, sans-serif" },
               margin: { l: 80, r: 20, t: 20, b: 40 },
             } as any}
             useResizeHandler

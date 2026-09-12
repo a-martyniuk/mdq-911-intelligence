@@ -439,10 +439,10 @@ export default function SectionMap({ geoPoints = [], recoveries = [] }: SectionM
           {/* Individual Interactive Checkbox Controls */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "0.75rem" }}>
             {/* Layer 1: 911 Incidents Points */}
-            <label onClick={() => setShowPoints(!showPoints)} style={{ display: "flex", alignItems: "center", gap: "0.6rem", padding: "0.5rem 0.75rem", background: showPoints ? "rgba(16,185,129,0.15)" : "var(--bg-base)", border: `1px solid ${showPoints ? "#10b981" : "var(--border)"}`, borderRadius: "6px", cursor: "pointer" }}>
-              {showPoints ? <CheckSquare size={16} color="#10b981" /> : <Square size={16} color="var(--text-muted)" />}
+            <label onClick={() => setShowPoints(!showPoints)} style={{ display: "flex", alignItems: "center", gap: "0.6rem", padding: "0.5rem 0.75rem", background: showPoints ? "#ecfdf5" : "var(--bg-base)", border: `1px solid ${showPoints ? "#10b981" : "var(--border)"}`, borderRadius: "6px", cursor: "pointer" }}>
+              {showPoints ? <CheckSquare size={16} color="#059669" /> : <Square size={16} color="var(--text-muted)" />}
               <div>
-                <div style={{ fontSize: "0.825rem", fontWeight: 700, color: showPoints ? "#fff" : "var(--text-secondary)" }}>
+                <div style={{ fontSize: "0.825rem", fontWeight: 700, color: showPoints ? "#047857" : "var(--text-primary)" }}>
                   📍 Puntos & Incidentes 911
                 </div>
                 <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>
@@ -452,10 +452,10 @@ export default function SectionMap({ geoPoints = [], recoveries = [] }: SectionM
             </label>
 
             {/* Layer 2: Trajectory Vectors */}
-            <label onClick={() => setShowVectors(!showVectors)} style={{ display: "flex", alignItems: "center", gap: "0.6rem", padding: "0.5rem 0.75rem", background: showVectors ? "rgba(59,130,246,0.15)" : "var(--bg-base)", border: `1px solid ${showVectors ? "#3b82f6" : "var(--border)"}`, borderRadius: "6px", cursor: "pointer" }}>
-              {showVectors ? <CheckSquare size={16} color="#3b82f6" /> : <Square size={16} color="var(--text-muted)" />}
+            <label onClick={() => setShowVectors(!showVectors)} style={{ display: "flex", alignItems: "center", gap: "0.6rem", padding: "0.5rem 0.75rem", background: showVectors ? "#eff6ff" : "var(--bg-base)", border: `1px solid ${showVectors ? "#3b82f6" : "var(--border)"}`, borderRadius: "6px", cursor: "pointer" }}>
+              {showVectors ? <CheckSquare size={16} color="#2563eb" /> : <Square size={16} color="var(--text-muted)" />}
               <div>
-                <div style={{ fontSize: "0.825rem", fontWeight: 700, color: showVectors ? "#fff" : "var(--text-secondary)" }}>
+                <div style={{ fontSize: "0.825rem", fontWeight: 700, color: showVectors ? "#1d4ed8" : "var(--text-primary)" }}>
                   ➡️ Vectores Robo ➔ Hallazgo
                 </div>
                 <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>
@@ -465,10 +465,10 @@ export default function SectionMap({ geoPoints = [], recoveries = [] }: SectionM
             </label>
 
             {/* Layer 3: Police Jurisdictions */}
-            <label onClick={() => setShowJurisdictions(!showJurisdictions)} style={{ display: "flex", alignItems: "center", gap: "0.6rem", padding: "0.5rem 0.75rem", background: showJurisdictions ? "rgba(99,102,241,0.15)" : "var(--bg-base)", border: `1px solid ${showJurisdictions ? "var(--accent-indigo)" : "var(--border)"}`, borderRadius: "6px", cursor: "pointer" }}>
-              {showJurisdictions ? <CheckSquare size={16} color="var(--accent-indigo)" /> : <Square size={16} color="var(--text-muted)" />}
+            <label onClick={() => setShowJurisdictions(!showJurisdictions)} style={{ display: "flex", alignItems: "center", gap: "0.6rem", padding: "0.5rem 0.75rem", background: showJurisdictions ? "#eff6ff" : "var(--bg-base)", border: `1px solid ${showJurisdictions ? "var(--accent-pba-blue)" : "var(--border)"}`, borderRadius: "6px", cursor: "pointer" }}>
+              {showJurisdictions ? <CheckSquare size={16} color="var(--accent-pba-blue)" /> : <Square size={16} color="var(--text-muted)" />}
               <div>
-                <div style={{ fontSize: "0.825rem", fontWeight: 700, color: showJurisdictions ? "#fff" : "var(--text-secondary)" }}>
+                <div style={{ fontSize: "0.825rem", fontWeight: 700, color: showJurisdictions ? "var(--accent-pba-blue)" : "var(--text-primary)" }}>
                   👮 Comisarías 1ra a 16ta
                 </div>
                 <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>
@@ -478,10 +478,10 @@ export default function SectionMap({ geoPoints = [], recoveries = [] }: SectionM
             </label>
 
             {/* Layer 4: RENABAP Barrios Populares */}
-            <label onClick={() => setShowRenabap(!showRenabap)} style={{ display: "flex", alignItems: "center", gap: "0.6rem", padding: "0.5rem 0.75rem", background: showRenabap ? "rgba(234,88,12,0.15)" : "var(--bg-base)", border: `1px solid ${showRenabap ? "#ea580c" : "var(--border)"}`, borderRadius: "6px", cursor: "pointer" }}>
+            <label onClick={() => setShowRenabap(!showRenabap)} style={{ display: "flex", alignItems: "center", gap: "0.6rem", padding: "0.5rem 0.75rem", background: showRenabap ? "#fff7ed" : "var(--bg-base)", border: `1px solid ${showRenabap ? "#ea580c" : "var(--border)"}`, borderRadius: "6px", cursor: "pointer" }}>
               {showRenabap ? <CheckSquare size={16} color="#ea580c" /> : <Square size={16} color="var(--text-muted)" />}
               <div>
-                <div style={{ fontSize: "0.825rem", fontWeight: 700, color: showRenabap ? "#fff" : "var(--text-secondary)" }}>
+                <div style={{ fontSize: "0.825rem", fontWeight: 700, color: showRenabap ? "#c2410c" : "var(--text-primary)" }}>
                   🏡 Asentamientos RENABAP
                 </div>
                 <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>

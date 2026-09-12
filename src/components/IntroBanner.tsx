@@ -15,8 +15,9 @@ export default function IntroBanner({ currentProject = "mdp" }: IntroBannerProps
         style={{
           padding: "1rem 1.35rem",
           marginBottom: "1.25rem",
-          background: "linear-gradient(90deg, #101623 0%, #131c2d 100%)",
-          borderColor: "var(--border)",
+          background: "#ffffff",
+          border: "1px solid var(--border)",
+          borderLeft: "4px solid #d97706",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -34,9 +35,9 @@ export default function IntroBanner({ currentProject = "mdp" }: IntroBannerProps
               fontWeight: 600,
               textTransform: "uppercase",
               letterSpacing: "0.06em",
-              color: "var(--accent-amber)",
-              background: "rgba(245, 158, 11, 0.1)",
-              border: "1px solid rgba(245, 158, 11, 0.25)",
+              color: "#b45309",
+              background: "#fffbeb",
+              border: "1px solid #fde68a",
               padding: "2px 7px",
               borderRadius: "var(--radius-xs)"
             }}>
@@ -56,15 +57,15 @@ export default function IntroBanner({ currentProject = "mdp" }: IntroBannerProps
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
-          <div style={{ padding: "6px 12px", background: "var(--bg-elevated)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
+          <div style={{ padding: "6px 12px", background: "#f8fafc", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
             <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Hechos 911</div>
             <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--text-primary)", fontFamily: "var(--font-mono)" }}>1.471</div>
           </div>
-          <div style={{ padding: "6px 12px", background: "var(--bg-elevated)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
+          <div style={{ padding: "6px 12px", background: "#f8fafc", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
             <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Georref</div>
             <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--accent-green)", fontFamily: "var(--font-mono)" }}>98.6%</div>
           </div>
-          <div style={{ padding: "6px 12px", background: "var(--bg-elevated)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
+          <div style={{ padding: "6px 12px", background: "#f8fafc", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
             <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Tasa Armas</div>
             <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--accent-red)", fontFamily: "var(--font-mono)" }}>72.0%</div>
           </div>
@@ -80,8 +81,9 @@ export default function IntroBanner({ currentProject = "mdp" }: IntroBannerProps
         style={{
           padding: "1rem 1.35rem",
           marginBottom: "1.25rem",
-          background: "linear-gradient(90deg, #101623 0%, #131c2d 100%)",
-          borderColor: "var(--border)",
+          background: "#ffffff",
+          border: "1px solid var(--border)",
+          borderLeft: "4px solid #dc2626",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -99,9 +101,9 @@ export default function IntroBanner({ currentProject = "mdp" }: IntroBannerProps
               fontWeight: 600,
               textTransform: "uppercase",
               letterSpacing: "0.06em",
-              color: "var(--accent-red)",
-              background: "rgba(239, 68, 68, 0.1)",
-              border: "1px solid rgba(239, 68, 68, 0.25)",
+              color: "#b91c1c",
+              background: "#fef2f2",
+              border: "1px solid #fecaca",
               padding: "2px 7px",
               borderRadius: "var(--radius-xs)"
             }}>
@@ -121,15 +123,15 @@ export default function IntroBanner({ currentProject = "mdp" }: IntroBannerProps
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
-          <div style={{ padding: "6px 12px", background: "var(--bg-elevated)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
+          <div style={{ padding: "6px 12px", background: "#f8fafc", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
             <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Hechos 911</div>
             <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--text-primary)", fontFamily: "var(--font-mono)" }}>1.770</div>
           </div>
-          <div style={{ padding: "6px 12px", background: "var(--bg-elevated)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
+          <div style={{ padding: "6px 12px", background: "#f8fafc", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
             <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Georref</div>
             <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--accent-green)", fontFamily: "var(--font-mono)" }}>99.6%</div>
           </div>
-          <div style={{ padding: "6px 12px", background: "var(--bg-elevated)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
+          <div style={{ padding: "6px 12px", background: "#f8fafc", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
             <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Tasa Armas</div>
             <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--accent-red)", fontFamily: "var(--font-mono)" }}>77.3%</div>
           </div>
@@ -144,8 +146,9 @@ export default function IntroBanner({ currentProject = "mdp" }: IntroBannerProps
       style={{
         padding: "1rem 1.35rem",
         marginBottom: "1.25rem",
-        background: "linear-gradient(90deg, #101623 0%, #131c2d 100%)",
-        borderColor: "var(--border)",
+        background: "#ffffff",
+        border: "1px solid var(--border)",
+        borderLeft: "4px solid #0d5ca8",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
@@ -163,9 +166,9 @@ export default function IntroBanner({ currentProject = "mdp" }: IntroBannerProps
             fontWeight: 600,
             textTransform: "uppercase",
             letterSpacing: "0.06em",
-            color: "var(--accent-pba-cyan)",
-            background: "rgba(56, 189, 248, 0.1)",
-            border: "1px solid rgba(56, 189, 248, 0.25)",
+            color: "#0d5ca8",
+            background: "#eff6ff",
+            border: "1px solid #bfdbfe",
             padding: "2px 7px",
             borderRadius: "var(--radius-xs)"
           }}>
@@ -185,15 +188,15 @@ export default function IntroBanner({ currentProject = "mdp" }: IntroBannerProps
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
-        <div style={{ padding: "6px 12px", background: "var(--bg-elevated)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
+        <div style={{ padding: "6px 12px", background: "#f8fafc", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
           <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Eventos 911</div>
           <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--text-primary)", fontFamily: "var(--font-mono)" }}>8.598</div>
         </div>
-        <div style={{ padding: "6px 12px", background: "var(--bg-elevated)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
+        <div style={{ padding: "6px 12px", background: "#f8fafc", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
           <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Recuperos NLP</div>
-          <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--accent-pba-cyan)", fontFamily: "var(--font-mono)" }}>52</div>
+          <div style={{ fontSize: "16px", fontWeight: 700, color: "#0d5ca8", fontFamily: "var(--font-mono)" }}>52</div>
         </div>
-        <div style={{ padding: "6px 12px", background: "var(--bg-elevated)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
+        <div style={{ padding: "6px 12px", background: "#f8fafc", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
           <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Georref</div>
           <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--accent-green)", fontFamily: "var(--font-mono)" }}>93.0%</div>
         </div>

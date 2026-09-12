@@ -265,11 +265,11 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
   return (
     <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
       {/* Header Banner */}
-      <div className="card" style={{ background: "linear-gradient(90deg, #101623 0%, #131c2d 100%)", borderColor: "var(--border)" }}>
+      <div className="card" style={{ background: "var(--bg-surface)", borderColor: "var(--border)", borderLeft: "4px solid #d97706" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem" }}>
           <div>
             <div className="card-title" style={{ gap: "0.5rem" }}>
-              <Clock color="#ef4444" size={20} />
+              <Clock color="#d97706" size={20} />
               <span>Patrones Temporales & Cronometría del Narcomenudeo (Malvinas Argentinas)</span>
             </div>
             <p className="card-subtitle" style={{ margin: "0.25rem 0 0" }}>
@@ -450,10 +450,10 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
               barmode: "group",
               paper_bgcolor: "transparent",
               plot_bgcolor: "transparent",
-              font: { color: "#94a3b8" },
+              font: { color: "#475569", family: "Inter, sans-serif" },
               margin: { l: 40, r: 20, t: 20, b: 40 },
-              xaxis: { title: "Hora del Día", gridcolor: "#1f2937" },
-              yaxis: { title: "Llamados 911", gridcolor: "#1f2937" },
+              xaxis: { title: "Hora del Día", gridcolor: "#e2e8f0" },
+              yaxis: { title: "Llamados 911", gridcolor: "#e2e8f0" },
               legend: { orientation: "h", y: 1.15 },
             } as any}
             useResizeHandler
@@ -470,7 +470,7 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
         {/* Day of Week */}
         <div className="card">
           <div className="card-title" style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>
-            <Calendar size={18} color="#3b82f6" />
+            <Calendar size={18} color="#0d5ca8" />
             <span>Frecuencia por Día de la Semana</span>
           </div>
           <Plot
@@ -480,7 +480,7 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
                 y: dailyData.totalByD,
                 type: "bar",
                 name: "Total Despachos",
-                marker: { color: "#3b82f6" },
+                marker: { color: "#0d5ca8" },
               },
               {
                 x: daysOrder,
@@ -495,10 +495,10 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
             layout={{
               paper_bgcolor: "transparent",
               plot_bgcolor: "transparent",
-              font: { color: "#94a3b8" },
+              font: { color: "#475569", family: "Inter, sans-serif" },
               margin: { l: 40, r: 20, t: 20, b: 40 },
-              xaxis: { title: "Día de la Semana", gridcolor: "#1f2937" },
-              yaxis: { title: "Cantidad", gridcolor: "#1f2937" },
+              xaxis: { title: "Día de la Semana", gridcolor: "#e2e8f0" },
+              yaxis: { title: "Cantidad", gridcolor: "#e2e8f0" },
               legend: { orientation: "h", y: 1.15 },
             } as any}
             useResizeHandler
@@ -512,7 +512,7 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
         {/* Heatmap: Day x Slot */}
         <div className="card">
           <div className="card-title" style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>
-            <Flame size={18} color="#f59e0b" />
+            <Flame size={18} color="#d97706" />
             <span>Matriz 2D: Día de la Semana vs Franja Horaria</span>
           </div>
           <Plot
@@ -532,10 +532,10 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
             layout={{
               paper_bgcolor: "transparent",
               plot_bgcolor: "transparent",
-              font: { color: "#94a3b8" },
+              font: { color: "#475569", family: "Inter, sans-serif" },
               margin: { l: 90, r: 20, t: 20, b: 40 },
-              xaxis: { title: "Día", gridcolor: "#1f2937" },
-              yaxis: { title: "Franja", gridcolor: "#1f2937" },
+              xaxis: { title: "Día", gridcolor: "#e2e8f0" },
+              yaxis: { title: "Franja", gridcolor: "#e2e8f0" },
             } as any}
             useResizeHandler
             style={{ width: "100%", height: "320px" }}
@@ -546,16 +546,16 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
         <div className="card">
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem", flexWrap: "wrap", gap: "0.4rem" }}>
             <div className="card-title" style={{ fontSize: "1rem", margin: 0 }}>
-              <MapPin size={18} color="#10b981" />
+              <MapPin size={18} color="#059669" />
               <span>Matriz 2D: Top 8 Barrios vs Franja Horaria</span>
             </div>
             <button
               onClick={() => setExcludeCentro(!excludeCentro)}
               title={excludeCentro ? "Click para incluir registros genéricos sin barrio específico" : "Click para excluir registros genéricos"}
               style={{
-                background: excludeCentro ? "rgba(16, 185, 129, 0.15)" : "rgba(255, 255, 255, 0.06)",
-                border: `1px solid ${excludeCentro ? "#10b981" : "#4b5563"}`,
-                color: excludeCentro ? "#34d399" : "#9ca3af",
+                background: excludeCentro ? "#ecfdf5" : "#f1f5f9",
+                border: `1px solid ${excludeCentro ? "#a7f3d0" : "#cbd5e1"}`,
+                color: excludeCentro ? "#047857" : "#475569",
                 borderRadius: "4px",
                 padding: "2px 8px",
                 fontSize: "0.72rem",
@@ -586,10 +586,10 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
             layout={{
               paper_bgcolor: "transparent",
               plot_bgcolor: "transparent",
-              font: { color: "#94a3b8" },
+              font: { color: "#475569", family: "Inter, sans-serif" },
               margin: { l: 120, r: 20, t: 20, b: 40 },
-              xaxis: { title: "Franja Horaria", gridcolor: "#1f2937" },
-              yaxis: { title: "Barrio", gridcolor: "#1f2937" },
+              xaxis: { title: "Franja Horaria", gridcolor: "#e2e8f0" },
+              yaxis: { title: "Barrio", gridcolor: "#e2e8f0" },
             } as any}
             useResizeHandler
             style={{ width: "100%", height: "320px" }}

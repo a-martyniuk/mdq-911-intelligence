@@ -190,8 +190,8 @@ export default function Dashboard() {
           </div>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <h1 className="brand-title" style={{ margin: 0, fontSize: "0.9rem", fontWeight: 600 }}>
-                Superintendencia de Investigaciones de Delitos Complejos <span style={{ color: "var(--text-muted)", fontWeight: 400 }}>·</span> <span style={{ color: "var(--accent-pba-cyan)" }}>Sistema 911</span>
+              <h1 className="brand-title" style={{ margin: 0, fontSize: "0.9rem", fontWeight: 600, color: "var(--text-primary)" }}>
+                Superintendencia de Investigaciones de Delitos Complejos <span style={{ color: "var(--text-muted)", fontWeight: 400 }}>·</span> <span style={{ color: "var(--accent-pba-blue)" }}>Sistema 911</span>
               </h1>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", marginTop: "1px" }}>
@@ -201,9 +201,9 @@ export default function Dashboard() {
               <span style={{
                 fontSize: "0.7rem",
                 fontWeight: 600,
-                color: currentProject === "mdp" ? "#38bdf8" : currentProject === "jcp" ? "#f87171" : "#fbbf24",
-                background: currentProject === "mdp" ? "rgba(56, 189, 248, 0.08)" : currentProject === "jcp" ? "rgba(239, 68, 68, 0.08)" : "rgba(245, 158, 11, 0.08)",
-                border: "1px solid " + (currentProject === "mdp" ? "rgba(56, 189, 248, 0.25)" : currentProject === "jcp" ? "rgba(239, 68, 68, 0.25)" : "rgba(245, 158, 11, 0.25)"),
+                color: currentProject === "mdp" ? "#0d5ca8" : currentProject === "jcp" ? "#b91c1c" : "#b45309",
+                background: currentProject === "mdp" ? "#eff6ff" : currentProject === "jcp" ? "#fef2f2" : "#fffbeb",
+                border: "1px solid " + (currentProject === "mdp" ? "#bfdbfe" : currentProject === "jcp" ? "#fecaca" : "#fde68a"),
                 padding: "1px 7px",
                 borderRadius: "var(--radius-xs)",
                 fontFamily: "var(--font-sans)"

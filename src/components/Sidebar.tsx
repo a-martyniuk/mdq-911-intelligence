@@ -153,8 +153,8 @@ export default function Sidebar({
   return (
     <aside className="app-sidebar">
       {/* Project Switcher Selector */}
-      <div style={{ marginBottom: "1.25rem", paddingBottom: "1rem", borderBottom: "1px solid var(--border)" }}>
-        <div style={{ fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: "0.55rem" }}>
+      <div style={{ marginBottom: "1.25rem", paddingBottom: "1rem", borderBottom: "1px solid #1e293b" }}>
+        <div style={{ fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#94a3b8", marginBottom: "0.55rem" }}>
           Jurisdicción Activa
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem" }}>
@@ -168,10 +168,10 @@ export default function Sidebar({
             style={{
               padding: "0.65rem 0.8rem",
               borderRadius: "var(--radius-sm)",
-              border: "1px solid " + (currentProject === "mdp" ? "rgba(59, 130, 246, 0.4)" : "var(--border)"),
-              borderLeft: currentProject === "mdp" ? "3px solid #3b82f6" : "3px solid transparent",
-              background: currentProject === "mdp" ? "#162238" : "var(--bg-surface)",
-              color: currentProject === "mdp" ? "#f8fafc" : "var(--text-secondary)",
+              border: "1px solid " + (currentProject === "mdp" ? "#2563eb" : "#334155"),
+              borderLeft: currentProject === "mdp" ? "3px solid #38bdf8" : "3px solid transparent",
+              background: currentProject === "mdp" ? "#172554" : "#1e293b",
+              color: currentProject === "mdp" ? "#ffffff" : "#cbd5e1",
               fontSize: "0.82rem",
               display: "flex",
               alignItems: "center",
@@ -182,28 +182,28 @@ export default function Sidebar({
             }}
           >
             <div style={{
-              background: currentProject === "mdp" ? "rgba(59, 130, 246, 0.2)" : "rgba(255, 255, 255, 0.03)",
-              border: "1px solid " + (currentProject === "mdp" ? "rgba(59, 130, 246, 0.3)" : "var(--border-subtle)"),
+              background: currentProject === "mdp" ? "rgba(56, 189, 248, 0.2)" : "rgba(255, 255, 255, 0.05)",
+              border: "1px solid " + (currentProject === "mdp" ? "rgba(56, 189, 248, 0.35)" : "#334155"),
               borderRadius: "var(--radius-xs)",
               padding: "6px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: currentProject === "mdp" ? "#38bdf8" : "var(--text-muted)",
+              color: currentProject === "mdp" ? "#38bdf8" : "#94a3b8",
             }}>
               <Car size={16} />
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.3rem" }}>
-                <span style={{ fontWeight: 600, color: currentProject === "mdp" ? "#ffffff" : "var(--text-primary)" }}>Mar del Plata</span>
-                <span style={{ fontSize: "0.68rem", fontWeight: 700, fontFamily: "var(--font-mono)", background: "rgba(0, 0, 0, 0.35)", color: currentProject === "mdp" ? "#38bdf8" : "var(--text-secondary)", border: "1px solid var(--border)", padding: "1px 6px", borderRadius: "var(--radius-xs)" }}>
+                <span style={{ fontWeight: 600, color: currentProject === "mdp" ? "#ffffff" : "#f1f5f9" }}>Mar del Plata</span>
+                <span style={{ fontSize: "0.68rem", fontWeight: 700, fontFamily: "var(--font-mono)", background: "rgba(0, 0, 0, 0.4)", color: currentProject === "mdp" ? "#38bdf8" : "#94a3b8", border: "1px solid " + (currentProject === "mdp" ? "#2563eb" : "#334155"), padding: "1px 6px", borderRadius: "var(--radius-xs)" }}>
                   8.598
                 </span>
               </div>
-              <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "1px" }}>
+              <div style={{ fontSize: "0.7rem", color: "#94a3b8", marginTop: "1px" }}>
                 Automotores & 911
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.65rem", color: "var(--text-muted)", marginTop: "2px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.65rem", color: "#64748b", marginTop: "2px" }}>
                 <Calendar size={10} /> 01/01/2026 – 05/08/2026
               </div>
             </div>
@@ -219,10 +219,10 @@ export default function Sidebar({
             style={{
               padding: "0.65rem 0.8rem",
               borderRadius: "var(--radius-sm)",
-              border: "1px solid " + (currentProject === "jcp" ? "rgba(239, 68, 68, 0.4)" : "var(--border)"),
+              border: "1px solid " + (currentProject === "jcp" ? "#dc2626" : "#334155"),
               borderLeft: currentProject === "jcp" ? "3px solid #ef4444" : "3px solid transparent",
-              background: currentProject === "jcp" ? "#22161b" : "var(--bg-surface)",
-              color: currentProject === "jcp" ? "#f8fafc" : "var(--text-secondary)",
+              background: currentProject === "jcp" ? "#3b1219" : "#1e293b",
+              color: currentProject === "jcp" ? "#ffffff" : "#cbd5e1",
               fontSize: "0.82rem",
               display: "flex",
               alignItems: "center",
@@ -233,28 +233,28 @@ export default function Sidebar({
             }}
           >
             <div style={{
-              background: currentProject === "jcp" ? "rgba(239, 68, 68, 0.2)" : "rgba(255, 255, 255, 0.03)",
-              border: "1px solid " + (currentProject === "jcp" ? "rgba(239, 68, 68, 0.3)" : "var(--border-subtle)"),
+              background: currentProject === "jcp" ? "rgba(239, 68, 68, 0.2)" : "rgba(255, 255, 255, 0.05)",
+              border: "1px solid " + (currentProject === "jcp" ? "rgba(239, 68, 68, 0.35)" : "#334155"),
               borderRadius: "var(--radius-xs)",
               padding: "6px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: currentProject === "jcp" ? "#fca5a5" : "var(--text-muted)",
+              color: currentProject === "jcp" ? "#fca5a5" : "#94a3b8",
             }}>
               <Skull size={16} />
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.3rem" }}>
-                <span style={{ fontWeight: 600, color: currentProject === "jcp" ? "#ffffff" : "var(--text-primary)" }}>José C. Paz</span>
-                <span style={{ fontSize: "0.68rem", fontWeight: 700, fontFamily: "var(--font-mono)", background: "rgba(0, 0, 0, 0.35)", color: currentProject === "jcp" ? "#f87171" : "var(--text-secondary)", border: "1px solid var(--border)", padding: "1px 6px", borderRadius: "var(--radius-xs)" }}>
+                <span style={{ fontWeight: 600, color: currentProject === "jcp" ? "#ffffff" : "#f1f5f9" }}>José C. Paz</span>
+                <span style={{ fontSize: "0.68rem", fontWeight: 700, fontFamily: "var(--font-mono)", background: "rgba(0, 0, 0, 0.4)", color: currentProject === "jcp" ? "#f87171" : "#94a3b8", border: "1px solid " + (currentProject === "jcp" ? "#dc2626" : "#334155"), padding: "1px 6px", borderRadius: "var(--radius-xs)" }}>
                   1.770
                 </span>
               </div>
-              <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "1px" }}>
+              <div style={{ fontSize: "0.7rem", color: "#94a3b8", marginTop: "1px" }}>
                 Narcocriminalidad & Drogas
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.65rem", color: "var(--text-muted)", marginTop: "2px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.65rem", color: "#64748b", marginTop: "2px" }}>
                 <Calendar size={10} /> 01/01/2026 – 31/08/2026
               </div>
             </div>
@@ -270,10 +270,10 @@ export default function Sidebar({
             style={{
               padding: "0.65rem 0.8rem",
               borderRadius: "var(--radius-sm)",
-              border: "1px solid " + (currentProject === "malvinas" ? "rgba(245, 158, 11, 0.4)" : "var(--border)"),
+              border: "1px solid " + (currentProject === "malvinas" ? "#d97706" : "#334155"),
               borderLeft: currentProject === "malvinas" ? "3px solid #f59e0b" : "3px solid transparent",
-              background: currentProject === "malvinas" ? "#221e14" : "var(--bg-surface)",
-              color: currentProject === "malvinas" ? "#f8fafc" : "var(--text-secondary)",
+              background: currentProject === "malvinas" ? "#38230b" : "#1e293b",
+              color: currentProject === "malvinas" ? "#ffffff" : "#cbd5e1",
               fontSize: "0.82rem",
               display: "flex",
               alignItems: "center",
@@ -284,28 +284,28 @@ export default function Sidebar({
             }}
           >
             <div style={{
-              background: currentProject === "malvinas" ? "rgba(245, 158, 11, 0.2)" : "rgba(255, 255, 255, 0.03)",
-              border: "1px solid " + (currentProject === "malvinas" ? "rgba(245, 158, 11, 0.3)" : "var(--border-subtle)"),
+              background: currentProject === "malvinas" ? "rgba(245, 158, 11, 0.2)" : "rgba(255, 255, 255, 0.05)",
+              border: "1px solid " + (currentProject === "malvinas" ? "rgba(245, 158, 11, 0.35)" : "#334155"),
               borderRadius: "var(--radius-xs)",
               padding: "6px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: currentProject === "malvinas" ? "#fcd34d" : "var(--text-muted)",
+              color: currentProject === "malvinas" ? "#fcd34d" : "#94a3b8",
             }}>
               <Crosshair size={16} />
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.3rem" }}>
-                <span style={{ fontWeight: 600, color: currentProject === "malvinas" ? "#ffffff" : "var(--text-primary)" }}>Malvinas Argentinas</span>
-                <span style={{ fontSize: "0.68rem", fontWeight: 700, fontFamily: "var(--font-mono)", background: "rgba(0, 0, 0, 0.35)", color: currentProject === "malvinas" ? "#fbbf24" : "var(--text-secondary)", border: "1px solid var(--border)", padding: "1px 6px", borderRadius: "var(--radius-xs)" }}>
+                <span style={{ fontWeight: 600, color: currentProject === "malvinas" ? "#ffffff" : "#f1f5f9" }}>Malvinas Argentinas</span>
+                <span style={{ fontSize: "0.68rem", fontWeight: 700, fontFamily: "var(--font-mono)", background: "rgba(0, 0, 0, 0.4)", color: currentProject === "malvinas" ? "#fbbf24" : "#94a3b8", border: "1px solid " + (currentProject === "malvinas" ? "#d97706" : "#334155"), padding: "1px 6px", borderRadius: "var(--radius-xs)" }}>
                   1.471
                 </span>
               </div>
-              <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "1px" }}>
+              <div style={{ fontSize: "0.7rem", color: "#94a3b8", marginTop: "1px" }}>
                 Narcocriminalidad & Puntos
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.65rem", color: "var(--text-muted)", marginTop: "2px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.65rem", color: "#64748b", marginTop: "2px" }}>
                 <Calendar size={10} /> 01/01/2026 – 31/08/2026
               </div>
             </div>
@@ -334,24 +334,24 @@ export default function Sidebar({
 
       {/* MDP Specific Source Distinction Box */}
       {currentProject === "mdp" && (
-        <div style={{ marginTop: "1.5rem", paddingTop: "1rem", borderTop: "1px solid var(--border)", fontSize: "0.75rem", color: "var(--text-secondary)" }}>
-          <div style={{ fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "0.5rem", fontSize: "0.68rem" }}>
+        <div style={{ marginTop: "1.5rem", paddingTop: "1rem", borderTop: "1px solid #1e293b", fontSize: "0.75rem" }}>
+          <div style={{ fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "#94a3b8", marginBottom: "0.5rem", fontSize: "0.68rem" }}>
             Fuentes Integradas Mar del Plata
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem" }}>
-            <div style={{ background: "rgba(59, 130, 246, 0.08)", padding: "0.55rem 0.75rem", borderRadius: "var(--radius-sm)", border: "1px solid rgba(59, 130, 246, 0.25)" }}>
+            <div style={{ background: "rgba(56, 189, 248, 0.08)", padding: "0.55rem 0.75rem", borderRadius: "var(--radius-sm)", border: "1px solid rgba(56, 189, 248, 0.25)" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2px" }}>
                 <strong style={{ color: "#38bdf8", fontSize: "0.74rem" }}>ROBOS AUTOMOTOR</strong>
                 <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: "#ffffff", fontWeight: 700 }}>7.973</span>
               </div>
-              <div style={{ fontSize: "0.68rem", color: "var(--text-muted)" }}>Despacho formal 911 / Sustracciones</div>
+              <div style={{ fontSize: "0.68rem", color: "#94a3b8" }}>Despacho formal 911 / Sustracciones</div>
             </div>
             <div style={{ background: "rgba(16, 185, 129, 0.08)", padding: "0.55rem 0.75rem", borderRadius: "var(--radius-sm)", border: "1px solid rgba(16, 185, 129, 0.25)" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2px" }}>
                 <strong style={{ color: "#34d399", fontSize: "0.74rem" }}>HALLAZGOS / DESCARTES</strong>
                 <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: "#ffffff", fontWeight: 700 }}>625</span>
               </div>
-              <div style={{ fontSize: "0.68rem", color: "var(--text-muted)" }}>Recuperos y vehículos abandonados</div>
+              <div style={{ fontSize: "0.68rem", color: "#94a3b8" }}>Recuperos y vehículos abandonados</div>
             </div>
           </div>
         </div>
@@ -359,8 +359,8 @@ export default function Sidebar({
 
       {/* JCP Specific Source Distinction Box */}
       {currentProject === "jcp" && (
-        <div style={{ marginTop: "1.5rem", paddingTop: "1rem", borderTop: "1px solid var(--border)", fontSize: "0.75rem", color: "var(--text-secondary)" }}>
-          <div style={{ fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "0.5rem", fontSize: "0.68rem" }}>
+        <div style={{ marginTop: "1.5rem", paddingTop: "1rem", borderTop: "1px solid #1e293b", fontSize: "0.75rem" }}>
+          <div style={{ fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "#94a3b8", marginBottom: "0.5rem", fontSize: "0.68rem" }}>
             Fuentes Integradas JCP
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem" }}>
@@ -369,14 +369,14 @@ export default function Sidebar({
                 <strong style={{ color: "#f87171", fontSize: "0.74rem" }}>DROGAS ILÍCITAS</strong>
                 <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: "#ffffff", fontWeight: 700 }}>989</span>
               </div>
-              <div style={{ fontSize: "0.68rem", color: "var(--text-muted)" }}>Tipificación policial formal 911</div>
+              <div style={{ fontSize: "0.68rem", color: "#94a3b8" }}>Tipificación policial formal 911</div>
             </div>
             <div style={{ background: "rgba(16, 185, 129, 0.08)", padding: "0.55rem 0.75rem", borderRadius: "var(--radius-sm)", border: "1px solid rgba(16, 185, 129, 0.25)" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2px" }}>
                 <strong style={{ color: "#34d399", fontSize: "0.74rem" }}>INFORMACIÓN VECINAL</strong>
                 <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: "#ffffff", fontWeight: 700 }}>781</span>
               </div>
-              <div style={{ fontSize: "0.68rem", color: "var(--text-muted)" }}>Búsqueda semántica en relatos</div>
+              <div style={{ fontSize: "0.68rem", color: "#94a3b8" }}>Búsqueda semántica en relatos</div>
             </div>
           </div>
         </div>
@@ -384,8 +384,8 @@ export default function Sidebar({
 
       {/* Malvinas Specific Source Distinction Box */}
       {currentProject === "malvinas" && (
-        <div style={{ marginTop: "1.5rem", paddingTop: "1rem", borderTop: "1px solid var(--border)", fontSize: "0.75rem", color: "var(--text-secondary)" }}>
-          <div style={{ fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "0.5rem", fontSize: "0.68rem" }}>
+        <div style={{ marginTop: "1.5rem", paddingTop: "1rem", borderTop: "1px solid #1e293b", fontSize: "0.75rem" }}>
+          <div style={{ fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "#94a3b8", marginBottom: "0.5rem", fontSize: "0.68rem" }}>
             Fuentes Integradas Malvinas
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem" }}>
@@ -394,14 +394,14 @@ export default function Sidebar({
                 <strong style={{ color: "#fbbf24", fontSize: "0.74rem" }}>DROGAS ILÍCITAS</strong>
                 <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: "#ffffff", fontWeight: 700 }}>802</span>
               </div>
-              <div style={{ fontSize: "0.68rem", color: "var(--text-muted)" }}>Tipificación policial formal 911</div>
+              <div style={{ fontSize: "0.68rem", color: "#94a3b8" }}>Tipificación policial formal 911</div>
             </div>
             <div style={{ background: "rgba(16, 185, 129, 0.08)", padding: "0.55rem 0.75rem", borderRadius: "var(--radius-sm)", border: "1px solid rgba(16, 185, 129, 0.25)" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2px" }}>
                 <strong style={{ color: "#34d399", fontSize: "0.74rem" }}>INFORMACIÓN VECINAL</strong>
                 <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: "#ffffff", fontWeight: 700 }}>669</span>
               </div>
-              <div style={{ fontSize: "0.68rem", color: "var(--text-muted)" }}>Búsqueda semántica en relatos</div>
+              <div style={{ fontSize: "0.68rem", color: "#94a3b8" }}>Búsqueda semántica en relatos</div>
             </div>
           </div>
         </div>

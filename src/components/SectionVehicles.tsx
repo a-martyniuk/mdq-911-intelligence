@@ -235,7 +235,7 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
               {
                 x: hoursList,
                 type: "histogram" as const,
-                marker: { color: selectedCategory === "motos" ? "#f59e0b" : "#3b82f6" },
+                marker: { color: selectedCategory === "motos" ? "#d97706" : "#0d5ca8" },
               } as any,
             ]}
             layout={{
@@ -243,10 +243,10 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
               height: 340,
               paper_bgcolor: "transparent",
               plot_bgcolor: "transparent",
-              font: { color: "#94a3b8" },
+              font: { color: "#475569", family: "Inter, sans-serif" },
               margin: { l: 40, r: 20, t: 20, b: 40 },
-              xaxis: { title: "Horas transcurridas", gridcolor: "#1f2937" },
-              yaxis: { title: "Cantidad de vehículos", gridcolor: "#1f2937" },
+              xaxis: { title: "Horas transcurridas", gridcolor: "#e2e8f0" },
+              yaxis: { title: "Cantidad de vehículos", gridcolor: "#e2e8f0" },
             } as any}
             useResizeHandler
             style={{ width: "100%" }}

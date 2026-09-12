@@ -461,9 +461,9 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionMalvinasMa
         </div>
 
         {/* LAYER CONTROLS TOOLBAR (Replicated from Mar del Plata Architecture) */}
-        <div style={{ background: "rgba(99, 102, 241, 0.07)", border: "1px solid rgba(99, 102, 241, 0.25)", borderRadius: "8px", padding: "0.8rem 1rem", marginBottom: "1rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem" }}>
+        <div style={{ background: "var(--bg-base)", border: "1px solid var(--border)", borderRadius: "8px", padding: "0.8rem 1rem", marginBottom: "1rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <Layers size={18} color="var(--accent-indigo)" />
+            <Layers size={18} color="var(--accent-pba-blue)" />
             <span style={{ fontSize: "0.82rem", fontWeight: 800, color: "var(--text-primary)", textTransform: "uppercase" }}>
               Capas Geoespaciales Activas:
             </span>

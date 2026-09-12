@@ -348,14 +348,14 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
   return (
     <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
       {/* Header Banner */}
-      <div className="card" style={{ background: "linear-gradient(90deg, #101623 0%, #131c2d 100%)", borderColor: "var(--border)" }}>
+      <div className="card" style={{ background: "var(--bg-surface)", borderColor: "var(--border)", borderLeft: "4px solid var(--accent-pba-blue)" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
-            <div style={{ padding: "0.65rem", borderRadius: "var(--radius-sm)", background: "rgba(59, 130, 246, 0.15)", color: "#38bdf8", border: "1px solid rgba(59, 130, 246, 0.3)" }}>
+            <div style={{ padding: "0.65rem", borderRadius: "var(--radius-sm)", background: "rgba(13, 92, 168, 0.1)", color: "var(--accent-pba-blue)", border: "1px solid rgba(13, 92, 168, 0.25)" }}>
               <Building2 size={22} />
             </div>
             <div>
-              <h2 style={{ fontSize: "19px", fontWeight: 600, margin: 0, color: "var(--text-primary)", letterSpacing: "-0.015em" }}>
+              <h2 style={{ fontSize: "19px", fontWeight: 700, margin: 0, color: "var(--text-primary)", letterSpacing: "-0.015em" }}>
                 Matriz Inter-Jurisdiccional & Cuadrantes Policiales (Comisarías 1ra a 16ta)
               </h2>
               <p style={{ fontSize: "13.5px", color: "var(--text-muted)", margin: "0.2rem 0 0" }}>

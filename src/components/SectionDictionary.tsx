@@ -88,10 +88,10 @@ export default function SectionDictionary({ currentProject = "mdp" }: SectionDic
                 cursor: "pointer",
                 border: "1px solid",
                 transition: "all var(--duration-fast) var(--ease-out)",
-                background: activeTab === "todas" ? "var(--bg-elevated)" : "transparent",
+                background: activeTab === "todas" ? "#ffffff" : "transparent",
                 color: activeTab === "todas" ? "var(--text-primary)" : "var(--text-muted)",
-                borderColor: activeTab === "todas" ? "var(--border-focus)" : "transparent",
-                boxShadow: activeTab === "todas" ? "0 1px 3px rgba(0,0,0,0.3)" : "none",
+                borderColor: activeTab === "todas" ? "var(--border)" : "transparent",
+                boxShadow: activeTab === "todas" ? "var(--shadow-sm)" : "none",
               }}
               onClick={() => setActiveTab("todas")}
             >
@@ -106,10 +106,10 @@ export default function SectionDictionary({ currentProject = "mdp" }: SectionDic
                 cursor: "pointer",
                 border: "1px solid",
                 transition: "all var(--duration-fast) var(--ease-out)",
-                background: activeTab === "original" ? "var(--bg-elevated)" : "transparent",
+                background: activeTab === "original" ? "#ffffff" : "transparent",
                 color: activeTab === "original" ? "var(--text-primary)" : "var(--text-muted)",
-                borderColor: activeTab === "original" ? "var(--border-focus)" : "transparent",
-                boxShadow: activeTab === "original" ? "0 1px 3px rgba(0,0,0,0.3)" : "none",
+                borderColor: activeTab === "original" ? "var(--border)" : "transparent",
+                boxShadow: activeTab === "original" ? "var(--shadow-sm)" : "none",
               }}
               onClick={() => setActiveTab("original")}
             >
@@ -124,10 +124,10 @@ export default function SectionDictionary({ currentProject = "mdp" }: SectionDic
                 cursor: "pointer",
                 border: "1px solid",
                 transition: "all var(--duration-fast) var(--ease-out)",
-                background: activeTab === "narcocriminalidad" ? "var(--bg-elevated)" : "transparent",
-                color: activeTab === "narcocriminalidad" ? "#f87171" : "var(--text-muted)",
-                borderColor: activeTab === "narcocriminalidad" ? "rgba(239, 68, 68, 0.4)" : "transparent",
-                boxShadow: activeTab === "narcocriminalidad" ? "0 1px 3px rgba(0,0,0,0.3)" : "none",
+                background: activeTab === "narcocriminalidad" ? "#ffffff" : "transparent",
+                color: activeTab === "narcocriminalidad" ? "#dc2626" : "var(--text-muted)",
+                borderColor: activeTab === "narcocriminalidad" ? "#fca5a5" : "transparent",
+                boxShadow: activeTab === "narcocriminalidad" ? "var(--shadow-sm)" : "none",
               }}
               onClick={() => setActiveTab("narcocriminalidad")}
             >
@@ -142,10 +142,10 @@ export default function SectionDictionary({ currentProject = "mdp" }: SectionDic
                 cursor: "pointer",
                 border: "1px solid",
                 transition: "all var(--duration-fast) var(--ease-out)",
-                background: activeTab === "derivada" ? "var(--bg-elevated)" : "transparent",
+                background: activeTab === "derivada" ? "#ffffff" : "transparent",
                 color: activeTab === "derivada" ? "var(--text-primary)" : "var(--text-muted)",
-                borderColor: activeTab === "derivada" ? "var(--border-focus)" : "transparent",
-                boxShadow: activeTab === "derivada" ? "0 1px 3px rgba(0,0,0,0.3)" : "none",
+                borderColor: activeTab === "derivada" ? "var(--border)" : "transparent",
+                boxShadow: activeTab === "derivada" ? "var(--shadow-sm)" : "none",
               }}
               onClick={() => setActiveTab("derivada")}
             >
@@ -160,10 +160,10 @@ export default function SectionDictionary({ currentProject = "mdp" }: SectionDic
                 cursor: "pointer",
                 border: "1px solid",
                 transition: "all var(--duration-fast) var(--ease-out)",
-                background: activeTab === "recuperacion" ? "var(--bg-elevated)" : "transparent",
+                background: activeTab === "recuperacion" ? "#ffffff" : "transparent",
                 color: activeTab === "recuperacion" ? "var(--text-primary)" : "var(--text-muted)",
-                borderColor: activeTab === "recuperacion" ? "var(--border-focus)" : "transparent",
-                boxShadow: activeTab === "recuperacion" ? "0 1px 3px rgba(0,0,0,0.3)" : "none",
+                borderColor: activeTab === "recuperacion" ? "var(--border)" : "transparent",
+                boxShadow: activeTab === "recuperacion" ? "var(--shadow-sm)" : "none",
               }}
               onClick={() => setActiveTab("recuperacion")}
             >
@@ -199,15 +199,15 @@ export default function SectionDictionary({ currentProject = "mdp" }: SectionDic
             <tbody>
               {filteredData.map((item) => (
                 <tr key={item.campo}>
-                  <td><strong style={{ color: "var(--accent-indigo)" }}>{item.campo}</strong></td>
-                  <td><code style={{ background: "var(--bg-base)", padding: "0.2rem 0.4rem", borderRadius: "4px" }}>{item.tipo}</code></td>
+                  <td><strong style={{ color: "var(--accent-pba-blue)" }}>{item.campo}</strong></td>
+                  <td><code style={{ background: "var(--bg-base)", border: "1px solid var(--border)", padding: "0.2rem 0.4rem", borderRadius: "4px" }}>{item.tipo}</code></td>
                   <td>{item.descripcion}</td>
                   <td><span style={{ color: "var(--text-muted)", fontSize: "0.8rem" }}>{item.ejemplo}</span></td>
                   <td>
                     <span className="badge" style={{
-                      color: item.categoria === "original" ? "#06b6d4" : item.categoria === "narcocriminalidad" ? "#ef4444" : item.categoria === "derivada" ? "#f59e0b" : "#10b981",
-                      background: item.categoria === "original" ? "rgba(6,182,212,0.15)" : item.categoria === "narcocriminalidad" ? "rgba(239,68,68,0.15)" : item.categoria === "derivada" ? "rgba(245,158,11,0.15)" : "rgba(16,185,129,0.15)",
-                      borderColor: "transparent",
+                      color: item.categoria === "original" ? "#0284c7" : item.categoria === "narcocriminalidad" ? "#dc2626" : item.categoria === "derivada" ? "#d97706" : "#059669",
+                      background: item.categoria === "original" ? "#f0f9ff" : item.categoria === "narcocriminalidad" ? "#fef2f2" : item.categoria === "derivada" ? "#fffbeb" : "#ecfdf5",
+                      borderColor: item.categoria === "original" ? "#bae6fd" : item.categoria === "narcocriminalidad" ? "#fecaca" : item.categoria === "derivada" ? "#fde68a" : "#a7f3d0",
                       fontWeight: 700
                     }}>
                       {item.categoria.toUpperCase()}

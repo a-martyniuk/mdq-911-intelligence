@@ -706,8 +706,9 @@ export default function SectionDrogasGraph({ incidents = [] }: SectionDrogasGrap
       <div
         className="card"
         style={{
-          background: "linear-gradient(90deg, #101623 0%, #131c2d 100%)",
+          background: "var(--bg-surface)",
           borderColor: "var(--border)",
+          borderLeft: "4px solid #ef4444",
           padding: "1.1rem 1.35rem"
         }}
       >
@@ -718,11 +719,11 @@ export default function SectionDrogasGraph({ incidents = [] }: SectionDrogasGrap
                 width: "42px",
                 height: "42px",
                 borderRadius: "var(--radius-sm)",
-                background: "rgba(239, 68, 68, 0.12)",
+                background: "rgba(239, 68, 68, 0.1)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "#ef4444",
+                color: "#dc2626",
                 border: "1px solid rgba(239, 68, 68, 0.25)"
               }}
             >
@@ -1165,8 +1166,9 @@ export default function SectionDrogasGraph({ incidents = [] }: SectionDrogasGrap
             className="card"
             style={{
               padding: "1.25rem",
-              background: "#0b1329",
-              border: "1.5px solid #334155",
+              background: "#ffffff",
+              border: "1px solid var(--border)",
+              boxShadow: "var(--shadow-md)",
               display: "flex",
               flexDirection: "column",
               gap: "1rem",
@@ -1190,17 +1192,17 @@ export default function SectionDrogasGraph({ incidents = [] }: SectionDrogasGrap
                 >
                   {activeSelectedNode.category === "suspect" ? "👤 SOSPECHOSO / TRANSA" : activeSelectedNode.category === "bunker" ? "🏠 BÚNKER / PUNTO DE VENTA" : activeSelectedNode.category === "substance" ? "💊 SUSTANCIA" : "⚡ FACTOR DE VIOLENCIA"}
                 </span>
-                <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "#f8fafc", margin: "0.4rem 0 0.1rem" }}>
+                <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "var(--text-primary)", margin: "0.4rem 0 0.1rem" }}>
                   {activeSelectedNode.label}
                 </h3>
-                <div style={{ fontSize: "0.75rem", color: "#94a3b8" }}>
+                <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
                   {activeSelectedNode.address || activeSelectedNode.barrio || "Partido de José C. Paz"}
                 </div>
               </div>
 
               <button
                 onClick={() => setSelectedNodeId(null)}
-                style={{ background: "none", border: "none", color: "#64748b", cursor: "pointer", padding: "4px" }}
+                style={{ background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer", padding: "4px" }}
                 title="Cerrar panel"
               >
                 <X size={18} />
@@ -1209,23 +1211,23 @@ export default function SectionDrogasGraph({ incidents = [] }: SectionDrogasGrap
 
             {/* Entity Stats Grid */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem" }}>
-              <div style={{ background: "#1e293b", padding: "0.6rem 0.75rem", borderRadius: "6px" }}>
-                <div style={{ fontSize: "0.68rem", color: "#94a3b8", fontWeight: 700, textTransform: "uppercase" }}>Despachos 911</div>
-                <div style={{ fontSize: "1.25rem", fontWeight: 800, color: "#f8fafc" }}>{activeSelectedNode.count}</div>
+              <div style={{ background: "#f8fafc", border: "1px solid var(--border)", padding: "0.6rem 0.75rem", borderRadius: "6px" }}>
+                <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", fontWeight: 700, textTransform: "uppercase" }}>Despachos 911</div>
+                <div style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--text-primary)" }}>{activeSelectedNode.count}</div>
               </div>
-              <div style={{ background: "#1e293b", padding: "0.6rem 0.75rem", borderRadius: "6px" }}>
-                <div style={{ fontSize: "0.68rem", color: "#94a3b8", fontWeight: 700, textTransform: "uppercase" }}>Vínculos Directos</div>
-                <div style={{ fontSize: "1.25rem", fontWeight: 800, color: "#60a5fa" }}>{activeSelectedNode.degree}</div>
+              <div style={{ background: "#f8fafc", border: "1px solid var(--border)", padding: "0.6rem 0.75rem", borderRadius: "6px" }}>
+                <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", fontWeight: 700, textTransform: "uppercase" }}>Vínculos Directos</div>
+                <div style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--accent-pba-blue)" }}>{activeSelectedNode.degree}</div>
               </div>
-              <div style={{ background: "#1e293b", padding: "0.6rem 0.75rem", borderRadius: "6px" }}>
-                <div style={{ fontSize: "0.68rem", color: "#94a3b8", fontWeight: 700, textTransform: "uppercase" }}>Conflictividad Armada</div>
-                <div style={{ fontSize: "1rem", fontWeight: 800, color: activeSelectedNode.isArmed ? "#ef4444" : "#10b981" }}>
+              <div style={{ background: "#f8fafc", border: "1px solid var(--border)", padding: "0.6rem 0.75rem", borderRadius: "6px" }}>
+                <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", fontWeight: 700, textTransform: "uppercase" }}>Conflictividad Armada</div>
+                <div style={{ fontSize: "1rem", fontWeight: 800, color: activeSelectedNode.isArmed ? "#dc2626" : "#059669" }}>
                   {activeSelectedNode.isArmed ? "⚠️ Con Armas" : "Sin Disparos"}
                 </div>
               </div>
-              <div style={{ background: "#1e293b", padding: "0.6rem 0.75rem", borderRadius: "6px" }}>
-                <div style={{ fontSize: "0.68rem", color: "#94a3b8", fontWeight: 700, textTransform: "uppercase" }}>Sustancia Clave</div>
-                <div style={{ fontSize: "0.95rem", fontWeight: 800, color: "#34d399", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+              <div style={{ background: "#f8fafc", border: "1px solid var(--border)", padding: "0.6rem 0.75rem", borderRadius: "6px" }}>
+                <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", fontWeight: 700, textTransform: "uppercase" }}>Sustancia Clave</div>
+                <div style={{ fontSize: "0.95rem", fontWeight: 800, color: "#059669", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                   {activeSelectedNode.dominantSubstance || "Cocaína / Paco"}
                 </div>
               </div>
@@ -1241,9 +1243,9 @@ export default function SectionDrogasGraph({ incidents = [] }: SectionDrogasGrap
                   fontSize: "0.75rem",
                   fontWeight: 700,
                   borderRadius: "5px",
-                  background: "#1e293b",
-                  border: "1px solid #334155",
-                  color: "#e2e8f0",
+                  background: "#f8fafc",
+                  border: "1px solid var(--border)",
+                  color: "var(--text-primary)",
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
@@ -1251,7 +1253,7 @@ export default function SectionDrogasGraph({ incidents = [] }: SectionDrogasGrap
                   gap: "0.3rem"
                 }}
               >
-                {copiedId ? <Check size={14} color="#10b981" /> : <Copy size={14} />}
+                {copiedId ? <Check size={14} color="#059669" /> : <Copy size={14} />}
                 <span>{copiedId ? "Copiado!" : "Copiar Ficha"}</span>
               </button>
 
@@ -1263,9 +1265,9 @@ export default function SectionDrogasGraph({ incidents = [] }: SectionDrogasGrap
                   fontSize: "0.75rem",
                   fontWeight: 700,
                   borderRadius: "5px",
-                  background: "rgba(99,102,241,0.2)",
-                  border: "1px solid #6366f1",
-                  color: "#a5b4fc",
+                  background: "#eff6ff",
+                  border: "1px solid #bfdbfe",
+                  color: "#1d4ed8",
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
@@ -1280,7 +1282,7 @@ export default function SectionDrogasGraph({ incidents = [] }: SectionDrogasGrap
 
             {/* Connected Neighbors (Pills) */}
             <div>
-              <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", marginBottom: "0.5rem" }}>
+              <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", marginBottom: "0.5rem" }}>
                 🔗 Nodos Conectados ({selectedNodeNeighbors.length}):
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
@@ -1293,9 +1295,9 @@ export default function SectionDrogasGraph({ incidents = [] }: SectionDrogasGrap
                       fontSize: "0.72rem",
                       fontWeight: 600,
                       borderRadius: "4px",
-                      background: "#1e293b",
-                      border: `1px solid ${node.color}55`,
-                      color: "#e2e8f0",
+                      background: "#f8fafc",
+                      border: `1px solid #cbd5e1`,
+                      color: "var(--text-primary)",
                       cursor: "pointer",
                       display: "flex",
                       alignItems: "center",
@@ -1304,7 +1306,7 @@ export default function SectionDrogasGraph({ incidents = [] }: SectionDrogasGrap
                   >
                     <span style={{ color: node.color }}>●</span>
                     <span>{node.label}</span>
-                    <span style={{ fontSize: "0.68rem", color: "#64748b" }}>({edge.weight})</span>
+                    <span style={{ fontSize: "0.68rem", color: "var(--text-muted)" }}>({edge.weight})</span>
                   </button>
                 ))}
               </div>
@@ -1312,7 +1314,7 @@ export default function SectionDrogasGraph({ incidents = [] }: SectionDrogasGrap
 
             {/* List of Linked 911 Calls with FULL TEXT (Sin Truncar) */}
             <div>
-              <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", marginBottom: "0.5rem" }}>
+              <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", marginBottom: "0.5rem" }}>
                 📑 Despachos 911 Vinculados ({activeSelectedNode.incidents.length} Registros Íntegros):
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
@@ -1320,37 +1322,38 @@ export default function SectionDrogasGraph({ incidents = [] }: SectionDrogasGrap
                   <div
                     key={inc.id || inc.ID || i}
                     style={{
-                      background: "#1e293b",
-                      borderLeft: `3px solid ${inc.tieneArmas ? '#ef4444' : '#6366f1'}`,
+                      background: "#f8fafc",
+                      border: "1px solid var(--border)",
+                      borderLeft: `4px solid ${inc.tieneArmas ? '#dc2626' : '#0d5ca8'}`,
                       borderRadius: "4px",
                       padding: "0.6rem 0.75rem"
                     }}
                   >
-                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.72rem", color: "#94a3b8", marginBottom: "0.3rem" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.72rem", color: "var(--text-muted)", marginBottom: "0.3rem" }}>
                       <span><strong>#{inc.id || inc.ID}</strong> · {inc.fecha || inc.Fecha}</span>
-                      <span style={{ color: inc.tieneArmas ? "#f87171" : "#34d399", fontWeight: 700 }}>
+                      <span style={{ color: inc.tieneArmas ? "#dc2626" : "#059669", fontWeight: 700 }}>
                         {inc.tieneArmas ? "⚠️ Armas" : "Sin Armas"}
                       </span>
                     </div>
 
-                    <div style={{ fontSize: "0.75rem", color: "#cbd5e1", marginBottom: "0.35rem" }}>
+                    <div style={{ fontSize: "0.75rem", color: "var(--text-primary)", marginBottom: "0.35rem" }}>
                       📍 <strong>{inc.direccion || inc.Dirección || "José C. Paz"}</strong>
-                      {inc.barrio && <span style={{ color: "#94a3b8" }}> ({inc.barrio})</span>}
+                      {inc.barrio && <span style={{ color: "var(--text-muted)" }}> ({inc.barrio})</span>}
                     </div>
 
                     {/* UNTRUNCATED POLICE NARRATIVE */}
                     <div
                       style={{
-                        background: "#0f172a",
-                        padding: "0.5rem",
+                        background: "#ffffff",
+                        padding: "0.55rem 0.65rem",
                         borderRadius: "4px",
                         fontSize: "0.72rem",
                         fontFamily: "ui-monospace, monospace",
-                        color: "#e2e8f0",
+                        color: "var(--text-primary)",
                         whiteSpace: "pre-wrap",
                         wordBreak: "break-word",
                         lineHeight: 1.45,
-                        border: "1px solid #334155"
+                        border: "1px solid #cbd5e1"
                       }}
                     >
                       {inc.relato || inc.Relato || "(Sin transcripción disponible)"}

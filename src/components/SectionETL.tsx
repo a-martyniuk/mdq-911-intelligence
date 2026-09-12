@@ -54,13 +54,13 @@ export default function SectionETL({ incidents = [], recoveries = [] }: SectionE
   return (
     <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
       {/* Header Banner */}
-      <div className="card" style={{ background: "linear-gradient(90deg, #101623 0%, #131c2d 100%)", borderColor: "var(--border)" }}>
+      <div className="card" style={{ background: "var(--bg-surface)", borderColor: "var(--border)", borderLeft: "4px solid var(--accent-pba-blue)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
-          <div style={{ padding: "0.65rem", borderRadius: "var(--radius-sm)", background: "rgba(59, 130, 246, 0.15)", color: "#38bdf8", border: "1px solid rgba(59, 130, 246, 0.3)" }}>
+          <div style={{ padding: "0.65rem", borderRadius: "var(--radius-sm)", background: "rgba(13, 92, 168, 0.1)", color: "var(--accent-pba-blue)", border: "1px solid rgba(13, 92, 168, 0.25)" }}>
             <Workflow size={22} />
           </div>
           <div>
-            <h2 style={{ fontSize: "19px", fontWeight: 600, margin: 0, color: "var(--text-primary)", letterSpacing: "-0.015em" }}>
+            <h2 style={{ fontSize: "19px", fontWeight: 700, margin: 0, color: "var(--text-primary)", letterSpacing: "-0.015em" }}>
               Ingeniería de Datos & Pipeline de Ingestión 911
             </h2>
             <p style={{ fontSize: "13.5px", color: "var(--text-muted)", margin: "0.2rem 0 0" }}>
@@ -162,7 +162,7 @@ export default function SectionETL({ incidents = [], recoveries = [] }: SectionE
                 <p style={{ fontSize: "0.775rem", color: "var(--text-muted)", lineHeight: 1.4, margin: "0 0 0.6rem" }}>
                   {r.desc}
                 </p>
-                <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "#6ee7b7", background: "rgba(16,185,129,0.15)", padding: "0.3rem 0.6rem", borderRadius: "4px" }}>
+                <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "#047857", background: "#ecfdf5", border: "1px solid #a7f3d0", padding: "0.3rem 0.6rem", borderRadius: "4px" }}>
                   ✨ {r.impact}
                 </div>
               </div>

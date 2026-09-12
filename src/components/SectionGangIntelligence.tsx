@@ -320,13 +320,13 @@ export default function SectionGangIntelligence({ incidents = [] }: SectionGangI
   return (
     <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
       {/* Banner */}
-      <div className="card" style={{ background: "linear-gradient(90deg, #101623 0%, #131c2d 100%)", borderColor: "var(--border)" }}>
+      <div className="card" style={{ background: "var(--bg-surface)", borderColor: "var(--border)", borderLeft: "4px solid #dc2626" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
-          <div style={{ padding: "0.65rem", borderRadius: "var(--radius-sm)", background: "rgba(239, 68, 68, 0.12)", color: "#ef4444", border: "1px solid rgba(239, 68, 68, 0.25)" }}>
+          <div style={{ padding: "0.65rem", borderRadius: "var(--radius-sm)", background: "rgba(220, 38, 38, 0.1)", color: "#dc2626", border: "1px solid rgba(220, 38, 38, 0.25)" }}>
             <ShieldAlert size={22} />
           </div>
           <div>
-            <h2 style={{ fontSize: "19px", fontWeight: 600, margin: 0, color: "var(--text-primary)", letterSpacing: "-0.015em" }}>
+            <h2 style={{ fontSize: "19px", fontWeight: 700, margin: 0, color: "var(--text-primary)", letterSpacing: "-0.015em" }}>
               Inteligencia de Bandas & Modus Operandi Serial
             </h2>
             <p style={{ fontSize: "13.5px", color: "var(--text-muted)", margin: "0.2rem 0 0" }}>

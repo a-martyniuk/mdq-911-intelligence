@@ -25,52 +25,53 @@
   --duration-normal: 160ms;
   --duration-modal: 220ms;
 
-  /* ─── High-Contrast State Intelligence Palette (Obsidian Slate) ─────────── */
-  --bg-base:        #0a0e17; /* Obsidian Slate - fondo base ultra profundo */
-  --bg-surface:     #101623; /* Superficie de tarjeta sólida y de alto contraste */
-  --bg-elevated:    #162032; /* Elementos elevados, cabeceras y toolbars */
-  --bg-subtle:      #0d121c; /* Paneles inset, líneas alternas de tablas */
+  /* ─── Clean Enterprise / Civic Gov Palette (Stripe/Linear/GOV.UK High-Fidelity) ─── */
+  --bg-base:        #f8fafc; /* Gris perla claro institucional para área de trabajo analítica */
+  --bg-surface:     #ffffff; /* Blanco puro de alta fidelidad para tarjetas y tablas */
+  --bg-elevated:    #ffffff; /* Elementos elevados, inputs y contenedores de comando */
+  --bg-subtle:      #f1f5f9; /* Paneles inset, fondos alternos y toolbars periciales */
   
   /* ─── Crisp Hairline Borders ─────────────────────────────────────────────── */
-  --border:         #1e293b; /* Borde estructural nítido de 1px */
-  --border-subtle:  #162235; /* Borde interior tenue */
-  --border-light:   #2d3e58; /* Borde en hover / activo */
-  --border-accent:  #2563eb; /* Azul corporativo activo */
+  --border:         #e2e8f0; /* Borde estructural nítido de 1px */
+  --border-subtle:  #f1f5f9; /* Borde interior tenue */
+  --border-light:   #cbd5e1; /* Borde en hover / activo interactivo */
+  --border-accent:  #0d5ca8; /* Azul Institucional PBA activo */
 
-  /* ─── Official Institutional Accents (Sober / Non-fluorescent) ──────────── */
-  --accent-pba-blue: #1d4ed8; /* Azul Institucional PBA */
-  --accent-pba-cyan: #38bdf8; /* Celeste / Sky Operativo */
-  --pba-blue:        #1d4ed8;
-  --pba-cyan:        #38bdf8;
+  /* ─── Official Institutional Accents (Azul Institucional PBA Oficial) ───── */
+  --accent-pba-blue: #0d5ca8; /* Azul Institucional Bonaerense Oficial */
+  --accent-pba-cyan: #0284c7; /* Celeste / Sky Operativo accesible */
+  --pba-blue:        #0d5ca8;
+  --pba-cyan:        #0284c7;
 
-  /* ─── Incident & Operational Semantics ──────────────────────────────────── */
-  --accent-red:      #ef4444; /* Conflicto Armado / Homicidio */
-  --accent-amber:    #f59e0b; /* Búnker / Comercialización / Riesgo */
-  --accent-green:    #10b981; /* Recupero Confirmado / Regular */
+  /* ─── Incident & Operational Semantics (WCAG AAA High-Contrast) ─────────── */
+  --accent-red:      #dc2626; /* Conflicto Armado / Homicidio / Crítico */
+  --accent-amber:    #d97706; /* Búnker / Comercialización / Riesgo */
+  --accent-green:    #059669; /* Recupero Confirmado / Regular / Seguro */
   --accent-cyan:     #0284c7; /* Telemetría & Trazas GIS */
 
   /* Aliased for legacy code referencing old palette names */
-  --accent-indigo:   #2563eb;
-  --accent-purple:   #1d4ed8;
+  --accent-indigo:   #0d5ca8;
+  --accent-purple:   #0d5ca8;
   --accent-pink:     #0284c7;
 
-  /* ─── Text & Telemetry Contrast (Crisp Whites & Readable Greys) ─────────── */
-  --text-primary:    #f8fafc; /* Blanco puro nítido para títulos, métricas y cifras */
-  --text-light:      #e2e8f0; /* Pizarra muy clara para cabeceras y etiquetas */
-  --text-secondary:  #94a3b8; /* Pizarra de lectura operativa (WCAG AA) */
-  --text-muted:      #64748b; /* Metadatos, timestamps, subtítulos */
-  --text-dim:        #475569; /* Etiquetas inactivas / placeholder */
+  /* ─── Text & Telemetry Contrast (Negro Tinta & Pizarra Operativa) ───────── */
+  --text-primary:    #0f172a; /* Negro tinta nítido para títulos, métricas y cifras */
+  --text-light:      #1e293b; /* Pizarra oscura para subtítulos y jerarquías */
+  --text-secondary:  #334155; /* Pizarra de lectura pericial de alto contraste (WCAG AAA) */
+  --text-muted:      #64748b; /* Metadatos, timestamps, subtítulos secundarios */
+  --text-dim:        #94a3b8; /* Etiquetas inactivas / placeholder */
 
   /* ─── Strict Technical Radii ────────────────────────────────────────────── */
   --radius-xs:       4px;
   --radius-sm:       6px;
-  --radius-md:       10px;
-  --radius-lg:       14px;
+  --radius-md:       8px;
+  --radius-lg:       12px;
 
-  /* ─── Shadows: Pure Structural Precision ────────────────────────────────── */
+  /* ─── Shadows: Clean Structural Elevation (Zero Cliché Glow) ───────────── */
   --shadow-none:     none;
-  --shadow-sm:       0 1px 2px rgba(0, 0, 0, 0.45);
-  --shadow-md:       0 4px 12px rgba(0, 0, 0, 0.55);
+  --shadow-sm:       0 1px 2px 0 rgba(0, 0, 0, 0.05), 0 1px 1px 0 rgba(0, 0, 0, 0.03);
+  --shadow-md:       0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  --shadow-lg:       0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
   --shadow-glow:     none;
 }
 
@@ -187,11 +188,11 @@ button:active,
   height: 60px;
   padding: 0 1.5rem;
   border-bottom: 1px solid var(--border);
-  background: var(--bg-base);
+  background: #ffffff;
   position: sticky;
   top: 0;
   z-index: 50;
-  backdrop-filter: blur(8px);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
 }
 
 .header-brand {
@@ -221,10 +222,11 @@ button:active,
   font-size: 0.76rem;
   font-weight: 500;
   color: var(--text-secondary);
-  background: var(--bg-surface);
+  background: #ffffff;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 0.3rem 0.65rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
 .badge-dot, .user-dot {
@@ -232,7 +234,7 @@ button:active,
   height: 6px;
   border-radius: 50%;
   background: var(--accent-green);
-  box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 0 4px rgba(5, 150, 105, 0.4);
   animation: statusPing 2.5s infinite var(--ease-in-out);
 }
 
@@ -243,24 +245,25 @@ button:active,
   font-size: 0.76rem;
   font-weight: 500;
   font-family: var(--font-sans);
-  color: var(--text-secondary);
-  background: var(--bg-surface);
+  color: #64748b;
+  background: #ffffff;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 0.35rem 0.75rem;
   cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
 .btn-logout:hover {
-  background: rgba(239, 68, 68, 0.12);
-  border-color: rgba(239, 68, 68, 0.35);
-  color: #fca5a5;
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #dc2626;
 }
 
-/* ─── Sidebar Navigation ────────────────────────────────────────────────────── */
+/* ─── Sidebar Navigation (Sober Institutional Deep Navy) ──────────────────── */
 .app-sidebar {
-  background: #0d121c;
-  border-right: 1px solid var(--border);
+  background: #0f172a;
+  border-right: 1px solid #1e293b;
   padding: 1.1rem 0.85rem;
   overflow-y: auto;
   height: calc(100vh - 60px);
@@ -275,6 +278,7 @@ button:active,
   overflow-y: auto;
   min-width: 0;
   z-index: 1;
+  background: var(--bg-base);
 }
 
 .nav-section-label {
@@ -283,7 +287,7 @@ button:active,
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: #64748b;
   margin-top: 1.25rem;
   margin-bottom: 0.45rem;
   padding-left: 0.5rem;
@@ -311,18 +315,18 @@ button:active,
 }
 
 .nav-item:hover {
-  background: rgba(255, 255, 255, 0.035);
-  border-color: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
   color: #f8fafc;
 }
 
 .nav-item.active {
-  background: #172033;
+  background: #1e293b;
   color: #ffffff;
-  border-color: rgba(37, 99, 235, 0.25);
-  border-left: 2px solid #3b82f6;
+  border-color: rgba(13, 92, 168, 0.4);
+  border-left: 2px solid #38bdf8;
   font-weight: 600;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
 }
 
 /* ─── Cards & High Density Surfaces ─────────────────────────────────────────── */
@@ -412,12 +416,14 @@ button:active,
   box-shadow: var(--shadow-sm);
   transition: border-color var(--duration-normal) var(--ease-out),
               background-color var(--duration-normal) var(--ease-out),
+              box-shadow var(--duration-normal) var(--ease-out),
               transform var(--duration-fast) var(--ease-out);
 }
 
 .metric-card:hover {
   border-color: var(--border-light);
-  background: #141c2c;
+  background: #ffffff;
+  box-shadow: var(--shadow-md);
   transform: translateY(-1px);
 }
 
@@ -425,7 +431,7 @@ button:active,
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #cbd5e1;
+  color: #64748b;
   font-family: var(--font-sans) !important;
   font-size: 13px;
   font-weight: 500;
@@ -440,7 +446,7 @@ button:active,
   font-variant-numeric: tabular-nums;
   font-size: 32px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
   line-height: 1.1;
   margin-bottom: 0.35rem;
   letter-spacing: -0.025em;
@@ -449,11 +455,11 @@ button:active,
 .metric-sub {
   font-family: var(--font-sans) !important;
   font-size: 12.5px;
-  color: #94a3b8;
+  color: #64748b;
   line-height: 1.4;
 }
 
-/* ─── Form Controls & Search ─────────────────────────────────────────────────── */
+/* ─── Form Controls & Search (Clean Enterprise / Civic Gov) ───────────────── */
 .form-label {
   display: block;
   font-family: var(--font-sans);
@@ -467,8 +473,8 @@ button:active,
 
 .form-select, .form-input {
   width: 100%;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
   border-radius: var(--radius-sm);
   color: var(--text-primary);
   padding: 0.45rem 0.7rem;
@@ -480,8 +486,8 @@ button:active,
 }
 
 .form-select:focus, .form-input:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 1px #3b82f6;
+  border-color: #0d5ca8;
+  box-shadow: 0 0 0 1px #0d5ca8;
 }
 
 /* ─── Login Screen ──────────────────────────────────────────────────────────── */
@@ -498,7 +504,7 @@ button:active,
 .login-card {
   width: 100%;
   max-width: 440px;
-  background: var(--bg-surface);
+  background: #ffffff;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 2.25rem;
@@ -513,25 +519,26 @@ button:active,
   justify-content: center;
   gap: 0.5rem;
   padding: 0.55rem 1.1rem;
-  background: #1d4ed8;
+  background: #0d5ca8;
   color: #ffffff;
-  border: 1px solid #2563eb;
+  border: 1px solid #094a88;
   border-radius: var(--radius-sm);
   font-family: var(--font-sans);
   font-weight: 600;
   font-size: 0.82rem;
   cursor: pointer;
+  box-shadow: 0 1px 2px rgba(13, 92, 168, 0.2);
 }
 
 .btn-primary:hover {
-  background: #1e40af;
-  border-color: #3b82f6;
+  background: #094a88;
+  border-color: #0d5ca8;
 }
 
 .btn-export {
-  background: var(--bg-surface);
+  background: #ffffff;
   border: 1px solid var(--border);
-  color: #cbd5e1;
+  color: #334155;
   font-family: var(--font-sans);
   font-size: 12.5px;
   font-weight: 500;
@@ -541,23 +548,24 @@ button:active,
   align-items: center;
   gap: 6px;
   cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .btn-export:hover {
-  background: #172033;
-  color: #f8fafc;
+  background: #f8fafc;
+  color: #0f172a;
   border-color: var(--border-light);
 }
 
 .btn-export.btn-excel svg {
-  color: #10b981;
+  color: #059669;
 }
 
 .btn-export.btn-pdf svg {
-  color: #38bdf8;
+  color: #0d5ca8;
 }
 
-/* ─── High Density Data Tables ───────────────────────────────────────────────── */
+/* ─── High Density Data Tables (Judicial & Pericial Rigor) ─────────────────── */
 .data-table-container {
   width: 100%;
   max-height: 520px;
@@ -565,7 +573,7 @@ button:active,
   overflow-x: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  background: var(--bg-surface);
+  background: #ffffff;
   position: relative;
   box-shadow: var(--shadow-sm);
 }
@@ -578,8 +586,8 @@ button:active,
 }
 
 .data-table th {
-  background: #141c2b;
-  color: var(--text-muted);
+  background: #f8fafc;
+  color: #475569;
   font-family: var(--font-sans);
   font-weight: 600;
   font-size: 0.72rem;
@@ -615,10 +623,11 @@ button:active,
 .data-table td.cell-coord {
   font-family: var(--font-mono), monospace;
   font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
 }
 
 .data-table tr:hover td {
-  background: rgba(255, 255, 255, 0.028);
+  background: #f8fafc;
   color: var(--text-primary);
 }
 
@@ -630,9 +639,9 @@ button:active,
   font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: #f8fafc;
-  background: #090d14;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #0f172a;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
   border-radius: var(--radius-xs);
   padding: 1.5px 6px;
 }
@@ -657,58 +666,58 @@ button:active,
 }
 
 .leaflet-bar a {
-  background-color: var(--bg-surface) !important;
+  background-color: #ffffff !important;
   color: var(--text-primary) !important;
   border-bottom: 1px solid var(--border) !important;
   transition: background-color var(--duration-fast) var(--ease-out);
 }
 
 .leaflet-bar a:hover {
-  background-color: var(--bg-elevated) !important;
-  color: var(--accent-pba-cyan) !important;
+  background-color: #f1f5f9 !important;
+  color: #0d5ca8 !important;
 }
 
 .leaflet-popup-content-wrapper {
-  background: #141c2c !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
   border-radius: var(--radius-md) !important;
-  color: #f8fafc !important;
+  color: #0f172a !important;
   box-shadow: var(--shadow-md) !important;
 }
 
 .leaflet-popup-content {
-  color: #cbd5e1 !important;
+  color: #334155 !important;
   margin: 12px 14px !important;
   font-family: var(--font-sans) !important;
 }
 
 .leaflet-popup-content strong,
 .leaflet-popup-content b {
-  color: #ffffff !important;
+  color: #0f172a !important;
 }
 
 .leaflet-popup-tip {
-  background: #141c2c !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
 }
 
-/* ─── Tactical Scrollbars ──────────────────────────────────────────────────── */
+/* ─── Clean Enterprise Scrollbars ──────────────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-base);
+  background: #f8fafc;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
+  background: #cbd5e1;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--border-light);
+  background: #94a3b8;
 }
 
 /* ─── Responsive Media Queries ──────────────────────────────────────────────── */
