@@ -179,12 +179,12 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
             }),
             onEachFeature: (feature: any, layer: any) => {
               layer.bindPopup(`
-                <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem; max-width: 260px;">
-                  <strong style="color: ${feature.properties.color || '#2563eb'}; font-size: 0.95rem;">
+                <div style="font-family: var(--font-sans), sans-serif; font-size: 0.85rem; color: #f8fafc; padding: 0.25rem; max-width: 270px;">
+                  <strong style="color: ${feature.properties.color || '#60a5fa'}; font-size: 0.95rem; display: block; margin-bottom: 0.25rem;">
                     👮 ${feature.properties.name}
-                  </strong><br/>
-                  <span style="font-size: 0.8rem; color: #334155;">📍 <b>Sede:</b> ${feature.properties.sede}</span><br/>
-                  <span style="font-size: 0.78rem; color: #64748b;">${feature.properties.description}</span>
+                  </strong>
+                  <span style="font-size: 0.8rem; color: #cbd5e1;">📍 <b style="color: #f8fafc;">Sede:</b> ${feature.properties.sede}</span><br/>
+                  <span style="font-size: 0.78rem; color: #94a3b8;">${feature.properties.description}</span>
                 </div>
               `);
             },
@@ -204,11 +204,11 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
             });
             const m = L.marker([st.center[0], st.center[1]], { icon });
             m.bindPopup(`
-              <div style="font-family:sans-serif; font-size:0.85rem; color:#111; padding:0.2rem; max-width:260px;">
-                <strong style="color:#1d4ed8; font-size:0.95rem;">🏛️ ${st.name}</strong><br/>
-                <div style="margin-top:4px;">📍 <b>Dirección:</b> ${st.sede}</div>
-                <div>📞 <b>Teléfono:</b> ${st.phone}</div>
-                <div style="margin-top:4px; font-size:0.75rem; color:#64748b;">${st.description}</div>
+              <div style="font-family: var(--font-sans), sans-serif; font-size: 0.85rem; color: #f8fafc; padding: 0.25rem; max-width: 270px;">
+                <strong style="color: #60a5fa; font-size: 0.95rem; display: block; margin-bottom: 0.25rem;">🏛️ ${st.name}</strong>
+                <div style="margin-top: 4px; color: #cbd5e1;">📍 <b style="color: #f8fafc;">Dirección:</b> ${st.sede}</div>
+                <div style="color: #cbd5e1;">📞 <b style="color: #f8fafc;">Teléfono:</b> ${st.phone}</div>
+                <div style="margin-top: 4px; font-size: 0.75rem; color: #94a3b8;">${st.description}</div>
               </div>
             `);
             stationsGroup.addLayer(m);
@@ -227,12 +227,12 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
             }),
             onEachFeature: (feature: any, layer: any) => {
               layer.bindPopup(`
-                <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem; max-width: 260px;">
-                  <strong style="color: ${feature.properties.color || '#ea580c'}; font-size: 0.95rem;">
+                <div style="font-family: var(--font-sans), sans-serif; font-size: 0.85rem; color: #f8fafc; padding: 0.25rem; max-width: 270px;">
+                  <strong style="color: ${feature.properties.color || '#fb923c'}; font-size: 0.95rem; display: block; margin-bottom: 0.25rem;">
                     🏚️ ${feature.properties.name}
-                  </strong><br/>
-                  <span style="font-size: 0.8rem; color: #334155;"><b>ID RENABAP:</b> #${feature.properties.idRenabap} · <b>Familias:</b> ${feature.properties.familias}</span><br/>
-                  <span style="font-size: 0.78rem; color: #64748b;">${feature.properties.description}</span>
+                  </strong>
+                  <span style="font-size: 0.8rem; color: #cbd5e1;"><b style="color: #f8fafc;">ID RENABAP:</b> #${feature.properties.idRenabap} · <b style="color: #f8fafc;">Familias:</b> ${feature.properties.familias}</span><br/>
+                  <span style="font-size: 0.78rem; color: #94a3b8;">${feature.properties.description}</span>
                 </div>
               `);
             },

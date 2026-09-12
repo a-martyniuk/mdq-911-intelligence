@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { Building2, MapPin, ArrowRight, ShieldCheck, Download, Info, Layers, Eye, ShieldAlert, Home, FileText } from "lucide-react";
+import { Building2, MapPin, ArrowRight, ShieldCheck, Download, Info, Layers, Eye, ShieldAlert, Home, FileText, Flame } from "lucide-react";
 import { exportToCSV } from "@/lib/excelExport";
 import { POLICE_JURISDICTIONS_GEOJSON } from "@/lib/jurisdictionsGeoJSON";
 import { RENABAP_BARRIOS_GEOJSON } from "@/lib/renabapGeoJSON";
@@ -16,6 +16,11 @@ interface SectionJurisdictionsProps {
 export default function SectionJurisdictions({ incidents = [], recoveries = [] }: SectionJurisdictionsProps) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<any>(null);
+  const heatLayerRef = useRef<any>(null);
+  const renabapLayerRef = useRef<any>(null);
+  const comisariasLayerRef = useRef<any>(null);
+  const [showHeatmap, setShowHeatmap] = useState(true);
+  const [showComisarias, setShowComisarias] = useState(true);
   const [showRenabap, setShowRenabap] = useState(true);
 
   // Compute EXACT numeric counts for Sustracciones (Robos) and Hallazgos (Descartes) per Comisaría
@@ -106,8 +111,12 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
 
     // 2. Process Recovery Cases (58 cross-matched pairs)
     recoveries.forEach((r) => {
-      const roboCode = getComisariaCode(r.Latitud_Robo, r.Longitud_Robo, r.Dirección_Robo || "");
-      const hallazgoCode = getComisariaCode(r.Latitud_Hallazgo, r.Longitud_Hallazgo, r.Dirección_Hallazgo || "");
+      const roboLat = r.Latitud_Clean_Robo || r.Latitud_Robo;
+      const roboLon = r.Longitud_Clean_Robo || r.Longitud_Robo;
+      const hallazgoLat = r.Latitud_Clean_Hallazgo || r.Latitud_Hallazgo;
+      const hallazgoLon = r.Longitud_Clean_Hallazgo || r.Longitud_Hallazgo;
+      const roboCode = getComisariaCode(roboLat, roboLon, r.Dirección_Robo || "");
+      const hallazgoCode = getComisariaCode(hallazgoLat, hallazgoLon, r.Dirección_Hallazgo || "");
 
       const rEntry = statsMap.get(roboCode);
       if (rEntry) rEntry.theftsCount += 1;
@@ -137,17 +146,27 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
   const totalThefts = useMemo(() => jurisdictionStats.reduce((acc, curr) => acc + curr.theftsCount, 0), [jurisdictionStats]);
   const totalDumps = useMemo(() => jurisdictionStats.reduce((acc, curr) => acc + curr.dumpsCount, 0), [jurisdictionStats]);
 
-  // Initialize Leaflet Map with Real Polygon Geometry
+  // Initialize Leaflet Map with Real Heatmap & Organic Polygons
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
     let L: any;
-    import("leaflet").then((leafletModule) => {
-      L = leafletModule.default;
+    let isCancelled = false;
+
+    import("leaflet").then(async (leafletModule) => {
+      if (isCancelled) return;
+      L = leafletModule.default || leafletModule;
+
+      if (typeof window !== "undefined") {
+        (window as any).L = L;
+      }
 
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
+        heatLayerRef.current = null;
+        comisariasLayerRef.current = null;
+        renabapLayerRef.current = null;
       }
 
       const map = L.map(mapContainerRef.current).setView([-38.0055, -57.552], 12);
@@ -159,77 +178,135 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
         maxZoom: 19,
       }).addTo(map);
 
-      // Render Police Jurisdiction GeoJSON Organic Polygons
-      L.geoJSON(POLICE_JURISDICTIONS_GEOJSON, {
-        style: (feature: any) => ({
-          color: feature.properties.color || "#6366f1",
-          weight: 2.5,
-          opacity: 0.9,
-          fillColor: feature.properties.color || "#6366f1",
-          fillOpacity: 0.22,
-        }),
-        onEachFeature: (feature: any, layer: any) => {
-          const stat = jurisdictionStats.find((s) => s.code === feature.properties.code);
-          const tCount = stat ? stat.theftsCount : 0;
-          const dCount = stat ? stat.dumpsCount : 0;
-          const roleBadge = stat ? stat.roleBadge : "";
+      // 1. Render Heatmap Layer (8.598 Incidents 911 Density)
+      if (showHeatmap) {
+        try {
+          if (typeof window !== "undefined") {
+            await import("leaflet.heat");
+          }
 
-          layer.bindPopup(`
-            <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.3rem;">
-              <strong style="color: ${feature.properties.color}; font-size: 1rem;">${feature.properties.name}</strong><br/>
-              <span style="font-size: 0.8rem; color: #444;"><b>Barrios:</b> ${feature.properties.description}</span><br/>
-              <div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid #ccc; font-size: 0.8rem;">
-                <div style="color: #ef4444; font-weight: 700;">🔴 Sustracciones Registradas: ${tCount} robos</div>
-                <div style="color: #10b981; font-weight: 700;">🟢 Hallazgos / Descartes: ${dCount} vehículos</div>
-                <div style="margin-top: 0.3rem; font-weight: 800;">${roleBadge}</div>
+          const heatPoints: [number, number, number][] = [];
+          incidents.forEach((inc) => {
+            const rawLat = inc.Latitud_Clean ?? inc.Latitud ?? 0;
+            const rawLon = inc.Longitud_Clean ?? inc.Longitud ?? 0;
+            const lat = typeof rawLat === "number" ? rawLat : parseFloat(rawLat);
+            const lon = typeof rawLon === "number" ? rawLon : parseFloat(rawLon);
+
+            if (!isNaN(lat) && !isNaN(lon) && lat < -37.5 && lat > -38.5 && lon < -57.0 && lon > -58.2) {
+              const origen = (inc.Origen_Dataset || "").toUpperCase();
+              const tipo = (inc.Tipo || "").toLowerCase();
+              const isHallazgo = origen.includes("HALLAZGO") || tipo.includes("hallazgo") || tipo.includes("recuperado");
+              heatPoints.push([lat, lon, isHallazgo ? 0.75 : 0.45]);
+            }
+          });
+
+          if (typeof (L as any).heatLayer === "function" && heatPoints.length > 0) {
+            const heat = (L as any).heatLayer(heatPoints, {
+              radius: 25,
+              blur: 18,
+              maxZoom: 16,
+              max: 0.85,
+              gradient: {
+                0.2: "#3b82f6",
+                0.4: "#06b6d4",
+                0.6: "#eab308",
+                0.8: "#f97316",
+                1.0: "#ef4444",
+              },
+            });
+            heat.addTo(map);
+            heatLayerRef.current = heat;
+          }
+        } catch (err) {
+          console.warn("Could not load leaflet.heat:", err);
+        }
+      }
+
+      // 2. Render Police Jurisdiction GeoJSON Organic Polygons
+      if (showComisarias) {
+        const comisariasLayer = L.geoJSON(POLICE_JURISDICTIONS_GEOJSON, {
+          style: (feature: any) => ({
+            color: feature.properties.color || "#6366f1",
+            weight: 2.2,
+            opacity: 0.85,
+            fillColor: feature.properties.color || "#6366f1",
+            fillOpacity: showHeatmap ? 0.12 : 0.22,
+          }),
+          onEachFeature: (feature: any, layer: any) => {
+            const stat = jurisdictionStats.find((s) => s.code === feature.properties.code);
+            const tCount = stat ? stat.theftsCount : 0;
+            const dCount = stat ? stat.dumpsCount : 0;
+            const roleBadge = stat ? stat.roleBadge : "";
+
+            layer.bindPopup(`
+              <div style="font-family: var(--font-sans), sans-serif; font-size: 0.85rem; color: #f8fafc; padding: 0.35rem; max-width: 280px;">
+                <strong style="color: ${feature.properties.color || '#818cf8'}; font-size: 1rem; display: block; margin-bottom: 0.3rem;">
+                  ${feature.properties.name}
+                </strong>
+                <div style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 0.5rem; line-height: 1.35;">
+                  <b style="color: #f8fafc;">Barrios:</b> ${feature.properties.description}
+                </div>
+                <div style="padding-top: 0.45rem; border-top: 1px solid rgba(255,255,255,0.12); font-size: 0.8rem; display: flex; flex-direction: column; gap: 0.25rem;">
+                  <div style="color: #f87171; font-weight: 700;">🔴 Sustracciones Registradas: ${tCount} robos</div>
+                  <div style="color: #34d399; font-weight: 700;">🟢 Hallazgos / Descartes: ${dCount} vehículos</div>
+                  <div style="margin-top: 0.25rem; font-weight: 800; font-size: 0.78rem;">${roleBadge}</div>
+                </div>
               </div>
-            </div>
-          `);
-        },
-      }).addTo(map);
+            `);
+          },
+        });
+        comisariasLayer.addTo(map);
+        comisariasLayerRef.current = comisariasLayer;
+      }
 
-      // Render RENABAP & Barrios Populares layer
+      // 3. Render RENABAP & Barrios Populares layer
       if (showRenabap) {
-        L.geoJSON(RENABAP_BARRIOS_GEOJSON, {
+        const renabapLayer = L.geoJSON(RENABAP_BARRIOS_GEOJSON, {
           style: (feature: any) => ({
             color: feature.properties.isRenabap ? "#f97316" : "#38bdf8",
             weight: feature.properties.isRenabap ? 2.5 : 1.2,
             dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
             opacity: 0.9,
             fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
-            fillOpacity: feature.properties.isRenabap ? 0.35 : 0.08,
+            fillOpacity: feature.properties.isRenabap ? (showHeatmap ? 0.22 : 0.35) : 0.08,
           }),
           onEachFeature: (feature: any, layer: any) => {
             const isR = feature.properties.isRenabap;
             const fams = feature.properties.familias;
             const idRen = feature.properties.idRenabap;
             layer.bindPopup(`
-              <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem;">
-                <strong style="color: ${isR ? '#ea580c' : '#0284c7'}; font-size: 0.95rem;">
+              <div style="font-family: var(--font-sans), sans-serif; font-size: 0.85rem; color: #f8fafc; padding: 0.3rem; max-width: 280px;">
+                <strong style="color: ${isR ? '#fb923c' : '#38bdf8'}; font-size: 0.95rem; display: block; margin-bottom: 0.25rem;">
                   ${isR ? '🏡 RENABAP: ' : '📍 '}${feature.properties.name}
-                </strong><br/>
-                <span style="font-size: 0.8rem; color: #444;">
-                  ${isR ? `<b>Categoría:</b> Registro Nacional de Barrios Populares 2023 (SISU)` : '<b>Categoría:</b> Barrio Oficial MGP'}
-                </span><br/>
-                ${idRen ? `<span style="font-size: 0.775rem; color: #64748b;"><b>ID RENABAP:</b> #${idRen}</span><br/>` : ''}
-                ${fams ? `<span style="font-size: 0.775rem; color: #64748b;"><b>Familias Registradas:</b> ${fams}</span><br/>` : ''}
-                <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #ccc; font-size: 0.775rem; color: #ea580c; font-weight: 700;">
+                </strong>
+                <div style="font-size: 0.78rem; color: #cbd5e1; line-height: 1.35;">
+                  <b style="color: #f8fafc;">Categoría:</b> ${isR ? 'Registro Nacional de Barrios Populares 2023 (SISU)' : 'Barrio Oficial MGP'}
+                </div>
+                ${idRen ? `<div style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.15rem;"><b style="color: #f8fafc;">ID RENABAP:</b> #${idRen}</div>` : ''}
+                ${fams ? `<div style="font-size: 0.75rem; color: #94a3b8;"><b style="color: #f8fafc;">Familias Registradas:</b> ${fams}</div>` : ''}
+                <div style="margin-top: 0.4rem; padding-top: 0.35rem; border-top: 1px solid rgba(255,255,255,0.12); font-size: 0.75rem; color: #fb923c; font-weight: 700;">
                   SHP Oficial RENABAP 2023 Mar del Plata
                 </div>
               </div>
             `);
           },
-        }).addTo(map);
+        });
+        renabapLayer.addTo(map);
+        renabapLayerRef.current = renabapLayer;
       }
     });
 
     return () => {
+      isCancelled = true;
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
+        heatLayerRef.current = null;
+        comisariasLayerRef.current = null;
+        renabapLayerRef.current = null;
       }
     };
-  }, [jurisdictionStats, showRenabap]);
+  }, [jurisdictionStats, showHeatmap, showComisarias, showRenabap, incidents]);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
@@ -354,15 +431,37 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
               Mapa de Cuadrantes Oficiales (Comisarías 1ra a 16ta)
             </h3>
 
-            <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.775rem", fontWeight: 700, color: "#ea580c", cursor: "pointer" }}>
-              <input
-                type="checkbox"
-                checked={showRenabap}
-                onChange={(e) => setShowRenabap(e.target.checked)}
-                style={{ width: "15px", height: "15px", accentColor: "#ea580c" }}
-              />
-              <Home size={14} /> Capa RENABAP
-            </label>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.85rem", flexWrap: "wrap" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "0.775rem", fontWeight: 700, color: "#ef4444", cursor: "pointer" }}>
+                <input
+                  type="checkbox"
+                  checked={showHeatmap}
+                  onChange={(e) => setShowHeatmap(e.target.checked)}
+                  style={{ width: "15px", height: "15px", accentColor: "#ef4444", cursor: "pointer" }}
+                />
+                <Flame size={14} /> Heatmap 911
+              </label>
+
+              <label style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "0.775rem", fontWeight: 700, color: "#818cf8", cursor: "pointer" }}>
+                <input
+                  type="checkbox"
+                  checked={showComisarias}
+                  onChange={(e) => setShowComisarias(e.target.checked)}
+                  style={{ width: "15px", height: "15px", accentColor: "#6366f1", cursor: "pointer" }}
+                />
+                <ShieldCheck size={14} /> Jurisdicciones
+              </label>
+
+              <label style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "0.775rem", fontWeight: 700, color: "#ea580c", cursor: "pointer" }}>
+                <input
+                  type="checkbox"
+                  checked={showRenabap}
+                  onChange={(e) => setShowRenabap(e.target.checked)}
+                  style={{ width: "15px", height: "15px", accentColor: "#ea580c", cursor: "pointer" }}
+                />
+                <Home size={14} /> RENABAP
+              </label>
+            </div>
           </div>
 
           <div ref={mapContainerRef} style={{ width: "100%", height: "480px", borderRadius: "8px", border: "1px solid var(--border)" }} />

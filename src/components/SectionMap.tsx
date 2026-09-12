@@ -242,14 +242,14 @@ function MapComponent({
       });
 
       const popupContent = `
-        <div style="font-family: sans-serif; font-size: 0.825rem; color: #1e293b; padding: 0.2rem; max-width: 260px;">
-          <strong style="color: ${color}; font-size: 0.9rem;">${pt.tipo} (${pt.subtipo || "General"})</strong><br/>
-          <span><b>ID:</b> #${pt.id} | <b>Origen:</b> ${pt.origen}</span><br/>
-          <span><b>Fecha/Hora:</b> ${pt.fecha} - ${pt.hora}:00 hs</span><br/>
-          <span><b>Dirección:</b> ${pt.direccion}</span><br/>
-          ${pt.marca ? `<span><b>Marca:</b> ${pt.marca}</span><br/>` : ""}
-          ${pt.patente ? `<span><b>Patente:</b> ${pt.patente}</span><br/>` : ""}
-          ${pt.relato ? `<div style="margin-top:0.3rem; font-style:italic; font-size:0.75rem; background:#f1f5f9; padding:0.4rem; border-radius:4px;">"${pt.relato.slice(0, 110)}..."</div>` : ""}
+        <div style="font-family: var(--font-sans), sans-serif; font-size: 0.825rem; color: #f8fafc; padding: 0.2rem; max-width: 280px;">
+          <strong style="color: ${color}; font-size: 0.92rem; display: block; margin-bottom: 0.25rem;">${pt.tipo} (${pt.subtipo || "General"})</strong>
+          <span style="color: #cbd5e1;"><b style="color: #f8fafc;">ID:</b> #${pt.id} | <b style="color: #f8fafc;">Origen:</b> ${pt.origen}</span><br/>
+          <span style="color: #cbd5e1;"><b style="color: #f8fafc;">Fecha/Hora:</b> ${pt.fecha} - ${pt.hora}:00 hs</span><br/>
+          <span style="color: #cbd5e1;"><b style="color: #f8fafc;">Dirección:</b> ${pt.direccion}</span><br/>
+          ${pt.marca ? `<span style="color: #cbd5e1;"><b style="color: #f8fafc;">Marca:</b> ${pt.marca}</span><br/>` : ""}
+          ${pt.patente ? `<span style="color: #cbd5e1;"><b style="color: #f8fafc;">Patente:</b> ${pt.patente}</span><br/>` : ""}
+          ${pt.relato ? `<div style="margin-top:0.4rem; font-style:italic; font-size:0.75rem; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#e2e8f0; padding:0.45rem; border-radius:4px; line-height:1.4;">"${pt.relato.slice(0, 120)}..."</div>` : ""}
         </div>
       `;
 
@@ -289,11 +289,11 @@ function MapComponent({
         );
 
         polyline.bindPopup(`
-          <div style="font-family: sans-serif; font-size: 0.8rem; color: #1e293b; padding: 0.2rem;">
-            <strong style="color: #2563eb; font-size: 0.9rem;">Vector Robo ➔ Hallazgo (Patente ${c.Patente_Principal || "Emparejada"})</strong><br/>
-            <b>🔴 Origen Sustracción:</b> ${c.Dirección_Robo || "Macrocentro"}<br/>
-            <b>🟢 Destino Descarte:</b> ${c.Dirección_Hallazgo || "Periferia / Descarte"}<br/>
-            <b>⏱️ Diferencial de Tiempo:</b> ${typeof c.Horas_Hasta_Hallazgo === "number" ? c.Horas_Hasta_Hallazgo.toFixed(1) : c.Horas_Hasta_Hallazgo} hs
+          <div style="font-family: var(--font-sans), sans-serif; font-size: 0.8rem; color: #f8fafc; padding: 0.2rem; max-width: 260px;">
+            <strong style="color: #60a5fa; font-size: 0.9rem; display: block; margin-bottom: 0.25rem;">Vector Robo ➔ Hallazgo (Patente ${c.Patente_Principal || "Emparejada"})</strong>
+            <span style="color: #cbd5e1;"><b style="color: #f8fafc;">🔴 Origen Sustracción:</b> ${c.Dirección_Robo || "Macrocentro"}</span><br/>
+            <span style="color: #cbd5e1;"><b style="color: #f8fafc;">🟢 Destino Descarte:</b> ${c.Dirección_Hallazgo || "Periferia / Descarte"}</span><br/>
+            <span style="color: #cbd5e1;"><b style="color: #f8fafc;">⏱️ Diferencial de Tiempo:</b> ${typeof c.Horas_Hasta_Hallazgo === "number" ? c.Horas_Hasta_Hallazgo.toFixed(1) : c.Horas_Hasta_Hallazgo} hs</span>
           </div>
         `);
 

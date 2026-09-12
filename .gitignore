@@ -31,3 +31,4 @@ yarn-error.log*
 .tile_cache/
 reports/.tile_cache/
 *.tsbuildinfo
+.agents/

@@ -72,14 +72,14 @@ interface SectionGraphProps {
 }
 
 const CLIQUE_PRESETS = [
-  { id: "all", label: "🌐 Red General Integral MDP (10.000+ Despachos)", color: "#6366f1", icon: "🌐" },
-  { id: "ciclomotor-110", label: "🛵 Célula Wave / ZB 110cc (Abordaje Urbano & Macrocentro)", color: "#ef4444", icon: "🛵" },
-  { id: "tornado-alta", label: "🏍️ Célula Tornado / Rouser 250cc (Encierro Rápido Avenidas)", color: "#ec4899", icon: "🏍️" },
-  { id: "levantadores-autos", label: "🚗 Banda Levantadores Fiat / Gol / Peugeot (Apoyo & Fuga)", color: "#3b82f6", icon: "🚗" },
-  { id: "llave-corrida", label: "🔑 Célula Llave Corrida / Pickups 4x4 (Inhibidores & Ruta 2/88)", color: "#10b981", icon: "🔑" },
-  { id: "disparos-batan", label: "💥 Célula Disparos Territoriales / Balística 9mm (Batán / Regional)", color: "#f59e0b", icon: "💥" },
-  { id: "desguace-las-heras", label: "🏚️ Hub Desguace & Descarte (Barrio Las Heras / Autódromo)", color: "#8b5cf6", icon: "🏚️" },
-  { id: "deliverys-bicis", label: "🚲 Asalto a Repartidores & Corredores Gastronómicos", color: "#06b6d4", icon: "🚲" }
+  { id: "all", label: "Red General Integral MDP (8.598 Despachos)", color: "#6366f1", icon: "🌐" },
+  { id: "ciclomotor-110", label: "Célula Wave / ZB 110cc (Abordaje Urbano & Macrocentro)", color: "#ef4444", icon: "🛵" },
+  { id: "tornado-alta", label: "Célula Tornado / Rouser 250cc (Encierro Rápido Avenidas)", color: "#ec4899", icon: "🏍️" },
+  { id: "levantadores-autos", label: "Banda Levantadores Fiat / Gol / Peugeot (Apoyo & Fuga)", color: "#3b82f6", icon: "🚗" },
+  { id: "llave-corrida", label: "Célula Llave Corrida / Pickups 4x4 (Inhibidores & Ruta 2/88)", color: "#10b981", icon: "🔑" },
+  { id: "disparos-batan", label: "Célula Disparos Territoriales / Balística 9mm (Batán / Regional)", color: "#f59e0b", icon: "💥" },
+  { id: "desguace-las-heras", label: "Hub Desguace & Descarte (Barrio Las Heras / Autódromo)", color: "#8b5cf6", icon: "🏚️" },
+  { id: "deliverys-bicis", label: "Asalto a Repartidores & Corredores Gastronómicos", color: "#06b6d4", icon: "🚲" }
 ];
 
 export default function SectionGraph({ incidents = [], recoveries = [] }: SectionGraphProps) {

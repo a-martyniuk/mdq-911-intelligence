@@ -68,13 +68,13 @@ interface SectionDrogasGraphProps {
 }
 
 const CLIQUE_PRESETS = [
-  { id: "all", label: "🌐 Red General Completa JCP", color: "#6366f1", icon: "🌐" },
-  { id: "sol-y-verde", label: "🔥 Foco Sol y Verde (Ojeda / Bravo / Corbata)", color: "#ef4444", icon: "🔥" },
-  { id: "porta-berni", label: "🚗 Clan Boyacá (Porta / Lucho Berni)", color: "#f59e0b", icon: "🚗" },
-  { id: "palomero", label: "📍 Red San Lorenzo (Palomero / Banfi)", color: "#8b5cf6", icon: "📍" },
-  { id: "coliqueo", label: "⚡ Célula Coliqueo & Junín (Hernán / Lili)", color: "#06b6d4", icon: "⚡" },
-  { id: "fournier", label: "🏢 Clan Fournier (Poroto / Ariel / Pajone)", color: "#10b981", icon: "🏢" },
-  { id: "lamas", label: "🏚️ Célula Barrio Lamas & Casitas (Godoy / Angie)", color: "#ec4899", icon: "🏚️" }
+  { id: "all", label: "Red General Completa JCP", color: "#6366f1", icon: "🌐" },
+  { id: "sol-y-verde", label: "Foco Sol y Verde (Ojeda / Bravo / Corbata)", color: "#ef4444", icon: "🔥" },
+  { id: "porta-berni", label: "Clan Boyacá (Porta / Lucho Berni)", color: "#f59e0b", icon: "🚗" },
+  { id: "palomero", label: "Red San Lorenzo (Palomero / Banfi)", color: "#8b5cf6", icon: "📍" },
+  { id: "coliqueo", label: "Célula Coliqueo & Junín (Hernán / Lili)", color: "#06b6d4", icon: "⚡" },
+  { id: "fournier", label: "Clan Fournier (Poroto / Ariel / Pajone)", color: "#10b981", icon: "🏢" },
+  { id: "lamas", label: "Célula Barrio Lamas & Casitas (Godoy / Angie)", color: "#ec4899", icon: "🏚️" }
 ];
 
 export default function SectionDrogasGraph({ incidents = [] }: SectionDrogasGraphProps) {

@@ -584,16 +584,33 @@ h1, h2, h3, h4, h5, h6, .section-title, .sidebar-title, .brand-title, .card-titl
 }
 
 .leaflet-popup-content-wrapper {
-  background: var(--bg-surface) !important;
-  border: 1px solid var(--border) !important;
+  background: #18202f !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
   border-radius: var(--radius-md) !important;
-  color: var(--text-primary) !important;
-  box-shadow: var(--shadow-md) !important;
+  color: #f8fafc !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5) !important;
+}
+
+.leaflet-popup-content {
+  color: #f1f5f9 !important;
+  margin: 12px 14px !important;
+  font-family: var(--font-sans) !important;
+}
+
+.leaflet-popup-content span,
+.leaflet-popup-content p,
+.leaflet-popup-content div {
+  color: #cbd5e1;
+}
+
+.leaflet-popup-content strong,
+.leaflet-popup-content b {
+  color: #ffffff !important;
 }
 
 .leaflet-popup-tip {
-  background: var(--bg-surface) !important;
-  border: 1px solid var(--border) !important;
+  background: #18202f !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
 }
 
 /* ─── Tactical Scrollbars ──────────────────────────────────────────────────── */

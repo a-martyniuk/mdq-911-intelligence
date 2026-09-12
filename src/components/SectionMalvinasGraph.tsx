@@ -68,13 +68,13 @@ interface SectionMalvinasGraphProps {
 }
 
 const CLIQUE_PRESETS = [
-  { id: "all", label: "🌐 Red General Completa Malvinas", color: "#6366f1", icon: "🌐" },
-  { id: "rojas-ambrosetti", label: "🔥 Eje Ricardo Rojas & Ambrosetti (Grand Bourg)", color: "#ef4444", icon: "🔥" },
-  { id: "callao-almirante", label: "📍 Sector Callao & Almirante Brown (Grand Bourg)", color: "#f59e0b", icon: "📍" },
-  { id: "cura-brochero", label: "⚡ Nodo Cura Brochero & Paso de los Andes (Tortuguitas)", color: "#10b981", icon: "⚡" },
-  { id: "perito-moreno", label: "🛡️ Corredor Perito Moreno & Comisaría 2da (Polvorines)", color: "#8b5cf6", icon: "🛡️" },
-  { id: "san-martin-nogues", label: "🚗 Hub Ruta 197 & Av. San Martín (Pablo Nogués)", color: "#06b6d4", icon: "🚗" },
-  { id: "sourdeaux-estacion", label: "🏚️ Búnkers Estación Adolfo Sourdeaux / Villa de Mayo", color: "#ec4899", icon: "🏚️" },
+  { id: "all", label: "Red General Completa Malvinas", color: "#6366f1", icon: "🌐" },
+  { id: "rojas-ambrosetti", label: "Eje Ricardo Rojas & Ambrosetti (Grand Bourg)", color: "#ef4444", icon: "🔥" },
+  { id: "callao-almirante", label: "Sector Callao & Almirante Brown (Grand Bourg)", color: "#f59e0b", icon: "📍" },
+  { id: "cura-brochero", label: "Nodo Cura Brochero & Paso de los Andes (Tortuguitas)", color: "#10b981", icon: "⚡" },
+  { id: "perito-moreno", label: "Corredor Perito Moreno & Comisaría 2da (Polvorines)", color: "#8b5cf6", icon: "🛡️" },
+  { id: "san-martin-nogues", label: "Hub Ruta 197 & Av. San Martín (Pablo Nogués)", color: "#06b6d4", icon: "🚗" },
+  { id: "sourdeaux-estacion", label: "Búnkers Estación Adolfo Sourdeaux / Villa de Mayo", color: "#ec4899", icon: "🏚️" },
 ];
 
 export default function SectionMalvinasGraph({ incidents = [] }: SectionMalvinasGraphProps) {
