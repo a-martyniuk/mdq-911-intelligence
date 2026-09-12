@@ -137,7 +137,7 @@ export default function SectionMalvinasETL({ incidents = [] }: SectionMalvinasET
               </strong>
             </div>
             <span style={{ fontSize: "0.75rem", fontWeight: 700, padding: "2px 8px", borderRadius: "4px", background: "rgba(16,185,129,0.15)", color: "#10b981" }}>
-              Filtro de Inteligencia por Palabras Clave (670 registros)
+              Filtro de Inteligencia por Palabras Clave (669 registros)
             </span>
             <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.75rem", lineHeight: 1.5 }}>
               Llamados al 911 registrados inicialmente bajo otras tipificaciones (conflictos vecinales, cartas de información, robos o armas), pero donde un filtrado por palabras clave en el relato (<strong>"cocaína", "marihuana", "venta", "bunkers", "transa"</strong>) rescató denuncias con valiosa información sobre narcotráfico.
@@ -156,7 +156,7 @@ export default function SectionMalvinasETL({ incidents = [] }: SectionMalvinasET
             <div style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem" }}>
               <CheckCircle2 size={16} color="#10b981" style={{ marginTop: "3px", flexShrink: 0 }} />
               <div>
-                <strong style={{ color: "var(--text-primary)" }}>Corrección Decimal y Georreferenciación Automática:</strong> Se solucionó la escala exponencial de las variables exportadas y se completó la geocodificación de intersecciones y barrios, situando a <strong>1.464 hechos (99,52%)</strong> con coordenadas espaciales validadas dentro del Partido de Malvinas Argentinas.
+                <strong style={{ color: "var(--text-primary)" }}>Corrección Decimal y Georreferenciación Automática:</strong> Se solucionó la escala exponencial de las variables exportadas y se completó la geocodificación de intersecciones y barrios, situando a <strong>1.451 hechos (98,6%)</strong> con coordenadas espaciales validadas dentro del Partido de Malvinas Argentinas.
               </div>
             </div>
 
@@ -170,7 +170,7 @@ export default function SectionMalvinasETL({ incidents = [] }: SectionMalvinasET
             <div style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem" }}>
               <CheckCircle2 size={16} color="#10b981" style={{ marginTop: "3px", flexShrink: 0 }} />
               <div>
-                <strong style={{ color: "var(--text-primary)" }}>Complementariedad Total:</strong> Se verificó que entre ambas planillas existe únicamente 1 ID coincidente, sumando un universo consolidado de <strong>1.471 denuncias únicas</strong> de alto valor judicial.
+                <strong style={{ color: "var(--text-primary)" }}>Complementariedad Total:</strong> Se verificó una complementariedad del 100% entre ambas planillas (sin duplicación de identificadores, 802 + 669), sumando un universo consolidado de <strong>1.471 denuncias únicas</strong> de alto valor judicial.
               </div>
             </div>
           </div>

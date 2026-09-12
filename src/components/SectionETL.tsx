@@ -22,7 +22,7 @@ export default function SectionETL({ incidents = [], recoveries = [] }: SectionE
       title: "Extracción NLP de Patentes y Entidades",
       icon: "🏷️",
       desc: "Minería de texto sobre los relatos libres de despacho utilizando expresiones regulares avanzadas para detectar matrículas de formato Mercosur (AA123BB) y Tradicional (AAA123).",
-      impact: "Identificó 52 casos con 51 patentes únicas para trazabilidad de robos y hallazgos.",
+      impact: "Identificó 52 casos con 50 patentes únicas para trazabilidad de robos y hallazgos.",
     },
     {
       title: "Cruce Relacional Robo ➔ Hallazgo",

@@ -70,11 +70,12 @@ interface SectionMalvinasGraphProps {
 const CLIQUE_PRESETS = [
   { id: "all", label: "Red General Completa Malvinas", color: "#6366f1", icon: "🌐" },
   { id: "rojas-ambrosetti", label: "Eje Ricardo Rojas & Ambrosetti (Grand Bourg)", color: "#ef4444", icon: "🔥" },
-  { id: "callao-almirante", label: "Sector Callao & Almirante Brown (Grand Bourg)", color: "#f59e0b", icon: "📍" },
-  { id: "cura-brochero", label: "Nodo Cura Brochero & Paso de los Andes (Tortuguitas)", color: "#10b981", icon: "⚡" },
-  { id: "perito-moreno", label: "Corredor Perito Moreno & Comisaría 2da (Polvorines)", color: "#8b5cf6", icon: "🛡️" },
-  { id: "san-martin-nogues", label: "Hub Ruta 197 & Av. San Martín (Pablo Nogués)", color: "#06b6d4", icon: "🚗" },
-  { id: "sourdeaux-estacion", label: "Búnkers Estación Adolfo Sourdeaux / Villa de Mayo", color: "#ec4899", icon: "🏚️" },
+  { id: "py-hiroshima", label: "Célula Marino Luis Py & Hiroshima (Grand Bourg)", color: "#f59e0b", icon: "⚡" },
+  { id: "san-lorenzo", label: "Red San Lorenzo & Sarmiento (Pablo Nogués)", color: "#8b5cf6", icon: "📍" },
+  { id: "hernandez-maure", label: "Sector José Hernández & Maure (Grand Bourg Sur)", color: "#06b6d4", icon: "🏢" },
+  { id: "palacios-cangallo", label: "Clan Palacios & Cangallo (Tortuguitas)", color: "#10b981", icon: "🚗" },
+  { id: "tokio-santa-sede", label: "Foco Tokio & Santa Sede (Tierras Altas)", color: "#ec4899", icon: "🏚️" },
+  { id: "yatasto-panama", label: "Célula Yatasto & Panamá (Tortuguitas Norte)", color: "#3b82f6", icon: "🎯" },
 ];
 
 export default function SectionMalvinasGraph({ incidents = [] }: SectionMalvinasGraphProps) {
@@ -418,12 +419,13 @@ export default function SectionMalvinasGraph({ incidents = [] }: SectionMalvinas
 
     // Deterministic Layout Positioning by Radial Sectors & Clusters
     const clusterAngles: Record<string, { angle: number; radius: number }> = {
-      "sol-y-verde": { angle: (210 * Math.PI) / 180, radius: 280 },
-      "porta-berni": { angle: (270 * Math.PI) / 180, radius: 300 },
-      "palomero": { angle: (330 * Math.PI) / 180, radius: 290 },
-      "coliqueo": { angle: (30 * Math.PI) / 180, radius: 270 },
-      "fournier": { angle: (90 * Math.PI) / 180, radius: 280 },
-      "lamas": { angle: (150 * Math.PI) / 180, radius: 290 },
+      "rojas-ambrosetti": { angle: (210 * Math.PI) / 180, radius: 280 },
+      "py-hiroshima": { angle: (260 * Math.PI) / 180, radius: 300 },
+      "san-lorenzo": { angle: (310 * Math.PI) / 180, radius: 290 },
+      "hernandez-maure": { angle: (0 * Math.PI) / 180, radius: 270 },
+      "palacios-cangallo": { angle: (50 * Math.PI) / 180, radius: 280 },
+      "tokio-santa-sede": { angle: (100 * Math.PI) / 180, radius: 290 },
+      "yatasto-panama": { angle: (150 * Math.PI) / 180, radius: 280 },
       "general": { angle: 0, radius: 340 }
     };
 

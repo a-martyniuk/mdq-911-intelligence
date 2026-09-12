@@ -45,7 +45,7 @@ export default function SectionInvestigativeValue({ incidents = [], recoveries =
             <button
               onClick={() => {
                 const exportData = [
-                  { Vinculo: "Robo ➔ Hallazgo Automotor", Patron: "Mediana de abandono en 4,9 hs (Autos)", Hipotesis: "Uso del auto robado como unidad de apoyo/fuga efímera", Evidencia: "52 vehículos vinculados con trayectoria (51 patentes únicas)" },
+                  { Vinculo: "Robo ➔ Hallazgo Automotor", Patron: "Mediana de abandono en 4,9 hs (Autos)", Hipotesis: "Uso del auto robado como unidad de apoyo/fuga efímera", Evidencia: "52 vehículos vinculados con trayectoria (50 patentes únicas en 58 pares pareados)" },
                   { Vinculo: "Robo ➔ Motocicletas", Patron: "Baja recuperación pareada (21,2% motos vs 78,8% autos)", Hipotesis: "Ingreso inmediato a redes de desguace y venta de repuestos", Evidencia: "400 robos concentrados en Honda" },
                   { Vinculo: "Violencia ➔ Armas de Fuego", Patron: "67 IDs coincidentes en despacho", Hipotesis: "Escalada de violencia en áreas de disputa territorial", Evidencia: "Solapamiento entre Armas y Disparos" },
                   { Vinculo: "Nocturnidad ➔ Concentración", Patron: "39.5% de incidentes entre 18 y 24 hs", Hipotesis: "Sincronización horaria de bandas dedicadas a sustracción", Evidencia: "Pico de 185 robos/hora a las 20:00 hs" },
@@ -69,7 +69,7 @@ export default function SectionInvestigativeValue({ incidents = [], recoveries =
               <span style={{ fontSize: "14px" }}>1. Trazabilidad de Vehículos (Cruce de Patentes)</span>
             </div>
             <p style={{ fontSize: "13px", color: "var(--text-secondary)", lineHeight: 1.5, margin: 0 }}>
-              Se identificaron <strong style={{ color: "var(--text-primary)" }}>52 vehículos robados efectivamente vinculados con su hallazgo</strong> mediante minería de relatos 911 (41 autos y 11 motos con 51 patentes únicas). La mediana de abandono es de <strong>4,9 horas para autos</strong> (y 7,0 hs para motos), revelando su empleo como vehículo de apoyo temporal en otros ilícitos antes del descarte.
+              Se identificaron <strong style={{ color: "var(--text-primary)" }}>52 vehículos robados efectivamente vinculados con su hallazgo</strong> mediante minería de relatos 911 (41 autos y 11 motos con 50 patentes únicas sobre 58 pares pareados válidos). La mediana de abandono es de <strong>4,9 horas para autos</strong> (y 7,0 hs para motos), revelando su empleo como vehículo de apoyo temporal en otros ilícitos antes del descarte.
             </p>
           </div>
 
@@ -140,7 +140,7 @@ export default function SectionInvestigativeValue({ incidents = [], recoveries =
                 <td><strong>Robo → Hallazgo Automotor</strong></td>
                 <td>Abandono promedio en 4.9 hs</td>
                 <td>Uso del automóvil robado como "unidad de apoyo/fuga" efímera</td>
-                <td>52 vehículos vinculados (51 patentes únicas)</td>
+                <td>52 vehículos vinculados (50 patentes únicas / 58 pares)</td>
               </tr>
               <tr>
                 <td><strong>Robo → Motocicletas</strong></td>

@@ -60,6 +60,10 @@ export default function SectionDictionary({ currentProject = "mdp" }: SectionDic
     { campo: "alias", tipo: "list[string]", descripcion: "Apodos o identidades operativas de investigados en los partes judiciales y relatos vecinales.", ejemplo: "['Ojeda', 'Lucho Berni', 'Palomero']", categoria: "narcocriminalidad", proyecto: "narcocriminalidad" },
     { campo: "barrio", tipo: "string", descripcion: "Barrio urbano o asentamiento informal de ocurrencia del foco narcocriminal.", ejemplo: "Sol y Verde, Grand Bourg, Tortuguitas", categoria: "narcocriminalidad", proyecto: "narcocriminalidad" },
     { campo: "partido", tipo: "string", descripcion: "Municipio donde radica la competencia judicial y policial de la intervención.", ejemplo: "JOSE C. PAZ, MALVINAS ARGENTINAS", categoria: "narcocriminalidad", proyecto: "narcocriminalidad" },
+    { campo: "origen", tipo: "string", descripcion: "Origen del despacho: DROGAS_ILICITAS_FORMAL (tipificación 911) o INFORMACION_VECINAL_KEYWORDS (alerta por relato).", ejemplo: "DROGAS_ILICITAS_FORMAL", categoria: "narcocriminalidad", proyecto: "narcocriminalidad" },
+    { campo: "precision_geo", tipo: "string", descripcion: "Nivel de resolución espacial asignado en el ETL (EXACTA_DESPACHO, INTERSECCION_ESQUINA, CENTROIDE_CALLE).", ejemplo: "EXACTA_DESPACHO", categoria: "narcocriminalidad", proyecto: "narcocriminalidad" },
+    { campo: "calleSuperior", tipo: "string", descripcion: "Arteria transversal superior que delimita la esquina o cuadra del punto de comercialización.", ejemplo: "3 De Febrero, Hiroshima", categoria: "narcocriminalidad", proyecto: "narcocriminalidad" },
+    { campo: "calleInferior", tipo: "string", descripcion: "Arteria transversal inferior que delimita la cuadra del foco sospechoso.", ejemplo: "Pedro De Mendoza, Maure", categoria: "narcocriminalidad", proyecto: "narcocriminalidad" },
     { campo: "cliqueId", tipo: "string", descripcion: "Identificador de célula, banda o clan criminal detectado por análisis de grafos y centralidad.", ejemplo: "sol-y-verde, rojas-ambrosetti", categoria: "narcocriminalidad", proyecto: "narcocriminalidad" },
     { campo: "medidaJudicial", tipo: "string", descripcion: "Actuación judicial formal dispuesta (Allanamiento, Secuestro, Detención, Requisición balística).", ejemplo: "Allanamiento Positivo UFI 16", categoria: "narcocriminalidad", proyecto: "narcocriminalidad" }
   ];
@@ -79,7 +83,11 @@ export default function SectionDictionary({ currentProject = "mdp" }: SectionDic
           <span>Diccionario de Datos del Proyecto</span>
         </div>
         <p className="card-subtitle">
-          Especificación completa de variables originales del 911, atributos enriquecidos por el ETL y métricas vehiculares.
+          {currentProject === "mdp"
+            ? "Especificación completa de variables originales del 911, atributos enriquecidos por el ETL y métricas de recuperación vehicular."
+            : currentProject === "jcp"
+            ? "Especificación completa de variables del 911, atributos espaciales, tipologías de búnkers y entidades de narcocriminalidad en José C. Paz."
+            : "Especificación completa de variables del 911, atributos espaciales, tipologías de búnkers y entidades de narcocriminalidad en Malvinas Argentinas."}
         </p>
 
         {/* Filters & Search */}

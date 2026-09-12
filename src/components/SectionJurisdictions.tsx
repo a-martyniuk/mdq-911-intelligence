@@ -145,10 +145,10 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
     // Note: The 8,598 911 incidents already include all theft and dump dispatches.
     // Recoveries are cross-matched pairs that provide trajectory evidence without inflating volume.
     recoveries.forEach((r) => {
-      const roboLat = r.Latitud_Clean_Robo || r.Latitud_Robo;
-      const roboLon = r.Longitud_Clean_Robo || r.Longitud_Robo;
-      const hallazgoLat = r.Latitud_Clean_Hallazgo || r.Latitud_Hallazgo;
-      const hallazgoLon = r.Longitud_Clean_Hallazgo || r.Longitud_Hallazgo;
+      const roboLat = r.Latitud_Clean_Robo;
+      const roboLon = r.Longitud_Clean_Robo;
+      const hallazgoLat = r.Latitud_Clean_Hallazgo;
+      const hallazgoLon = r.Longitud_Clean_Hallazgo;
       const roboCode = getComisariaCode(roboLat, roboLon, r.Dirección_Robo || "");
       const hallazgoCode = getComisariaCode(hallazgoLat, hallazgoLon, r.Dirección_Hallazgo || "");
 

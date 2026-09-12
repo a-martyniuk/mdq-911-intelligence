@@ -31,8 +31,12 @@ export default function SectionMalvinasHotspots({ incidents = [] }: SectionMalvi
   // Filters State
   const [filterSustancia, setFilterSustancia] = useState<string>("todos");
   const [filterFranja, setFilterFranja] = useState<string>("todos");
-  const [filterComisaria, setFilterComisaria] = useState<string>("todos");
   const [mapReady, setMapReady] = useState<boolean>(false);
+
+  // Top hostile node dynamically derived from Malvinas chronic nodes
+  const maxHostilityNode = useMemo(() => {
+    return [...CHRONIC_HOTSPOTS_MALVINAS].sort((a, b) => b.pctArmed - a.pctArmed)[0];
+  }, []);
 
   // Layer Toggles
   const [showHeatmap, setShowHeatmap] = useState<boolean>(true);
@@ -55,7 +59,7 @@ export default function SectionMalvinasHotspots({ incidents = [] }: SectionMalvi
     },
   };
 
-  // Selected Node for Tactical Dossier Modal
+  // Selected Node for modal dossier
   const [selectedNode, setSelectedNode] = useState<ChronicHotspotNode | null>(null);
 
   // Selected Corner for micro dossier modal
@@ -70,8 +74,19 @@ export default function SectionMalvinasHotspots({ incidents = [] }: SectionMalvi
       if (!isNaN(lat) && lat < -34.535) return false;
 
       if (filterSustancia !== "todos") {
-        const s = (inc.sustancia || "").toUpperCase();
-        if (!s.includes(filterSustancia.toUpperCase())) return false;
+        const sNorm = (inc.sustancia || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const fNorm = filterSustancia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        if (fNorm.includes("coca")) {
+          if (!sNorm.includes("coca")) return false;
+        } else if (fNorm.includes("paco")) {
+          if (!sNorm.includes("paco") && !sNorm.includes("pasta base")) return false;
+        } else if (fNorm.includes("mari")) {
+          if (!sNorm.includes("mari") && !sNorm.includes("faso") && !sNorm.includes("flores")) return false;
+        } else if (fNorm.includes("sintet")) {
+          if (!sNorm.includes("sintet") && !sNorm.includes("pastilla") && !sNorm.includes("extasis")) return false;
+        } else if (!sNorm.includes(fNorm)) {
+          return false;
+        }
       }
       if (filterFranja !== "todos") {
         const f = (inc.franja || "").toLowerCase();
@@ -536,11 +551,11 @@ export default function SectionMalvinasHotspots({ incidents = [] }: SectionMalvi
             <div style={{ fontSize: "0.72rem", color: "#9ca3af", textTransform: "uppercase", fontWeight: 700 }}>
               Nodo de Máxima Hostilidad
             </div>
-            <div style={{ fontSize: "1.05rem", fontWeight: 900, color: "#dc2626", marginTop: "2px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-              San Lorenzo & Mendoza
+            <div style={{ fontSize: "1.05rem", fontWeight: 900, color: "#dc2626", marginTop: "2px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} title={maxHostilityNode?.name}>
+              {maxHostilityNode?.shortName || "Py & Hiroshima"}
             </div>
             <div style={{ fontSize: "0.72rem", color: "#ef4444", fontWeight: 700, marginTop: "2px" }}>
-              🚨 98.1% Armado (53 de 54 hechos)
+              🚨 {maxHostilityNode?.pctArmed}% Armado ({maxHostilityNode?.armedIncidents} de {maxHostilityNode?.totalIncidents} hechos)
             </div>
           </div>
         </div>
