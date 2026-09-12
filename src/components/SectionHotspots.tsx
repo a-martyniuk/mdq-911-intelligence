@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
-import { Flame, Car, ShieldAlert, Info, Filter, Download, FileText, Clock, Calendar, Layers, MapPin, Eye } from "lucide-react";
+import { Flame, Car, ShieldAlert, Info, Filter, Download, FileText, Clock, Calendar, Layers, MapPin, Eye, CheckSquare, Square } from "lucide-react";
 import { getApiUrl } from "@/lib/apiUrl";
 import { exportToCSV } from "@/lib/excelExport";
 import { generateHotspotsPDF } from "@/lib/pdfReport";
@@ -15,11 +15,60 @@ interface SectionHotspotsProps {
 }
 
 // Interactive Leaflet Dynamic Hotspots Map Component
-function InteractiveHotspotsMap({ incidents = [] }: { incidents: any[] }) {
+function InteractiveHotspotsMap({
+  incidents = [],
+  showHeatmap = true,
+  heatIntensity = "medio",
+  showMarkers = false,
+  showJurisdictions = true,
+  showRenabap = true,
+}: {
+  incidents: any[];
+  showHeatmap: boolean;
+  heatIntensity: "suave" | "medio" | "intenso";
+  showMarkers: boolean;
+  showJurisdictions: boolean;
+  showRenabap: boolean;
+}) {
   const mapContainerRef = React.useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = React.useRef<any>(null);
+  const heatLayerRef = React.useRef<any>(null);
   const markersGroupRef = React.useRef<any>(null);
+  const jurisLayerRef = React.useRef<any>(null);
+  const renabapLayerRef = React.useRef<any>(null);
+  const [mapReady, setMapReady] = React.useState(false);
 
+  const HEAT_CALIBRATIONS = {
+    suave: {
+      radius: 18,
+      blur: 14,
+      max: 1.4,
+      weightNormal: 0.22,
+      weightHigh: 0.50,
+      minOpacity: 0.18,
+      opacity: "0.82",
+    },
+    medio: {
+      radius: 22,
+      blur: 16,
+      max: 1.0,
+      weightNormal: 0.32,
+      weightHigh: 0.65,
+      minOpacity: 0.22,
+      opacity: "0.88",
+    },
+    intenso: {
+      radius: 27,
+      blur: 19,
+      max: 0.75,
+      weightNormal: 0.42,
+      weightHigh: 0.85,
+      minOpacity: 0.28,
+      opacity: "0.95",
+    },
+  };
+
+  // 1. Initialize Leaflet Map ONCE
   useEffect(() => {
     let isMounted = true;
 
@@ -32,40 +81,197 @@ function InteractiveHotspotsMap({ incidents = [] }: { incidents: any[] }) {
           zoom: 12,
         });
 
+        // Polygons custom pane (between tile 200 and overlay 400)
+        const polyPane = map.createPane("polygonsPane");
+        polyPane.style.zIndex = "350";
+
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
           maxZoom: 19,
         }).addTo(map);
 
-        // Layer: Comisarías (Blue Boundaries)
-        L.geoJSON(POLICE_JURISDICTIONS_GEOJSON, {
-          style: { color: "#2563eb", weight: 1.8, fillColor: "#3b82f6", fillOpacity: 0.05 },
-        }).addTo(map);
+        // Layer: Comisarías (Blue Boundaries in polygonsPane)
+        const jurisLayer = L.geoJSON(POLICE_JURISDICTIONS_GEOJSON, {
+          pane: "polygonsPane",
+          style: (feature: any) => ({
+            color: feature.properties.color || "#2563eb",
+            weight: 2,
+            opacity: 0.85,
+            fillColor: feature.properties.color || "#3b82f6",
+            fillOpacity: showHeatmap ? 0.04 : 0.18,
+          }),
+          onEachFeature: (feature: any, layer: any) => {
+            layer.bindPopup(`
+              <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem;">
+                <strong style="color: ${feature.properties.color || '#2563eb'}; font-size: 0.95rem;">
+                  👮 ${feature.properties.name}
+                </strong><br/>
+                <span style="font-size: 0.8rem; color: #444;">
+                  <b>Zonas:</b> ${feature.properties.description || feature.properties.barrios}
+                </span>
+              </div>
+            `);
+          },
+        });
+        jurisLayerRef.current = jurisLayer;
+        if (showJurisdictions) jurisLayer.addTo(map);
 
-        // Layer: RENABAP (Orange Boundaries)
-        L.geoJSON(RENABAP_BARRIOS_GEOJSON, {
+        // Layer: RENABAP (Orange Boundaries in polygonsPane)
+        const renabapLayer = L.geoJSON(RENABAP_BARRIOS_GEOJSON, {
+          pane: "polygonsPane",
           style: (feature: any) => ({
             color: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
             weight: feature.properties.isRenabap ? 2.5 : 1.2,
             dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
             fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
-            fillOpacity: feature.properties.isRenabap ? 0.3 : 0.06,
+            fillOpacity: feature.properties.isRenabap ? (showHeatmap ? 0.08 : 0.28) : 0.05,
           }),
-        }).addTo(map);
+          onEachFeature: (feature: any, layer: any) => {
+            const isR = feature.properties.isRenabap;
+            layer.bindPopup(`
+              <div style="font-family: sans-serif; font-size: 0.85rem; color: #111; padding: 0.2rem;">
+                <strong style="color: ${isR ? '#ea580c' : '#0284c7'}; font-size: 0.95rem;">
+                  ${isR ? '🏡 RENABAP: ' : '📍 '}${feature.properties.name}
+                </strong>
+              </div>
+            `);
+          },
+        });
+        renabapLayerRef.current = renabapLayer;
+        if (showRenabap) renabapLayer.addTo(map);
 
-        const markersGroup = L.layerGroup().addTo(map);
-        markersGroupRef.current = markersGroup;
+        markersGroupRef.current = L.layerGroup().addTo(map);
         mapInstanceRef.current = map;
+        setMapReady(true);
       }
+    });
 
-      const map = mapInstanceRef.current;
-      const markersGroup = markersGroupRef.current;
-      if (!map || !markersGroup) return;
+    return () => {
+      isMounted = false;
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+        markersGroupRef.current = null;
+        heatLayerRef.current = null;
+        jurisLayerRef.current = null;
+        renabapLayerRef.current = null;
+        setMapReady(false);
+      }
+    };
+  }, []);
 
-      // Clear existing markers without destroying map
-      markersGroup.clearLayers();
+  // 2. Sync Polygon Layers & Dynamic Fills based on heatmap
+  useEffect(() => {
+    if (!mapReady || !mapInstanceRef.current) return;
+    const map = mapInstanceRef.current;
 
-      // Plot dynamic filtered incident markers / heat points
+    if (jurisLayerRef.current) {
+      if (showJurisdictions) {
+        if (!map.hasLayer(jurisLayerRef.current)) map.addLayer(jurisLayerRef.current);
+        jurisLayerRef.current.setStyle((feature: any) => ({
+          color: feature.properties.color || "#2563eb",
+          weight: 2,
+          opacity: 0.85,
+          fillColor: feature.properties.color || "#3b82f6",
+          fillOpacity: showHeatmap ? 0.04 : 0.18,
+        }));
+      } else {
+        if (map.hasLayer(jurisLayerRef.current)) map.removeLayer(jurisLayerRef.current);
+      }
+    }
+
+    if (renabapLayerRef.current) {
+      if (showRenabap) {
+        if (!map.hasLayer(renabapLayerRef.current)) map.addLayer(renabapLayerRef.current);
+        renabapLayerRef.current.setStyle((feature: any) => ({
+          color: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+          weight: feature.properties.isRenabap ? 2.5 : 1.2,
+          dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
+          fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+          fillOpacity: feature.properties.isRenabap ? (showHeatmap ? 0.08 : 0.28) : 0.05,
+        }));
+      } else {
+        if (map.hasLayer(renabapLayerRef.current)) map.removeLayer(renabapLayerRef.current);
+      }
+    }
+  }, [showJurisdictions, showRenabap, showHeatmap, mapReady]);
+
+  // 3. Render Continuous Heatmap Layer (leaflet.heat)
+  useEffect(() => {
+    if (!mapReady || !mapInstanceRef.current) return;
+    const map = mapInstanceRef.current;
+
+    if (heatLayerRef.current && map.hasLayer(heatLayerRef.current)) {
+      map.removeLayer(heatLayerRef.current);
+      heatLayerRef.current = null;
+    }
+
+    if (!showHeatmap) return;
+
+    import("leaflet").then(async (leafletModule) => {
+      const L = leafletModule.default || leafletModule;
+      try {
+        if (typeof window !== "undefined") {
+          (window as any).L = L;
+          await import("leaflet.heat");
+        }
+
+        const cal = HEAT_CALIBRATIONS[heatIntensity];
+        const heatPoints: [number, number, number][] = [];
+
+        incidents.forEach((inc: any) => {
+          const rawLat = inc.Latitud_Clean ?? inc.Latitud ?? inc.lat ?? 0;
+          const rawLon = inc.Longitud_Clean ?? inc.Longitud ?? inc.lng ?? 0;
+          const lat = typeof rawLat === "number" ? rawLat : parseFloat(rawLat);
+          const lon = typeof rawLon === "number" ? rawLon : parseFloat(rawLon);
+
+          if (!isNaN(lat) && !isNaN(lon) && lat < -37.5 && lat > -38.5 && lon < -57.0 && lon > -58.2) {
+            const origen = (inc.Origen_Dataset || inc.origen || inc.Tipo || inc.tipo || "").toUpperCase();
+            const isArmas = origen.includes("ARMA") || origen.includes("DISPARO");
+            const isHallazgo = origen.includes("HALLAZGO");
+            const weight = isArmas ? cal.weightHigh : isHallazgo ? cal.weightNormal * 0.8 : cal.weightNormal;
+            heatPoints.push([lat, lon, weight]);
+          }
+        });
+
+        if (typeof (L as any).heatLayer === "function" && heatPoints.length > 0) {
+          const heat = (L as any).heatLayer(heatPoints, {
+            radius: cal.radius,
+            blur: cal.blur,
+            maxZoom: 15,
+            max: cal.max,
+            minOpacity: cal.minOpacity,
+            gradient: {
+              0.15: "#2563eb",
+              0.35: "#06b6d4",
+              0.55: "#10b981",
+              0.70: "#f59e0b",
+              0.85: "#ea580c",
+              1.00: "#dc2626",
+            },
+          });
+          heat.addTo(map);
+          if (heat._canvas) {
+            heat._canvas.style.opacity = cal.opacity;
+            heat._canvas.style.pointerEvents = "none";
+          }
+          heatLayerRef.current = heat;
+        }
+      } catch (err) {
+        console.warn("Could not load leaflet.heat in SectionHotspots:", err);
+      }
+    });
+  }, [showHeatmap, heatIntensity, incidents, mapReady]);
+
+  // 4. Render Circle Markers
+  useEffect(() => {
+    if (!mapReady || !mapInstanceRef.current || !markersGroupRef.current) return;
+    const markersGroup = markersGroupRef.current;
+    markersGroup.clearLayers();
+
+    if (!showMarkers) return;
+
+    import("leaflet").then((L) => {
       const pointsToPlot = incidents.slice(0, 1500);
 
       pointsToPlot.forEach((inc: any) => {
@@ -103,22 +309,20 @@ function InteractiveHotspotsMap({ incidents = [] }: { incidents: any[] }) {
         marker.addTo(markersGroup);
       });
     });
+  }, [incidents, showMarkers, mapReady]);
 
-    return () => {
-      isMounted = false;
-      if (mapInstanceRef.current) {
-        mapInstanceRef.current.remove();
-        mapInstanceRef.current = null;
-        markersGroupRef.current = null;
-      }
-    };
-  }, [incidents]);
-
-  return <div ref={mapContainerRef} style={{ width: "100%", height: "650px", borderRadius: "8px" }} />;
+  return <div ref={mapContainerRef} style={{ width: "100%", height: "650px" }} />;
 }
 
 export default function SectionHotspots({ incidents = [], geoPoints = [] }: SectionHotspotsProps) {
   const [activeTab, setActiveTab] = useState<"general" | "robos" | "armas">("general");
+
+  // Layer Toggles & Heat Intensity State
+  const [showHeatmap, setShowHeatmap] = useState<boolean>(true);
+  const [heatIntensity, setHeatIntensity] = useState<"suave" | "medio" | "intenso">("medio");
+  const [showMarkers, setShowMarkers] = useState<boolean>(false);
+  const [showJurisdictions, setShowJurisdictions] = useState<boolean>(true);
+  const [showRenabap, setShowRenabap] = useState<boolean>(true);
 
   // Interactive Filters State
   const [filterTipo, setFilterTipo] = useState<string>("todos");
@@ -449,7 +653,150 @@ export default function SectionHotspots({ incidents = [], geoPoints = [] }: Sect
         {/* Map Container View */}
         <div style={{ background: "var(--bg-base)", borderRadius: "var(--radius-md)", border: "1px solid var(--border)", overflow: "hidden" }}>
           {mapMode === "interactive" ? (
-            <InteractiveHotspotsMap incidents={filteredIncidents} />
+            <>
+              {/* Layer Toggles & Heat Intensity Bar for Interactive Map */}
+              <div style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+                gap: "0.75rem",
+                padding: "0.6rem 0.85rem",
+                background: "var(--bg-surface)",
+                borderBottom: "1px solid var(--border)",
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
+                  <button
+                    onClick={() => setShowHeatmap(!showHeatmap)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.35rem",
+                      padding: "4px 9px",
+                      borderRadius: "var(--radius-xs)",
+                      border: `1px solid ${showHeatmap ? "#ef4444" : "var(--border)"}`,
+                      background: showHeatmap ? "#fee2e2" : "var(--bg-base)",
+                      color: showHeatmap ? "#b91c1c" : "var(--text-secondary)",
+                      fontSize: "12px",
+                      fontWeight: 700,
+                      cursor: "pointer",
+                    }}
+                  >
+                    {showHeatmap ? <CheckSquare size={13} color="#ef4444" /> : <Square size={13} />}
+                    <span>🔥 Mancha Térmica (KDE)</span>
+                  </button>
+
+                  {showHeatmap && (
+                    <div style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "2px",
+                      background: "var(--bg-subtle)",
+                      padding: "2px 4px",
+                      borderRadius: "var(--radius-xs)",
+                      border: "1px solid var(--border)",
+                    }}>
+                      <span style={{ fontSize: "10.5px", color: "var(--text-muted)", padding: "0 4px", fontWeight: 600 }}>
+                        Intensidad:
+                      </span>
+                      {(["suave", "medio", "intenso"] as const).map((lvl) => (
+                        <button
+                          key={lvl}
+                          onClick={() => setHeatIntensity(lvl)}
+                          style={{
+                            padding: "2px 7px",
+                            fontSize: "10.5px",
+                            fontWeight: 700,
+                            borderRadius: "3px",
+                            border: heatIntensity === lvl ? "1px solid #fca5a5" : "1px solid transparent",
+                            background: heatIntensity === lvl ? "#fee2e2" : "transparent",
+                            color: heatIntensity === lvl ? "#b91c1c" : "var(--text-secondary)",
+                            cursor: "pointer",
+                            transition: "all 0.15s ease",
+                            textTransform: "capitalize",
+                          }}
+                        >
+                          {lvl}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  <button
+                    onClick={() => setShowMarkers(!showMarkers)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.35rem",
+                      padding: "4px 9px",
+                      borderRadius: "var(--radius-xs)",
+                      border: `1px solid ${showMarkers ? "var(--accent-pba-blue)" : "var(--border)"}`,
+                      background: showMarkers ? "#eff6ff" : "var(--bg-base)",
+                      color: showMarkers ? "#0d5ca8" : "var(--text-secondary)",
+                      fontSize: "12px",
+                      fontWeight: 600,
+                      cursor: "pointer",
+                    }}
+                  >
+                    {showMarkers ? <CheckSquare size={13} color="var(--accent-pba-blue)" /> : <Square size={13} />}
+                    <span>📍 Puntos 911 Individuales</span>
+                  </button>
+
+                  <button
+                    onClick={() => setShowJurisdictions(!showJurisdictions)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.35rem",
+                      padding: "4px 9px",
+                      borderRadius: "var(--radius-xs)",
+                      border: `1px solid ${showJurisdictions ? "#3b82f6" : "var(--border)"}`,
+                      background: showJurisdictions ? "#eff6ff" : "var(--bg-base)",
+                      color: showJurisdictions ? "#1d4ed8" : "var(--text-secondary)",
+                      fontSize: "12px",
+                      fontWeight: 600,
+                      cursor: "pointer",
+                    }}
+                  >
+                    {showJurisdictions ? <CheckSquare size={13} color="#2563eb" /> : <Square size={13} />}
+                    <span>👮 Comisarías (1ra-16ta)</span>
+                  </button>
+
+                  <button
+                    onClick={() => setShowRenabap(!showRenabap)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.35rem",
+                      padding: "4px 9px",
+                      borderRadius: "var(--radius-xs)",
+                      border: `1px solid ${showRenabap ? "#ea580c" : "var(--border)"}`,
+                      background: showRenabap ? "#fff7ed" : "var(--bg-base)",
+                      color: showRenabap ? "#c2410c" : "var(--text-secondary)",
+                      fontSize: "12px",
+                      fontWeight: 600,
+                      cursor: "pointer",
+                    }}
+                  >
+                    {showRenabap ? <CheckSquare size={13} color="#ea580c" /> : <Square size={13} />}
+                    <span>🏡 RENABAP</span>
+                  </button>
+                </div>
+
+                <div style={{ fontSize: "11.5px", color: "var(--text-muted)" }}>
+                  {filteredIncidents.length.toLocaleString()} despachos analizados
+                </div>
+              </div>
+
+              <InteractiveHotspotsMap
+                incidents={filteredIncidents}
+                showHeatmap={showHeatmap}
+                heatIntensity={heatIntensity}
+                showMarkers={showMarkers}
+                showJurisdictions={showJurisdictions}
+                showRenabap={showRenabap}
+              />
+            </>
           ) : (
             <>
               {activeTab === "general" && (

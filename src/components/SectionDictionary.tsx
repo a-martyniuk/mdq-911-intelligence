@@ -10,7 +10,13 @@ interface SectionDictionaryProps {
 
 export default function SectionDictionary({ currentProject = "mdp" }: SectionDictionaryProps) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeTab, setActiveTab] = useState<"todas" | "original" | "narcocriminalidad" | "derivada" | "recuperacion">("todas");
+  const [activeTab, setActiveTab] = useState<"todas" | "original" | "narcocriminalidad" | "derivada" | "recuperacion">(
+    currentProject === "mdp" ? "todas" : "narcocriminalidad"
+  );
+
+  React.useEffect(() => {
+    setActiveTab(currentProject === "mdp" ? "todas" : "narcocriminalidad");
+  }, [currentProject]);
 
   const dictionaryData: (DictionaryItem & { proyecto?: string })[] = [
     // 1. Originales Mar del Plata 911

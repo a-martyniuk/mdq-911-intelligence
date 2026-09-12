@@ -52,6 +52,8 @@ export default function Dashboard() {
 
   // Keep active section in sync with active project
   useEffect(() => {
+    if (activeSection === "dictionary") return;
+
     if (currentProject === "jcp" && !activeSection.startsWith("drogas-")) {
       setActiveSection("drogas-overview");
     } else if (currentProject === "malvinas" && !activeSection.startsWith("malvinas-")) {

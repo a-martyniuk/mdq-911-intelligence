@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { MapPin, Filter, Download, Skull, Crosshair, ShieldAlert, Layers, Home, Info, Eye, FileText, Building2, CheckSquare, Square } from "lucide-react";
+import { MapPin, Filter, Download, Skull, Crosshair, ShieldAlert, Layers, Home, Info, Eye, FileText, Building2, CheckSquare, Square, Flame } from "lucide-react";
 import { exportToCSV } from "@/lib/excelExport";
 import { generateDrogasMalvinasPDF } from "@/lib/pdfReport";
 import { JURISDICTIONS_MALVINAS_GEOJSON, MALVINAS_MUNICIPAL_BOUNDARY_GEOJSON, POLICE_STATIONS_MALVINAS } from "@/lib/jurisdictionsMalvinasGeoJSON";
@@ -26,6 +26,7 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionMalvinasMa
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<any>(null);
   const markersGroupRef = useRef<any>(null);
+  const heatLayerRef = useRef<any>(null);
   const jurisLayerRef = useRef<any>(null);
   const stationsLayerRef = useRef<any>(null);
   const renabapLayerRef = useRef<any>(null);
@@ -43,7 +44,15 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionMalvinasMa
   const [showJurisdictions, setShowJurisdictions] = useState<boolean>(false);
   const [showRenabap, setShowRenabap] = useState<boolean>(true);
   const [showPoints, setShowPoints] = useState<boolean>(true);
+  const [showHeatmap, setShowHeatmap] = useState<boolean>(false);
+  const [heatIntensity, setHeatIntensity] = useState<"suave" | "medio" | "intenso">("medio");
   const [onlyBunkers, setOnlyBunkers] = useState<boolean>(false);
+
+  const HEAT_CALIBRATIONS = {
+    suave: { radius: 18, blur: 14, max: 1.4, weightArmas: 0.65, weightBunker: 0.50, weightNormal: 0.25, minOpacity: 0.18, opacity: "0.82" },
+    medio: { radius: 22, blur: 16, max: 1.1, weightArmas: 0.85, weightBunker: 0.65, weightNormal: 0.35, minOpacity: 0.22, opacity: "0.88" },
+    intenso: { radius: 27, blur: 19, max: 0.85, weightArmas: 1.0, weightBunker: 0.80, weightNormal: 0.45, minOpacity: 0.28, opacity: "0.95" },
+  };
 
   // Filtered dataset
   const filteredIncidents = useMemo(() => {
@@ -285,6 +294,7 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionMalvinasMa
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
         markersGroupRef.current = null;
+        heatLayerRef.current = null;
         jurisLayerRef.current = null;
         stationsLayerRef.current = null;
         renabapLayerRef.current = null;
@@ -314,9 +324,68 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionMalvinasMa
         if (map.hasLayer(renabapLayerRef.current)) map.removeLayer(renabapLayerRef.current);
       }
     }
-
-
   }, [showJurisdictions, showRenabap, mapReady]);
+
+  // Render Continuous Heatmap Layer (leaflet.heat)
+  useEffect(() => {
+    if (!mapReady || !mapInstanceRef.current) return;
+
+    import("leaflet").then(async (LModule) => {
+      const L = (LModule as any).default || LModule;
+      const map = mapInstanceRef.current;
+      if (!map) return;
+
+      if (heatLayerRef.current && map.hasLayer(heatLayerRef.current)) {
+        map.removeLayer(heatLayerRef.current);
+        heatLayerRef.current = null;
+      }
+
+      if (!showHeatmap) return;
+
+      try {
+        if (typeof window !== "undefined") {
+          (window as any).L = L;
+          await import("leaflet.heat");
+        }
+
+        let validPoints = filteredIncidents.filter((r) => r.lat && r.lng);
+        if (onlyBunkers) {
+          validPoints = validPoints.filter((r) => r.tieneArmas || (r.tipoLugar && (r.tipoLugar.includes("Búnker") || r.tipoLugar.includes("Ventanita"))));
+        }
+
+        const cal = HEAT_CALIBRATIONS[heatIntensity];
+        const heatPoints = validPoints.map((inc) => {
+          const hasArmas = inc.tieneArmas;
+          const isBunker = inc.tipoLugar?.includes("Búnker") || inc.tipoLugar?.includes("Ventanita");
+
+          let weight = cal.weightNormal;
+          if (hasArmas) weight = cal.weightArmas;
+          else if (isBunker) weight = cal.weightBunker;
+
+          return [inc.lat, inc.lng, weight];
+        });
+
+        if (typeof (L as any).heatLayer === "function" && heatPoints.length > 0) {
+          const heat = (L as any).heatLayer(heatPoints, {
+            radius: cal.radius,
+            blur: cal.blur,
+            maxZoom: 16,
+            max: cal.max,
+            minOpacity: cal.minOpacity,
+            gradient: { 0.15: "#2563eb", 0.35: "#06b6d4", 0.55: "#10b981", 0.7: "#f59e0b", 0.85: "#ea580c", 1.0: "#dc2626" },
+          });
+          heat.addTo(map);
+          if (heat._canvas) {
+            heat._canvas.style.opacity = cal.opacity;
+            heat._canvas.style.pointerEvents = "none";
+          }
+          heatLayerRef.current = heat;
+        }
+      } catch (err) {
+        console.warn("Could not initialize leaflet.heat:", err);
+      }
+    });
+  }, [filteredIncidents, onlyBunkers, showHeatmap, heatIntensity, mapReady]);
 
   // 2. Dynamically update markers without destroying the map
   useEffect(() => {
@@ -529,6 +598,64 @@ export default function SectionMalvinasMap({ incidents = [] }: SectionMalvinasMa
               {showPoints ? <CheckSquare size={14} /> : <Square size={14} />}
               <MapPin size={14} /> 💊 Puntos Venta ({filteredIncidents.filter(r => r.lat && r.lng).length})
             </button>
+
+            <button
+              onClick={() => setShowHeatmap(!showHeatmap)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.35rem",
+                padding: "0.35rem 0.75rem",
+                borderRadius: "6px",
+                border: showHeatmap ? "1px solid #ef4444" : "1px solid var(--border)",
+                background: showHeatmap ? "rgba(239, 68, 68, 0.15)" : "var(--bg-base)",
+                color: showHeatmap ? "#ef4444" : "var(--text-muted)",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              {showHeatmap ? <CheckSquare size={14} /> : <Square size={14} />}
+              <Flame size={14} /> 🔥 Mancha Térmica (KDE)
+            </button>
+
+            {showHeatmap && (
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "2px",
+                  background: "var(--bg-subtle)",
+                  padding: "2px 4px",
+                  borderRadius: "var(--radius-xs)",
+                  border: "1px solid var(--border)",
+                }}
+              >
+                <span style={{ fontSize: "10px", color: "var(--text-muted)", padding: "0 3px", fontWeight: 600 }}>
+                  Intensidad:
+                </span>
+                {(["suave", "medio", "intenso"] as const).map((lvl) => (
+                  <button
+                    key={lvl}
+                    onClick={() => setHeatIntensity(lvl)}
+                    style={{
+                      padding: "2px 7px",
+                      fontSize: "10.5px",
+                      fontWeight: 700,
+                      borderRadius: "3px",
+                      border: heatIntensity === lvl ? "1px solid #fca5a5" : "1px solid transparent",
+                      background: heatIntensity === lvl ? "#fee2e2" : "transparent",
+                      color: heatIntensity === lvl ? "#b91c1c" : "var(--text-secondary)",
+                      cursor: "pointer",
+                      transition: "all 0.15s ease",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {lvl}
+                  </button>
+                ))}
+              </div>
+            )}
 
             <button
               onClick={() => setOnlyBunkers(!onlyBunkers)}

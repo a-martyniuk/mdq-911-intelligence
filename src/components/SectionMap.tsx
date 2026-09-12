@@ -37,6 +37,8 @@ function MapComponent({
   showJurisdictions,
   showRenabap,
   showPoints,
+  showHeatmap = false,
+  heatIntensity = "medio",
 }: {
   points: GeoPoint[];
   recoveries?: any[];
@@ -44,15 +46,48 @@ function MapComponent({
   showJurisdictions: boolean;
   showRenabap: boolean;
   showPoints: boolean;
+  showHeatmap?: boolean;
+  heatIntensity?: "suave" | "medio" | "intenso";
 }) {
   const mapContainerRef = React.useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = React.useRef<any>(null);
+  const heatLayerRef = React.useRef<any>(null);
   const pointsLayerRef = React.useRef<any>(null);
   const vectorsLayerRef = React.useRef<any>(null);
   const jurisLayerRef = React.useRef<any>(null);
   const renabapLayerRef = React.useRef<any>(null);
   const LRef = React.useRef<any>(null);
   const [mapReady, setMapReady] = React.useState(false);
+
+  const HEAT_CALIBRATIONS = {
+    suave: {
+      radius: 18,
+      blur: 14,
+      max: 1.4,
+      weightNormal: 0.22,
+      weightHigh: 0.50,
+      minOpacity: 0.18,
+      opacity: "0.82",
+    },
+    medio: {
+      radius: 22,
+      blur: 16,
+      max: 1.0,
+      weightNormal: 0.32,
+      weightHigh: 0.65,
+      minOpacity: 0.22,
+      opacity: "0.88",
+    },
+    intenso: {
+      radius: 27,
+      blur: 19,
+      max: 0.75,
+      weightNormal: 0.42,
+      weightHigh: 0.85,
+      minOpacity: 0.28,
+      opacity: "0.95",
+    },
+  };
 
   // Initialize Map Once
   useEffect(() => {
@@ -68,19 +103,24 @@ function MapComponent({
           zoom: 12,
         });
 
+        // Polygons custom pane (between tile 200 and overlay 400)
+        const polyPane = map.createPane("polygonsPane");
+        polyPane.style.zIndex = "350";
+
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
           maxZoom: 19,
         }).addTo(map);
 
-        // Jurisdictions Layer
+        // Jurisdictions Layer (in polygonsPane)
         const jurisLayer = L.geoJSON(POLICE_JURISDICTIONS_GEOJSON, {
+          pane: "polygonsPane",
           style: (feature: any) => ({
             color: feature.properties.color || "#6366f1",
             weight: 2,
             opacity: 0.85,
             fillColor: feature.properties.color || "#6366f1",
-            fillOpacity: 0.12,
+            fillOpacity: showHeatmap ? 0.04 : 0.12,
           }),
           onEachFeature: (feature: any, layer: any) => {
             layer.bindPopup(`
@@ -100,15 +140,16 @@ function MapComponent({
         });
         jurisLayerRef.current = jurisLayer;
 
-        // RENABAP Layer
+        // RENABAP Layer (in polygonsPane)
         const renabapLayer = L.geoJSON(RENABAP_BARRIOS_GEOJSON, {
+          pane: "polygonsPane",
           style: (feature: any) => ({
             color: feature.properties.isRenabap ? "#f97316" : "#38bdf8",
             weight: feature.properties.isRenabap ? 2.5 : 1.2,
             dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
             opacity: 0.9,
             fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
-            fillOpacity: feature.properties.isRenabap ? 0.35 : 0.08,
+            fillOpacity: feature.properties.isRenabap ? (showHeatmap ? 0.08 : 0.35) : 0.08,
           }),
           onEachFeature: (feature: any, layer: any) => {
             const isR = feature.properties.isRenabap;
@@ -155,6 +196,7 @@ function MapComponent({
         mapInstanceRef.current = null;
         pointsLayerRef.current = null;
         vectorsLayerRef.current = null;
+        heatLayerRef.current = null;
         jurisLayerRef.current = null;
         renabapLayerRef.current = null;
         setMapReady(false);
@@ -162,29 +204,106 @@ function MapComponent({
     };
   }, []);
 
-  // Toggle Jurisdictions Layer
+  // Toggle Jurisdictions Layer & adjust fill
   useEffect(() => {
     if (!mapReady || !mapInstanceRef.current || !jurisLayerRef.current) return;
     const map = mapInstanceRef.current;
     const layer = jurisLayerRef.current;
     if (showJurisdictions) {
       if (!map.hasLayer(layer)) map.addLayer(layer);
+      layer.setStyle((feature: any) => ({
+        color: feature.properties.color || "#6366f1",
+        weight: 2,
+        opacity: 0.85,
+        fillColor: feature.properties.color || "#6366f1",
+        fillOpacity: showHeatmap ? 0.04 : 0.12,
+      }));
     } else {
       if (map.hasLayer(layer)) map.removeLayer(layer);
     }
-  }, [showJurisdictions, mapReady]);
+  }, [showJurisdictions, showHeatmap, mapReady]);
 
-  // Toggle RENABAP Layer
+  // Toggle RENABAP Layer & adjust fill
   useEffect(() => {
     if (!mapReady || !mapInstanceRef.current || !renabapLayerRef.current) return;
     const map = mapInstanceRef.current;
     const layer = renabapLayerRef.current;
     if (showRenabap) {
       if (!map.hasLayer(layer)) map.addLayer(layer);
+      layer.setStyle((feature: any) => ({
+        color: feature.properties.isRenabap ? "#f97316" : "#38bdf8",
+        weight: feature.properties.isRenabap ? 2.5 : 1.2,
+        dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
+        opacity: 0.9,
+        fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+        fillOpacity: feature.properties.isRenabap ? (showHeatmap ? 0.08 : 0.35) : 0.08,
+      }));
     } else {
       if (map.hasLayer(layer)) map.removeLayer(layer);
     }
-  }, [showRenabap, mapReady]);
+  }, [showRenabap, showHeatmap, mapReady]);
+
+  // Render Continuous Heatmap Layer (leaflet.heat)
+  useEffect(() => {
+    if (!mapReady || !mapInstanceRef.current) return;
+    const map = mapInstanceRef.current;
+
+    if (heatLayerRef.current && map.hasLayer(heatLayerRef.current)) {
+      map.removeLayer(heatLayerRef.current);
+      heatLayerRef.current = null;
+    }
+
+    if (!showHeatmap) return;
+
+    import("leaflet").then(async (leafletModule) => {
+      const L = leafletModule.default || leafletModule;
+      try {
+        if (typeof window !== "undefined") {
+          (window as any).L = L;
+          await import("leaflet.heat");
+        }
+
+        const cal = HEAT_CALIBRATIONS[heatIntensity];
+        const heatPoints: [number, number, number][] = [];
+
+        points.forEach((pt) => {
+          if (!isNaN(pt.lat) && !isNaN(pt.lng) && pt.lat < -37.5 && pt.lat > -38.5 && pt.lng < -57.0 && pt.lng > -58.2) {
+            const origen = (pt.origen || pt.tipo || "").toUpperCase();
+            const isArmas = origen.includes("ARMA") || origen.includes("DISPARO");
+            const isHallazgo = origen.includes("HALLAZGO");
+            const weight = isArmas ? cal.weightHigh : isHallazgo ? cal.weightNormal * 0.8 : cal.weightNormal;
+            heatPoints.push([pt.lat, pt.lng, weight]);
+          }
+        });
+
+        if (typeof (L as any).heatLayer === "function" && heatPoints.length > 0) {
+          const heat = (L as any).heatLayer(heatPoints, {
+            radius: cal.radius,
+            blur: cal.blur,
+            maxZoom: 15,
+            max: cal.max,
+            minOpacity: cal.minOpacity,
+            gradient: {
+              0.15: "#2563eb",
+              0.35: "#06b6d4",
+              0.55: "#10b981",
+              0.70: "#f59e0b",
+              0.85: "#ea580c",
+              1.00: "#dc2626",
+            },
+          });
+          heat.addTo(map);
+          if (heat._canvas) {
+            heat._canvas.style.opacity = cal.opacity;
+            heat._canvas.style.pointerEvents = "none";
+          }
+          heatLayerRef.current = heat;
+        }
+      } catch (err) {
+        console.warn("Could not load leaflet.heat in SectionMap:", err);
+      }
+    });
+  }, [showHeatmap, heatIntensity, points, mapReady]);
 
   // Update Points Layer Group (dynamic time slider / filter)
   useEffect(() => {
@@ -341,6 +460,8 @@ export default function SectionMap({ geoPoints = [], recoveries = [] }: SectionM
 
   // Layer switches states
   const [showPoints, setShowPoints] = useState(true);
+  const [showHeatmap, setShowHeatmap] = useState(false);
+  const [heatIntensity, setHeatIntensity] = useState<"suave" | "medio" | "intenso">("medio");
   const [showVectors, setShowVectors] = useState(true);
   const [showJurisdictions, setShowJurisdictions] = useState(true);
   const [showRenabap, setShowRenabap] = useState(true);
@@ -489,6 +610,69 @@ export default function SectionMap({ geoPoints = [], recoveries = [] }: SectionM
                 </div>
               </div>
             </label>
+
+            {/* Layer 5: Heatmap 911 */}
+            <div style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.35rem",
+              padding: "0.5rem 0.75rem",
+              background: showHeatmap ? "#fee2e2" : "var(--bg-base)",
+              border: `1px solid ${showHeatmap ? "#ef4444" : "var(--border)"}`,
+              borderRadius: "6px",
+            }}>
+              <label onClick={() => setShowHeatmap(!showHeatmap)} style={{ display: "flex", alignItems: "center", gap: "0.6rem", cursor: "pointer" }}>
+                {showHeatmap ? <CheckSquare size={16} color="#dc2626" /> : <Square size={16} color="var(--text-muted)" />}
+                <div>
+                  <div style={{ fontSize: "0.825rem", fontWeight: 700, color: showHeatmap ? "#b91c1c" : "var(--text-primary)" }}>
+                    🔥 Heatmap 911 (Densidad)
+                  </div>
+                  <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>
+                    Mancha térmica continua KDE
+                  </div>
+                </div>
+              </label>
+
+              {showHeatmap && (
+                <div style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "2px",
+                  background: "rgba(255, 255, 255, 0.8)",
+                  padding: "2px 4px",
+                  borderRadius: "var(--radius-xs)",
+                  border: "1px solid #fca5a5",
+                  marginTop: "2px",
+                }}>
+                  <span style={{ fontSize: "10px", color: "var(--text-muted)", padding: "0 3px", fontWeight: 600 }}>
+                    Nivel:
+                  </span>
+                  {(["suave", "medio", "intenso"] as const).map((lvl) => (
+                    <button
+                      key={lvl}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setHeatIntensity(lvl);
+                      }}
+                      style={{
+                        padding: "1px 6px",
+                        fontSize: "10px",
+                        fontWeight: 700,
+                        borderRadius: "3px",
+                        border: heatIntensity === lvl ? "1px solid #fca5a5" : "1px solid transparent",
+                        background: heatIntensity === lvl ? "#fee2e2" : "transparent",
+                        color: heatIntensity === lvl ? "#b91c1c" : "var(--text-secondary)",
+                        cursor: "pointer",
+                        transition: "all 0.15s ease",
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      {lvl}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Time Slider Controls Bar */}
@@ -550,6 +734,8 @@ export default function SectionMap({ geoPoints = [], recoveries = [] }: SectionM
           showJurisdictions={showJurisdictions}
           showRenabap={showRenabap}
           showPoints={showPoints}
+          showHeatmap={showHeatmap}
+          heatIntensity={heatIntensity}
         />
 
         {/* Legend Footer */}

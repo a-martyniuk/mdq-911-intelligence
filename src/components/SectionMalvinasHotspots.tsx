@@ -36,9 +36,24 @@ export default function SectionMalvinasHotspots({ incidents = [] }: SectionMalvi
 
   // Layer Toggles
   const [showHeatmap, setShowHeatmap] = useState<boolean>(true);
+  const [heatIntensity, setHeatIntensity] = useState<"suave" | "medio" | "intenso">("medio");
   const [showNodes, setShowNodes] = useState<boolean>(true);
   const [showRenabap, setShowRenabap] = useState<boolean>(true);
   const [showJurisdictions, setShowJurisdictions] = useState<boolean>(false);
+
+  // Calibrations for heatmap intensity levels
+  const HEAT_CALIBRATIONS = {
+    general: {
+      suave: { radius: 18, blur: 14, max: 1.4, weightArmas: 0.55, weightBunker: 0.45, weightNormal: 0.25, minOpacity: 0.18, opacity: "0.82" },
+      medio: { radius: 22, blur: 16, max: 1.1, weightArmas: 0.75, weightBunker: 0.60, weightNormal: 0.35, minOpacity: 0.22, opacity: "0.88" },
+      intenso: { radius: 27, blur: 19, max: 0.85, weightArmas: 0.90, weightBunker: 0.75, weightNormal: 0.45, minOpacity: 0.28, opacity: "0.95" },
+    },
+    armas: {
+      suave: { radius: 20, blur: 15, max: 1.3, weightArmas: 0.70, weightBunker: 0.45, weightNormal: 0.20, minOpacity: 0.18, opacity: "0.84" },
+      medio: { radius: 25, blur: 18, max: 1.0, weightArmas: 0.85, weightBunker: 0.55, weightNormal: 0.25, minOpacity: 0.22, opacity: "0.90" },
+      intenso: { radius: 30, blur: 21, max: 0.75, weightArmas: 1.0, weightBunker: 0.70, weightNormal: 0.35, minOpacity: 0.28, opacity: "0.96" },
+    },
+  };
 
   // Selected Node for Tactical Dossier Modal
   const [selectedNode, setSelectedNode] = useState<ChronicHotspotNode | null>(null);
@@ -322,33 +337,32 @@ export default function SectionMalvinasHotspots({ incidents = [] }: SectionMalvi
         }
 
         const validPoints = filtered.filter((r) => r.lat && r.lng);
+        const cal = HEAT_CALIBRATIONS[heatMode][heatIntensity];
         const heatPoints = validPoints.map((inc) => {
           const hasArmas = inc.tieneArmas || inc.armas === true || inc.armas === "SI";
           const isBunker = String(inc.tipoLugar || "").includes("Búnker");
           
-          let weight = 0.35;
-          if (heatMode === "armas") {
-            weight = hasArmas ? 0.85 : (isBunker ? 0.55 : 0.25);
-          } else {
-            weight = hasArmas ? 0.75 : (isBunker ? 0.60 : 0.35);
-          }
+          let weight = cal.weightNormal;
+          if (hasArmas) weight = cal.weightArmas;
+          else if (isBunker) weight = cal.weightBunker;
+
           return [inc.lat, inc.lng, weight];
         });
 
         if (typeof (L as any).heatLayer === "function" && heatPoints.length > 0) {
           const heat = (L as any).heatLayer(heatPoints, {
-            radius: heatMode === "armas" ? 25 : 22,
-            blur: heatMode === "armas" ? 18 : 16,
+            radius: cal.radius,
+            blur: cal.blur,
             maxZoom: 15,
-            max: heatMode === "armas" ? 1.0 : 1.1,
-            minOpacity: 0.20,
+            max: cal.max,
+            minOpacity: cal.minOpacity,
             gradient: heatMode === "armas" 
               ? { 0.2: "#ef4444", 0.45: "#dc2626", 0.7: "#991b1b", 1.0: "#450a0a" }
               : { 0.15: "#2563eb", 0.35: "#06b6d4", 0.55: "#10b981", 0.7: "#f59e0b", 0.85: "#ea580c", 1.0: "#dc2626" }
           });
           heat.addTo(map);
           if (heat._canvas) {
-            heat._canvas.style.opacity = "0.88";
+            heat._canvas.style.opacity = cal.opacity;
             heat._canvas.style.pointerEvents = "none";
           }
           heatLayerRef.current = heat;
@@ -357,7 +371,7 @@ export default function SectionMalvinasHotspots({ incidents = [] }: SectionMalvi
         console.warn("Could not initialize leaflet.heat:", err);
       }
     });
-  }, [filtered, heatMode, showHeatmap, mapReady, activeTab]);
+  }, [filtered, heatMode, heatIntensity, showHeatmap, mapReady, activeTab]);
 
   // Render 10 Chronic Resistance Nodes (Tactical Radars & Buffers)
   useEffect(() => {
@@ -679,6 +693,42 @@ export default function SectionMalvinasHotspots({ incidents = [] }: SectionMalvi
                   {showHeatmap ? <CheckSquare size={13} color="#ef4444" /> : <Square size={13} />}
                   <span>Mancha Térmica (KDE)</span>
                 </button>
+
+                {showHeatmap && (
+                  <div style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "2px",
+                    background: "var(--bg-subtle)",
+                    padding: "2px 4px",
+                    borderRadius: "var(--radius-xs)",
+                    border: "1px solid var(--border)",
+                  }}>
+                    <span style={{ fontSize: "10px", color: "var(--text-muted)", padding: "0 3px", fontWeight: 600 }}>
+                      Intensidad:
+                    </span>
+                    {(["suave", "medio", "intenso"] as const).map((lvl) => (
+                      <button
+                        key={lvl}
+                        onClick={() => setHeatIntensity(lvl)}
+                        style={{
+                          padding: "2px 7px",
+                          fontSize: "10.5px",
+                          fontWeight: 700,
+                          borderRadius: "3px",
+                          border: heatIntensity === lvl ? "1px solid #fca5a5" : "1px solid transparent",
+                          background: heatIntensity === lvl ? "#fee2e2" : "transparent",
+                          color: heatIntensity === lvl ? "#b91c1c" : "var(--text-secondary)",
+                          cursor: "pointer",
+                          transition: "all 0.15s ease",
+                          textTransform: "capitalize",
+                        }}
+                      >
+                        {lvl}
+                      </button>
+                    ))}
+                  </div>
+                )}
 
                 <button
                   onClick={() => setShowNodes(!showNodes)}
