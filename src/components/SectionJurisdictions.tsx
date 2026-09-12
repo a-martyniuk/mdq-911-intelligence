@@ -23,31 +23,35 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
   const [heatIntensity, setHeatIntensity] = useState<"suave" | "medio" | "intenso">("medio");
   const [showComisarias, setShowComisarias] = useState(true);
   const [showRenabap, setShowRenabap] = useState(true);
+  const [mapReady, setMapReady] = useState(false);
 
   const HEAT_CALIBRATIONS = {
     suave: {
-      radius: 13,
-      blur: 12,
-      max: 5.0,
-      weightNormal: 0.08,
-      weightHigh: 0.16,
-      opacity: "0.45",
+      radius: 17,
+      blur: 13,
+      max: 1.4,
+      weightNormal: 0.22,
+      weightHigh: 0.45,
+      minOpacity: 0.18,
+      opacity: "0.82",
     },
     medio: {
-      radius: 16,
-      blur: 14,
-      max: 3.5,
-      weightNormal: 0.12,
-      weightHigh: 0.22,
-      opacity: "0.58",
+      radius: 20,
+      blur: 15,
+      max: 1.0,
+      weightNormal: 0.32,
+      weightHigh: 0.60,
+      minOpacity: 0.22,
+      opacity: "0.88",
     },
     intenso: {
-      radius: 20,
-      blur: 16,
-      max: 2.2,
-      weightNormal: 0.18,
-      weightHigh: 0.32,
-      opacity: "0.72",
+      radius: 24,
+      blur: 17,
+      max: 0.75,
+      weightNormal: 0.42,
+      weightHigh: 0.75,
+      minOpacity: 0.28,
+      opacity: "0.95",
     },
   };
 
@@ -177,14 +181,14 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
   const totalThefts = useMemo(() => jurisdictionStats.reduce((acc, curr) => acc + curr.theftsCount, 0), [jurisdictionStats]);
   const totalDumps = useMemo(() => jurisdictionStats.reduce((acc, curr) => acc + curr.dumpsCount, 0), [jurisdictionStats]);
 
-  // Initialize Leaflet Map with Real Heatmap & Organic Polygons
+  // 1. Initialize Leaflet Map ONCE with Dedicated Polygons Pane
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
     let L: any;
     let isCancelled = false;
 
-    import("leaflet").then(async (leafletModule) => {
+    import("leaflet").then((leafletModule) => {
       if (isCancelled) return;
       L = leafletModule.default || leafletModule;
 
@@ -198,10 +202,17 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
         heatLayerRef.current = null;
         comisariasLayerRef.current = null;
         renabapLayerRef.current = null;
+        setMapReady(false);
       }
 
       const map = L.map(mapContainerRef.current).setView([-38.0055, -57.552], 12);
       mapInstanceRef.current = map;
+
+      // Custom pane for GeoJSON polygons below the heatmap overlay
+      if (!map.getPane("polygonsPane")) {
+        const pPane = map.createPane("polygonsPane");
+        pPane.style.zIndex = "350";
+      }
 
       // OpenStreetMap basemap
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -209,128 +220,78 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
         maxZoom: 19,
       }).addTo(map);
 
-      // 1. Render Heatmap Layer (8.598 Incidents 911 Density)
-      if (showHeatmap) {
-        try {
-          if (typeof window !== "undefined") {
-            await import("leaflet.heat");
-          }
+      // Police Jurisdiction GeoJSON Polygons (in polygonsPane)
+      const comisariasLayer = L.geoJSON(POLICE_JURISDICTIONS_GEOJSON, {
+        pane: "polygonsPane",
+        style: (feature: any) => ({
+          color: feature.properties.color || "#6366f1",
+          weight: 2.2,
+          opacity: 0.85,
+          fillColor: feature.properties.color || "#6366f1",
+          fillOpacity: showHeatmap ? 0.04 : 0.20,
+        }),
+        onEachFeature: (feature: any, layer: any) => {
+          const stat = jurisdictionStats.find((s) => s.code === feature.properties.code);
+          const tCount = stat ? stat.theftsCount : 0;
+          const dCount = stat ? stat.dumpsCount : 0;
+          const roleBadge = stat ? stat.roleBadge : "";
 
-          const cal = HEAT_CALIBRATIONS[heatIntensity];
-          const heatPoints: [number, number, number][] = [];
-          incidents.forEach((inc) => {
-            const rawLat = inc.Latitud_Clean ?? inc.Latitud ?? 0;
-            const rawLon = inc.Longitud_Clean ?? inc.Longitud ?? 0;
-            const lat = typeof rawLat === "number" ? rawLat : parseFloat(rawLat);
-            const lon = typeof rawLon === "number" ? rawLon : parseFloat(rawLon);
-
-            if (!isNaN(lat) && !isNaN(lon) && lat < -37.5 && lat > -38.5 && lon < -57.0 && lon > -58.2) {
-              const origen = (inc.Origen_Dataset || "").toUpperCase();
-              const tipo = (inc.Tipo || "").toLowerCase();
-              const isHallazgo = origen.includes("HALLAZGO") || tipo.includes("hallazgo") || tipo.includes("recuperado");
-              heatPoints.push([lat, lon, isHallazgo ? cal.weightHigh : cal.weightNormal]);
-            }
-          });
-
-          if (typeof (L as any).heatLayer === "function" && heatPoints.length > 0) {
-            const heat = (L as any).heatLayer(heatPoints, {
-              radius: cal.radius,
-              blur: cal.blur,
-              maxZoom: 15,
-              max: cal.max,
-              minOpacity: 0.1,
-              gradient: {
-                0.15: "#0284c7",
-                0.35: "#06b6d4",
-                0.55: "#10b981",
-                0.70: "#f59e0b",
-                0.85: "#f97316",
-                1.00: "#ef4444",
-              },
-            });
-            heat.addTo(map);
-            if (heat._canvas) {
-              heat._canvas.style.opacity = cal.opacity;
-            }
-            heatLayerRef.current = heat;
-          }
-        } catch (err) {
-          console.warn("Could not load leaflet.heat:", err);
-        }
-      }
-
-      // 2. Render Police Jurisdiction GeoJSON Organic Polygons
-      if (showComisarias) {
-        const comisariasLayer = L.geoJSON(POLICE_JURISDICTIONS_GEOJSON, {
-          style: (feature: any) => ({
-            color: feature.properties.color || "#6366f1",
-            weight: 2.2,
-            opacity: 0.85,
-            fillColor: feature.properties.color || "#6366f1",
-            fillOpacity: showHeatmap ? 0.12 : 0.22,
-          }),
-          onEachFeature: (feature: any, layer: any) => {
-            const stat = jurisdictionStats.find((s) => s.code === feature.properties.code);
-            const tCount = stat ? stat.theftsCount : 0;
-            const dCount = stat ? stat.dumpsCount : 0;
-            const roleBadge = stat ? stat.roleBadge : "";
-
-            layer.bindPopup(`
-              <div style="font-family: var(--font-sans), sans-serif; font-size: 0.85rem; color: #f8fafc; padding: 0.35rem; max-width: 280px;">
-                <strong style="color: ${feature.properties.color || '#818cf8'}; font-size: 1rem; display: block; margin-bottom: 0.3rem;">
-                  ${feature.properties.name}
-                </strong>
-                <div style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 0.5rem; line-height: 1.35;">
-                  <b style="color: #f8fafc;">Barrios:</b> ${feature.properties.description}
-                </div>
-                <div style="padding-top: 0.45rem; border-top: 1px solid rgba(255,255,255,0.12); font-size: 0.8rem; display: flex; flex-direction: column; gap: 0.25rem;">
-                  <div style="color: #f87171; font-weight: 700;">🔴 Sustracciones Registradas: ${tCount} robos</div>
-                  <div style="color: #34d399; font-weight: 700;">🟢 Hallazgos / Descartes: ${dCount} vehículos</div>
-                  <div style="margin-top: 0.25rem; font-weight: 800; font-size: 0.78rem;">${roleBadge}</div>
-                </div>
+          layer.bindPopup(`
+            <div style="font-family: var(--font-sans), sans-serif; font-size: 0.85rem; color: #0f172a; padding: 0.35rem; max-width: 280px;">
+              <strong style="color: ${feature.properties.color || '#4f46e5'}; font-size: 1rem; display: block; margin-bottom: 0.3rem;">
+                ${feature.properties.name}
+              </strong>
+              <div style="font-size: 0.78rem; color: #475569; margin-bottom: 0.5rem; line-height: 1.35;">
+                <b style="color: #0f172a;">Barrios:</b> ${feature.properties.description}
               </div>
-            `);
-          },
-        });
-        comisariasLayer.addTo(map);
-        comisariasLayerRef.current = comisariasLayer;
-      }
-
-      // 3. Render RENABAP & Barrios Populares layer
-      if (showRenabap) {
-        const renabapLayer = L.geoJSON(RENABAP_BARRIOS_GEOJSON, {
-          style: (feature: any) => ({
-            color: feature.properties.isRenabap ? "#f97316" : "#38bdf8",
-            weight: feature.properties.isRenabap ? 2.5 : 1.2,
-            dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
-            opacity: 0.9,
-            fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
-            fillOpacity: feature.properties.isRenabap ? (showHeatmap ? 0.22 : 0.35) : 0.08,
-          }),
-          onEachFeature: (feature: any, layer: any) => {
-            const isR = feature.properties.isRenabap;
-            const fams = feature.properties.familias;
-            const idRen = feature.properties.idRenabap;
-            layer.bindPopup(`
-              <div style="font-family: var(--font-sans), sans-serif; font-size: 0.85rem; color: #f8fafc; padding: 0.3rem; max-width: 280px;">
-                <strong style="color: ${isR ? '#fb923c' : '#38bdf8'}; font-size: 0.95rem; display: block; margin-bottom: 0.25rem;">
-                  ${isR ? '🏡 RENABAP: ' : '📍 '}${feature.properties.name}
-                </strong>
-                <div style="font-size: 0.78rem; color: #cbd5e1; line-height: 1.35;">
-                  <b style="color: #f8fafc;">Categoría:</b> ${isR ? 'Registro Nacional de Barrios Populares 2023 (SISU)' : 'Barrio Oficial MGP'}
-                </div>
-                ${idRen ? `<div style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.15rem;"><b style="color: #f8fafc;">ID RENABAP:</b> #${idRen}</div>` : ''}
-                ${fams ? `<div style="font-size: 0.75rem; color: #94a3b8;"><b style="color: #f8fafc;">Familias Registradas:</b> ${fams}</div>` : ''}
-                <div style="margin-top: 0.4rem; padding-top: 0.35rem; border-top: 1px solid rgba(255,255,255,0.12); font-size: 0.75rem; color: #fb923c; font-weight: 700;">
-                  SHP Oficial RENABAP 2023 Mar del Plata
-                </div>
+              <div style="padding-top: 0.45rem; border-top: 1px solid #e2e8f0; font-size: 0.8rem; display: flex; flex-direction: column; gap: 0.25rem;">
+                <div style="color: #dc2626; font-weight: 700;">🔴 Sustracciones Registradas: ${tCount} robos</div>
+                <div style="color: #059669; font-weight: 700;">🟢 Hallazgos / Descartes: ${dCount} vehículos</div>
+                <div style="margin-top: 0.25rem; font-weight: 800; font-size: 0.78rem;">${roleBadge}</div>
               </div>
-            `);
-          },
-        });
-        renabapLayer.addTo(map);
-        renabapLayerRef.current = renabapLayer;
-      }
+            </div>
+          `);
+        },
+      });
+      comisariasLayerRef.current = comisariasLayer;
+      if (showComisarias) comisariasLayer.addTo(map);
+
+      // RENABAP & Barrios Populares layer (in polygonsPane)
+      const renabapLayer = L.geoJSON(RENABAP_BARRIOS_GEOJSON, {
+        pane: "polygonsPane",
+        style: (feature: any) => ({
+          color: feature.properties.isRenabap ? "#f97316" : "#0284c7",
+          weight: feature.properties.isRenabap ? 2.5 : 1.2,
+          dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
+          opacity: 0.9,
+          fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+          fillOpacity: feature.properties.isRenabap ? (showHeatmap ? 0.08 : 0.28) : 0.05,
+        }),
+        onEachFeature: (feature: any, layer: any) => {
+          const isR = feature.properties.isRenabap;
+          const fams = feature.properties.familias;
+          const idRen = feature.properties.idRenabap;
+          layer.bindPopup(`
+            <div style="font-family: var(--font-sans), sans-serif; font-size: 0.85rem; color: #0f172a; padding: 0.3rem; max-width: 280px;">
+              <strong style="color: ${isR ? '#ea580c' : '#0284c7'}; font-size: 0.95rem; display: block; margin-bottom: 0.25rem;">
+                ${isR ? '🏡 RENABAP: ' : '📍 '}${feature.properties.name}
+              </strong>
+              <div style="font-size: 0.78rem; color: #475569; line-height: 1.35;">
+                <b style="color: #0f172a;">Categoría:</b> ${isR ? 'Registro Nacional de Barrios Populares 2023 (SISU)' : 'Barrio Oficial MGP'}
+              </div>
+              ${idRen ? `<div style="font-size: 0.75rem; color: #64748b; margin-top: 0.15rem;"><b style="color: #0f172a;">ID RENABAP:</b> #${idRen}</div>` : ''}
+              ${fams ? `<div style="font-size: 0.75rem; color: #64748b;"><b style="color: #0f172a;">Familias Registradas:</b> ${fams}</div>` : ''}
+              <div style="margin-top: 0.4rem; padding-top: 0.35rem; border-top: 1px solid #e2e8f0; font-size: 0.75rem; color: #ea580c; font-weight: 700;">
+                SHP Oficial RENABAP 2023 Mar del Plata
+              </div>
+            </div>
+          `);
+        },
+      });
+      renabapLayerRef.current = renabapLayer;
+      if (showRenabap) renabapLayer.addTo(map);
+
+      setMapReady(true);
     });
 
     return () => {
@@ -341,9 +302,115 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
         heatLayerRef.current = null;
         comisariasLayerRef.current = null;
         renabapLayerRef.current = null;
+        setMapReady(false);
       }
     };
-  }, [jurisdictionStats, showHeatmap, heatIntensity, showComisarias, showRenabap, incidents]);
+  }, [jurisdictionStats]);
+
+  // 2. Sync Polygon Layers & Dynamic Fills based on Heatmap state
+  useEffect(() => {
+    if (!mapReady || !mapInstanceRef.current) return;
+    const map = mapInstanceRef.current;
+
+    // Comisarías layer sync
+    if (comisariasLayerRef.current) {
+      if (showComisarias) {
+        if (!map.hasLayer(comisariasLayerRef.current)) map.addLayer(comisariasLayerRef.current);
+        comisariasLayerRef.current.setStyle((feature: any) => ({
+          color: feature.properties.color || "#6366f1",
+          weight: 2.2,
+          opacity: 0.85,
+          fillColor: feature.properties.color || "#6366f1",
+          fillOpacity: showHeatmap ? 0.04 : 0.20,
+        }));
+      } else {
+        if (map.hasLayer(comisariasLayerRef.current)) map.removeLayer(comisariasLayerRef.current);
+      }
+    }
+
+    // RENABAP layer sync
+    if (renabapLayerRef.current) {
+      if (showRenabap) {
+        if (!map.hasLayer(renabapLayerRef.current)) map.addLayer(renabapLayerRef.current);
+        renabapLayerRef.current.setStyle((feature: any) => ({
+          color: feature.properties.isRenabap ? "#f97316" : "#0284c7",
+          weight: feature.properties.isRenabap ? 2.5 : 1.2,
+          dashArray: feature.properties.isRenabap ? "6, 4" : "3, 3",
+          opacity: 0.9,
+          fillColor: feature.properties.isRenabap ? "#ea580c" : "#0284c7",
+          fillOpacity: feature.properties.isRenabap ? (showHeatmap ? 0.08 : 0.28) : 0.05,
+        }));
+      } else {
+        if (map.hasLayer(renabapLayerRef.current)) map.removeLayer(renabapLayerRef.current);
+      }
+    }
+  }, [showComisarias, showRenabap, showHeatmap, mapReady]);
+
+  // 3. Render / Update Leaflet Heatmap Layer (8.598 Incidents 911 Density)
+  useEffect(() => {
+    if (!mapReady || !mapInstanceRef.current) return;
+    const map = mapInstanceRef.current;
+
+    // Remove existing heatmap
+    if (heatLayerRef.current && map.hasLayer(heatLayerRef.current)) {
+      map.removeLayer(heatLayerRef.current);
+      heatLayerRef.current = null;
+    }
+
+    if (!showHeatmap) return;
+
+    import("leaflet").then(async (leafletModule) => {
+      const L = leafletModule.default || leafletModule;
+      try {
+        if (typeof window !== "undefined") {
+          (window as any).L = L;
+          await import("leaflet.heat");
+        }
+
+        const cal = HEAT_CALIBRATIONS[heatIntensity];
+        const heatPoints: [number, number, number][] = [];
+        incidents.forEach((inc) => {
+          const rawLat = inc.Latitud_Clean ?? inc.Latitud ?? 0;
+          const rawLon = inc.Longitud_Clean ?? inc.Longitud ?? 0;
+          const lat = typeof rawLat === "number" ? rawLat : parseFloat(rawLat);
+          const lon = typeof rawLon === "number" ? rawLon : parseFloat(rawLon);
+
+          if (!isNaN(lat) && !isNaN(lon) && lat < -37.5 && lat > -38.5 && lon < -57.0 && lon > -58.2) {
+            const origen = (inc.Origen_Dataset || "").toUpperCase();
+            const tipo = (inc.Tipo || "").toLowerCase();
+            const isHallazgo = origen.includes("HALLAZGO") || tipo.includes("hallazgo") || tipo.includes("recuperado");
+            heatPoints.push([lat, lon, isHallazgo ? cal.weightHigh : cal.weightNormal]);
+          }
+        });
+
+        if (typeof (L as any).heatLayer === "function" && heatPoints.length > 0) {
+          const heat = (L as any).heatLayer(heatPoints, {
+            radius: cal.radius,
+            blur: cal.blur,
+            maxZoom: 15,
+            max: cal.max,
+            minOpacity: cal.minOpacity,
+            gradient: {
+              0.15: "#2563eb",
+              0.35: "#06b6d4",
+              0.55: "#10b981",
+              0.70: "#f59e0b",
+              0.85: "#ea580c",
+              1.00: "#dc2626",
+            },
+          });
+          heat.addTo(map);
+          if (heat._canvas) {
+            heat._canvas.style.opacity = cal.opacity;
+            heat._canvas.style.pointerEvents = "none";
+          }
+          heatLayerRef.current = heat;
+        }
+      } catch (err) {
+        console.warn("Could not load leaflet.heat:", err);
+      }
+    });
+  }, [showHeatmap, heatIntensity, incidents, mapReady]);
 
   return (
     <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
@@ -483,13 +550,13 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
                         key={lvl}
                         onClick={() => setHeatIntensity(lvl)}
                         style={{
-                          padding: "2px 6px",
-                          fontSize: "10px",
+                          padding: "2px 7px",
+                          fontSize: "10.5px",
                           fontWeight: 700,
                           borderRadius: "3px",
-                          border: "none",
-                          background: heatIntensity === lvl ? "rgba(239, 68, 68, 0.25)" : "transparent",
-                          color: heatIntensity === lvl ? "#f87171" : "var(--text-muted)",
+                          border: heatIntensity === lvl ? "1px solid #fca5a5" : "1px solid transparent",
+                          background: heatIntensity === lvl ? "#fee2e2" : "transparent",
+                          color: heatIntensity === lvl ? "#b91c1c" : "var(--text-secondary)",
                           cursor: "pointer",
                           transition: "all 0.15s ease",
                         }}

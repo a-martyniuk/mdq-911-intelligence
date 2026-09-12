@@ -653,9 +653,8 @@ button:active,
 }
 
 .leaflet-heatmap-layer {
-  opacity: 0.62;
-  transition: opacity var(--duration-normal) var(--ease-out);
-  pointer-events: none;
+  pointer-events: none !important;
+  transition: opacity var(--duration-fast) var(--ease-out);
 }
 
 .leaflet-bar {
