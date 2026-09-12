@@ -83,10 +83,10 @@ export default function SectionDrogasOverview({ stats, incidents = [] }: Section
   }, [jcpOnlyIncidents, incidents]);
 
   return (
-    <div>
+    <div className="animate-enter">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1.25rem" }}>
         <div>
-          <h2 className="card-title" style={{ fontSize: "20px", fontWeight: 600 }}>
+          <h2 className="card-title" style={{ fontSize: "19px", fontWeight: 600 }}>
             Inteligencia Narcocriminal & Puntos de Venta (José C. Paz)
           </h2>
           <p className="card-subtitle">

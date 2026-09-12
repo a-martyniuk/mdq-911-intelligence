@@ -369,19 +369,19 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
   const medianHours = vehicleType === "motos" ? 7.0 : vehicleType === "autos" ? 4.9 : 5.4;
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+    <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
       {/* Header Banner */}
-      <div className="card" style={{ background: "linear-gradient(135deg, rgba(99,102,241,0.12) 0%, rgba(16,185,129,0.08) 100%)", border: "1px solid rgba(99,102,241,0.3)" }}>
+      <div className="card" style={{ background: "linear-gradient(90deg, #101623 0%, #131c2d 100%)", borderColor: "var(--border)" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-            <div style={{ padding: "0.75rem", borderRadius: "10px", background: "var(--accent-indigo)", color: "#fff" }}>
-              <Car size={24} />
+          <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
+            <div style={{ padding: "0.65rem", borderRadius: "var(--radius-sm)", background: "rgba(59, 130, 246, 0.15)", color: "#38bdf8", border: "1px solid rgba(59, 130, 246, 0.3)" }}>
+              <Car size={22} />
             </div>
             <div>
-              <h2 style={{ fontSize: "1.25rem", fontWeight: 700, margin: 0, color: "var(--text-primary)" }}>
+              <h2 style={{ fontSize: "19px", fontWeight: 600, margin: 0, color: "var(--text-primary)", letterSpacing: "-0.015em" }}>
                 Trazabilidad & Seguimiento de Vehículos (Robo ➔ Hallazgo)
               </h2>
-              <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", margin: "0.2rem 0 0" }}>
+              <p style={{ fontSize: "13.5px", color: "var(--text-muted)", margin: "0.2rem 0 0" }}>
                 Auditoría cruzada de denuncias de sustracción y actas de hallazgo del 911 discriminando Automóviles de Motovehículos.
               </p>
             </div>
@@ -395,79 +395,69 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
                 if (searchTerm.trim()) filterText += `Búsqueda: "${searchTerm.trim()}"`;
                 generateAllTrajectoriesPDF(filteredCases, filterText || undefined);
               }}
-              style={{
-                height: "38px",
-                padding: "0 1.2rem",
-                fontSize: "0.825rem",
-                fontWeight: 800,
-                background: "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)",
-                color: "#fff",
-                border: "none",
-                borderRadius: "6px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem",
-                boxShadow: "0 4px 12px rgba(59,130,246,0.3)"
-              }}
+              className="btn-export btn-pdf"
+              style={{ padding: "7px 14px" }}
             >
-              <FileText size={16} /> 📄 Expediente de Trazabilidad (PDF)
+              <FileText size={14} /> Expediente de Trazabilidad (PDF)
             </button>
 
             {/* Vehicle Type Switcher Tabs */}
-            <div style={{ display: "flex", gap: "0.4rem", background: "var(--bg-base)", padding: "0.35rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
+            <div style={{ display: "flex", gap: "0.3rem", background: "var(--bg-base)", padding: "0.25rem", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)" }}>
               <button
                 onClick={() => setVehicleType("autos")}
                 style={{
-                  padding: "0.5rem 0.95rem",
-                  borderRadius: "6px",
-                  border: "none",
-                  background: vehicleType === "autos" ? "var(--accent-indigo)" : "transparent",
-                  color: vehicleType === "autos" ? "#fff" : "var(--text-secondary)",
-                  fontWeight: 700,
-                  fontSize: "0.825rem",
+                  padding: "0.4rem 0.85rem",
+                  borderRadius: "var(--radius-xs)",
+                  border: "1px solid " + (vehicleType === "autos" ? "rgba(59, 130, 246, 0.4)" : "transparent"),
+                  background: vehicleType === "autos" ? "#162238" : "transparent",
+                  color: vehicleType === "autos" ? "#ffffff" : "var(--text-secondary)",
+                  fontWeight: 600,
+                  fontSize: "0.8rem",
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
                   gap: "0.4rem",
-                  boxShadow: vehicleType === "autos" ? "0 2px 8px rgba(99,102,241,0.4)" : "none",
                 }}
               >
-                <Car size={16} /> Automóviles ({countAutos})
+                <Car size={14} style={{ color: vehicleType === "autos" ? "#38bdf8" : "var(--text-muted)" }} />
+                <span>Autos</span>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: vehicleType === "autos" ? "#38bdf8" : "var(--text-muted)" }}>({countAutos})</span>
               </button>
               <button
                 onClick={() => setVehicleType("motos")}
                 style={{
-                  padding: "0.5rem 0.95rem",
-                  borderRadius: "6px",
-                  border: "none",
-                  background: vehicleType === "motos" ? "var(--accent-amber)" : "transparent",
-                  color: vehicleType === "motos" ? "#fff" : "var(--text-secondary)",
-                  fontWeight: 700,
-                  fontSize: "0.825rem",
+                  padding: "0.4rem 0.85rem",
+                  borderRadius: "var(--radius-xs)",
+                  border: "1px solid " + (vehicleType === "motos" ? "rgba(245, 158, 11, 0.4)" : "transparent"),
+                  background: vehicleType === "motos" ? "#241c10" : "transparent",
+                  color: vehicleType === "motos" ? "#ffffff" : "var(--text-secondary)",
+                  fontWeight: 600,
+                  fontSize: "0.8rem",
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
                   gap: "0.4rem",
-                  boxShadow: vehicleType === "motos" ? "0 2px 8px rgba(245,158,11,0.4)" : "none",
                 }}
               >
-                <Bike size={16} /> Motovehículos ({countMotos})
+                <Bike size={14} style={{ color: vehicleType === "motos" ? "#fbbf24" : "var(--text-muted)" }} />
+                <span>Motos</span>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: vehicleType === "motos" ? "#fbbf24" : "var(--text-muted)" }}>({countMotos})</span>
               </button>
               <button
                 onClick={() => setVehicleType("todos")}
                 style={{
-                  padding: "0.5rem 0.85rem",
-                  borderRadius: "6px",
-                  border: "none",
-                  background: vehicleType === "todos" ? "rgba(255,255,255,0.15)" : "transparent",
-                  color: vehicleType === "todos" ? "#fff" : "var(--text-secondary)",
-                  fontWeight: 700,
+                  padding: "0.4rem 0.85rem",
+                  borderRadius: "var(--radius-xs)",
+                  border: "1px solid " + (vehicleType === "todos" ? "rgba(255, 255, 255, 0.16)" : "transparent"),
+                  background: vehicleType === "todos" ? "rgba(255, 255, 255, 0.06)" : "transparent",
+                  color: vehicleType === "todos" ? "#ffffff" : "var(--text-secondary)",
+                  fontWeight: 600,
                   fontSize: "0.8rem",
                   cursor: "pointer",
                 }}
               >
-                Todos ({uniqueRecoveries.length})
+                <span>Todos</span>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: "var(--text-muted)", marginLeft: "4px" }}>({uniqueRecoveries.length})</span>
               </button>
             </div>
           </div>

@@ -30,10 +30,10 @@ export default function SectionOverview({ stats, incidents = [], recoveries = []
   }, [incidents]);
 
   return (
-    <div>
+    <div className="animate-enter">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1.25rem" }}>
         <div>
-          <h2 className="card-title" style={{ fontSize: "20px", fontWeight: 600 }}>Resumen Ejecutivo del Proyecto</h2>
+          <h2 className="card-title" style={{ fontSize: "19px", fontWeight: 600 }}>Resumen Ejecutivo del Proyecto</h2>
           <p className="card-subtitle">Indicadores clave consolidados del análisis de incidentes del 911 en General Pueyrredón (01/01/2026 – 05/08/2026).</p>
         </div>
 

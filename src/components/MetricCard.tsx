@@ -11,11 +11,11 @@ interface MetricCardProps {
 export default function MetricCard({ label, value, sub, icon, accentColor }: MetricCardProps) {
   const isNumeric = typeof value === "number" || /^[\d.,\s%+hs:\-]+$/.test(String(value).trim());
 
-  // Softened, non-neon subtle top border
+  // Precision hairline top accent border (sober, non-fluorescent)
   const softBorderTop = accentColor
     ? accentColor.startsWith("#") && accentColor.length === 7
-      ? `${accentColor}45`
-      : "rgba(59, 130, 246, 0.25)"
+      ? `${accentColor}55`
+      : "rgba(59, 130, 246, 0.35)"
     : "var(--border)";
 
   return (
@@ -26,13 +26,18 @@ export default function MetricCard({ label, value, sub, icon, accentColor }: Met
       }}
     >
       <div className="metric-header">
-        <span>{label}</span>
+        <span style={{ fontWeight: 500, letterSpacing: "-0.01em" }}>{label}</span>
         {icon && (
           <span
             style={{
-              color: accentColor ? `${accentColor}bb` : "var(--text-muted)",
+              color: accentColor ? `${accentColor}cc` : "var(--text-muted)",
+              background: accentColor ? `${accentColor}14` : "rgba(255, 255, 255, 0.04)",
+              border: `1px solid ${accentColor ? `${accentColor}25` : "var(--border-subtle)"}`,
+              padding: "4px",
+              borderRadius: "var(--radius-xs)",
               display: "flex",
               alignItems: "center",
+              justifyContent: "center",
             }}
           >
             {icon}
@@ -43,8 +48,9 @@ export default function MetricCard({ label, value, sub, icon, accentColor }: Met
         className={`metric-value ${isNumeric ? "font-mono-tabular" : ""}`}
         style={{
           fontFamily: isNumeric ? "var(--font-mono), monospace" : "var(--font-sans)",
-          color: "#ffffff",
-          fontSize: "31px",
+          color: "var(--text-primary)",
+          fontSize: "30px",
+          fontWeight: 700,
         }}
       >
         {value}

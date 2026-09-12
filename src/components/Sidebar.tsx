@@ -46,48 +46,113 @@ export default function Sidebar({
   availableTipos,
   availableSubtipos,
 }: SidebarProps) {
-  // Sections for Mar del Plata (Vehicular & General 911)
-  const mdpSections = [
-    { id: "overview", label: "Panel de Control / Resumen Investigativo", icon: <LayoutDashboard size={18} /> },
-    { id: "map", label: "Mapeo & Geointeligencia", icon: <MapPin size={18} /> },
-    { id: "recovery-tracker", label: "Trazabilidad Robo ➔ Hallazgo", icon: <Car size={18} /> },
-    { id: "gang-intelligence", label: "Inteligencia de Bandas & M.O.", icon: <ShieldAlert size={18} /> },
-    { id: "jurisdictions", label: "Matriz Inter-Jurisdiccional (Comisarías 1ra-16ta)", icon: <Building2 size={18} /> },
-    { id: "graph", label: "Grafo Relacional & Redes", icon: <Workflow size={18} /> },
-    { id: "search", label: "Buscador Universal de Patentes", icon: <Search size={18} /> },
-    { id: "hotspots", label: "Concentración Delictiva", icon: <Flame size={18} /> },
-    { id: "temporal", label: "Patrones Temporales & Cronología", icon: <Clock size={18} /> },
-    { id: "vehicles", label: "Robos, Hallazgos & Cruce de Patentes", icon: <Car size={18} /> },
-    { id: "nlp", label: "Extracción NLP de Entidades", icon: <FileText size={18} /> },
-    { id: "investigative", label: "Patrones Relacionales & Hallazgos", icon: <Search size={18} /> },
-    { id: "etl", label: "Pipeline & Ingesta de Datos", icon: <Workflow size={18} /> },
-    { id: "dictionary", label: "Diccionario de Datos", icon: <BookOpen size={18} /> },
+  // Categorized Navigation for Mar del Plata
+  const mdpGroups = [
+    {
+      title: "Nivel Estratégico",
+      items: [
+        { id: "overview", label: "Panel de Control / Resumen", icon: <LayoutDashboard size={16} /> },
+      ]
+    },
+    {
+      title: "Geointeligencia & Territorio",
+      items: [
+        { id: "map", label: "Mapeo & Geointeligencia", icon: <MapPin size={16} /> },
+        { id: "jurisdictions", label: "Comisarías (1ra a 16ta)", icon: <Building2 size={16} /> },
+        { id: "hotspots", label: "Concentración Delictiva", icon: <Flame size={16} /> },
+      ]
+    },
+    {
+      title: "Investigación Especializada",
+      items: [
+        { id: "recovery-tracker", label: "Trazabilidad Robo ➔ Hallazgo", icon: <Car size={16} /> },
+        { id: "gang-intelligence", label: "Inteligencia de Bandas & M.O.", icon: <ShieldAlert size={16} /> },
+        { id: "vehicles", label: "Robos, Hallazgos & Patentes", icon: <Car size={16} /> },
+        { id: "graph", label: "Grafo Relacional & Redes", icon: <Workflow size={16} /> },
+      ]
+    },
+    {
+      title: "Peritaje Analítico & NLP",
+      items: [
+        { id: "nlp", label: "Extracción NLP de Entidades", icon: <FileText size={16} /> },
+        { id: "investigative", label: "Patrones & Hallazgos", icon: <Search size={16} /> },
+        { id: "search", label: "Buscador Universal 911", icon: <Search size={16} /> },
+        { id: "temporal", label: "Patrones Temporales", icon: <Clock size={16} /> },
+      ]
+    },
+    {
+      title: "Gobernanza & Datos",
+      items: [
+        { id: "etl", label: "Pipeline & Ingesta ETL", icon: <Database size={16} /> },
+        { id: "dictionary", label: "Diccionario de Datos", icon: <BookOpen size={16} /> },
+      ]
+    }
   ];
 
-  // Sections for José C. Paz (Narcocriminalidad & Drogas)
-  const jcpSections = [
-    { id: "drogas-overview", label: "Resumen Ejecutivo Narcocriminalidad", icon: <LayoutDashboard size={18} /> },
-    { id: "drogas-map", label: "Mapa Táctico de Puntos & Búnkers", icon: <MapPin size={18} /> },
-    { id: "drogas-temporal", label: "Patrones Temporales & Nocturnidad", icon: <Clock size={18} /> },
-    { id: "drogas-hotspots", label: "Concentración Criminal & Esquinas", icon: <Flame size={18} /> },
-    { id: "drogas-nlp", label: "Inteligencia de Alias & Redes (NLP)", icon: <Brain size={18} /> },
-    { id: "drogas-graph", label: "Grafo Relacional & Redes de Bandas", icon: <Share2 size={18} /> },
-    { id: "drogas-search", label: "Buscador Universal de Denuncias 911", icon: <Search size={18} /> },
-    { id: "drogas-etl", label: "Metodología & Integración ETL", icon: <Database size={18} /> },
-    { id: "dictionary", label: "Diccionario de Datos", icon: <BookOpen size={18} /> },
+  // Categorized Navigation for José C. Paz
+  const jcpGroups = [
+    {
+      title: "Nivel Estratégico",
+      items: [
+        { id: "drogas-overview", label: "Resumen Ejecutivo Narcocriminalidad", icon: <LayoutDashboard size={16} /> },
+      ]
+    },
+    {
+      title: "Cartografía Táctica",
+      items: [
+        { id: "drogas-map", label: "Puntos de Venta & Búnkers", icon: <MapPin size={16} /> },
+        { id: "drogas-hotspots", label: "Concentración & Esquinas", icon: <Flame size={16} /> },
+      ]
+    },
+    {
+      title: "Inteligencia Criminal",
+      items: [
+        { id: "drogas-nlp", label: "Inteligencia de Alias & NLP", icon: <Brain size={16} /> },
+        { id: "drogas-graph", label: "Grafo Relacional de Bandas", icon: <Share2 size={16} /> },
+        { id: "drogas-temporal", label: "Patrones Temporales & Nocturnidad", icon: <Clock size={16} /> },
+      ]
+    },
+    {
+      title: "Peritaje & Datos",
+      items: [
+        { id: "drogas-search", label: "Buscador de Denuncias 911", icon: <Search size={16} /> },
+        { id: "drogas-etl", label: "Metodología ETL", icon: <Database size={16} /> },
+        { id: "dictionary", label: "Diccionario de Datos", icon: <BookOpen size={16} /> },
+      ]
+    }
   ];
 
-  // Sections for Malvinas Argentinas (Narcocriminalidad & Drogas)
-  const malvinasSections = [
-    { id: "malvinas-overview", label: "Resumen Ejecutivo Narcocriminalidad", icon: <LayoutDashboard size={18} /> },
-    { id: "malvinas-map", label: "Mapa Táctico de Puntos & Búnkers", icon: <MapPin size={18} /> },
-    { id: "malvinas-temporal", label: "Patrones Temporales & Nocturnidad", icon: <Clock size={18} /> },
-    { id: "malvinas-hotspots", label: "Concentración Criminal & Esquinas", icon: <Flame size={18} /> },
-    { id: "malvinas-nlp", label: "Inteligencia de Alias & Redes (NLP)", icon: <Brain size={18} /> },
-    { id: "malvinas-graph", label: "Grafo Relacional & Redes de Bandas", icon: <Share2 size={18} /> },
-    { id: "malvinas-search", label: "Buscador Universal de Denuncias 911", icon: <Search size={18} /> },
-    { id: "malvinas-etl", label: "Metodología & Integración ETL", icon: <Database size={18} /> },
-    { id: "dictionary", label: "Diccionario de Datos", icon: <BookOpen size={18} /> },
+  // Categorized Navigation for Malvinas Argentinas
+  const malvinasGroups = [
+    {
+      title: "Nivel Estratégico",
+      items: [
+        { id: "malvinas-overview", label: "Resumen Ejecutivo Narcocriminalidad", icon: <LayoutDashboard size={16} /> },
+      ]
+    },
+    {
+      title: "Cartografía Táctica",
+      items: [
+        { id: "malvinas-map", label: "Puntos de Venta & Búnkers", icon: <MapPin size={16} /> },
+        { id: "malvinas-hotspots", label: "Concentración & Esquinas", icon: <Flame size={16} /> },
+      ]
+    },
+    {
+      title: "Inteligencia Criminal",
+      items: [
+        { id: "malvinas-nlp", label: "Inteligencia de Alias & NLP", icon: <Brain size={16} /> },
+        { id: "malvinas-graph", label: "Grafo Relacional de Bandas", icon: <Share2 size={16} /> },
+        { id: "malvinas-temporal", label: "Patrones Temporales & Nocturnidad", icon: <Clock size={16} /> },
+      ]
+    },
+    {
+      title: "Peritaje & Datos",
+      items: [
+        { id: "malvinas-search", label: "Buscador de Denuncias 911", icon: <Search size={16} /> },
+        { id: "malvinas-etl", label: "Metodología ETL", icon: <Database size={16} /> },
+        { id: "dictionary", label: "Diccionario de Datos", icon: <BookOpen size={16} /> },
+      ]
+    }
   ];
 
   const resetFilters = () => {
@@ -100,43 +165,57 @@ export default function Sidebar({
     });
   };
 
-  const sectionsToRender = currentProject === "mdp" ? mdpSections : currentProject === "jcp" ? jcpSections : malvinasSections;
+  const activeFiltersCount = Object.values(filters).filter((v) => v !== "todos").length;
+  const currentGroups = currentProject === "mdp" ? mdpGroups : currentProject === "jcp" ? jcpGroups : malvinasGroups;
 
   return (
     <aside className="app-sidebar">
       {/* Project Switcher Selector */}
       <div style={{ marginBottom: "1.25rem", paddingBottom: "1rem", borderBottom: "1px solid var(--border)" }}>
-        <div style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: "0.5rem" }}>
-          Jurisdicción activa
+        <div style={{ fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: "0.55rem" }}>
+          Jurisdicción Activa
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem" }}>
+          {/* Mar del Plata */}
           <button
             onClick={() => {
               resetFilters();
               setCurrentProject("mdp");
               setActiveSection("overview");
             }}
+            className="project-card"
             style={{
-              padding: "0.6rem 0.75rem",
+              padding: "0.65rem 0.8rem",
               borderRadius: "var(--radius-sm)",
-              border: "1px solid " + (currentProject === "mdp" ? "rgba(255, 255, 255, 0.16)" : "var(--border)"),
-              borderLeft: currentProject === "mdp" ? "2px solid #3b82f6" : "2px solid transparent",
-              background: currentProject === "mdp" ? "#1f242d" : "var(--bg-surface)",
+              border: "1px solid " + (currentProject === "mdp" ? "rgba(59, 130, 246, 0.4)" : "var(--border)"),
+              borderLeft: currentProject === "mdp" ? "3px solid #3b82f6" : "3px solid transparent",
+              background: currentProject === "mdp" ? "#162238" : "var(--bg-surface)",
               color: currentProject === "mdp" ? "#f8fafc" : "var(--text-secondary)",
               fontSize: "0.82rem",
               display: "flex",
               alignItems: "center",
-              gap: "0.6rem",
+              gap: "0.65rem",
               cursor: "pointer",
               textAlign: "left",
-              transition: "all 0.15s ease"
+              boxShadow: currentProject === "mdp" ? "0 2px 6px rgba(0, 0, 0, 0.35)" : "none",
             }}
           >
-            <Car size={16} style={{ flexShrink: 0, color: currentProject === "mdp" ? "#3b82f6" : "var(--text-muted)" }} />
+            <div style={{
+              background: currentProject === "mdp" ? "rgba(59, 130, 246, 0.2)" : "rgba(255, 255, 255, 0.03)",
+              border: "1px solid " + (currentProject === "mdp" ? "rgba(59, 130, 246, 0.3)" : "var(--border-subtle)"),
+              borderRadius: "var(--radius-xs)",
+              padding: "6px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: currentProject === "mdp" ? "#38bdf8" : "var(--text-muted)",
+            }}>
+              <Car size={16} />
+            </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.3rem" }}>
-                <span style={{ fontWeight: 600 }}>Mar del Plata</span>
-                <span style={{ fontSize: "0.65rem", fontWeight: 600, fontFamily: "var(--font-mono)", background: "rgba(255, 255, 255, 0.05)", color: "var(--text-secondary)", border: "1px solid var(--border)", padding: "1px 5px", borderRadius: "var(--radius-xs)" }}>
+                <span style={{ fontWeight: 600, color: currentProject === "mdp" ? "#ffffff" : "var(--text-primary)" }}>Mar del Plata</span>
+                <span style={{ fontSize: "0.68rem", fontWeight: 700, fontFamily: "var(--font-mono)", background: "rgba(0, 0, 0, 0.35)", color: currentProject === "mdp" ? "#38bdf8" : "var(--text-secondary)", border: "1px solid var(--border)", padding: "1px 6px", borderRadius: "var(--radius-xs)" }}>
                   8.598
                 </span>
               </div>
@@ -149,38 +228,51 @@ export default function Sidebar({
             </div>
           </button>
 
+          {/* José C. Paz */}
           <button
             onClick={() => {
               resetFilters();
               setCurrentProject("jcp");
               setActiveSection("drogas-overview");
             }}
+            className="project-card"
             style={{
-              padding: "0.6rem 0.75rem",
+              padding: "0.65rem 0.8rem",
               borderRadius: "var(--radius-sm)",
-              border: "1px solid " + (currentProject === "jcp" ? "rgba(255, 255, 255, 0.16)" : "var(--border)"),
-              borderLeft: currentProject === "jcp" ? "2px solid #3b82f6" : "2px solid transparent",
-              background: currentProject === "jcp" ? "#1f242d" : "var(--bg-surface)",
+              border: "1px solid " + (currentProject === "jcp" ? "rgba(239, 68, 68, 0.4)" : "var(--border)"),
+              borderLeft: currentProject === "jcp" ? "3px solid #ef4444" : "3px solid transparent",
+              background: currentProject === "jcp" ? "#22161b" : "var(--bg-surface)",
               color: currentProject === "jcp" ? "#f8fafc" : "var(--text-secondary)",
               fontSize: "0.82rem",
               display: "flex",
               alignItems: "center",
-              gap: "0.6rem",
+              gap: "0.65rem",
               cursor: "pointer",
               textAlign: "left",
-              transition: "all 0.15s ease"
+              boxShadow: currentProject === "jcp" ? "0 2px 6px rgba(0, 0, 0, 0.35)" : "none",
             }}
           >
-            <Skull size={16} style={{ flexShrink: 0, color: currentProject === "jcp" ? "#3b82f6" : "var(--text-muted)" }} />
+            <div style={{
+              background: currentProject === "jcp" ? "rgba(239, 68, 68, 0.2)" : "rgba(255, 255, 255, 0.03)",
+              border: "1px solid " + (currentProject === "jcp" ? "rgba(239, 68, 68, 0.3)" : "var(--border-subtle)"),
+              borderRadius: "var(--radius-xs)",
+              padding: "6px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: currentProject === "jcp" ? "#fca5a5" : "var(--text-muted)",
+            }}>
+              <Skull size={16} />
+            </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.3rem" }}>
-                <span style={{ fontWeight: 600 }}>José C. Paz</span>
-                <span style={{ fontSize: "0.65rem", fontWeight: 600, fontFamily: "var(--font-mono)", background: "rgba(255, 255, 255, 0.05)", color: "var(--text-secondary)", border: "1px solid var(--border)", padding: "1px 5px", borderRadius: "var(--radius-xs)" }}>
+                <span style={{ fontWeight: 600, color: currentProject === "jcp" ? "#ffffff" : "var(--text-primary)" }}>José C. Paz</span>
+                <span style={{ fontSize: "0.68rem", fontWeight: 700, fontFamily: "var(--font-mono)", background: "rgba(0, 0, 0, 0.35)", color: currentProject === "jcp" ? "#f87171" : "var(--text-secondary)", border: "1px solid var(--border)", padding: "1px 6px", borderRadius: "var(--radius-xs)" }}>
                   1.770
                 </span>
               </div>
               <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "1px" }}>
-                Drogas & Búnkers
+                Narcocriminalidad & Drogas
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.65rem", color: "var(--text-muted)", marginTop: "2px" }}>
                 <Calendar size={10} /> 01/01/2026 – 31/08/2026
@@ -188,38 +280,51 @@ export default function Sidebar({
             </div>
           </button>
 
+          {/* Malvinas Argentinas */}
           <button
             onClick={() => {
               resetFilters();
               setCurrentProject("malvinas");
               setActiveSection("malvinas-overview");
             }}
+            className="project-card"
             style={{
-              padding: "0.6rem 0.75rem",
+              padding: "0.65rem 0.8rem",
               borderRadius: "var(--radius-sm)",
-              border: "1px solid " + (currentProject === "malvinas" ? "rgba(255, 255, 255, 0.16)" : "var(--border)"),
-              borderLeft: currentProject === "malvinas" ? "2px solid #3b82f6" : "2px solid transparent",
-              background: currentProject === "malvinas" ? "#1f242d" : "var(--bg-surface)",
+              border: "1px solid " + (currentProject === "malvinas" ? "rgba(245, 158, 11, 0.4)" : "var(--border)"),
+              borderLeft: currentProject === "malvinas" ? "3px solid #f59e0b" : "3px solid transparent",
+              background: currentProject === "malvinas" ? "#221e14" : "var(--bg-surface)",
               color: currentProject === "malvinas" ? "#f8fafc" : "var(--text-secondary)",
               fontSize: "0.82rem",
               display: "flex",
               alignItems: "center",
-              gap: "0.6rem",
+              gap: "0.65rem",
               cursor: "pointer",
               textAlign: "left",
-              transition: "all 0.15s ease"
+              boxShadow: currentProject === "malvinas" ? "0 2px 6px rgba(0, 0, 0, 0.35)" : "none",
             }}
           >
-            <Crosshair size={16} style={{ flexShrink: 0, color: currentProject === "malvinas" ? "#3b82f6" : "var(--text-muted)" }} />
+            <div style={{
+              background: currentProject === "malvinas" ? "rgba(245, 158, 11, 0.2)" : "rgba(255, 255, 255, 0.03)",
+              border: "1px solid " + (currentProject === "malvinas" ? "rgba(245, 158, 11, 0.3)" : "var(--border-subtle)"),
+              borderRadius: "var(--radius-xs)",
+              padding: "6px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: currentProject === "malvinas" ? "#fcd34d" : "var(--text-muted)",
+            }}>
+              <Crosshair size={16} />
+            </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.3rem" }}>
-                <span style={{ fontWeight: 600 }}>Malvinas Argentinas</span>
-                <span style={{ fontSize: "0.65rem", fontWeight: 600, fontFamily: "var(--font-mono)", background: "rgba(255, 255, 255, 0.05)", color: "var(--text-secondary)", border: "1px solid var(--border)", padding: "1px 5px", borderRadius: "var(--radius-xs)" }}>
+                <span style={{ fontWeight: 600, color: currentProject === "malvinas" ? "#ffffff" : "var(--text-primary)" }}>Malvinas Argentinas</span>
+                <span style={{ fontSize: "0.68rem", fontWeight: 700, fontFamily: "var(--font-mono)", background: "rgba(0, 0, 0, 0.35)", color: currentProject === "malvinas" ? "#fbbf24" : "var(--text-secondary)", border: "1px solid var(--border)", padding: "1px 6px", borderRadius: "var(--radius-xs)" }}>
                   1.471
                 </span>
               </div>
               <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "1px" }}>
-                Drogas & Búnkers
+                Narcocriminalidad & Puntos
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", fontSize: "0.65rem", color: "var(--text-muted)", marginTop: "2px" }}>
                 <Calendar size={10} /> 01/01/2026 – 31/08/2026
@@ -229,38 +334,74 @@ export default function Sidebar({
         </div>
       </div>
 
-      <div className="nav-section-label">
-        {currentProject === "mdp" ? "Inteligencia Mar del Plata" : currentProject === "jcp" ? "Inteligencia Narcocriminal JCP" : "Inteligencia Narcocriminal Malvinas"}
-      </div>
-
-      {sectionsToRender.map((sec) => (
-        <button
-          key={sec.id}
-          className={`nav-item ${activeSection === sec.id ? "active" : ""}`}
-          onClick={() => setActiveSection(sec.id)}
-        >
-          {sec.icon}
-          <span>{sec.label}</span>
-        </button>
+      {/* Categorized Navigation Groups */}
+      {currentGroups.map((grp, gIdx) => (
+        <div key={gIdx} style={{ marginBottom: "0.85rem" }}>
+          <div className="nav-section-label">
+            <span>{grp.title}</span>
+          </div>
+          {grp.items.map((sec) => (
+            <button
+              key={sec.id}
+              className={`nav-item ${activeSection === sec.id ? "active" : ""}`}
+              onClick={() => setActiveSection(sec.id)}
+            >
+              {sec.icon}
+              <span>{sec.label}</span>
+            </button>
+          ))}
+        </div>
       ))}
 
       {/* MDP Specific Filters */}
       {currentProject === "mdp" && (
-        <div style={{ marginTop: "2rem", paddingTop: "1.25rem", borderTop: "1px solid var(--border)" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
-            <span style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-muted)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-              <Filter size={14} /> Filtros MDP
+        <div style={{
+          marginTop: "1.25rem",
+          padding: "0.85rem",
+          background: "var(--bg-surface)",
+          border: "1px solid var(--border)",
+          borderRadius: "var(--radius-sm)",
+          boxShadow: "var(--shadow-sm)"
+        }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.85rem" }}>
+            <span style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-light)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+              <Filter size={13} style={{ color: "var(--accent-pba-cyan)" }} />
+              <span>Filtros Operativos</span>
+              {activeFiltersCount > 0 && (
+                <span style={{
+                  fontSize: "0.65rem",
+                  fontWeight: 700,
+                  fontFamily: "var(--font-mono)",
+                  background: "#1d4ed8",
+                  color: "#ffffff",
+                  padding: "0.5px 5px",
+                  borderRadius: "10px"
+                }}>
+                  {activeFiltersCount}
+                </span>
+              )}
             </span>
             <button
               onClick={resetFilters}
-              style={{ background: "none", border: "none", color: "var(--accent-indigo)", cursor: "pointer", fontSize: "0.75rem", display: "flex", alignItems: "center", gap: "0.2rem" }}
+              style={{
+                background: "none",
+                border: "none",
+                color: activeFiltersCount > 0 ? "var(--accent-pba-cyan)" : "var(--text-muted)",
+                cursor: activeFiltersCount > 0 ? "pointer" : "default",
+                fontSize: "0.72rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.25rem",
+                fontWeight: 500,
+                opacity: activeFiltersCount > 0 ? 1 : 0.6
+              }}
               title="Resetear filtros"
             >
-              <RotateCcw size={12} /> Limpiar
+              <RotateCcw size={11} /> Limpiar
             </button>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
             <div>
               <label className="form-label">Origen Dataset</label>
               <select
@@ -342,21 +483,53 @@ export default function Sidebar({
 
       {/* JCP / Malvinas Specific Filters */}
       {(currentProject === "jcp" || currentProject === "malvinas") && (
-        <div style={{ marginTop: "1.5rem", paddingTop: "1.25rem", borderTop: "1px solid var(--border)" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
-            <span style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-muted)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-              <Filter size={14} /> Filtros {currentProject === "jcp" ? "JCP" : "Malvinas"}
+        <div style={{
+          marginTop: "1.25rem",
+          padding: "0.85rem",
+          background: "var(--bg-surface)",
+          border: "1px solid var(--border)",
+          borderRadius: "var(--radius-sm)",
+          boxShadow: "var(--shadow-sm)"
+        }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.85rem" }}>
+            <span style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-light)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+              <Filter size={13} style={{ color: currentProject === "jcp" ? "var(--accent-red)" : "var(--accent-amber)" }} />
+              <span>Filtros {currentProject === "jcp" ? "JCP" : "Malvinas"}</span>
+              {activeFiltersCount > 0 && (
+                <span style={{
+                  fontSize: "0.65rem",
+                  fontWeight: 700,
+                  fontFamily: "var(--font-mono)",
+                  background: currentProject === "jcp" ? "#b91c1c" : "#d97706",
+                  color: "#ffffff",
+                  padding: "0.5px 5px",
+                  borderRadius: "10px"
+                }}>
+                  {activeFiltersCount}
+                </span>
+              )}
             </span>
             <button
               onClick={resetFilters}
-              style={{ background: "none", border: "none", color: "var(--accent-pba-cyan)", cursor: "pointer", fontSize: "0.75rem", display: "flex", alignItems: "center", gap: "0.2rem" }}
+              style={{
+                background: "none",
+                border: "none",
+                color: activeFiltersCount > 0 ? (currentProject === "jcp" ? "var(--accent-red)" : "var(--accent-amber)") : "var(--text-muted)",
+                cursor: activeFiltersCount > 0 ? "pointer" : "default",
+                fontSize: "0.72rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.25rem",
+                fontWeight: 500,
+                opacity: activeFiltersCount > 0 ? 1 : 0.6
+              }}
               title="Resetear filtros"
             >
-              <RotateCcw size={12} /> Limpiar
+              <RotateCcw size={11} /> Limpiar
             </button>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
             <div>
               <label className="form-label">Origen de Datos</label>
               <select
@@ -422,18 +595,24 @@ export default function Sidebar({
 
       {/* JCP Specific Source Distinction Box */}
       {currentProject === "jcp" && (
-        <div style={{ marginTop: "2rem", paddingTop: "1.25rem", borderTop: "1px solid var(--border)", fontSize: "0.75rem", color: "var(--text-secondary)" }}>
-          <div style={{ fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "0.5rem" }}>
+        <div style={{ marginTop: "1.5rem", paddingTop: "1rem", borderTop: "1px solid var(--border)", fontSize: "0.75rem", color: "var(--text-secondary)" }}>
+          <div style={{ fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "0.5rem", fontSize: "0.68rem" }}>
             Fuentes Integradas JCP
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-            <div style={{ background: "rgba(239,68,68,0.1)", padding: "0.5rem", borderRadius: "4px", border: "1px solid rgba(239,68,68,0.25)" }}>
-              <strong style={{ color: "#ef4444", display: "block" }}>DROGAS ILÍCITAS:</strong>
-              989 hechos con tipificación formal 911.
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem" }}>
+            <div style={{ background: "rgba(239, 68, 68, 0.08)", padding: "0.55rem 0.75rem", borderRadius: "var(--radius-sm)", border: "1px solid rgba(239, 68, 68, 0.25)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2px" }}>
+                <strong style={{ color: "#f87171", fontSize: "0.74rem" }}>DROGAS ILÍCITAS</strong>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: "#ffffff", fontWeight: 700 }}>989</span>
+              </div>
+              <div style={{ fontSize: "0.68rem", color: "var(--text-muted)" }}>Tipificación policial formal 911</div>
             </div>
-            <div style={{ background: "rgba(16,185,129,0.1)", padding: "0.5rem", borderRadius: "4px", border: "1px solid rgba(16,185,129,0.25)" }}>
-              <strong style={{ color: "#10b981", display: "block" }}>INFORMACIÓN VECINAL:</strong>
-              781 hechos rescatados por búsqueda de términos (cocaína, búnker, venta).
+            <div style={{ background: "rgba(16, 185, 129, 0.08)", padding: "0.55rem 0.75rem", borderRadius: "var(--radius-sm)", border: "1px solid rgba(16, 185, 129, 0.25)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2px" }}>
+                <strong style={{ color: "#34d399", fontSize: "0.74rem" }}>INFORMACIÓN VECINAL</strong>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: "#ffffff", fontWeight: 700 }}>781</span>
+              </div>
+              <div style={{ fontSize: "0.68rem", color: "var(--text-muted)" }}>Búsqueda semántica en relatos</div>
             </div>
           </div>
         </div>
@@ -441,18 +620,24 @@ export default function Sidebar({
 
       {/* Malvinas Specific Source Distinction Box */}
       {currentProject === "malvinas" && (
-        <div style={{ marginTop: "2rem", paddingTop: "1.25rem", borderTop: "1px solid var(--border)", fontSize: "0.75rem", color: "var(--text-secondary)" }}>
-          <div style={{ fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "0.5rem" }}>
+        <div style={{ marginTop: "1.5rem", paddingTop: "1rem", borderTop: "1px solid var(--border)", fontSize: "0.75rem", color: "var(--text-secondary)" }}>
+          <div style={{ fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "0.5rem", fontSize: "0.68rem" }}>
             Fuentes Integradas Malvinas
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-            <div style={{ background: "rgba(245,158,11,0.1)", padding: "0.5rem", borderRadius: "4px", border: "1px solid rgba(245,158,11,0.25)" }}>
-              <strong style={{ color: "#f59e0b", display: "block" }}>DROGAS ILÍCITAS:</strong>
-              802 hechos con tipificación formal 911.
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem" }}>
+            <div style={{ background: "rgba(245, 158, 11, 0.08)", padding: "0.55rem 0.75rem", borderRadius: "var(--radius-sm)", border: "1px solid rgba(245, 158, 11, 0.25)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2px" }}>
+                <strong style={{ color: "#fbbf24", fontSize: "0.74rem" }}>DROGAS ILÍCITAS</strong>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: "#ffffff", fontWeight: 700 }}>802</span>
+              </div>
+              <div style={{ fontSize: "0.68rem", color: "var(--text-muted)" }}>Tipificación policial formal 911</div>
             </div>
-            <div style={{ background: "rgba(16,185,129,0.1)", padding: "0.5rem", borderRadius: "4px", border: "1px solid rgba(16,185,129,0.25)" }}>
-              <strong style={{ color: "#10b981", display: "block" }}>INFORMACIÓN VECINAL:</strong>
-              669 hechos rescatados por búsqueda semántica (cocaína, búnker, venta).
+            <div style={{ background: "rgba(16, 185, 129, 0.08)", padding: "0.55rem 0.75rem", borderRadius: "var(--radius-sm)", border: "1px solid rgba(16, 185, 129, 0.25)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2px" }}>
+                <strong style={{ color: "#34d399", fontSize: "0.74rem" }}>INFORMACIÓN VECINAL</strong>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: "#ffffff", fontWeight: 700 }}>669</span>
+              </div>
+              <div style={{ fontSize: "0.68rem", color: "var(--text-muted)" }}>Búsqueda semántica en relatos</div>
             </div>
           </div>
         </div>

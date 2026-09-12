@@ -11,24 +11,64 @@ export default function IntroBanner({ currentProject = "mdp" }: IntroBannerProps
   if (currentProject === "malvinas") {
     return (
       <div
+        className="card animate-enter"
         style={{
-          background: "var(--bg-surface)",
-          border: "1px solid var(--border)",
-          borderRadius: "var(--radius-md)",
-          padding: "0.85rem 1.25rem",
+          padding: "1rem 1.35rem",
           marginBottom: "1.25rem",
+          background: "linear-gradient(90deg, #101623 0%, #131c2d 100%)",
+          borderColor: "var(--border)",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "1rem",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", color: "var(--text-muted)", fontSize: "12px", marginBottom: "0.25rem", fontWeight: 500 }}>
-          <Crosshair size={13} style={{ color: "var(--accent-amber)" }} />
-          <span>Inteligencia Narcocriminal & Puntos de Venta · Malvinas Argentinas</span>
+        <div style={{ flex: "1 1 600px", minWidth: "280px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.35rem" }}>
+            <span style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.35rem",
+              fontSize: "0.72rem",
+              fontWeight: 600,
+              textTransform: "uppercase",
+              letterSpacing: "0.06em",
+              color: "var(--accent-amber)",
+              background: "rgba(245, 158, 11, 0.1)",
+              border: "1px solid rgba(245, 158, 11, 0.25)",
+              padding: "2px 7px",
+              borderRadius: "var(--radius-xs)"
+            }}>
+              <Crosshair size={12} />
+              Malvinas Argentinas · UFI Drogas Ilícitas
+            </span>
+            <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
+              AUDITORÍA 2026
+            </span>
+          </div>
+          <h2 style={{ fontSize: "19px", fontWeight: 600, color: "var(--text-primary)", margin: "0 0 0.35rem 0", letterSpacing: "-0.015em" }}>
+            Malvinas Argentinas — Narcocriminalidad & Puntos de Venta 911
+          </h2>
+          <p style={{ fontSize: "13.5px", color: "var(--text-secondary)", lineHeight: 1.55, margin: 0, maxWidth: "980px" }}>
+            Consolidación pericial de <strong style={{ color: "var(--text-primary)", fontWeight: 600 }}>1.471 denuncias 911</strong> (802 despachos formales y 669 alertas vecinales). Cobertura del 98.6% georreferenciada en 6 localidades, auditando búnkers y nodos de alta conflictividad armada (72.0%).
+          </p>
         </div>
-        <h2 style={{ fontSize: "20px", fontWeight: 600, color: "var(--text-primary)", margin: "0 0 0.3rem 0", letterSpacing: "-0.01em" }}>
-          Malvinas Argentinas — Narcocriminalidad & Puntos de Venta 911
-        </h2>
-        <p style={{ fontSize: "14px", color: "var(--text-secondary)", lineHeight: 1.6, margin: 0, maxWidth: "980px" }}>
-          Consolidación de <strong style={{ color: "var(--text-primary)", fontWeight: 600 }}>1.471 denuncias 911</strong> (802 despachos formales y 669 alertas de relato). Cobertura del 98.6% georreferenciada en 6 localidades, auditando búnkers territoriales y focos de alta presencia de armamento (72.0%).
-        </p>
+
+        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
+          <div style={{ padding: "6px 12px", background: "var(--bg-elevated)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
+            <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Hechos 911</div>
+            <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--text-primary)", fontFamily: "var(--font-mono)" }}>1.471</div>
+          </div>
+          <div style={{ padding: "6px 12px", background: "var(--bg-elevated)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
+            <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Georref</div>
+            <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--accent-green)", fontFamily: "var(--font-mono)" }}>98.6%</div>
+          </div>
+          <div style={{ padding: "6px 12px", background: "var(--bg-elevated)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
+            <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Tasa Armas</div>
+            <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--accent-red)", fontFamily: "var(--font-mono)" }}>72.0%</div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -36,48 +76,128 @@ export default function IntroBanner({ currentProject = "mdp" }: IntroBannerProps
   if (currentProject === "jcp") {
     return (
       <div
+        className="card animate-enter"
         style={{
-          background: "var(--bg-surface)",
-          border: "1px solid var(--border)",
-          borderRadius: "var(--radius-md)",
-          padding: "0.85rem 1.25rem",
+          padding: "1rem 1.35rem",
           marginBottom: "1.25rem",
+          background: "linear-gradient(90deg, #101623 0%, #131c2d 100%)",
+          borderColor: "var(--border)",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "1rem",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", color: "var(--text-muted)", fontSize: "12px", marginBottom: "0.25rem", fontWeight: 500 }}>
-          <Skull size={13} style={{ color: "var(--accent-red)" }} />
-          <span>Inteligencia Narcocriminal & Puntos de Venta · José C. Paz</span>
+        <div style={{ flex: "1 1 600px", minWidth: "280px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.35rem" }}>
+            <span style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.35rem",
+              fontSize: "0.72rem",
+              fontWeight: 600,
+              textTransform: "uppercase",
+              letterSpacing: "0.06em",
+              color: "var(--accent-red)",
+              background: "rgba(239, 68, 68, 0.1)",
+              border: "1px solid rgba(239, 68, 68, 0.25)",
+              padding: "2px 7px",
+              borderRadius: "var(--radius-xs)"
+            }}>
+              <Skull size={12} />
+              José C. Paz · UFI Narcocriminalidad
+            </span>
+            <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
+              AUDITORÍA 2026
+            </span>
+          </div>
+          <h2 style={{ fontSize: "19px", fontWeight: 600, color: "var(--text-primary)", margin: "0 0 0.35rem 0", letterSpacing: "-0.015em" }}>
+            José C. Paz — Narcocriminalidad & Drogas Ilícitas 911
+          </h2>
+          <p style={{ fontSize: "13.5px", color: "var(--text-secondary)", lineHeight: 1.55, margin: 0, maxWidth: "980px" }}>
+            Consolidación de <strong style={{ color: "var(--text-primary)", fontWeight: 600 }}>1.770 denuncias 911</strong> (989 despachos formales y 781 alertas vecinales). Identificación de búnkers y casillas, clasificación de sustancias e individualización de zonas de conflictividad armada.
+          </p>
         </div>
-        <h2 style={{ fontSize: "20px", fontWeight: 600, color: "var(--text-primary)", margin: "0 0 0.3rem 0", letterSpacing: "-0.01em" }}>
-          José C. Paz — Narcocriminalidad & Drogas Ilícitas 911
-        </h2>
-        <p style={{ fontSize: "14px", color: "var(--text-secondary)", lineHeight: 1.6, margin: 0, maxWidth: "980px" }}>
-          Consolidación de <strong style={{ color: "var(--text-primary)", fontWeight: 600 }}>1.770 denuncias 911</strong> (989 despachos formales y 781 alertas vecinales). Identificación de búnkers y casillas, clasificación de sustancias e individualización de zonas de conflictividad armada.
-        </p>
+
+        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
+          <div style={{ padding: "6px 12px", background: "var(--bg-elevated)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
+            <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Hechos 911</div>
+            <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--text-primary)", fontFamily: "var(--font-mono)" }}>1.770</div>
+          </div>
+          <div style={{ padding: "6px 12px", background: "var(--bg-elevated)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
+            <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Georref</div>
+            <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--accent-green)", fontFamily: "var(--font-mono)" }}>99.6%</div>
+          </div>
+          <div style={{ padding: "6px 12px", background: "var(--bg-elevated)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
+            <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Tasa Armas</div>
+            <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--accent-red)", fontFamily: "var(--font-mono)" }}>77.3%</div>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
     <div
+      className="card animate-enter"
       style={{
-        background: "var(--bg-surface)",
-        border: "1px solid var(--border)",
-        borderRadius: "var(--radius-md)",
-        padding: "0.85rem 1.25rem",
+        padding: "1rem 1.35rem",
         marginBottom: "1.25rem",
+        background: "linear-gradient(90deg, #101623 0%, #131c2d 100%)",
+        borderColor: "var(--border)",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        flexWrap: "wrap",
+        gap: "1rem",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", color: "var(--text-muted)", fontSize: "12px", marginBottom: "0.25rem", fontWeight: 500 }}>
-        <Car size={13} style={{ color: "var(--accent-pba-cyan)" }} />
-        <span>Investigación e Inteligencia Relacional · General Pueyrredón</span>
+      <div style={{ flex: "1 1 600px", minWidth: "280px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.35rem" }}>
+          <span style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.35rem",
+            fontSize: "0.72rem",
+            fontWeight: 600,
+            textTransform: "uppercase",
+            letterSpacing: "0.06em",
+            color: "var(--accent-pba-cyan)",
+            background: "rgba(56, 189, 248, 0.1)",
+            border: "1px solid rgba(56, 189, 248, 0.25)",
+            padding: "2px 7px",
+            borderRadius: "var(--radius-xs)"
+          }}>
+            <Car size={12} />
+            General Pueyrredón · Sustracción Automotores
+          </span>
+          <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
+            PERIODO: 01/01/2026 – 05/08/2026
+          </span>
+        </div>
+        <h2 style={{ fontSize: "19px", fontWeight: 600, color: "var(--text-primary)", margin: "0 0 0.35rem 0", letterSpacing: "-0.015em" }}>
+          Mar del Plata — Sustracción Automotor & Delito Calificado 911
+        </h2>
+        <p style={{ fontSize: "13.5px", color: "var(--text-secondary)", lineHeight: 1.55, margin: 0, maxWidth: "980px" }}>
+          Análisis relacional sobre <strong style={{ color: "var(--text-primary)", fontWeight: 600 }}>8.598 eventos del 911</strong>. Vinculación de robos con hallazgos mediante NLP de dominios, análisis de patrones de armamento y reconstrucción cronológica de bandas delictivas.
+        </p>
       </div>
-      <h2 style={{ fontSize: "20px", fontWeight: 600, color: "var(--text-primary)", margin: "0 0 0.3rem 0", letterSpacing: "-0.01em" }}>
-        Mar del Plata — Sustracción Automotor & Delito Calificado 911
-      </h2>
-      <p style={{ fontSize: "14px", color: "var(--text-secondary)", lineHeight: 1.6, margin: 0, maxWidth: "980px" }}>
-        Análisis relacional sobre <strong style={{ color: "var(--text-primary)", fontWeight: 600 }}>8.598 eventos del 911</strong> (01/01/2026 – 05/08/2026). Vinculación de robos con hallazgos mediante NLP de dominios, análisis de patrones de armamento y reconstrucción cronológica de bandas delictivas.
-      </p>
+
+      <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
+        <div style={{ padding: "6px 12px", background: "var(--bg-elevated)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
+          <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Eventos 911</div>
+          <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--text-primary)", fontFamily: "var(--font-mono)" }}>8.598</div>
+        </div>
+        <div style={{ padding: "6px 12px", background: "var(--bg-elevated)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
+          <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Recuperos NLP</div>
+          <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--accent-pba-cyan)", fontFamily: "var(--font-mono)" }}>52</div>
+        </div>
+        <div style={{ padding: "6px 12px", background: "var(--bg-elevated)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", textAlign: "center" }}>
+          <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Georref</div>
+          <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--accent-green)", fontFamily: "var(--font-mono)" }}>93.0%</div>
+        </div>
+      </div>
     </div>
   );
 }
