@@ -288,7 +288,7 @@ export default function SectionSearch({ incidents = [] }: SectionSearchProps) {
                   Buscador de Casos Gemelos · Algoritmo NLP
                 </span>
                 <h3 style={{ fontSize: "1.1rem", fontWeight: 800, margin: "0.2rem 0 0", color: "var(--text-primary)" }}>
-                  Incidente Base ID #{selectedTwinIncident.ID} - {selectedTwinIncident.Tipo}
+                  Incidente Base ID #{selectedTwinIncident.ID || selectedTwinIncident.id} - {selectedTwinIncident.Tipo || selectedTwinIncident.tipo}
                 </h3>
               </div>
               <button onClick={() => setSelectedTwinIncident(null)} style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "1.2rem", cursor: "pointer" }}>
@@ -319,7 +319,7 @@ export default function SectionSearch({ incidents = [] }: SectionSearchProps) {
                     <div key={idx} style={{ background: "var(--bg-base)", padding: "0.75rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.4rem" }}>
                         <span style={{ fontWeight: 800, color: "var(--accent-indigo)", fontSize: "0.85rem" }}>
-                          ID #{t.incident.ID} - {t.incident.Tipo} ({t.incident.Fecha})
+                          ID #{t.incident.ID || t.incident.id} - {t.incident.Tipo || t.incident.tipo} ({t.incident.Fecha || t.incident.fecha})
                         </span>
                         <span style={{ fontSize: "0.75rem", fontWeight: 800, padding: "0.2rem 0.6rem", borderRadius: "4px", background: "rgba(16, 185, 129, 0.2)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.4)" }}>
                           🎯 {t.similarityScore}% Similitud

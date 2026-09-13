@@ -67,12 +67,13 @@ export function findSimilarIncidents(targetIncident: any, allIncidents: any[], t
   if (!targetIncident || !allIncidents || allIncidents.length === 0) return [];
 
   const targetRelato = targetIncident.Relato || targetIncident.relato || "";
-  const targetId = targetIncident.ID;
+  const targetId = targetIncident.ID ?? targetIncident.id;
 
   const results: SimilarIncidentResult[] = [];
 
   allIncidents.forEach((inc) => {
-    if (inc.ID === targetId) return; // Skip self
+    const currentId = inc.ID ?? inc.id;
+    if (targetId !== undefined && currentId !== undefined && currentId === targetId) return; // Skip self
 
     const currentRelato = inc.Relato || inc.relato || "";
     const { score, keywords } = calculateNLPSimilarity(targetRelato, currentRelato);
