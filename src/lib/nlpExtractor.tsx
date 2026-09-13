@@ -12,14 +12,16 @@ const PATENTE_REGEX = /\b([A-Z]{2}\s?\d{3}\s?[A-Z]{2}|[A-Z]{3}\s?\d{3})\b/gi;
 
 const WEAPONS_KEYWORDS = [
   "9mm", "9 mm", "calibre 38", "calibre .38", ".38", "calibre 22", "calibre .22", ".22",
-  "revólver", "revolver", "pistola", "escopeta", "carabina", "arma de fuego", "armado",
-  "armados", "encañonó", "encañonaron", "disparo", "disparos", "vaina", "cartucho"
+  "revólver", "revolver", "pistola", "escopeta", "carabina", "tumbera", "arma de fuego",
+  "arma blanca", "cuchillo", "facón", "facon", "punzón", "punzon", "armado",
+  "armados", "encañonó", "encañonaron", "encañono", "encañonan", "disparo", "disparos", "vaina", "cartucho"
 ];
 
 const BRANDS_KEYWORDS = [
   "honda wave", "honda tornado", "honda titan", "honda twister", "honda",
   "zanella zb", "zanella rx", "zanella", "yamaha ybr", "yamaha fz", "yamaha",
-  "motomel", "corven", "gilera", "fiat uno", "fiat palio", "fiat duna", "fiat cronos", "fiat",
+  "motomel", "corven", "gilera", "ktm", "bajaj", "rouser", "guerrero", "mondial", "brava",
+  "fiat uno", "fiat palio", "fiat duna", "fiat cronos", "fiat",
   "peugeot 208", "peugeot 206", "peugeot 308", "peugeot", "vw gol", "vw fox", "volkswagen",
   "toyota hilux", "toyota corolla", "toyota", "chevrolet corsa", "chevrolet celta", "chevrolet",
   "ford fiesta", "ford ka", "ford ranger", "ford", "renault clio", "renault kangoo", "renault"
@@ -27,8 +29,8 @@ const BRANDS_KEYWORDS = [
 
 const MODUS_OPERANDI_KEYWORDS = [
   "mano armada", "vía pública", "via publica", "estacionado", "llave corrida",
-  "garage", "cochera", "puerta de la finca", "desguace", "enfriamiento",
-  "sustracción", "sustraccion", "asfalto", "barrio", "forcejeo", "intimidación"
+  "garage", "garaje", "cochera", "puerta de la finca", "desguace", "enfriamiento",
+  "sustracción", "sustraccion", "asfalto", "barrio", "forcejeo", "intimidación", "intimidacion"
 ];
 
 /**

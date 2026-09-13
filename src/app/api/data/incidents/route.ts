@@ -17,7 +17,11 @@ function loadMalvinasData(): any[] {
     }
     if (fs.existsSync(jsonPath)) {
       const content = fs.readFileSync(jsonPath, "utf-8");
-      cachedMalvinasIncidents = JSON.parse(content);
+      const parsed = JSON.parse(content);
+      cachedMalvinasIncidents = parsed.map((r: any) => ({
+        ...r,
+        partido: r.partido || "MALVINAS ARGENTINAS"
+      }));
     } else {
       cachedMalvinasIncidents = [];
     }
@@ -54,7 +58,9 @@ function loadMdpData() {
         Patente_Principal: r.Patente_Principal !== "nan" ? r.Patente_Principal : undefined,
         Marca_Detectada: r.Marca_Detectada || "NO ESPECIFICADO",
         Origen_Dataset: r.Origen_Dataset || "",
-        Relato: r.Relato || ""
+        Relato: r.Relato || "",
+        partido: r["Partido asignado"] || "GENERAL PUEYRREDON",
+        localidad: r["Localidad asignada"] || "MAR DEL PLATA"
       }));
     } else {
       cachedMdpIncidents = [];
@@ -104,7 +110,11 @@ function loadJcpData(): any[] {
     }
     if (fs.existsSync(jsonPath)) {
       const content = fs.readFileSync(jsonPath, "utf-8");
-      cachedJcpIncidents = JSON.parse(content);
+      const parsed = JSON.parse(content);
+      cachedJcpIncidents = parsed.map((r: any) => ({
+        ...r,
+        partido: r.partido || "JOSÉ C. PAZ"
+      }));
     } else {
       cachedJcpIncidents = [];
     }
@@ -246,7 +256,8 @@ export async function GET(req: NextRequest) {
         alias: r.alias,
         barrio: r.barrio,
         relato: r.relato,
-        comentario: r.comentario
+        comentario: r.comentario,
+        partido: r.partido || "JOSÉ C. PAZ"
       })),
       recoveries: []
     });

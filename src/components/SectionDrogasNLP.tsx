@@ -20,7 +20,7 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
   const markersGroupRef = useRef<any>(null);
   const markerMapRef = useRef<Map<string | number, any>>(new Map());
 
-  // Cross-jurisdiction guard: isolate Jose C. Paz records
+  // Cross-jurisdiction guard: isolate José C. Paz records
   const safeIncidents = useMemo(() => {
     return incidents.filter((i: any) => {
       const p = (i.partido || "").toUpperCase();

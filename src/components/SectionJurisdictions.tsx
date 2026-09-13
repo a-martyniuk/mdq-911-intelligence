@@ -118,7 +118,7 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
         if (lat > -38.00 && lon > -57.545) return "CRIA_1";
       }
 
-      // Default distribution for general Pueyrredon incidents
+      // Default distribution for general Pueyrredón incidents
       return "CRIA_2";
     };
 
