@@ -33,7 +33,7 @@ import {
   AlertTriangle
 } from "lucide-react";
 import { exportToCSV } from "@/lib/excelExport";
-import { generateMdpGraphPDF } from "@/lib/pdfReport";
+import { generateMdpGraphPDF, generateSNAWarrantPDF } from "@/lib/pdfReport";
 
 export interface GraphNode {
   id: string;
@@ -1553,6 +1553,36 @@ export default function SectionGraph({ incidents = [], recoveries = [] }: Sectio
               >
                 <Crosshair size={14} />
                 <span>Centrar Nodo</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  generateSNAWarrantPDF({
+                    selectedNode: activeSelectedNode,
+                    pivots: displayNodes.filter((n) => n.category === "suspect"),
+                    stashes: displayNodes.filter((n) => n.category === "bunker"),
+                    incidents: activeSelectedNode.incidents || [],
+                  });
+                }}
+                style={{
+                  flex: 1,
+                  padding: "0.45rem",
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  borderRadius: "5px",
+                  background: "rgba(139, 92, 246, 0.1)",
+                  border: "1px solid rgba(139, 92, 246, 0.35)",
+                  color: "#7c3aed",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.3rem"
+                }}
+                title="Emitir informe de fundamentación judicial para allanamiento / orden judicial basado en SNA"
+              >
+                <FileText size={14} />
+                <span>Oficio SNA (PDF)</span>
               </button>
             </div>
 

@@ -2,7 +2,7 @@ import os, re, json
 import pandas as pd
 import numpy as np
 
-BASE_DIR = r'D:\Projects\MSEG'
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 INPUT_DIR = os.path.join(BASE_DIR, '10_9_2026 Malvinas Argentinas')
 OUTPUT_DIR = os.path.join(BASE_DIR, 'data', 'processed')
 PUBLIC_OUTPUT_DIR = os.path.join(BASE_DIR, 'public', 'data', 'processed')

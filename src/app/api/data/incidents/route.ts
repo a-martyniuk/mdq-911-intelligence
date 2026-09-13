@@ -273,7 +273,9 @@ export async function GET(req: NextRequest) {
       filtered = filtered.filter((r: any) => {
         const o = (r.origen || r.Origen_Dataset || "").toUpperCase();
         if (q === "DROGAS_ILICITAS_FORMAL") return o.includes("DROGAS_ILICITAS") || o.includes("FORMAL");
-        if (q === "INFORMACION_VECINAL_KEYWORDS") return o.includes("KEYWORD") || o.includes("INFORMACION");
+        if (q === "INFORMACION_VECINAL_KEYWORDS" || q === "INTELIGENCIA_RELATO_KEYWORDS") {
+          return o.includes("KEYWORD") || o.includes("INFORMACION") || o.includes("RELATO");
+        }
         return o.includes(q);
       });
     }

@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { Clock, Calendar, AlertTriangle, Download, FileText, Flame, ShieldAlert, Sparkles, Crosshair, MapPin } from "lucide-react";
-import { generateDrogasTemporalPDF } from "@/lib/pdfReport";
+import { generateDrogasTemporalPDF, generateDrogasTacticalDeploymentPDF } from "@/lib/pdfReport";
 import { exportToCSV } from "@/lib/excelExport";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
@@ -275,6 +275,32 @@ export default function SectionDrogasTemporal({ incidents = [] }: SectionDrogasT
               style={{ padding: "7px 14px" }}
             >
               <FileText size={14} /> Informe Cronológico (PDF)
+            </button>
+
+            <button
+              onClick={() => {
+                generateDrogasTacticalDeploymentPDF(
+                  filtered,
+                  "todos",
+                  {
+                    origen: filterOrigen,
+                    sustancia: filterSustancia,
+                    armas: filterArmas,
+                    barrio: filterBarrio,
+                    partido: "José C. Paz",
+                  },
+                  "José C. Paz"
+                );
+              }}
+              className="btn-export"
+              style={{
+                padding: "7px 14px",
+                background: "rgba(220, 38, 38, 0.12)",
+                color: "#ef4444",
+                border: "1px solid rgba(220, 38, 38, 0.35)",
+              }}
+            >
+              <Crosshair size={14} /> Plan Táctico (PDF)
             </button>
 
             <button

@@ -605,7 +605,24 @@ export function generateAllTrajectoriesPDF(rawRecoveries: any[], filterSummary?:
   const checkIsMotoLocal = (c: any) => {
     const sub = (c.SubTipo || c.Tipo || "").toUpperCase();
     const mar = (c.Marca_Detectada || c.Marca || "").toUpperCase();
-    return sub.includes("MOTO") || sub.includes("CICLOMOTOR") || ["HONDA", "ZANELLA", "YAMAHA", "BAJAJ", "MOTOMEL", "GILERA", "CORVEN"].some((m) => mar.includes(m));
+    const mod = (c.Modelo_Detectado || c.Modelo || "").toUpperCase();
+    const rel = `${c.Relato_Robo || ""} ${c.Relato_Hallazgo || ""} ${c.Relato || ""}`.toUpperCase();
+
+    if (sub.includes("MOTO") || sub.includes("CICLOMOTOR")) return true;
+    if (sub.includes("AUTO") || sub.includes("VEHICUL") || sub.includes("CAMIONETA")) {
+      if (!["ZANELLA", "MOTOMEL", "CORVEN", "GILERA", "BAJAJ", "KTM"].some((m) => mar.includes(m))) {
+        return false;
+      }
+    }
+    if (mar.includes("HONDA")) {
+      if (["FIT", "CIVIC", "CITY", "CRV", "CR-V", "HRV", "HR-V", "ACCORD", "AUTO", "VEHICULO"].some((x) => mod.includes(x) || rel.includes(x))) {
+        return false;
+      }
+      if (["WAVE", "TORNADO", "XR", "TITAN", "TWISTER", "CG", "CB", "BIZ", "MOTO"].some((x) => mod.includes(x) || rel.includes(x))) {
+        return true;
+      }
+    }
+    return ["ZANELLA", "YAMAHA", "MOTOMEL", "GILERA", "CORVEN", "KTM", "BAJAJ", "SIAM", "GUERRERO", "MONDIAL", "BRAVA"].some((m) => mar.includes(m));
   };
   const autoHours = recoveries.filter((c) => !checkIsMotoLocal(c)).map((c) => c.Horas_Hasta_Hallazgo).filter((h) => typeof h === "number" && !isNaN(h) && h > 0).sort((a, b) => a - b);
   const motoHours = recoveries.filter((c) => checkIsMotoLocal(c)).map((c) => c.Horas_Hasta_Hallazgo).filter((h) => typeof h === "number" && !isNaN(h) && h > 0).sort((a, b) => a - b);
@@ -3688,8 +3705,25 @@ export function generateDrogasTacticalDeploymentPDF(incidents: any[] = [], activ
   }
 
   const partido = customPartido || activeFilters?.partido || "José C. Paz";
+  const resolveFranja = (i: any): string => {
+    if (i.franja) return i.franja;
+    if (i.Franja_Horaria) return i.Franja_Horaria;
+    let h: number = -1;
+    if (typeof i.hora === "number") h = i.hora;
+    else if (typeof i.Hora === "number") h = i.Hora;
+    else if (i.hora) {
+      const p = parseInt(String(i.hora).split(":")[0], 10);
+      if (!isNaN(p)) h = p;
+    }
+    if (h >= 0 && h < 6) return "Madrugada (00-06 hs)";
+    if (h >= 6 && h < 12) return "Mañana (06-12 hs)";
+    if (h >= 12 && h < 18) return "Tarde (12-18 hs)";
+    if (h >= 18 && h <= 23) return "Noche (18-24 hs)";
+    return "";
+  };
+
   const filteredIncidents = activeSlot && activeSlot !== "todos"
-    ? incidents.filter(i => (i.franja || "").toLowerCase().includes(activeSlot.toLowerCase()))
+    ? incidents.filter(i => resolveFranja(i).toLowerCase().includes(activeSlot.toLowerCase()))
     : incidents;
 
   const total = filteredIncidents.length;

@@ -9,6 +9,18 @@ interface SectionInvestigativeValueProps {
 }
 
 export default function SectionInvestigativeValue({ incidents = [], recoveries = [] }: SectionInvestigativeValueProps) {
+  const dynamicRobos = React.useMemo(() => {
+    const c = incidents.filter((i) => (i.Origen_Dataset || i.Tipo || "").toUpperCase().includes("ROBO")).length;
+    return c > 0 ? c : 4207;
+  }, [incidents]);
+
+  const dynamicHallazgos = React.useMemo(() => {
+    const c = incidents.filter((i) => (i.Origen_Dataset || i.Tipo || "").toUpperCase().includes("HALLAZGO")).length;
+    return c > 0 ? c : 2586;
+  }, [incidents]);
+
+  const dynamicTotal = incidents.length > 0 ? incidents.length : 8598;
+
   return (
     <div className="animate-enter">
       <div className="card" style={{ marginBottom: "1.25rem" }}>
@@ -26,9 +38,11 @@ export default function SectionInvestigativeValue({ incidents = [], recoveries =
             <button
               onClick={() => {
                 generateExecutiveDossierPDF({
-                  totalIncidents: 8598,
-                  robosCount: 4207,
-                  hallazgosCount: 2586,
+                  totalIncidents: dynamicTotal,
+                  robosCount: dynamicRobos,
+                  hallazgosCount: dynamicHallazgos,
+                  incidentsSample: incidents,
+                  recoveries: recoveries,
                   gangs: [
                     { nombre: "Banda de la Moto Negra 110cc", hechosCount: 24, patron: "Conductor con visera y acompañante armado en moto 110cc", franja: "Noche (20 a 02 hs)", zona: "Comisaría 2da (Macrocentro)", explicacion: "Coincidencia de 24 despachos en 30 días." },
                     { nombre: "Célula Fuga VW Gol Gris", hechosCount: 18, patron: "Auto de apoyo Gol Gris en robos de motovehículos", franja: "Madrugada (01 a 06 hs)", zona: "Comisaría 4ta (Pompeya)", explicacion: "Escape coordinado por avenidas principales." },
@@ -158,7 +172,13 @@ export default function SectionInvestigativeValue({ incidents = [], recoveries =
                 <td><strong>Nocturnidad → Concentración</strong></td>
                 <td>39.5% de incidentes entre 18 y 24 hs</td>
                 <td>Sincronización horaria de bandas dedicadas a sustracción vehicular</td>
-                <td>Pico de 185 robos/hora a las 20:00 hs</td>
+                <td>Pico de 185 robos de automotores a las 20:00 hs (y 182 motos a las 19:00 hs)</td>
+              </tr>
+              <tr>
+                <td><strong>Descarte → Asentamientos RENABAP</strong></td>
+                <td>82.7% de hallazgos a &lt; 350m</td>
+                <td>Zonas de enfriamiento y transbordo periférico</td>
+                <td>Cruce espacial con 58 Polígonos Oficiales SISU RENABAP</td>
               </tr>
             </tbody>
           </table>

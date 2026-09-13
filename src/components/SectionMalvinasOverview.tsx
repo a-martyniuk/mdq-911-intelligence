@@ -96,12 +96,12 @@ export default function SectionMalvinasOverview({ stats, incidents = [] }: Secti
           <button
             onClick={() => {
               exportToCSV("indicadores_narcocriminalidad_malvinas", [
-                { Indicador: "Total Denuncias 911", Valor: stats.totalIncidents },
-                { Indicador: "Georreferenciación Válida", Valor: stats.georeferencedCount },
-                { Indicador: "Conflictividad con Armas", Valor: stats.armasCount },
-                { Indicador: "Puntos de Cocaína", Valor: stats.cocainaCount },
-                { Indicador: "Puntos de Marihuana", Valor: stats.marihuanaCount },
-                { Indicador: "Focos de Paco", Valor: stats.pacoCount },
+                { Indicador: "Total Denuncias 911", Valor: stats.totalIncidents, Detalle: "Llamados por comercialización de drogas" },
+                { Indicador: "Georreferenciación Válida", Valor: stats.georeferencedCount, Detalle: `${stats.georeferencedPct.toFixed(1)}% georreferenciado en Malvinas` },
+                { Indicador: "Conflictividad con Armas", Valor: stats.armasCount, Detalle: `${stats.armasPct.toFixed(1)}% con armas o disparos` },
+                { Indicador: "Puntos de Cocaína", Valor: stats.cocainaCount, Detalle: "Mención directa o combinada" },
+                { Indicador: "Puntos de Marihuana", Valor: stats.marihuanaCount, Detalle: "Venta / acopio verificado en relato" },
+                { Indicador: "Focos de Paco / Pasta Base", Valor: stats.pacoCount, Detalle: "Zonas de alto deterioro social" },
               ]);
             }}
             className="btn-export btn-excel"

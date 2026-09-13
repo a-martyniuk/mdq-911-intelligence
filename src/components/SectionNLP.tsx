@@ -75,12 +75,14 @@ export default function SectionNLP({ incidents = [], recoveries = [] }: SectionN
 
           <button
             onClick={() => {
-              const robos = incidents.filter((i) => (i.Tipo_Delito || "").toLowerCase().includes("robo") || (i.Origen_Dataset || "").toLowerCase().includes("robo")).length || 4207;
-              const hallazgos = incidents.filter((i) => (i.Tipo_Delito || "").toLowerCase().includes("hallazgo") || (i.Origen_Dataset || "").toLowerCase().includes("hallazgo")).length || 2586;
+              const robos = incidents.filter((i) => (i.Origen_Dataset || i.Tipo || i.Tipo_Delito || "").toUpperCase().includes("ROBO")).length || 4207;
+              const hallazgos = incidents.filter((i) => (i.Origen_Dataset || i.Tipo || i.Tipo_Delito || "").toUpperCase().includes("HALLAZGO")).length || 2586;
               generateExecutiveDossierPDF({
                 totalIncidents: incidents.length || 8598,
                 robosCount: robos,
                 hallazgosCount: hallazgos,
+                incidentsSample: incidents,
+                recoveries: recoveries,
               });
             }}
             className="btn-export btn-pdf"
