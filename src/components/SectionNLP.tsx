@@ -36,9 +36,9 @@ export default function SectionNLP({ incidents = [], recoveries = [] }: SectionN
     });
 
     return {
-      withPatenteCount: withPat || 4207,
-      withPatentePct: total > 0 ? ((withPat / total) * 100).toFixed(1) : "37.7",
-      uniquePatentesCount: patSet.size || 1540,
+      withPatenteCount: withPat || 2340,
+      withPatentePct: total > 0 ? ((withPat / total) * 100).toFixed(1) : "27.2",
+      uniquePatentesCount: patSet.size || 2174,
       uniqueBrandsCount: brandSet.size || 24,
     };
   }, [incidents]);

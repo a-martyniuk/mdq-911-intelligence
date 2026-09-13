@@ -555,7 +555,7 @@ export default function SectionHotspots({ incidents = [], geoPoints = [] }: Sect
                 setFilterTipo("todos");
               }}
             >
-              <Flame size={14} color="#ef4444" /> Densidad General (8.598 Casos)
+              <Flame size={14} color="#ef4444" /> Densidad General ({incidents && incidents.length > 0 ? incidents.length.toLocaleString() : "8.598"} Casos)
             </button>
 
             <button

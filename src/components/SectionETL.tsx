@@ -11,6 +11,17 @@ interface SectionETLProps {
 export default function SectionETL({ incidents = [], recoveries = [] }: SectionETLProps) {
   const [selectedRule, setSelectedRule] = useState<number>(0);
 
+  const dynamicTotal = incidents.length > 0 ? incidents.length.toLocaleString() : "8.598";
+  const dynamicRecoveries = React.useMemo(() => {
+    if (!recoveries || recoveries.length === 0) return 52;
+    const unique = new Set(
+      recoveries
+        .filter((r: any) => !(r.ID_Robo && r.ID_Hallazgo && r.ID_Robo === r.ID_Hallazgo))
+        .map((r: any) => r.ID_Robo)
+    );
+    return unique.size || 52;
+  }, [recoveries]);
+
   const rules = [
     {
       title: "Reparación y Normalización Geográfica",
@@ -28,7 +39,7 @@ export default function SectionETL({ incidents = [], recoveries = [] }: SectionE
       title: "Cruce Relacional Robo ➔ Hallazgo",
       icon: "🔀",
       desc: "Algoritmo de vinculación por clave única de patente y marca entre la base de denuncias de sustracción y el registro de vehículos hallados/abandonados.",
-      impact: "Permitió medir el tiempo de recuperación (mediana 4,9 hs autos / 7,0 hs motos) y la prevalencia de autos (78,8%) vs motos (21,2%) en recuperos pareados.",
+      impact: "Permitió medir el tiempo de recuperación (mediana 5,4 hs autos / 6,8 hs motos) y la prevalencia de autos (78,8%) vs motos (21,2%) en recuperos pareados.",
     },
     {
       title: "Enriquecimiento Espacio-Temporal",
@@ -75,7 +86,7 @@ export default function SectionETL({ incidents = [], recoveries = [] }: SectionE
         <div className="card" style={{ borderLeft: "3px solid #38bdf8" }}>
           <span style={{ fontSize: "11px", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Datos Ingestados</span>
           <div style={{ fontSize: "1.75rem", fontWeight: 700, color: "var(--text-primary)", margin: "0.2rem 0", fontFamily: "var(--font-mono)", fontVariantNumeric: "tabular-nums" }}>
-            8.598
+            {dynamicTotal}
           </div>
           <span style={{ fontSize: "12px", color: "var(--text-secondary)" }}>100% procesados desde planillas 911</span>
         </div>
@@ -91,7 +102,7 @@ export default function SectionETL({ incidents = [], recoveries = [] }: SectionE
         <div className="card" style={{ borderLeft: "3px solid #f59e0b" }}>
           <span style={{ fontSize: "11px", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Relaciones Cruzadas</span>
           <div style={{ fontSize: "1.75rem", fontWeight: 700, color: "#f59e0b", margin: "0.2rem 0", fontFamily: "var(--font-mono)", fontVariantNumeric: "tabular-nums" }}>
-            52 Vehículos
+            {dynamicRecoveries} Vehículos
           </div>
           <span style={{ fontSize: "12px", color: "var(--text-secondary)" }}>Trazabilidad deduplicada Robo ➔ Hallazgo</span>
         </div>

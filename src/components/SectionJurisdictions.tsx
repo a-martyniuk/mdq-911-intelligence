@@ -423,7 +423,7 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
             </div>
             <div>
               <h2 style={{ fontSize: "19px", fontWeight: 700, margin: 0, color: "var(--text-primary)", letterSpacing: "-0.015em" }}>
-                Matriz Inter-Jurisdiccional & Cuadrantes Policiales (Comisarías 1ra a 16ta)
+                Matriz Inter-Jurisdiccional & Cuadrantes Policiales (15 Comisarías - 1ra a 16ta excl. 10ma)
               </h2>
               <p style={{ fontSize: "13.5px", color: "var(--text-muted)", margin: "0.2rem 0 0" }}>
                 Delimitación orgánica por comisaría y análisis cuantitativo real de sustracciones y zonas de descarte.
@@ -518,7 +518,7 @@ export default function SectionJurisdictions({ incidents = [], recoveries = [] }
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.5rem" }}>
             <h3 style={{ fontSize: "14.5px", fontWeight: 700, margin: 0, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
               <Layers size={16} color="#38bdf8" />
-              Mapa de Cuadrantes Oficiales (Comisarías 1ra a 16ta)
+              Mapa de Cuadrantes Oficiales (15 Comisarías - 1ra a 16ta excl. 10ma)
             </h3>
 
             <div style={{ display: "flex", alignItems: "center", gap: "0.85rem", flexWrap: "wrap" }}>

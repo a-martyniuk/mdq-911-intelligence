@@ -470,7 +470,7 @@ export function generateExecutiveDossierPDF(data: any) {
       `).join("")}
 
       <!-- Sección 2: Matriz Inter-Jurisdiccional por Comisaría -->
-      <div class="section-title">2. Matriz Inter-Jurisdiccional (Comisarías 1ra a 16ta)</div>
+      <div class="section-title">2. Matriz Inter-Jurisdiccional (15 Comisarías - 1ra a 16ta excl. 10ma)</div>
       <table>
         <thead>
           <tr>
@@ -2951,7 +2951,7 @@ export function generateJurisdictionsReportPDF(data: {
       <div class="header">
         <div>
           <div class="title">Jefatura Departamental General Pueyrredón · Ministerio de Seguridad</div>
-          <div class="subtitle">Informe Táctico de Movilidad Delictual Inter-Jurisdiccional (Comisarías 1ra a 16ta)</div>
+          <div class="subtitle">Informe Táctico de Movilidad Delictual Inter-Jurisdiccional (15 Comisarías - 1ra a 16ta excl. 10ma)</div>
         </div>
         <div class="badge">Uso Operacional</div>
       </div>
@@ -2967,7 +2967,7 @@ export function generateJurisdictionsReportPDF(data: {
         </div>
         <div class="stat-card">
           <div class="stat-lbl">Comisarías Auditadas</div>
-          <div class="stat-val">16 Jurisdicciones</div>
+          <div class="stat-val">${jurisdictionStats.length} Jurisdicciones</div>
         </div>
       </div>
 

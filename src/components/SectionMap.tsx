@@ -590,7 +590,7 @@ export default function SectionMap({ geoPoints = [], recoveries = [] }: SectionM
               {showJurisdictions ? <CheckSquare size={16} color="var(--accent-pba-blue)" /> : <Square size={16} color="var(--text-muted)" />}
               <div>
                 <div style={{ fontSize: "0.825rem", fontWeight: 700, color: showJurisdictions ? "var(--accent-pba-blue)" : "var(--text-primary)" }}>
-                  👮 Comisarías 1ra a 16ta
+                  👮 15 Comisarías (1ra a 16ta excl. 10ma)
                 </div>
                 <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>
                   Polígonos oficiales MGP Subrubro 122

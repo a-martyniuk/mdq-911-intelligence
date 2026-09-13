@@ -276,7 +276,7 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
             <ul style={{ fontSize: "0.85rem", color: "var(--text-secondary)", display: "flex", flexDirection: "column", gap: "0.4rem" }}>
               <li><strong>Denuncias de Robo:</strong> 2.047 (48,7%)</li>
               <li><strong>Hallazgos Registrados:</strong> 1.678 (64,9%)</li>
-              <li><strong>Mediana de Hallazgo:</strong> <strong style={{ color: "var(--accent-green)" }}>4,9 horas</strong></li>
+              <li><strong>Mediana de Hallazgo:</strong> <strong style={{ color: "var(--accent-green)" }}>5,4 horas</strong></li>
               <li><strong>Top Marcas:</strong> Fiat (171), Peugeot (145), Ford (126), Chevrolet (123).</li>
             </ul>
           </div>
@@ -289,7 +289,7 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
             <ul style={{ fontSize: "0.85rem", color: "var(--text-secondary)", display: "flex", flexDirection: "column", gap: "0.4rem" }}>
               <li><strong>Denuncias de Robo:</strong> 2.073 (49,3%)</li>
               <li><strong>Hallazgos Registrados:</strong> 510 (19,7%)</li>
-              <li><strong>Mediana de Hallazgo:</strong> <strong style={{ color: "var(--accent-pink)" }}>7,0 horas</strong> (prom. 75,7 hs)</li>
+              <li><strong>Mediana de Hallazgo:</strong> <strong style={{ color: "var(--accent-pink)" }}>6,8 horas</strong> (prom. 75,7 hs)</li>
               <li><strong>Top Marcas:</strong> Honda (400), Zanella (195), Mondial (136), Gilera (129).</li>
             </ul>
           </div>
@@ -649,7 +649,7 @@ export default function SectionVehicles({ recoveries = [] }: SectionVehiclesProp
                   : 5.4;
                 const dynMedianMotos = motoHours.length > 0
                   ? (motoHours.length % 2 !== 0 ? motoHours[Math.floor(motoHours.length / 2)] : (motoHours[Math.floor(motoHours.length / 2) - 1] + motoHours[Math.floor(motoHours.length / 2)]) / 2)
-                  : 7.0;
+                  : 6.8;
 
                 const dynMeanAutos = autoHours.length > 0 ? autoHours.reduce((a, b) => a + b, 0) / autoHours.length : 49.0;
                 const dynMeanMotos = motoHours.length > 0 ? motoHours.reduce((a, b) => a + b, 0) / motoHours.length : 75.7;

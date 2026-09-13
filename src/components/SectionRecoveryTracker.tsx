@@ -366,7 +366,17 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
     }
   }, [vehicleType, searchTerm]);
 
-  const medianHours = vehicleType === "motos" ? 7.0 : vehicleType === "autos" ? 4.9 : 5.4;
+  const medianHours = useMemo(() => {
+    const hours = filteredCases
+      .map((c) => c.Horas_Hasta_Hallazgo)
+      .filter((h) => typeof h === "number" && !isNaN(h) && h >= 0)
+      .sort((a, b) => a - b);
+    if (hours.length === 0) return vehicleType === "motos" ? "6.8" : "5.4";
+    const med = hours.length % 2 !== 0
+      ? hours[Math.floor(hours.length / 2)]
+      : (hours[Math.floor(hours.length / 2) - 1] + hours[Math.floor(hours.length / 2)]) / 2;
+    return med.toFixed(1);
+  }, [filteredCases, vehicleType]);
 
   return (
     <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
@@ -484,7 +494,7 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
             ⏱️ {medianHours} Horas
           </div>
           <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>
-            {vehicleType === "autos" ? "Autos: Abandono rápido tras comisión de delito" : vehicleType === "motos" ? "Motos: Período de enfriamiento previo a desarme" : "Mediana consolidada 5.4hs"}
+            {vehicleType === "autos" ? "Autos: Abandono rápido tras comisión de delito (5.4 hs)" : vehicleType === "motos" ? "Motos: Período de enfriamiento previo a desarme (6.8 hs)" : "Mediana consolidada 5.4 hs"}
           </span>
         </div>
 

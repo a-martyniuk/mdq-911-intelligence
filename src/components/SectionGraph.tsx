@@ -1001,7 +1001,7 @@ export default function SectionGraph({ incidents = [], recoveries = [] }: Sectio
                 </span>
               </div>
               <p style={{ margin: "0.25rem 0 0", fontSize: "13.5px", color: "var(--text-muted)" }}>
-                Modelado relacional de co-ocurrencia: Células Operativas &harr; Rodados/Patentes Bisagra &harr; Hubs de Descarte/Desguace &harr; Armamento &harr; Blancos Vehiculares (10.000+ llamados 911).
+                Modelado relacional de co-ocurrencia: Células Operativas &harr; Rodados/Patentes Bisagra &harr; Hubs de Descarte/Desguace &harr; Armamento &harr; Blancos Vehiculares ({incidents.length > 0 ? incidents.length.toLocaleString() : "8.598"} llamados 911).
               </p>
             </div>
           </div>
@@ -1097,7 +1097,11 @@ export default function SectionGraph({ incidents = [], recoveries = [] }: Sectio
                   }}
                 >
                   <span>{clique.icon}</span>
-                  <span>{clique.label}</span>
+                  <span>
+                    {clique.id === "all"
+                      ? `Red General Integral MDP (${incidents.length > 0 ? incidents.length.toLocaleString() : "8.598"} Despachos)`
+                      : clique.label}
+                  </span>
                 </button>
               );
             })}

@@ -20,10 +20,19 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
   const markersGroupRef = useRef<any>(null);
   const markerMapRef = useRef<Map<string | number, any>>(new Map());
 
+  // Cross-jurisdiction guard: isolate Jose C. Paz records
+  const safeIncidents = useMemo(() => {
+    return incidents.filter((i: any) => {
+      const p = (i.partido || "").toUpperCase();
+      if (p.includes("MALVINAS") || p.includes("GENERAL PUEYRREDON") || p.includes("MDP")) return false;
+      return true;
+    });
+  }, [incidents]);
+
   // Count geocoded points per suspect/alias
   const suspectGeoCounts = useMemo(() => {
     const counts: { [alias: string]: number } = {};
-    incidents.forEach((inc) => {
+    safeIncidents.forEach((inc) => {
       if (inc.lat && inc.lng && inc.alias) {
         inc.alias.forEach((a: string) => {
           const clean = a.trim();
@@ -34,13 +43,13 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
       }
     });
     return counts;
-  }, [incidents]);
+  }, [safeIncidents]);
 
   // Extract Top Aliases and occurrences
   const aliasRanking = useMemo(() => {
     const counts: { [alias: string]: { count: number; lastDate: string; barrios: Set<string>; sampleRelato: string; isFullName: boolean } } = {};
 
-    incidents.forEach((inc) => {
+    safeIncidents.forEach((inc) => {
       const aliases = inc.alias || [];
       aliases.forEach((a: string) => {
         const clean = a.trim();
@@ -78,21 +87,21 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
     }
 
     return list.slice(0, 35);
-  }, [incidents, searchTerm]);
+  }, [safeIncidents, searchTerm]);
 
   // Points of sale distribution
   const lugaresStats = useMemo(() => {
     const map: { [key: string]: number } = {};
-    incidents.forEach((r) => {
+    safeIncidents.forEach((r) => {
       const lug = r.tipoLugar || "Lugar No Especificado";
       map[lug] = (map[lug] || 0) + 1;
     });
     return Object.entries(map).sort((a, b) => b[1] - a[1]);
-  }, [incidents]);
+  }, [safeIncidents]);
 
   // Filtered incidents with alias or search keyword
   const filteredIncidents = useMemo(() => {
-    let list = incidents;
+    let list = safeIncidents;
 
     if (selectedSuspect) {
       list = list.filter((r) => (r.alias || []).some((a: string) => a.toLowerCase() === selectedSuspect.toLowerCase()));
@@ -110,7 +119,7 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
     }
 
     return list.filter((r) => (r.alias && r.alias.length > 0) || r.tieneArmas).slice(0, 30);
-  }, [incidents, searchTerm, selectedSuspect]);
+  }, [safeIncidents, searchTerm, selectedSuspect]);
 
   const geocodedFilteredCount = useMemo(() => {
     return filteredIncidents.filter((r) => r.lat && r.lng).length;
