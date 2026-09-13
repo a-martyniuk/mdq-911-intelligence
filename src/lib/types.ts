@@ -14,6 +14,8 @@ export interface IncidentRecord {
   Dirección: string;
   Partido_asignado?: string;
   Localidad_asignada?: string;
+  partido?: string;
+  localidad?: string;
   Latitud_Clean?: number;
   Longitud_Clean?: number;
   Patente_Principal?: string;
@@ -93,4 +95,11 @@ export interface DrogasIncidentRecord {
   Alias_Identificados?: string[];
   barrio: string;
   Barrio_Detectado?: string;
+  partido?: string;
+  localidad?: string;
+  calle?: string;
+  altura?: number | string;
+  calleSuperior?: string;
+  calleInferior?: string;
+  precision_geo?: string;
 }

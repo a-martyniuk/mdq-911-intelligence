@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import { checkAuthSession } from "@/lib/auth";
 
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ filename: string }> }
 ) {
+  const session = await checkAuthSession();
+  if (!session.authenticated) {
+    return NextResponse.json({ error: "Acceso no autorizado" }, { status: 401 });
+  }
+
   const { filename } = await params;
   const safeFilename = path.basename(filename);
 
