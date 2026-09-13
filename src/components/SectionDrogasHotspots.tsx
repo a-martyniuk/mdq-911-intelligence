@@ -69,7 +69,7 @@ export default function SectionDrogasHotspots({ incidents = [] }: SectionDrogasH
   const filtered = useMemo(() => {
     return incidents.filter((inc) => {
       const p = (inc.partido || "").toUpperCase();
-      if (p.includes("MALVINAS") || p.includes("GENERAL PUEYRREDON") || p.includes("MDP")) return false;
+      if (p.includes("MALVINAS") || p.includes("PUEYRREDON") || p.includes("PUEYRREDÓN") || p.includes("MDP")) return false;
 
       if (filterSustancia !== "todos") {
         const sNorm = (inc.sustancia || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");

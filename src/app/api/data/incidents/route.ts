@@ -20,7 +20,8 @@ function loadMalvinasData(): any[] {
       const parsed = JSON.parse(content);
       cachedMalvinasIncidents = parsed.map((r: any) => ({
         ...r,
-        partido: r.partido || "MALVINAS ARGENTINAS"
+        partido: r.partido || "MALVINAS ARGENTINAS",
+        localidad: r.localidad || "LOS POLVORINES"
       }));
     } else {
       cachedMalvinasIncidents = [];
@@ -59,7 +60,7 @@ function loadMdpData() {
         Marca_Detectada: r.Marca_Detectada || "NO ESPECIFICADO",
         Origen_Dataset: r.Origen_Dataset || "",
         Relato: r.Relato || "",
-        partido: r["Partido asignado"] || "GENERAL PUEYRREDON",
+        partido: r["Partido asignado"] || "GENERAL PUEYRREDÓN",
         localidad: r["Localidad asignada"] || "MAR DEL PLATA"
       }));
     } else {
@@ -113,7 +114,8 @@ function loadJcpData(): any[] {
       const parsed = JSON.parse(content);
       cachedJcpIncidents = parsed.map((r: any) => ({
         ...r,
-        partido: r.partido || "JOSÉ C. PAZ"
+        partido: r.partido || "JOSÉ C. PAZ",
+        localidad: r.localidad || "JOSÉ C. PAZ"
       }));
     } else {
       cachedJcpIncidents = [];
@@ -257,6 +259,7 @@ export async function GET(req: NextRequest) {
         barrio: r.barrio,
         relato: r.relato,
         comentario: r.comentario,
+        localidad: r.localidad || "JOSÉ C. PAZ",
         partido: r.partido || "JOSÉ C. PAZ"
       })),
       recoveries: []
@@ -361,8 +364,9 @@ export async function GET(req: NextRequest) {
         sustancia: r.sustancia, direccion: r.direccion, fecha: r.fecha,
         franja: r.franja, dia: r.dia, hora: r.hora, tieneArmas: r.tieneArmas,
         tipoLugar: r.tipoLugar, alias: r.alias, barrio: r.barrio,
-        relato: r.relato, comentario: r.comentario, localidad: r.localidad,
-        partido: r.partido
+        relato: r.relato, comentario: r.comentario,
+        localidad: r.localidad || "LOS POLVORINES",
+        partido: r.partido || "MALVINAS ARGENTINAS"
       })),
       recoveries: []
     });
@@ -483,7 +487,9 @@ export async function GET(req: NextRequest) {
       hora: r.Hora,
       marca: r.Marca_Detectada,
       patente: r.Patente_Principal,
-      relato: r.Relato
+      relato: r.Relato,
+      partido: r.partido || "GENERAL PUEYRREDÓN",
+      localidad: r.localidad || "MAR DEL PLATA"
     })),
     recoveries: filteredRecoveries,
   });

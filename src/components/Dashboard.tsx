@@ -248,7 +248,7 @@ export default function Dashboard() {
                   const rawIncidents = data?.project === "jcp" ? (data?.incidents || data?.geoPoints || []) : [];
                   const jcpIncidents = rawIncidents.filter((i: any) => {
                     const p = (i.partido || "").toUpperCase();
-                    return !p.includes("MALVINAS") && !p.includes("GENERAL PUEYRREDON") && !p.includes("MDP");
+                    return !p.includes("MALVINAS") && !p.includes("PUEYRREDON") && !p.includes("PUEYRREDÓN") && !p.includes("MDP");
                   });
                   mod.generateDrogasJcpPDF({
                     totalIncidents: jcpStats.totalIncidents,
@@ -276,7 +276,7 @@ export default function Dashboard() {
                   const rawIncidents = data?.project === "malvinas" ? (data?.incidents || data?.geoPoints || []) : [];
                   const malvinasIncidents = rawIncidents.filter((i: any) => {
                     const p = (i.partido || "").toUpperCase();
-                    return !p.includes("JOSÉ") && !p.includes("JOSE") && !p.includes("GENERAL PUEYRREDON") && !p.includes("MDP");
+                    return !p.includes("JOSÉ") && !p.includes("JOSE") && !p.includes("PUEYRREDON") && !p.includes("PUEYRREDÓN") && !p.includes("MDP");
                   });
                   mod.generateDrogasMalvinasPDF({
                     totalIncidents: malvinasStats.totalIncidents,

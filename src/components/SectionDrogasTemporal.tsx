@@ -86,7 +86,7 @@ export default function SectionDrogasTemporal({ incidents = [] }: SectionDrogasT
   const filtered = useMemo(() => {
     return incidents.filter((inc) => {
       const p = (inc.partido || "").toUpperCase();
-      if (p.includes("MALVINAS") || p.includes("GENERAL PUEYRREDON") || p.includes("MDP")) return false;
+      if (p.includes("MALVINAS") || p.includes("PUEYRREDON") || p.includes("PUEYRREDÓN") || p.includes("MDP")) return false;
 
       if (filterOrigen !== "todos") {
         const o = (inc.origen || inc.Origen_Dataset || "").toUpperCase();

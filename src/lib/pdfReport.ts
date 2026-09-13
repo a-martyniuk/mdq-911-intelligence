@@ -2133,6 +2133,8 @@ export function generateDrogasSuspectsPDF(data: {
   }
 
   const { suspects, totalSuspects, totalIncidents, allIncidents = [], selectedSuspect = null, searchTerm = "", partido = "José C. Paz" } = data;
+  const isMalvinas = partido.toLowerCase().includes("malvinas");
+  const defaultFallbackCenter = isMalvinas ? [-34.492, -58.718] : [-34.520, -58.775];
 
   const escapeHtml = (str: string) => {
     if (!str) return "";
@@ -2434,7 +2436,7 @@ export function generateDrogasSuspectsPDF(data: {
               if (latLngs.length > 0) {
                 map.fitBounds(latLngs, { padding: [25, 25], maxZoom: 16 });
               } else {
-                map.setView([-34.520, -58.775], 13);
+                map.setView(${JSON.stringify(defaultFallbackCenter)}, 13);
               }
             } catch (err) {
               console.error('Error rendering map for suspect idx ' + item.idx, err);

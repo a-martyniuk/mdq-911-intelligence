@@ -732,3 +732,69 @@ button:active,
   }
 }
 
+/* ─── Media Print Styles for Official Dossiers & Browser Print ──────────────── */
+@media print {
+  .app-sidebar,
+  .app-header,
+  .header-actions,
+  .btn-logout,
+  .btn-export,
+  .btn-primary,
+  .btn-secondary,
+  .project-tabs,
+  .tab-item,
+  .filter-panel,
+  .search-bar,
+  .leaflet-control-zoom,
+  .no-print {
+    display: none !important;
+  }
+
+  body,
+  html {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 11pt !important;
+  }
+
+  .app-layout {
+    display: block !important;
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .app-main {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+  }
+
+  .card {
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    margin-bottom: 1.5rem !important;
+  }
+
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    break-inside: auto;
+  }
+
+  tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  th,
+  td {
+    border: 1px solid #cbd5e1 !important;
+  }
+}
+

@@ -9,7 +9,7 @@ export const JCP_MUNICIPAL_BOUNDARY_GEOJSON = {
       "properties": {
         "name": "Partido de José C. Paz",
         "departamento": "JOSE C PAZ",
-        "cabecera": "JOSE C. PAZ",
+        "cabecera": "JOSÉ C. PAZ",
         "provincia": "Buenos Aires",
         "superficie_km2": 50.1,
         "habitantes_censo2022": 326527,

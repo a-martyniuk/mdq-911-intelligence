@@ -24,7 +24,7 @@ export default function SectionDrogasNLP({ incidents = [] }: SectionDrogasNLPPro
   const safeIncidents = useMemo(() => {
     return incidents.filter((i: any) => {
       const p = (i.partido || "").toUpperCase();
-      if (p.includes("MALVINAS") || p.includes("GENERAL PUEYRREDON") || p.includes("MDP")) return false;
+      if (p.includes("MALVINAS") || p.includes("PUEYRREDON") || p.includes("PUEYRREDÓN") || p.includes("MDP")) return false;
       return true;
     });
   }, [incidents]);

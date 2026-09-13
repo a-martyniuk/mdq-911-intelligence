@@ -46,7 +46,8 @@ export default function SectionNLP({ incidents = [], recoveries = [] }: SectionN
   const patenteRegex = /\b([A-Z]{2}\d{3}[A-Z]{2}|[A-Z]{1}\d{3}[A-Z]{3}|[A-Z]{3}\d{3}|\d{3}[A-Z]{3})\b/gi;
   const marcas = [
     "ZANELLA", "GILERA", "HONDA", "YAMAHA", "MOTOMEL", "CHEVROLET", "FORD", "FIAT", "VOLKSWAGEN", "RENAULT",
-    "PEUGEOT", "TOYOTA", "CORVEN", "BAJAJ", "CITROEN", "KTM", "SUZUKI", "NISSAN", "BMW", "AUDI"
+    "PEUGEOT", "TOYOTA", "CORVEN", "BAJAJ", "ROUSER", "CITROEN", "KTM", "SUZUKI", "NISSAN", "BMW", "AUDI",
+    "GUERRERO", "MONDIAL", "BRAVA", "SIAM"
   ];
 
   const foundPatentes = Array.from(new Set((sampleText.match(patenteRegex) || []).map((p) => p.toUpperCase())));

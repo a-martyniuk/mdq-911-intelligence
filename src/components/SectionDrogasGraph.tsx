@@ -129,7 +129,7 @@ export default function SectionDrogasGraph({ incidents = [] }: SectionDrogasGrap
 
     incidents.forEach((inc) => {
       const p = (inc.partido || "").toUpperCase();
-      if (p.includes("MALVINAS") || p.includes("GENERAL PUEYRREDON") || p.includes("MDP")) return;
+      if (p.includes("MALVINAS") || p.includes("PUEYRREDON") || p.includes("PUEYRREDÓN") || p.includes("MDP")) return;
 
       const rel = inc.relato || inc.Relato || "";
       const addr = inc.direccion || inc.Dirección || inc.calle || "";
