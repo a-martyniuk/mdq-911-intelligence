@@ -152,7 +152,7 @@ export default function SectionInvestigativeValue({ incidents = [], recoveries =
             <tbody>
               <tr>
                 <td><strong>Robo → Hallazgo Automotor</strong></td>
-                <td>Abandono promedio en 4.9 hs</td>
+                <td>Mediana de abandono en 5.4 hs</td>
                 <td>Uso del automóvil robado como "unidad de apoyo/fuga" efímera</td>
                 <td>52 vehículos vinculados (50 patentes únicas / 58 pares)</td>
               </tr>

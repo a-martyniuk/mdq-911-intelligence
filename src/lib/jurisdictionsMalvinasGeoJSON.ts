@@ -1,6 +1,6 @@
 // Capa Oficial Jurisdicciones Policiales - Malvinas Argentinas
-// Fuente: Policia de la Provincia de Buenos Aires (PBA) - 4 Comisarias
-// Delimitacion Voronoi ajustada al perimetro INDEC/IGN del partido
+// Fuente: Policía de la Provincia de Buenos Aires (PBA) - 4 Comisarías
+// Delimitación Voronoi ajustada al perímetro INDEC/IGN del partido
 
 export const JURISDICTIONS_MALVINAS_GEOJSON = {
   "type": "FeatureCollection",
@@ -8,12 +8,12 @@ export const JURISDICTIONS_MALVINAS_GEOJSON = {
     {
       "type": "Feature",
       "properties": {
-        "name": "Comisaria 1ra (Grand Bourg)",
+        "name": "Comisaría 1ra (Grand Bourg)",
         "code": "CRIA_MALVINAS_1",
-        "sede": "Jose de San Martin 1674 (Grand Bourg)",
+        "sede": "José de San Martín 1674 (Grand Bourg)",
         "color": "#2563eb",
         "phone": "(02320) 480171 / 485600",
-        "description": "Jurisdiccion Grand Bourg y zonas centro. Dependencia Estacion Departamental Malvinas Argentinas - PBA.",
+        "description": "Jurisdicción Grand Bourg y zonas centro. Dependencia Estación Departamental Malvinas Argentinas - PBA.",
         "center": [
           -34.481,
           -58.719
@@ -90,12 +90,12 @@ export const JURISDICTIONS_MALVINAS_GEOJSON = {
     {
       "type": "Feature",
       "properties": {
-        "name": "Comisaria 2da (Los Polvorines)",
+        "name": "Comisaría 2da (Los Polvorines)",
         "code": "CRIA_MALVINAS_2",
         "sede": "Perito Moreno 3181 (Los Polvorines)",
         "color": "#059669",
         "phone": "(011) 4456-0198 / 0227",
-        "description": "Jurisdiccion Los Polvorines y Villa de Mayo. Dependencia PBA.",
+        "description": "Jurisdicción Los Polvorines y Villa de Mayo. Dependencia PBA.",
         "center": [
           -34.507,
           -58.719
@@ -164,12 +164,12 @@ export const JURISDICTIONS_MALVINAS_GEOJSON = {
     {
       "type": "Feature",
       "properties": {
-        "name": "Comisaria 3ra (Pablo Nogues)",
+        "name": "Comisaría 3ra (Pablo Nogués)",
         "code": "CRIA_MALVINAS_3",
-        "sede": "Ejercito de los Andes 2244 (Pablo Nogues)",
+        "sede": "Ejército de los Andes 2244 (Pablo Nogués)",
         "color": "#d97706",
         "phone": "(02320) 480260 / 486191",
-        "description": "Jurisdiccion Pablo Nogues y Adolfo Sourdeaux. Dependencia PBA.",
+        "description": "Jurisdicción Pablo Nogués y Adolfo Sourdeaux. Dependencia PBA.",
         "center": [
           -34.474,
           -58.7
@@ -210,12 +210,12 @@ export const JURISDICTIONS_MALVINAS_GEOJSON = {
     {
       "type": "Feature",
       "properties": {
-        "name": "Comisaria 4ta (Tortuguitas)",
+        "name": "Comisaría 4ta (Tortuguitas)",
         "code": "CRIA_MALVINAS_4",
-        "sede": "Av. Juan Domingo Peron 181 (Tortuguitas)",
+        "sede": "Av. Juan Domingo Perón 181 (Tortuguitas)",
         "color": "#7c3aed",
         "phone": "(02320) 491011 / 495000",
-        "description": "Jurisdiccion Tortuguitas. Dependencia PBA.",
+        "description": "Jurisdicción Tortuguitas. Dependencia PBA.",
         "center": [
           -34.476,
           -58.693
@@ -386,51 +386,67 @@ export const MALVINAS_MUNICIPAL_BOUNDARY_GEOJSON = {
 
 export const POLICE_STATIONS_MALVINAS = [
   {
-    "name": "Comisaria 1ra (Grand Bourg)",
+    "name": "Comisaría 1ra (Grand Bourg)",
     "code": "CRIA_MALVINAS_1",
-    "sede": "Jose de San Martin 1674 (Grand Bourg)",
+    "sede": "José de San Martín 1674 (Grand Bourg)",
     "center": [
+      -34.481,
+      -58.719
+    ],
+    "pt": [
       -34.481,
       -58.719
     ],
     "color": "#2563eb",
     "phone": "(02320) 480171 / 485600",
-    "description": "Jurisdiccion Grand Bourg y zonas centro. Dependencia Estacion Departamental Malvinas Argentinas - PBA."
+    "description": "Jurisdicción Grand Bourg y zonas centro. Dependencia Estación Departamental Malvinas Argentinas - PBA."
   },
   {
-    "name": "Comisaria 2da (Los Polvorines)",
+    "name": "Comisaría 2da (Los Polvorines)",
     "code": "CRIA_MALVINAS_2",
     "sede": "Perito Moreno 3181 (Los Polvorines)",
     "center": [
       -34.507,
       -58.719
     ],
+    "pt": [
+      -34.507,
+      -58.719
+    ],
     "color": "#059669",
     "phone": "(011) 4456-0198 / 0227",
-    "description": "Jurisdiccion Los Polvorines y Villa de Mayo. Dependencia PBA."
+    "description": "Jurisdicción Los Polvorines y Villa de Mayo. Dependencia PBA."
   },
   {
-    "name": "Comisaria 3ra (Pablo Nogues)",
+    "name": "Comisaría 3ra (Pablo Nogués)",
     "code": "CRIA_MALVINAS_3",
-    "sede": "Ejercito de los Andes 2244 (Pablo Nogues)",
+    "sede": "Ejército de los Andes 2244 (Pablo Nogués)",
     "center": [
+      -34.474,
+      -58.7
+    ],
+    "pt": [
       -34.474,
       -58.7
     ],
     "color": "#d97706",
     "phone": "(02320) 480260 / 486191",
-    "description": "Jurisdiccion Pablo Nogues y Adolfo Sourdeaux. Dependencia PBA."
+    "description": "Jurisdicción Pablo Nogués y Adolfo Sourdeaux. Dependencia PBA."
   },
   {
-    "name": "Comisaria 4ta (Tortuguitas)",
+    "name": "Comisaría 4ta (Tortuguitas)",
     "code": "CRIA_MALVINAS_4",
-    "sede": "Av. Juan Domingo Peron 181 (Tortuguitas)",
+    "sede": "Av. Juan Domingo Perón 181 (Tortuguitas)",
     "center": [
+      -34.476,
+      -58.693
+    ],
+    "pt": [
       -34.476,
       -58.693
     ],
     "color": "#7c3aed",
     "phone": "(02320) 491011 / 495000",
-    "description": "Jurisdiccion Tortuguitas. Dependencia PBA."
+    "description": "Jurisdicción Tortuguitas. Dependencia PBA."
   }
 ];

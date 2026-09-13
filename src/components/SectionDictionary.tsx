@@ -65,7 +65,12 @@ export default function SectionDictionary({ currentProject = "mdp" }: SectionDic
     { campo: "calleSuperior", tipo: "string", descripcion: "Arteria transversal superior que delimita la esquina o cuadra del punto de comercialización.", ejemplo: "3 De Febrero, Hiroshima", categoria: "narcocriminalidad", proyecto: "narcocriminalidad" },
     { campo: "calleInferior", tipo: "string", descripcion: "Arteria transversal inferior que delimita la cuadra del foco sospechoso.", ejemplo: "Pedro De Mendoza, Maure", categoria: "narcocriminalidad", proyecto: "narcocriminalidad" },
     { campo: "cliqueId", tipo: "string", descripcion: "Identificador de célula, banda o clan criminal detectado por análisis de grafos y centralidad.", ejemplo: "sol-y-verde, rojas-ambrosetti", categoria: "narcocriminalidad", proyecto: "narcocriminalidad" },
-    { campo: "medidaJudicial", tipo: "string", descripcion: "Actuación judicial formal dispuesta (Allanamiento, Secuestro, Detención, Requisición balística).", ejemplo: "Allanamiento Positivo UFI 16", categoria: "narcocriminalidad", proyecto: "narcocriminalidad" }
+    { campo: "medidaJudicial", tipo: "string", descripcion: "Actuación judicial formal dispuesta (Allanamiento, Secuestro, Detención, Requisición balística).", ejemplo: "Allanamiento Positivo UFI 16", categoria: "narcocriminalidad", proyecto: "narcocriminalidad" },
+    { campo: "calle", tipo: "string", descripcion: "Nombre de la arteria principal del incidente o punto de comercialización.", ejemplo: "JUAN JOSE CASTELLI, RICARDO ROJAS", categoria: "narcocriminalidad", proyecto: "narcocriminalidad" },
+    { campo: "altura", tipo: "int64", descripcion: "Numeración o altura catastral aproximada reportada en el despacho.", ejemplo: "2700, 3930", categoria: "narcocriminalidad", proyecto: "narcocriminalidad" },
+    { campo: "localidad", tipo: "string", descripcion: "Localidad o ciudad de competencia territorial dentro del partido.", ejemplo: "Grand Bourg, Los Polvorines, Pablo Nogués", categoria: "narcocriminalidad", proyecto: "narcocriminalidad" },
+    { campo: "comentario", tipo: "string", descripcion: "Observaciones o detalles complementarios del despacho policial o denuncia telefónica.", ejemplo: "Pasa moto roja entrega envoltorios", categoria: "narcocriminalidad", proyecto: "narcocriminalidad" },
+    { campo: "origenLabel", tipo: "string", descripcion: "Etiqueta institucional legible del canal de procedencia del reporte.", ejemplo: "Denuncia Formal 911, Información Vecinal", categoria: "narcocriminalidad", proyecto: "narcocriminalidad" }
   ];
 
   const filteredData = dictionaryData.filter((item) => {

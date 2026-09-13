@@ -494,7 +494,7 @@ export default function SectionRecoveryTracker({ recoveries = [] }: SectionRecov
             ⏱️ {medianHours} Horas
           </div>
           <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>
-            {vehicleType === "autos" ? "Autos: Abandono rápido tras comisión de delito (5.4 hs)" : vehicleType === "motos" ? "Motos: Período de enfriamiento previo a desarme (6.8 hs)" : "Mediana consolidada 5.4 hs"}
+            {vehicleType === "autos" ? `Autos: Abandono rápido tras comisión de delito (${medianHours} hs)` : vehicleType === "motos" ? `Motos: Período de enfriamiento previo a desarme (${medianHours} hs)` : `Mediana consolidada (${medianHours} hs)`}
           </span>
         </div>
 
