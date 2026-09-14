@@ -1,10 +1,13 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
-import { Clock, Calendar, AlertTriangle, Download, FileText, Flame, ShieldAlert, Sparkles, Crosshair, MapPin } from "lucide-react";
+import { Clock, Calendar, AlertTriangle, Download, FileText, Flame, ShieldAlert, Sparkles, Crosshair, MapPin, Play, Pause, FastForward, RotateCcw, Layers } from "lucide-react";
 import { generateDrogasTemporalPDF, generateDrogasTacticalDeploymentPDF } from "@/lib/pdfReport";
 import { exportToCSV } from "@/lib/excelExport";
+import { MALVINAS_MUNICIPAL_BOUNDARY_GEOJSON } from "@/lib/jurisdictionsMalvinasGeoJSON";
+import { RENABAP_MALVINAS_GEOJSON } from "@/lib/renabapMalvinasGeoJSON";
+import "leaflet/dist/leaflet.css";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -262,6 +265,178 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
       .slice(0, 50);
   }, [filtered, selectedHour]);
 
+  // Scrubber / Time-Slider State
+  const [scrubHour, setScrubHour] = useState<number>(20); // Default to peak evening hour
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [playSpeed, setPlaySpeed] = useState<number>(1); // 1 = 1300ms, 2 = 650ms
+  const [cumulativeMode, setCumulativeMode] = useState<boolean>(false);
+  const [filterTimeMode, setFilterTimeMode] = useState<"hour" | "all">("hour");
+
+  // Map state
+  const mapContainerRef = useRef<HTMLDivElement | null>(null);
+  const mapInstanceRef = useRef<any>(null);
+  const markersLayerRef = useRef<any>(null);
+  const [mapReady, setMapReady] = useState(false);
+
+  // Playback loop
+  useEffect(() => {
+    if (!isPlaying) return;
+    const intervalMs = playSpeed === 2 ? 650 : 1300;
+    const timer = setInterval(() => {
+      setScrubHour((prev) => (prev + 1) % 24);
+    }, intervalMs);
+    return () => clearInterval(timer);
+  }, [isPlaying, playSpeed]);
+
+  // Incidents for current scrub selection
+  const scrubbedIncidents = useMemo(() => {
+    if (filterTimeMode === "all") return filtered;
+    if (cumulativeMode) {
+      return filtered.filter((inc) => getHour(inc) <= scrubHour);
+    }
+    return filtered.filter((inc) => getHour(inc) === scrubHour);
+  }, [filtered, scrubHour, cumulativeMode, filterTimeMode]);
+
+  // Hourly metrics for scrubber display
+  const scrubMetrics = useMemo(() => {
+    const totalInHour = scrubbedIncidents.length;
+    const totalAll = filtered.length || 1;
+    const pct = ((totalInHour / totalAll) * 100).toFixed(1);
+    const armed = scrubbedIncidents.filter(isArmed).length;
+    const armedPct = totalInHour > 0 ? ((armed / totalInHour) * 100).toFixed(1) : "0.0";
+    const cocaine = scrubbedIncidents.filter((i) => (i.sustancia || "").toUpperCase().includes("COCA")).length;
+    const paco = scrubbedIncidents.filter((i) => (i.sustancia || "").toUpperCase().includes("PACO")).length;
+    const mari = scrubbedIncidents.filter((i) => (i.sustancia || "").toUpperCase().includes("MARI")).length;
+    const dominantSubstance =
+      cocaine >= paco && cocaine >= mari && cocaine > 0
+        ? `Cocaína (${cocaine})`
+        : paco >= mari && paco > 0
+        ? `Paco (${paco})`
+        : mari > 0
+        ? `Marihuana (${mari})`
+        : "Sin especificar";
+    const geocoded = scrubbedIncidents.filter((r) => {
+      const lat = Number(r.lat ?? r.Latitud_Clean ?? r.Latitud);
+      const lng = Number(r.lng ?? r.Longitud_Clean ?? r.Longitud);
+      return !isNaN(lat) && !isNaN(lng) && lat !== 0 && lng !== 0;
+    }).length;
+    return { totalInHour, pct, armed, armedPct, dominantSubstance, geocoded };
+  }, [scrubbedIncidents, filtered]);
+
+  // Initialize Map
+  useEffect(() => {
+    let isMounted = true;
+
+    import("leaflet").then((L) => {
+      if (!isMounted || !mapContainerRef.current) return;
+
+      if (!mapInstanceRef.current) {
+        const map = L.map(mapContainerRef.current, {
+          center: [-34.490, -58.718],
+          zoom: 13,
+          attributionControl: false,
+        });
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 18,
+        }).addTo(map);
+
+        // Add Malvinas municipal boundary
+        L.geoJSON(MALVINAS_MUNICIPAL_BOUNDARY_GEOJSON as any, {
+          style: {
+            color: "#d97706",
+            weight: 2,
+            dashArray: "4, 4",
+            fillOpacity: 0.04,
+          },
+        }).addTo(map);
+
+        // Add RENABAP settlements outline
+        L.geoJSON(RENABAP_MALVINAS_GEOJSON as any, {
+          style: {
+            color: "#ea580c",
+            weight: 1.5,
+            dashArray: "3, 3",
+            fillOpacity: 0.12,
+          },
+        }).addTo(map);
+
+        const markersLayer = L.layerGroup().addTo(map);
+        markersLayerRef.current = markersLayer;
+
+        mapInstanceRef.current = map;
+        setMapReady(true);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+        markersLayerRef.current = null;
+        setMapReady(false);
+      }
+    };
+  }, []);
+
+  // Sync Markers when scrub selection changes
+  useEffect(() => {
+    if (!mapReady || !markersLayerRef.current || !mapInstanceRef.current) return;
+    const layer = markersLayerRef.current;
+    layer.clearLayers();
+
+    import("leaflet").then((L) => {
+      const points = scrubbedIncidents
+        .map((r) => ({
+          ...r,
+          latNum: Number(r.lat ?? r.Latitud_Clean ?? r.Latitud),
+          lngNum: Number(r.lng ?? r.Longitud_Clean ?? r.Longitud),
+        }))
+        .filter((r) => !isNaN(r.latNum) && !isNaN(r.lngNum) && r.latNum !== 0 && r.lngNum !== 0)
+        .slice(0, 350); // Cap for 60fps interaction during scrub
+
+      points.forEach((r) => {
+        const hasArmas = isArmed(r);
+        const sust = (r.sustancia || "").toUpperCase();
+        const isBunker = r.tipoLugar && (r.tipoLugar.includes("Búnker") || r.tipoLugar.includes("Ventanita"));
+
+        let color = "#3b82f6";
+        if (hasArmas) {
+          color = "#ef4444";
+        } else if (sust.includes("PACO")) {
+          color = "#ec4899";
+        } else if (sust.includes("COCA")) {
+          color = "#dc2626";
+        } else if (sust.includes("MARI")) {
+          color = "#10b981";
+        }
+
+        const marker = L.circleMarker([r.latNum, r.lngNum], {
+          radius: hasArmas ? 6 : isBunker ? 5.5 : 4,
+          fillColor: color,
+          color: "#ffffff",
+          weight: 1,
+          fillOpacity: 0.85,
+        });
+
+        marker.bindPopup(`
+          <div style="font-family: sans-serif; font-size: 0.82rem; color: #0f172a; padding: 2px; max-width: 250px;">
+            <strong style="color: ${color}; font-size: 0.88rem;">
+              ${hasArmas ? "⚠️ HECHO CON ARMAS" : isBunker ? "🏚️ BÚNKER / VENTANITA" : "💊 NARCOMENUDEO"}
+            </strong><br/>
+            <b>Hora:</b> ${String(getHour(r)).padStart(2, "0")}:00 hs (${getSlot(getHour(r))})<br/>
+            <b>Sustancia:</b> ${r.sustancia || "No especificada"}<br/>
+            <b>Dirección:</b> ${r.direccion || "Malvinas Argentinas"}<br/>
+            <b>Barrio:</b> ${r.barrio || "Sin dato"}<br/>
+            ${r.relato ? `<div style="margin-top: 4px; font-size: 0.75rem; color: #475569; max-height: 80px; overflow-y: auto;"><i>${r.relato.slice(0, 140)}...</i></div>` : ""}
+          </div>
+        `);
+        marker.addTo(layer);
+      });
+    });
+  }, [scrubbedIncidents, mapReady]);
+
   return (
     <div className="animate-enter" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
       {/* Header Banner */}
@@ -435,6 +610,243 @@ export default function SectionMalvinasTemporal({ incidents = [] }: SectionMalvi
         <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.5 }}>
           La venta de sustancias en Malvinas Argentinas se traslada al espacio público principalmente en la franja <strong>18:00 a 02:00 horas</strong>. A diferencia de otros delitos contra la propiedad donde el móvil se dispersa de día, el narcomenudeo incrementa su <strong>peligrosidad con un {nightArmedPct}% de hechos armados en la noche</strong>, motivados por custodias territoriales («soldaditos») armados con pistolas 9mm y revólveres calibres .22 y .38 para proteger los búnkers durante el abastecimiento nocturno de clientes.
         </p>
+      </div>
+
+      {/* Reproductor Crono-Topográfico Interactivo */}
+      <div style={{
+        background: "#ffffff",
+        borderRadius: "var(--radius-md)",
+        border: "1px solid var(--border)",
+        boxShadow: "var(--shadow-sm)",
+        padding: "1.25rem",
+      }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.75rem", marginBottom: "1rem" }}>
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <Clock size={18} color="#d97706" />
+              <h4 style={{ fontSize: "1rem", fontWeight: 700, margin: 0, color: "var(--text-primary)" }}>
+                Reproductor Crono-Topográfico del Narcomenudeo (Malvinas Argentinas)
+              </h4>
+              <span style={{
+                background: scrubHour >= 18 ? "rgba(217, 119, 6, 0.15)" : "rgba(13, 92, 168, 0.1)",
+                color: scrubHour >= 18 ? "#d97706" : "var(--accent-pba-blue)",
+                padding: "2px 8px",
+                borderRadius: "4px",
+                fontSize: "0.72rem",
+                fontWeight: 700,
+                fontFamily: "var(--font-mono)"
+              }}>
+                {getSlot(scrubHour)} ({scrubHour >= 18 ? "Pico Crítico" : "Franja Habitual"})
+              </span>
+            </div>
+            <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", margin: "0.2rem 0 0" }}>
+              Evolución territorial del narcomenudeo y venta de estupefacientes hora a hora sincronizada con límites municipales y RENABAP.
+            </p>
+          </div>
+
+          {/* Live Metrics Ticker */}
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
+            <div style={{ background: "#f8fafc", padding: "6px 12px", borderRadius: "6px", border: "1px solid #e2e8f0", textAlign: "center" }}>
+              <span style={{ fontSize: "0.7rem", color: "#64748b", display: "block", textTransform: "uppercase", fontWeight: 700 }}>Despachos en la Hora</span>
+              <strong style={{ fontSize: "0.95rem", color: "#0f172a" }}>{scrubMetrics.totalInHour} <span style={{ fontSize: "0.75rem", color: "#64748b" }}>({scrubMetrics.pct}%)</span></strong>
+            </div>
+            <div style={{ background: "#fef2f2", padding: "6px 12px", borderRadius: "6px", border: "1px solid #fecaca", textAlign: "center" }}>
+              <span style={{ fontSize: "0.7rem", color: "#991b1b", display: "block", textTransform: "uppercase", fontWeight: 700 }}>Tasa con Armas</span>
+              <strong style={{ fontSize: "0.95rem", color: "#dc2626" }}>{scrubMetrics.armedPct}% <span style={{ fontSize: "0.75rem", color: "#991b1b" }}>({scrubMetrics.armed})</span></strong>
+            </div>
+            <div style={{ background: "#f0fdf4", padding: "6px 12px", borderRadius: "6px", border: "1px solid #bbf7d0", textAlign: "center" }}>
+              <span style={{ fontSize: "0.7rem", color: "#166534", display: "block", textTransform: "uppercase", fontWeight: 700 }}>Predominio</span>
+              <strong style={{ fontSize: "0.88rem", color: "#15803d" }}>{scrubMetrics.dominantSubstance}</strong>
+            </div>
+          </div>
+        </div>
+
+        {/* Interactive Player Controls */}
+        <div style={{
+          background: "#f1f5f9",
+          padding: "0.85rem 1rem",
+          borderRadius: "var(--radius-sm)",
+          border: "1px solid #e2e8f0",
+          marginBottom: "1rem"
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap", marginBottom: "0.75rem" }}>
+            {/* Play / Pause */}
+            <button
+              type="button"
+              onClick={() => {
+                setFilterTimeMode("hour");
+                setIsPlaying(!isPlaying);
+              }}
+              className="btn-primary"
+              style={{ padding: "6px 14px", display: "flex", alignItems: "center", gap: "6px", fontSize: "0.82rem", background: isPlaying ? "#dc2626" : "var(--accent-pba-blue)" }}
+            >
+              {isPlaying ? <Pause size={14} /> : <Play size={14} />}
+              <span>{isPlaying ? "Pausar" : "Reproducir 24h"}</span>
+            </button>
+
+            {/* Speed toggle */}
+            <button
+              type="button"
+              onClick={() => setPlaySpeed(playSpeed === 1 ? 2 : 1)}
+              style={{
+                background: "#ffffff",
+                border: "1px solid #cbd5e1",
+                borderRadius: "4px",
+                padding: "6px 10px",
+                fontSize: "0.75rem",
+                fontWeight: 700,
+                color: "#334155",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "4px"
+              }}
+              title="Cambiar velocidad de reproducción"
+            >
+              <FastForward size={13} />
+              <span>{playSpeed}x</span>
+            </button>
+
+            {/* Step Buttons */}
+            <div style={{ display: "flex", border: "1px solid #cbd5e1", borderRadius: "4px", overflow: "hidden", background: "#fff" }}>
+              <button
+                type="button"
+                onClick={() => {
+                  setFilterTimeMode("hour");
+                  setScrubHour((prev) => (prev === 0 ? 23 : prev - 1));
+                }}
+                style={{ border: "none", background: "transparent", padding: "5px 10px", fontSize: "0.75rem", cursor: "pointer", fontWeight: 700, borderRight: "1px solid #e2e8f0" }}
+                title="Hora anterior"
+              >
+                -1h
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setFilterTimeMode("hour");
+                  setScrubHour((prev) => (prev === 23 ? 0 : prev + 1));
+                }}
+                style={{ border: "none", background: "transparent", padding: "5px 10px", fontSize: "0.75rem", cursor: "pointer", fontWeight: 700 }}
+                title="Hora siguiente"
+              >
+                +1h
+              </button>
+            </div>
+
+            {/* Mode Toggle: Specific Hour vs Cumulative */}
+            <button
+              type="button"
+              onClick={() => setCumulativeMode(!cumulativeMode)}
+              style={{
+                background: cumulativeMode ? "rgba(217, 119, 6, 0.12)" : "#ffffff",
+                border: "1px solid " + (cumulativeMode ? "#d97706" : "#cbd5e1"),
+                color: cumulativeMode ? "#d97706" : "#475569",
+                borderRadius: "4px",
+                padding: "6px 10px",
+                fontSize: "0.75rem",
+                fontWeight: 600,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "5px"
+              }}
+            >
+              <Layers size={13} />
+              <span>{cumulativeMode ? "Modo Acumulado (00h a hora)" : "Modo Hora Exacta"}</span>
+            </button>
+
+            {/* Quick Circadian Slots */}
+            <div style={{ display: "flex", gap: "4px", marginLeft: "auto", flexWrap: "wrap" }}>
+              {[
+                { label: "Madrugada", h: 3 },
+                { label: "Mañana", h: 9 },
+                { label: "Tarde", h: 15 },
+                { label: "Noche (Pico)", h: 21 },
+              ].map((slot) => (
+                <button
+                  key={slot.label}
+                  type="button"
+                  onClick={() => {
+                    setFilterTimeMode("hour");
+                    setIsPlaying(false);
+                    setScrubHour(slot.h);
+                  }}
+                  style={{
+                    background: scrubHour === slot.h && filterTimeMode === "hour" ? "#d97706" : "#ffffff",
+                    color: scrubHour === slot.h && filterTimeMode === "hour" ? "#ffffff" : "#475569",
+                    border: "1px solid #cbd5e1",
+                    borderRadius: "4px",
+                    padding: "5px 9px",
+                    fontSize: "0.72rem",
+                    fontWeight: 600,
+                    cursor: "pointer"
+                  }}
+                >
+                  {slot.label}
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={() => {
+                  setIsPlaying(false);
+                  setFilterTimeMode(filterTimeMode === "all" ? "hour" : "all");
+                }}
+                style={{
+                  background: filterTimeMode === "all" ? "#0f172a" : "#ffffff",
+                  color: filterTimeMode === "all" ? "#ffffff" : "#475569",
+                  border: "1px solid #cbd5e1",
+                  borderRadius: "4px",
+                  padding: "5px 9px",
+                  fontSize: "0.72rem",
+                  fontWeight: 700,
+                  cursor: "pointer"
+                }}
+              >
+                {filterTimeMode === "all" ? "Filtro Desactivado" : "Ver Todo"}
+              </button>
+            </div>
+          </div>
+
+          {/* Range Slider Track */}
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem", fontWeight: 800, color: "var(--text-primary)", minWidth: "65px" }}>
+              {filterTimeMode === "all" ? "24 HS" : `${String(scrubHour).padStart(2, "0")}:00 hs`}
+            </span>
+            <input
+              type="range"
+              min={0}
+              max={23}
+              value={scrubHour}
+              disabled={filterTimeMode === "all"}
+              onChange={(e) => {
+                setFilterTimeMode("hour");
+                setIsPlaying(false);
+                setScrubHour(parseInt(e.target.value, 10));
+              }}
+              style={{
+                flex: 1,
+                cursor: "pointer",
+                height: "7px",
+                accentColor: scrubHour >= 18 ? "#d97706" : "var(--accent-pba-blue)",
+              }}
+            />
+            <span style={{ fontSize: "0.72rem", color: "#64748b", fontFamily: "var(--font-mono)" }}>
+              00:00 ➔ 23:59
+            </span>
+          </div>
+        </div>
+
+        {/* Spatio-temporal Map View */}
+        <div
+          ref={mapContainerRef}
+          style={{
+            width: "100%",
+            height: "360px",
+            borderRadius: "var(--radius-sm)",
+            border: "1px solid #cbd5e1",
+            background: "#e2e8f0"
+          }}
+        />
       </div>
 
       {/* Main Charts: Hourly Curve & Day of Week */}
