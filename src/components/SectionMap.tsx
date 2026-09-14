@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useMemo } from "react";
-import { Play, Pause, RotateCcw, Clock, Navigation, Filter, Layers, ShieldAlert, Home, Eye, CheckSquare, Square, Zap } from "lucide-react";
+import { Play, Pause, FastForward, RotateCcw, Clock, Navigation, Filter, Layers, ShieldAlert, Home, Eye, CheckSquare, Square, Zap } from "lucide-react";
 import { POLICE_JURISDICTIONS_GEOJSON } from "@/lib/jurisdictionsGeoJSON";
 import { RENABAP_BARRIOS_GEOJSON } from "@/lib/renabapGeoJSON";
 import "leaflet/dist/leaflet.css";
@@ -457,6 +457,22 @@ function MapComponent({
 export default function SectionMap({ geoPoints = [], recoveries = [] }: SectionMapProps) {
   const [selectedHour, setSelectedHour] = useState<number | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [playSpeed, setPlaySpeed] = useState<number>(1); // 1 = 1300ms, 2 = 650ms
+
+  // Playback timer effect for 24h animation
+  useEffect(() => {
+    if (!isPlaying) return;
+
+    const intervalMs = playSpeed === 2 ? 650 : 1300;
+    const interval = setInterval(() => {
+      setSelectedHour((prev) => {
+        if (prev === null) return 0;
+        return (prev + 1) % 24;
+      });
+    }, intervalMs);
+
+    return () => clearInterval(interval);
+  }, [isPlaying, playSpeed]);
 
   // Layer switches states
   const [showPoints, setShowPoints] = useState(true);
@@ -676,10 +692,16 @@ export default function SectionMap({ geoPoints = [], recoveries = [] }: SectionM
           </div>
 
           {/* Time Slider Controls Bar */}
-          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "1rem", paddingTop: "0.5rem", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flex: 1, minWidth: "280px" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "0.75rem", paddingTop: "0.5rem", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flex: 1, minWidth: "280px", flexWrap: "wrap" }}>
               <button
-                onClick={() => setIsPlaying(!isPlaying)}
+                type="button"
+                onClick={() => {
+                  if (!isPlaying && selectedHour === null) {
+                    setSelectedHour(0);
+                  }
+                  setIsPlaying(!isPlaying);
+                }}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -698,14 +720,64 @@ export default function SectionMap({ geoPoints = [], recoveries = [] }: SectionM
                 {isPlaying ? "Pausar 24h" : "Animar 24h"}
               </button>
 
+              {/* Speed toggle */}
               <button
+                type="button"
+                onClick={() => setPlaySpeed(playSpeed === 1 ? 2 : 1)}
+                style={{
+                  background: "var(--bg-card)",
+                  border: "1px solid var(--border)",
+                  borderRadius: "6px",
+                  padding: "0.35rem 0.55rem",
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  color: "var(--text-secondary)",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "3px"
+                }}
+                title="Cambiar velocidad de animación"
+              >
+                <FastForward size={12} />
+                <span>{playSpeed}x</span>
+              </button>
+
+              {/* Step -1h / +1h */}
+              <div style={{ display: "flex", border: "1px solid var(--border)", borderRadius: "6px", overflow: "hidden", background: "var(--bg-card)" }}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsPlaying(false);
+                    setSelectedHour((prev) => (prev === null || prev === 0 ? 23 : prev - 1));
+                  }}
+                  style={{ border: "none", background: "transparent", padding: "0.35rem 0.6rem", fontSize: "0.75rem", cursor: "pointer", fontWeight: 700, borderRight: "1px solid var(--border)", color: "var(--text-secondary)" }}
+                  title="Hora anterior"
+                >
+                  -1h
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsPlaying(false);
+                    setSelectedHour((prev) => (prev === null || prev === 23 ? 0 : prev + 1));
+                  }}
+                  style={{ border: "none", background: "transparent", padding: "0.35rem 0.6rem", fontSize: "0.75rem", cursor: "pointer", fontWeight: 700, color: "var(--text-secondary)" }}
+                  title="Hora siguiente"
+                >
+                  +1h
+                </button>
+              </div>
+
+              <button
+                type="button"
                 onClick={() => { setSelectedHour(null); setIsPlaying(false); }}
                 style={{ padding: "0.35rem 0.65rem", borderRadius: "6px", border: "1px solid var(--border)", background: "var(--bg-card)", color: "var(--text-secondary)", fontSize: "0.75rem", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.2rem" }}
               >
                 <RotateCcw size={12} /> Reset
               </button>
 
-              <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--accent-indigo)", minWidth: "110px" }}>
+              <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--accent-indigo)", minWidth: "115px" }}>
                 <Clock size={13} style={{ display: "inline", verticalAlign: "middle", marginRight: "0.3rem" }} />
                 {selectedHour === null ? "24 hs completas" : `${selectedHour.toString().padStart(2, "0")}:00 hs`}
               </span>
@@ -720,7 +792,7 @@ export default function SectionMap({ geoPoints = [], recoveries = [] }: SectionM
                 setIsPlaying(false);
                 setSelectedHour(parseInt(e.target.value, 10));
               }}
-              style={{ flex: 1, minWidth: "160px", accentColor: "var(--accent-indigo)" }}
+              style={{ flex: 1, minWidth: "160px", accentColor: "var(--accent-indigo)", cursor: "pointer" }}
             />
           </div>
 
